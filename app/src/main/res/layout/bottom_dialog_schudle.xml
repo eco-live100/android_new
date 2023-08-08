@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+       >
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/round_bg"
+            android:paddingBottom="@dimen/_25sdp"
+            android:paddingTop="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18sdp"
+                android:text="Schedule a ride"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_bold"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D6E2ED"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/datetxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"
+                android:text="Sun, Oct 30"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_medium"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D6E2ED"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/timeTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"
+                android:text="10:25 PM - 10:35 PM"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_medium"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:backgroundTint="@color/black"
+                android:text="Set pickup time"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:textSize="@dimen/_14sdp"
+                android:background="@drawable/bg_blue_round_button"
+                android:layout_marginHorizontal="@dimen/_20sdp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

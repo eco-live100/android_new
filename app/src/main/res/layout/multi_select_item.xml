@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/dialog_item_checkbox"
+        android:layout_width="@dimen/_19sdp"
+        android:layout_height="@dimen/_19sdp"
+        android:buttonTint="@color/color_333333"
+        android:button="@drawable/checkbox_selector"
+        android:layout_gravity="center_vertical"
+        android:clickable="false" />
+
+    <TextView
+        android:id="@+id/dialog_item_name"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/_2sdp"
+        android:text="Home"
+        android:textColor="@color/color_333333"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/textview_margin"
+        android:layout_marginStart="@dimen/textview_margin"
+        android:textSize="@dimen/sp_16" />
+</LinearLayout>

@@ -1,0 +1,2 @@
+rootProject.name = "EcoliveApp"
+include ':app'

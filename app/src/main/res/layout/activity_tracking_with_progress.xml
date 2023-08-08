@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/color_F5F5F5"
+        tools:context=".rider_module.TrackingWithProgressActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_7ssp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:cardCornerRadius="@dimen/_5ssp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+          <LinearLayout
+              android:orientation="vertical"
+              android:padding="@dimen/_15ssp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_map15"
+                android:drawablePadding="@dimen/_10ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="ISCKON ELEGANCE"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/_14ssp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="pizza del duamo, 80777 Firenze fi, italy"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/_12ssp" />
+
+          </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewDetail">
+
+            <TextView
+                android:id="@+id/textView72"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Order number - OD202124538657"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView77"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Arrival time"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+            <TextView
+                android:id="@+id/textView79"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="6:10am"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintEnd_toEndOf="@+id/textView77"
+                app:layout_constraintStart_toStartOf="@+id/textView77"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <TextView
+                android:id="@+id/textView80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="5.10km"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintStart_toStartOf="@+id/textView76"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <TextView
+                android:id="@+id/textView81"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="$ 199.50"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintStart_toStartOf="@+id/textView78"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <TextView
+                android:id="@+id/textView76"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Distance"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintStart_toEndOf="@+id/textView77"
+                app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+            <TextView
+                android:id="@+id/textView78"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Order amount"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintStart_toEndOf="@+id/textView80"
+                app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.transferwise.sequencelayout.SequenceLayout
+            android:id="@+id/sequenceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/color_F5F5F5"
+            android:paddingStart="30dp"
+            android:paddingTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
+
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:anchor="1may\n9:30pm"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance"-->
+            <!--                app:title="Documantation Prepared" />-->
+
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:anchor="3may\n12:08pm"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance"-->
+            <!--                app:title="Booking Arranged" />-->
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:anchor="3may\n12:08pm"-->
+            <!--                app:active="true"-->
+            <!--                app:title="In Transit"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance"/>-->
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:anchor="3may\n12:08pm"-->
+            <!--                app:title="Booking Arranged"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance" />-->
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:title="Arrived at Destination"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance" />-->
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:title="Out of delivery"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance" />-->
+            <!--            <com.transferwise.sequencelayout.SequenceStep-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:anchor=""-->
+            <!--                app:title="Delivered"-->
+            <!--                app:anchorTextAppearance="@style/titleAppearance"-->
+            <!--                app:titleTextAppearance="@style/titleAppearance" />-->
+        </com.transferwise.sequencelayout.SequenceLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/appCompatLoginButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginHorizontal="@dimen/_40sdp"
+                android:background="@drawable/bg_blue_round_button"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="VIEW MAP"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

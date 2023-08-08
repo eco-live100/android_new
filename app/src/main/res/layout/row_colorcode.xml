@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5ssp"
+        android:background="@drawable/bg_edittext">
+
+        <TextView
+            android:id="@+id/rowClrcodeText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/color_333333"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingTop="@dimen/_5ssp"
+            android:paddingEnd="@dimen/_10ssp"
+            android:paddingBottom="@dimen/_5ssp"
+
+            app:layout_constraintEnd_toStartOf="@+id/rowClrClose"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/rowClrClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@+id/rowClrcodeText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rowClrcodeText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

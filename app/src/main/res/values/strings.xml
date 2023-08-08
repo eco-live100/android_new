@@ -1,0 +1,148 @@
+<resources>
+    <string name="app_name">EcoliveApp</string>
+    <string name="facebook_app_id">553774492933366</string>
+    <string name="facebook_client_token">768d0ce322b7427216e53ef89fcabef2</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+
+    <string name="web_client_id">826700708931-k7ib1v6upui5kpbmjnnsqau5tp2kf5rm.apps.googleusercontent.com</string>
+
+    <string name="twitter_consumer_key" translatable="false">U6K0EaMY4hrNK8rPIXUkMO0a8</string>
+    <string name="twitter_consumer_secret" translatable="false">BG2F5Hk8yNqb7OefXDc5O9YsEUI3ljD29mKHOo9sp2NrZ36SZe</string>
+    <string name="twitter_callback_url" translatable="false">https://ecolive.ezxdemo.com/server/api1/twitter-callback-response</string>
+
+    <string name="shop_with_us_to_fight_climate_change">Shop with us to fight Climate Change</string>
+    <string name="i_want_to_shop">I want to shop</string>
+    <string name="I_sell">I want to sell</string>
+    <string name="i_want_to_deliver">I want to deliver</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
+    <string name="list_empty">No items to display</string>
+    <string name="select_entry">Select Entries</string>
+    <string name="select_all">select all</string>
+    <string name="you_can_only_select_upto">You can only select upto </string>
+    <string name="option"> option</string>
+    <string name="options"> options</string>
+    <string name="please_select_atleast">Please select atleast </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_extra_with_2_offers"><b>Save extra</b> with 2 offers</string>
+    <string name="cashback_5_back_icici_bank_credit_card_for_prime_membership"><b><font color="#FF0000">CASHBACK</font></b>: 5% back ICICI bank credit card for prime membership</string>
+    <string name="no_cost_emi_avail_no_cost_emi_on_select_cards_for_oders_above_2500"><b><font color="#FF0000">NO COST EMI</font></b>: Avail no cost EMI on select cards for oders above $ 2500</string>
+    <string name="price_and_specs_comparison_for_all_the_current_pairs_of_beats_headphones_price_and_specs_comparison_for_read_more">Price and specs comparison for all the current pairs of Beats headphones Price and specs comparison for <b><font color="#3663F5">Read More...</font></b></string>
+    <string name="Payment_is_for"><b>Payment is for</b> (what\'s this?)</string>
+    <string name="accountHolerName">Account holder\'s name</string>
+    <string name="by_clicking_continue_ni_agree_to_the_condition_of_use">By clicking continue, \ni agree to the <font color="#3663F5">condition of use</font></string>
+    <string name="Rs_symbol">\u20B9 Rs</string>
+    <string name="pwd_shud_six">Password should be 6 character</string>
+    <string name="No_Internet"><u>No Internet Connection</u></string>
+    <string name="Something_went_wrong">Something went wrong. Please contact with admin.</string>
+    <string name="Network_Failure">Network Failure,Please try again.</string>
+    <string name="Internal_server_error">Internal server error.</string>
+    <string name="Parsing_Problem">Parsing Error.</string>
+    <string name="No_data_found">No Data Found</string>
+    <string name="Send_Again"><u>Send Again</u></string>
+    <string name="EnterOTPreceived">Please Enter the Verification Code sent to Mobile No</string>
+    <string name="Vehicle_Name">Vehicle Name</string>
+    <string name="Vehicle_Number">Registration plate number</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="select_vehicalType">Select Vehicle Type</string>
+    <string name="select_vehiclecagry">What fuel/motor type</string>
+    <string name="plz_selectvehicleType">Please select vehicle type</string>
+    <string name="plz_selectvehicleCategory">Please select vehicle category</string>
+    <string name="plz_enterVehicleName">Please enter vehicle name</string>
+    <string name="plz_enterVehicleNumber">Please enter vehicle number</string>
+    <string name="plz_Upload_Vehicle_Document">Please upload your vehicle document</string>
+    <string name="plz_Upload_Vehicle_license">Please upload your vehicle license</string>
+    <string name="plz_select_catgry">Please select shop category</string>
+    <string name="plz_select_subcatgry">Please select shop sub category</string>
+    <string name="plz_enter_shopname">Please enter shop name</string>
+    <string name="plz_enter_shppCAtegry">Please choose shop category</string>
+    <string name="plz_enter_shppSubCategry">Please choose shop sub category</string>
+    <string name="chk_demand">Check Demand</string>
+    <string name="Earned_Today">Earned Today</string>
+    <string name="Total_Trips">Total Trips</string>
+    <string name="del_dattime"><![CDATA[Delivery Date & Time]]></string>
+    <string name="Demand_High">Demand is Very High</string>
+    <string name="soleDocRequire">Information on the person in charge of\nthe account\nphoto ID\n(Passport or Driver\'s License)\nCredit Card Information\nVarious Statements</string>
+    <string name="clickhereSignup">Click here to go to the seller account registration screen</string>
+    <string name="corperateDocRequire">Company Information\nCorporate Number\nRegistered Corporate name\n(romaji//Japanese)\nHead Office Location(Address)/ Postal Code\nStore Name\n(also required for sale Proprietors)\n\n\n
+    Information on the person in charge of\nthe account\nphoto ID\n(Passport or Driver\'s License)\nCredit Card Information\nVarious Statement
+    </string>
+    <string name="For_Sole_Proprietors">For Sole Proprietors</string>
+    <string name="For_Corporation">For Corporation</string>
+    <string name="shop_trems">I agree to the on and Offline Eco-Live Messaging. By selecting “I agree,” I acknowledge that I am a legitimate/authorized representative of the restaurant/ business. I may receive a messages or phone calls from Eco-Live or its affiliates to the number I have provided.</string>
+    <string name="plz_storeName">Please enter store name</string>
+    <string name="plz_storeAddrs">Please enter store address</string>
+    <string name="plz_fname">Please enter first name</string>
+    <string name="plz_surname">Please enter surname</string>
+    <string name="plz_email">Please enter email</string>
+    <string name="plz_mobno">Please enter mobile number</string>
+    <string name="uploadFileClear">Upload a file or a clear photo of Verification Documents below</string>
+    <string name="select_noofloc">Select number of locations</string>
+    <string name="plz_iAgree">Please check the \"I agree to WhatsApp Messaging\"</string>
+    <string name="plz_select_nooflocation">Please select number of location</string>
+    <string name="plz_Upload_Verification_Document">Please upload verification document front side</string>
+    <string name="plz_Upload_Verification_Document_back">Please upload verification document back side</string>
+    <string name="email_notvalid">Email is not valid</string>
+    <string name="press_again">Press again to exit!</string>
+    <string name="AddAnotherVehicle">Add Another Vehicle</string>
+    <string name="Save">Save</string>
+    <string name="Pedestrian">Pedestrian</string>
+    <string name="bio">Bio Diesel, Ethanol, Hybrid motor</string>
+    <string name="you_login_first">You have to login first</string>
+    <string name="petrol">Petrol, Gasoline, Diesel</string>
+    <string name="Electric_Vehicle">Electric Vehicle</string>
+    <string name="Cycle">Cycle</string>
+    <string name="Confirm">Confirm</string>
+    <string name="storeLogo">Store Logo</string>
+    <string name="noProductFoundMsg">You have not added any product yet.\nTap on add icon to add product.</string>
+    <string name="EcoLiveWallet">Eco-Live Wallet</string>
+    <string name="SendMoneyFriends">Send Money to Friends</string>
+    <string name="SendPaymentRequests">Send Payment Requests</string>
+    <string name="MakePaymentOrganizations">Make a Payment to Organizations</string>
+    <string name="LocalInternationalTransfer">Local/International Money Transfer</string>
+    <string name="MakepaymentBusinessNGO">Make a payment to a Business /NGO</string>
+    <string name="Paymylocationbusiness">Pay to my current location’s restaurant/business</string>
+    <string name="scan_barcode">ECO-LIVE</string>
+    <string-array name="currency">
+        <item>Currency</item>
+        <item>INR</item>
+        <item>USD</item>
+
+    </string-array>
+
+
+    <string-array name="organ">
+        <item>Left</item>
+        <item>Right</item>
+
+
+    </string-array>
+
+    <string-array name="count">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>7</item>
+
+
+    </string-array>
+    <string-array name="year">
+        <item>1 year</item>
+        <item>2 year</item>
+        <item>3 year</item>
+        <item>4 year</item>
+        <item>5 year</item>
+
+
+    </string-array>
+    <string name="title_activity_creat_hospital_and_pharmacy">CreatHospitalAndPharmacyActivity
+    </string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="forgot_password">Forgot password?</string>
+
+
+</resources>

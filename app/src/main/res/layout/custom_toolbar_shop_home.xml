@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data></data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_050D4C"
+    android:paddingVertical="@dimen/_10sdp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <ImageView
+        android:id="@+id/ivMenu"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:padding="@dimen/_6sdp"
+        android:src="@drawable/ic_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:padding="@dimen/_4sdp"
+
+        android:src="@drawable/ic_bell"
+        app:layout_constraintBottom_toBottomOf="@+id/ivMenu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/homepageToolbarSwitchToUser"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:background="@drawable/bg_white_button"
+        android:drawableStart="@drawable/ic_user_green"
+        android:drawablePadding="@dimen/_3sdp"
+        android:fontFamily="@font/roboto_regular"
+        android:paddingVertical="@dimen/_5sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_7sdp"
+        android:text="As a User"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/color_333333"
+        app:layout_constraintBottom_toBottomOf="@+id/ivMenu"
+        app:layout_constraintStart_toEndOf="@+id/ivMenu"
+        app:layout_constraintTop_toTopOf="@+id/ivMenu" />
+
+
+
+
+    <TextView
+        android:id="@+id/homepageToolbarSwitchToRider"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="@drawable/bg_white_button"
+        android:drawableStart="@drawable/ic_rider_green"
+        android:drawablePadding="@dimen/_3sdp"
+        android:textSize="@dimen/sp_12"
+        android:fontFamily="@font/roboto_regular"
+        android:paddingVertical="@dimen/_5sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_7sdp"
+        android:text="As a Rider"
+        android:textColor="@color/color_333333"
+        app:layout_constraintBottom_toBottomOf="@+id/ivMenu"
+        app:layout_constraintStart_toEndOf="@+id/homepageToolbarSwitchToUser"
+        app:layout_constraintTop_toTopOf="@+id/ivMenu" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

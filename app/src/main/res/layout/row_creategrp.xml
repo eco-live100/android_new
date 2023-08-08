@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:background="@color/color_F5F5F5"
+        android:layout_height="wrap_content"
+      >
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/chatImage"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:src="@drawable/apple_watch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/color_b3b3b3"
+            app:strokeWidth="@dimen/_1ssp" />
+
+        <TextView
+            android:id="@+id/chatTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Title"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/chatImage"
+            app:layout_constraintStart_toEndOf="@+id/chatImage"
+            app:layout_constraintTop_toTopOf="@+id/chatImage" />
+
+
+
+        <View
+            android:layout_marginTop="@dimen/_15ssp"
+            app:layout_constraintTop_toBottomOf="@+id/chatImage"
+            android:layout_width="match_parent"
+            android:background="@color/color_D4D4D4"
+            android:layout_height="1dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

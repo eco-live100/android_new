@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/constraintAddProductStepOne"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/row_list_add_product_image_view_two"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpload"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_33sdp"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:background="@drawable/bg_blue_round_button"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="UPLOAD"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDecline"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_33sdp"
+            android:background="@drawable/bg_gray_round_button"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="CANCEL"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_40sdp"
+            android:textColor="@color/color_333333"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_17">17sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="sp_13">13sp</dimen>
+    <dimen name="sp_25">25sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_22">22sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_8">8sp</dimen>
+
+    <dimen name="dimen_85dp">85dp</dimen>
+    <dimen name="dimen_60dp">60dp</dimen>
+    <dimen name="dimen_50dp">50dp</dimen>
+    <dimen name="dimen_45dp">45dp</dimen>
+    <dimen name="dimen_35dp">35dp</dimen>
+    <dimen name="dimen_0dp">0dp</dimen>
+    <dimen name="dimen_1dp">1dp</dimen>
+    <dimen name="dimen_2dp">2dp</dimen>
+    <dimen name="dimen_5dp">5dp</dimen>
+    <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_12dp">12dp</dimen>
+    <dimen name="dimen_14dp">14dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_18dp">18dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
+    <dimen name="dimen_22dp">22dp</dimen>
+    <dimen name="dimen_24dp">24dp</dimen>
+    <dimen name="dimen_26dp">26dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="font_size_heading">25sp</dimen>
+    <dimen name="font_size_subheading">18sp</dimen>
+    <dimen name="font_size_normal">14sp</dimen>
+
+    <dimen name="recyclerview_margin">10dp</dimen>
+    <dimen name="layout_margin">10dp</dimen>
+    <dimen name="searchview_margin">5dp</dimen>
+    <dimen name="text_button_size">14sp</dimen>
+    <dimen name="textview_margin">10dp</dimen>
+    <dimen name="line_margin">40dp</dimen>
+    <dimen name="dimen_3dp">3dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="otp_view_item_size">@dimen/dimen_45dp</dimen>
+    <dimen name="otp_view_item_radius">5dp</dimen>
+    <dimen name="otp_view_item_spacing">@dimen/dimen_10dp</dimen>
+    <dimen name="otp_view_item_line_width">@dimen/dimen_2dp</dimen>
+    <dimen name="otp_view_cursor_width">@dimen/dimen_2dp</dimen>
+    <dimen name="dp_25">25dp</dimen>
+    <dimen name="sp_20">20sp</dimen>
+    <dimen name="dp_15">15dp</dimen>
+</resources>

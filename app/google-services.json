@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "826700708931",
+    "project_id": "eco-live-1654067786795",
+    "storage_bucket": "eco-live-1654067786795.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826700708931:android:7a7bb808302a87aefbe8f6",
+        "android_client_info": {
+          "package_name": "com.app.ecolive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826700708931-brdtgd1i01odaq8gb8rkc2792434udda.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ecolive",
+            "certificate_hash": "215b3d235df0eec2357363c26c6183719b76a0a4"
+          }
+        },
+        {
+          "client_id": "826700708931-k7ib1v6upui5kpbmjnnsqau5tp2kf5rm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLbppC7WO6c-WOD0V_YIocVKoA4NKcE50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826700708931-k7ib1v6upui5kpbmjnnsqau5tp2kf5rm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "826700708931-62si0qes0th7r4fa4oj85dl1gul7j54n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.EcoLive"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

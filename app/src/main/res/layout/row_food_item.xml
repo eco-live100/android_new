@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/viewProductDetails"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_round_without_stroke_10dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/homepageProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:src="@drawable/demo_img1"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewMenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp">
+            <TextView
+                android:id="@+id/productName"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="TheKitchen-Quinoa"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_14"
+                />
+
+            <TextView
+                android:id="@+id/productShopOnlinePrice"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="$ 520"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

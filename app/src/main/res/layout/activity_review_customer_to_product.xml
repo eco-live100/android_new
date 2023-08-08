@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/color_F5F5F5"
+        android:layout_height="match_parent"
+        tools:context=".review_module.ReviewCustomerToProductActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.80" />
+
+
+        <TextView
+            android:id="@+id/textView86"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Customer reviews"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/textView89"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="5 star"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+        <TextView
+            android:id="@+id/textView91"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="4 star"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/textView89" />
+
+        <TextView
+            android:id="@+id/textView93"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="3 star"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/textView91" />
+
+        <TextView
+            android:id="@+id/textView95"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="2 star"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/textView93" />
+
+        <TextView
+            android:id="@+id/textView97"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="1 star"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/textView95" />
+
+        <TextView
+            android:id="@+id/textView90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="55%"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+        <TextView
+            android:id="@+id/textView92"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="67%"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/textView91"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/textView91" />
+
+        <TextView
+            android:id="@+id/textView94"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="59%"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/progress3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/progress3" />
+
+        <TextView
+            android:id="@+id/textView96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="20%"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/progres4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/progres4" />
+
+        <TextView
+            android:id="@+id/textView98"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="30%"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/progress5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/progress5" />
+
+        <com.mackhartley.roundedprogressbar.RoundedProgressBar
+            android:id="@+id/progress1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView89"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/textView89"
+            app:rpbBackgroundColor="@color/color_D4D4D4"
+            app:rpbCornerRadius="2dp"
+            app:rpbProgress="55"
+            app:rpbProgressColor="@color/color_blue"
+            app:rpbShowProgressText="false" />
+
+        <com.mackhartley.roundedprogressbar.RoundedProgressBar
+            android:id="@+id/progress2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView91"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/textView91"
+            app:rpbBackgroundColor="@color/color_D4D4D4"
+            app:rpbCornerRadius="2dp"
+            app:rpbProgress="67"
+            app:rpbProgressColor="@color/color_blue"
+            app:rpbShowProgressText="false" />
+
+        <com.mackhartley.roundedprogressbar.RoundedProgressBar
+            android:id="@+id/progress3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView93"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/textView93"
+            app:rpbBackgroundColor="@color/color_D4D4D4"
+            app:rpbCornerRadius="2dp"
+            app:rpbProgress="59"
+            app:rpbProgressColor="@color/color_blue"
+            app:rpbShowProgressText="false" />
+
+        <com.mackhartley.roundedprogressbar.RoundedProgressBar
+            android:id="@+id/progres4"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView95"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/textView95"
+            app:rpbBackgroundColor="@color/color_D4D4D4"
+            app:rpbCornerRadius="2dp"
+            app:rpbProgress="20"
+            app:rpbProgressColor="@color/color_blue"
+            app:rpbShowProgressText="false" />
+
+        <com.mackhartley.roundedprogressbar.RoundedProgressBar
+            android:id="@+id/progress5"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView97"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/textView97"
+            app:rpbBackgroundColor="@color/color_D4D4D4"
+            app:rpbCornerRadius="2dp"
+            app:rpbProgress="30"
+            app:rpbProgressColor="@color/color_blue"
+            app:rpbShowProgressText="false" />
+
+
+        <TextView
+            android:id="@+id/textView88"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="4.2 out of 5"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingBar2"
+            app:layout_constraintStart_toEndOf="@+id/ratingBar2"
+            app:layout_constraintTop_toTopOf="@+id/ratingBar2" />
+
+        <RatingBar
+            android:id="@+id/ratingBar2"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressTint="@color/color_F5BB36"
+            android:rating="4.2"
+            android:layout_marginStart="@dimen/_minus5sdp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView86" />
+
+        <View
+            android:id="@+id/view13"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@color/color_D4D4D4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/progress5" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewProductReview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/_25sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/view13"
+            tools:listitem="@layout/row_layout_review_customer_to_product" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

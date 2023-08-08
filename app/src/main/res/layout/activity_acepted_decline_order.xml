@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F6F6F6"
+        tools:context=".rider_module.AcceptedDeclineOrderActivity">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/editTextSearch"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_height="wrap_content"
+            android:hint="Search by order id"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingVertical="@dimen/_10sdp"
+            android:drawableStart="@drawable/ic_icon_feather_search"
+            android:textColor="@color/color_9F9F9F"
+            android:drawablePadding="@dimen/_14sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/bg_white_round_without_stroke_10dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orderListRecyclerview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextSearch"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/row_accepted_decline_order_list" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

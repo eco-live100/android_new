@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_5ssp"
+        android:layout_marginEnd="@dimen/_10ssp">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10ssp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/vndrUserPic"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/dummy_female_user"
+                    app:civ_border_width="@dimen/_1ssp"
+                    app:civ_border_color="@color/color_050D4C"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+
+
+                <TextView
+                    android:id="@+id/vndrUserName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:singleLine="true"
+                    android:text="Jenny Wilson"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintEnd_toStartOf="@+id/vndrUserDelvryTime"
+                    app:layout_constraintStart_toEndOf="@id/vndrUserPic"
+                    app:layout_constraintTop_toTopOf="@+id/vndrUserPic" />
+
+
+                <TextView
+                    android:id="@+id/vndrUserDelvryTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/bg_orange_round"
+                    android:fontFamily="@font/roboto_regular"
+                    android:padding="@dimen/_2sdp"
+                    android:text="1hour Deliver"
+                    android:textColor="@color/color_F5BB36"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toStartOf="@+id/vndrUserKm"
+                    app:layout_constraintTop_toTopOf="@+id/vndrUserPic" />
+
+
+                <TextView
+                    android:id="@+id/vndrUserKm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:drawableStart="@drawable/ic_path_green"
+                    android:drawablePadding="@dimen/_1sdp"
+                    android:text="5KM"
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/color_51E555"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/vndrUserPic" />
+
+                <TextView
+                    android:id="@+id/vndrOrderRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:drawableStart="@drawable/ic_star_fill_row10"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="4.5"
+                    android:textColor="@color/color_9F9F9F"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="@+id/vndrUserName"
+                    app:layout_constraintTop_toBottomOf="@+id/vndrUserName" />
+
+                <View
+                    android:id="@+id/vndrView2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/dimen_10dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@color/color_9F9F9F"
+                    app:layout_constraintBottom_toBottomOf="@+id/vndrOrderRating"
+                    app:layout_constraintStart_toEndOf="@+id/vndrOrderRating"
+                    app:layout_constraintTop_toTopOf="@+id/vndrOrderRating" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="9 June,6:30 pm"
+                    android:textColor="@color/color_9F9F9F"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/vndrOrderRating"
+                    app:layout_constraintStart_toEndOf="@+id/vndrView2"
+                    app:layout_constraintTop_toTopOf="@+id/vndrOrderRating" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:drawableStart="@drawable/ic_map15"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:singleLine="true"
+                    android:text="Piazza del duamo, 80777 Firenze fi, italy"
+                    android:textColor="@color/color_333333"
+                    app:layout_constraintStart_toStartOf="@+id/vndrUserName"
+                    app:layout_constraintTop_toBottomOf="@+id/vndrOrderRating" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

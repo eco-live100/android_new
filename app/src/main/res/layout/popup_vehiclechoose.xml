@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/bg_purple_round_pop"
+        android:paddingBottom="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/popUpVehicleClose"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:src="@drawable/ic_cancel"
+            android:padding="@dimen/_5ssp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/vehicleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="How do you want to Deliver?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16ssp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/vehicleSubTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Select Appropriate Options Below :\nI am / have a :"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/vehicleTitle"
+            app:layout_constraintTop_toBottomOf="@+id/vehicleTitle" />
+
+        <TextView
+            android:id="@+id/popPedestrian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:background="@drawable/bg_white5dp"
+            android:drawableStart="@drawable/round_img"
+            android:drawableTint="@color/color_blue"
+            android:drawablePadding="@dimen/_5ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/_5sdp"
+            android:singleLine="true"
+            android:text="@string/Pedestrian"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/vehicleTitle"
+            app:layout_constraintTop_toBottomOf="@+id/vehicleSubTitle" />
+
+        <TextView
+            android:id="@+id/popCycle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:background="@drawable/bg_white5dp"
+            android:drawableStart="@drawable/round_img"
+            android:drawableTint="@color/red"
+            android:drawablePadding="@dimen/_5ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/_5sdp"
+            android:singleLine="true"
+            android:text="Gas-powered vehicle"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/popPedestrian"
+            app:layout_constraintStart_toEndOf="@+id/popPedestrian"
+            app:layout_constraintTop_toTopOf="@+id/popPedestrian" />
+
+        <TextView
+            android:id="@+id/popElectric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:background="@drawable/bg_white5dp"
+            android:drawableStart="@drawable/round_img"
+            android:drawableTint="@color/quantum_googgreen"
+            android:drawablePadding="@dimen/_5ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/_5sdp"
+            android:singleLine="true"
+            android:text="Bicycle"
+
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/vehicleTitle"
+            app:layout_constraintTop_toBottomOf="@+id/popPedestrian" />
+
+        <TextView
+            android:id="@+id/popPertol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:background="@drawable/bg_white5dp"
+            android:drawableStart="@drawable/round_img"
+            android:drawableTint="@color/quantum_googgreen"
+            android:drawablePadding="@dimen/_5ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/_5sdp"
+            android:singleLine="true"
+            android:text="EV(Electric Vehicle)"
+            android:visibility="visible"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/popElectric"
+            app:layout_constraintStart_toEndOf="@+id/popElectric"
+            app:layout_constraintTop_toTopOf="@+id/popElectric" />
+
+
+        <TextView
+            android:id="@+id/popBio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_white5dp"
+            android:drawableStart="@drawable/round_img"
+            android:drawableTint="@color/quantum_yellow"
+            android:drawablePadding="@dimen/_5ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/_5sdp"
+            android:singleLine="true"
+            android:text="Hybrid vehicle (run with gas &amp; electricity)"
+            android:textColor="@color/color_333333"
+
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="@+id/popElectric"
+
+            app:layout_constraintTop_toBottomOf="@+id/popElectric" />
+
+
+        <TextView
+            android:id="@+id/popUpConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/bg_white_round_tab_50dp"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:padding="@dimen/_10ssp"
+
+            android:text="@string/Confirm"
+            android:textColor="@color/color_898A8D"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintTop_toBottomOf="@+id/popBio" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

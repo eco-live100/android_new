@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+
+        tools:context=".user_module.UserPaymentCheckoutActivity">
+
+        <include
+            android:id="@+id/toolbarUserPayment"
+            layout="@layout/custom_toolbar"
+
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:id="@+id/textView112"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Select option to pay"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarUserPayment" />
+
+        <CheckedTextView
+            android:id="@+id/tvDebitCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:drawableStart="@drawable/ic_radio_on"
+
+            android:drawablePadding="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Debit card"
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/textView112" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintEnterUrCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_rectangle_round_gray"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/tvDebitCard">
+
+            <TextView
+                android:id="@+id/enterUrCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+
+                android:fontFamily="@font/roboto_regular"
+                android:text="Enter your card details"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/enterUrCardEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/bg_round_white_round_5dp"
+                android:padding="@dimen/_7sdp"
+                android:singleLine="true"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enterUrCard" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintExpiryCvv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/enterUrCardEdit">
+
+                <TextView
+                    android:id="@+id/tvExpiry"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Expiry / validity Date"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintEnd_toStartOf="@+id/tvCVV"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/tvCVV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="CVV"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvExpiry"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintExpiryCvvEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintExpiryCvv">
+
+                <EditText
+                    android:id="@+id/etExpiry"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/bg_round_white_round_5dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:padding="@dimen/_7sdp"
+                    android:singleLine="true"
+
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toStartOf="@+id/etCVV"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <EditText
+                    android:id="@+id/etCVV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/bg_round_white_round_5dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:padding="@dimen/_7sdp"
+                    android:singleLine="true"
+
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/etExpiry"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <CheckedTextView
+            android:id="@+id/tvThisCardWill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_checked_circle"
+            android:drawablePadding="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="This card will be saved for faster payments"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/constraintEnterUrCard" />
+
+
+        <EditText
+            android:id="@+id/etCreditCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableStart="@drawable/ic_radio_off"
+            android:drawablePadding="@dimen/_10sdp"
+            android:hint="Credit card"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/tvThisCardWill" />
+
+        <View
+            android:id="@+id/viewCreditCard"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:background="@color/color_b3b3b3"
+            app:layout_constraintEnd_toEndOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/etCreditCard" />
+
+        <EditText
+            android:id="@+id/etWalletMoney"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableStart="@drawable/ic_radio_off"
+            android:drawablePadding="@dimen/_10sdp"
+            android:hint="Wallet money"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+
+            app:layout_constraintEnd_toEndOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/viewCreditCard" />
+
+        <View
+            android:id="@+id/viewWalletMoney"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:background="@color/color_b3b3b3"
+            app:layout_constraintEnd_toEndOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/etWalletMoney" />
+
+
+        <TextView
+            android:id="@+id/btnPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/bg_blue_round_button"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="PAY"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="@dimen/_14sdp"
+             />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

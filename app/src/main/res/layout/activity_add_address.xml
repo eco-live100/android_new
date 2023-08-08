@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/color_F5F5F5"
+        android:layout_height="match_parent"
+        tools:context=".user_module.AddAddressActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+
+            android:layout_height="0dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/_40sdp"
+                android:layout_height="0dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.05" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <TextView
+                    android:id="@+id/addressLable"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Edit your address"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView53"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Edit your address"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/addressPlacePicker" />
+
+                <!--<EditText
+                    android:id="@+id/editText8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Country"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/addressLable" />-->
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/fullName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Full name"
+                    android:maxLines="1"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/addressLable" />
+
+                <EditText
+                    android:id="@+id/mobieNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Mobile number"
+                    android:paddingBottom="15dp"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:digits="0123456789"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/fullName"
+                    tools:ignore="TextFields" />
+
+              <!--  <EditText
+                    android:id="@+id/editText10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="PIN Code"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/mobieNumber" />-->
+
+            <!--    <EditText
+                    android:id="@+id/editText11"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Flat, house no., company, building"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/editText10" />-->
+
+              <!--  <EditText
+                    android:id="@+id/editText12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Area, colony, village"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/editText11" />-->
+
+               <!-- <EditText
+                    android:id="@+id/editText13"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Town/city"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/editText12" />-->
+
+                <TextView
+                    android:id="@+id/addressPlacePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:backgroundTint="@color/color_9F9F9F"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="Type your address"
+                    android:paddingBottom="15dp"
+                    android:maxLines="4"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/mobieNumber" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/grey"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                        app:layout_constraintStart_toStartOf="@+id/guideline1"
+                        app:layout_constraintTop_toBottomOf="@+id/addressPlacePicker"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/white"
+                    android:paddingBottom="@dimen/_20sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/textView53">
+
+                    <TextView
+
+                        android:id="@+id/textView54"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Select an address type"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/radioButtonHome"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:src="@drawable/ic_radio_selected"
+                        app:layout_constraintStart_toStartOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="@+id/textView54" />
+
+                    <ImageView
+                        android:id="@+id/radioButtonOffice"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:src="@drawable/ic_ration_unselect"
+                        app:layout_constraintStart_toStartOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+                    <TextView
+                        android:id="@+id/textView58"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Home"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toBottomOf="@+id/radioButtonHome"
+                        app:layout_constraintStart_toEndOf="@+id/radioButtonHome"
+                        app:layout_constraintTop_toTopOf="@+id/radioButtonHome" />
+
+                    <TextView
+                        android:id="@+id/textView55"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Home"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toBottomOf="@+id/radioButtonHome"
+                        app:layout_constraintStart_toEndOf="@+id/radioButtonHome"
+                        app:layout_constraintTop_toTopOf="@+id/radioButtonHome" />
+
+                    <TextView
+                        android:id="@+id/textView59"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Office"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toBottomOf="@+id/radioButtonOffice"
+                        app:layout_constraintStart_toEndOf="@+id/radioButtonOffice"
+                        app:layout_constraintTop_toTopOf="@+id/radioButtonOffice" />
+
+                    <TextView
+                        android:id="@+id/textView57"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="(Delivery between 7am to 9pm , all day)"
+                        android:textColor="@color/color_9F9F9F"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textView58"
+                        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+                    <TextView
+                        android:id="@+id/textView60"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="(Delivery between 9am to 8pm, mon to fri)"
+                        android:textColor="@color/color_9F9F9F"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textView58"
+                        app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Use as my default address"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="Save"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline1"
+                    app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

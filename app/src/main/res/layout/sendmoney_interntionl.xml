@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/color_F5F5F5"
+        android:layout_height="match_parent">
+
+
+        <include
+            android:id="@+id/toolbarSendMoneyInter"
+            layout="@layout/custom_toolbar" />
+
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarSendMoneyInter">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sendInternationTopBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp">
+
+
+                    <TextView
+                        android:id="@+id/sendMnyInternationText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_gray_left_selected"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Internation"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/sendMnyLocalText"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/sendMnyLocalText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Local"
+                        android:textColor="@color/color_9F9F9F"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/sendMnyInternationText"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sendInternationWalletBal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/bg_visit_shop"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp">
+
+                    <TextView
+                        android:id="@+id/sendInternationAmt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="$ 0.00"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_18sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+
+                        android:gravity="center"
+                        android:text="Account balance"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/sendInternationAmt" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:fontFamily="@font/roboto_bold"
+                    android:paddingStart="@dimen/_7sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="+ Add Money"
+                    android:textColor="@color/color_3663F5"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_bold"
+
+                    android:text="Send Money"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+
+                    android:text="If your eco-live balance is lower than the amount you intend to send, consider these options..."
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/roboto_bold"
+
+                    android:text="Send Money To"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14ssp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/bg_search"
+                    android:fontFamily="@font/roboto_regular"
+                    android:hint="Gerryatric@gmail.com"
+                    android:padding="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="(Email address or alias)"
+                    android:textColor="@color/color_9F9F9F"
+                    android:textSize="@dimen/_10ssp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="You Send"
+
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/sendInternationAmtEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:background="@drawable/bg_search"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="1000"
+                        android:padding="@dimen/_7sdp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/color_9F9F9F"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintEnd_toStartOf="@+id/countryPicker"
+                        app:layout_constraintHorizontal_weight="6"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/countryPicker"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:background="@drawable/bg_search"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="4"
+                        app:layout_constraintStart_toEndOf="@+id/sendInternationAmtEdit"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <ImageView
+                            android:id="@+id/flagUkImg"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@drawable/ic_uk_flag"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_regular"
+
+                            android:gravity="center"
+                            android:text="USD"
+                            android:textColor="@color/color_9F9F9F"
+                            android:textSize="@dimen/_12ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/arrowImgArrow"
+                            app:layout_constraintStart_toEndOf="@+id/flagUkImg"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/arrowImgArrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/sendMoneyUsdPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Today USD price is $ 74.75"
+                    android:textColor="@color/color_red"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Transaction Fee is $3"
+                    android:textColor="@color/color_red"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="They Get"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <EditText
+                        android:id="@+id/sendInternationAmtGet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:background="@drawable/bg_search"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="1000"
+                        android:padding="@dimen/_7sdp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/color_9F9F9F"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintEnd_toStartOf="@+id/pricePicker"
+                        app:layout_constraintHorizontal_weight="6"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/pricePicker"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:background="@drawable/bg_search"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="4"
+                        app:layout_constraintStart_toEndOf="@+id/sendInternationAmtGet"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <ImageView
+                            android:id="@+id/flagIndiaImg"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@drawable/ic_india_flag"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_regular"
+
+                            android:gravity="center"
+                            android:text="@string/Rs_symbol"
+                            android:textColor="@color/color_9F9F9F"
+                            android:textSize="@dimen/_12ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/arrowImgArrow2"
+                            app:layout_constraintStart_toEndOf="@+id/flagIndiaImg"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+                        <ImageView
+                            android:id="@+id/arrowImgArrow2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/Payment_is_for"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14ssp" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+
+                    <CheckedTextView
+                        android:id="@+id/radioGoodsNService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginRight="8dp"
+                        android:drawableStart="@drawable/ic_radio_on"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="Goods/services"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckedTextView
+                        android:id="@+id/radioGift"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:drawableStart="@drawable/ic_radio_off"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="Gift"
+                        android:textSize="@dimen/_12sdp"
+
+                        app:layout_constraintBottom_toBottomOf="@+id/radioGoodsNService"
+                        app:layout_constraintStart_toEndOf="@+id/radioGoodsNService"
+                        app:layout_constraintTop_toTopOf="@id/radioGoodsNService" />
+
+
+                    <CheckedTextView
+                        android:id="@+id/radioCashAdvance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginRight="8dp"
+                        android:drawableStart="@drawable/ic_radio_off"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="Cash Advance"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radioGoodsNService" />
+
+
+                    <CheckedTextView
+                        android:id="@+id/radioOther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_radio_off"
+                        android:drawablePadding="@dimen/_10sdp"
+
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:text="Other"
+                        android:textSize="@dimen/_12sdp"
+
+                        app:layout_constraintBottom_toBottomOf="@+id/radioCashAdvance"
+                        app:layout_constraintStart_toStartOf="@+id/radioGift"
+                        app:layout_constraintTop_toTopOf="@id/radioCashAdvance" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+
+                    android:text="Optional note"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14ssp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/bg_search"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="top|start"
+                    android:hint="Type Here..."
+                    android:padding="@dimen/_7sdp"
+
+                    android:textColorHint="@color/color_9F9F9F"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="You have another 160 characters left"
+                    android:textColor="@color/color_9F9F9F"
+                    android:textSize="@dimen/_9ssp" />
+
+
+
+                <TextView
+                    android:id="@+id/sendMoneyCountinueBtn"
+                    android:layout_width="match_parent"
+                    android:text="Continue"
+                    android:padding="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_14sdp"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_50sdp"
+                    android:layout_marginEnd="@dimen/_50sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

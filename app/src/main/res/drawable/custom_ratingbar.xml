@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <bitmap
+            android:src="@drawable/star_selected"
+            android:tint="@color/color_D4D4D4" />
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <bitmap
+            android:src="@drawable/star_selected"
+            android:tint="?attr/colorControlActivated" />
+    </item>
+    <item android:id="@android:id/progress">
+        <bitmap
+            android:src="@drawable/star_selected"
+            android:tint="@color/color_F5BB36" />
+    </item>
+</layer-list>

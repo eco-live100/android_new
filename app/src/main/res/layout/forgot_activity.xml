@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/forgotBakBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_15ssp"
+            android:src="@drawable/ic_back_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:src="@drawable/ic_login"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/forgotText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Forgot Password"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+
+        <TextView
+            android:id="@+id/enterUrText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="Enter your mobile number below to forgot password"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/forgotText" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/forgotConstrentPhno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/bg_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/enterUrText">
+
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/forgotContryPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="2dp"
+                android:paddingBottom="5dp"
+                android:textSize="@dimen/_10ssp"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_countryPreference="JP,IN,US"
+                app:ccp_defaultNameCode="JP"
+                app:ccp_rememberLastSelection="true"
+                app:ccp_showFlag="true"
+                app:ccp_showNameCode="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/forgotPhoneNumber"
+                style="@style/editTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="@null"
+                android:drawableEnd="@drawable/ic_phone"
+                android:drawablePadding="@dimen/_10ssp"
+                android:hint="Phone number"
+                android:inputType="number"
+                android:maxLength="15"
+                android:paddingStart="@dimen/_1ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/forgotContryPicker"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submitButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:background="@drawable/bg_blue_round_button"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/forgotConstrentPhno" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

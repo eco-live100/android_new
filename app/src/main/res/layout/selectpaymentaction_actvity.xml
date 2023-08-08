@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F5F5F5">
+
+
+        <include
+            android:id="@+id/tolbarSelectPaymentAction"
+            layout="@layout/custom_toolbar" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/tolbarSelectPaymentAction"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <TextView
+                android:id="@+id/addMoneytoWallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button_10dp"
+                android:drawableEnd="@drawable/ic_radio_off_white"
+                android:padding="@dimen/_10ssp"
+                android:text="Add money to my wallet"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
+            <TextView
+                android:id="@+id/sendMoneytofriend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button_10dp"
+                android:drawableEnd="@drawable/ic_radio_off_white"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/SendMoneyFriends"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
+
+            <TextView
+                android:id="@+id/paySendPaymentReq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button_10dp"
+                android:drawableEnd="@drawable/ic_radio_off_white"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/SendPaymentRequests"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+            <TextView
+                android:id="@+id/makePaymentBusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button_10dp"
+                android:drawableEnd="@drawable/ic_radio_off_white"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/MakepaymentBusinessNGO"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
+
+            <TextView
+                android:id="@+id/payatlocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button_10dp"
+                android:drawableEnd="@drawable/ic_radio_off_white"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/Paymylocationbusiness"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
+            <TextView
+                android:id="@+id/localInterTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button_10dp"
+                android:drawableEnd="@drawable/ic_radio_off_white"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/LocalInternationalTransfer"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/bg_blue_round_button"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="NEXT"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16" />
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

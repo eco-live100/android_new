@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:background="#ECECEC"
+        android:layout_height="match_parent"
+        tools:context=".pharmacy_module.StartPrescribingActivity">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar_without_round"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Prescription for: "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/dummy_female_user"
+                        app:shapeAppearance="@style/roundedImageViewRounded" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Jenny willson"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/call_blue_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Call"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:src="@drawable/chat_green_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Chat"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="View user's contact info"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp">
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Patient name : "
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Jenny wilson"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Address : "
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Pizza del sumo  itly"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Medication #1 name"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Strength:"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Milligram"
+                        android:gravity="center"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Micrograms"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="Percentage"
+                        android:gravity="center"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Dose : select option or write a number below"/>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="1 tab or cup"
+                        android:gravity="center"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="1 tab or cup"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="Enter detail here"
+                        android:gravity="center"
+                        android:textSize="@dimen/_11sdp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/roboto_medium"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Route: Select appropriate option below"/>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Oral"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Rectal"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="Inhaled"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:text="Other"
+                    android:gravity="center"
+                    android:textSize="@dimen/_11sdp"
+                    android:textColor="@color/grey"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:background="@drawable/bg_edittext_5dp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="@dimen/_35sdp"
+                            android:text="Ear"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_blue_round_button_10dp"
+
+                            />
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/organ"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/bg_edittext_5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="@dimen/_35sdp"
+                            android:text="Nasal"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_blue_round_button_10dp"
+                            />
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/organ"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@drawable/bg_edittext_5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="@dimen/_35sdp"
+                            android:text="Eye"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_blue_round_button_10dp" />
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/organ"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:text="Other"
+                    android:gravity="center"
+                    android:textColor="@color/grey"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textSize="@dimen/_11sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:background="@drawable/bg_edittext_5dp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Frequency: Select option or write a number below"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Daily"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="BID"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="TID"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="QID"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="QAM"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Nightly"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="Weekly"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="PRN"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:text="Other"
+                    android:gravity="center"
+                    android:textSize="@dimen/_11sdp"
+                    android:textColor="@color/grey"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:background="@drawable/bg_edittext_5dp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Refills: Select option or write a number below"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="None"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:text="Rectal"
+                        android:gravity="center"
+                        android:entries="@array/count"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:text="Rectal"
+                        android:gravity="center"
+                        android:entries="@array/year"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="Other"
+                        android:gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/roboto_regular"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="30"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="60"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="90"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="100"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/bg_blue_round_button_5dp"
+                        android:layout_marginHorizontal="@dimen/_2sdp"/>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:text="Other"
+                    android:gravity="center"
+                    android:textSize="@dimen/_11sdp"
+                    android:textColor="@color/grey"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:background="@drawable/bg_edittext_5dp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_blue"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Indication"/>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:text="Start typing here"
+                    android:gravity="start"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/grey"
+                    android:fontFamily="@font/roboto_regular"
+                    android:background="@drawable/bg_edittext"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Additional direction"/>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:text="Start typing here"
+                    android:gravity="start"
+                    android:padding="@dimen/_10sdp"
+
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/grey"
+                    android:fontFamily="@font/roboto_regular"
+                    android:background="@drawable/bg_edittext"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_blue"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="Add another medication"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_blue"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Choose one action below"
+                    android:gravity="center_horizontal"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="Send prescription directly to pharmacy"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11sdp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Medication(s) will be delivered to patient's address"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="Send prescription to patient"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11sdp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Prescription will be received by patient who will next order from nearby pharmacies of their choice "
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="Save this prescription for later"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11sdp"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

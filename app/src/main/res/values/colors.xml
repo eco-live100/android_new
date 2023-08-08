@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#3663F5</color>
+    <color name="teal_700">#3663F5</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="color_050D4C">#050D4C</color>
+    <color name="darkblue">#030B43</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_3663F5">#3663F5</color>
+    <color name="color_F5BB36">#F5BB36</color>
+    <color name="color_FF9100">#FF9100</color>
+    <color name="color_707070">#707070</color>
+    <color name="color_blue">#3663F5</color>
+    <color name="color_F5F5F5">#F5F5F5</color>
+    <color name="color_EFEFEF">#EFEFEF</color>
+    <color name="color_ACACAC">#ACACAC</color>
+    <color name="color_898A8D">#898A8D</color>
+
+    <color name="color_pedestrian">#3663F5</color>
+    <color name="color_51E555">#51E555</color>
+    <color name="color_ev">#90EE90</color>
+    <color name="color_motorcycles">#FFFF00</color>
+    <color name="color_gas">#FF0000</color>
+    <color name="color_red">#FF0000</color>
+    <color name="color_ea0c0c">#ea0c0c</color>
+    <color name="color_85A2FF">#85A2FF</color>
+    <color name="color_9F9F9F">#9F9F9F</color>
+    <color name="color_FCB40A">#FCB40A</color>
+    <color name="color_DEDEDE">#DEDEDE</color>
+    <color name="color_F3F3F3">#F3F3F3</color>
+    <color name="color_D4D4D4">#D4D4D4</color>
+    <color name="color_F6F6F6">#F6F6F6</color>
+    <color name="color_D4D4D459">#D4D4D459</color>
+    <color name="color_b3b3b3">#b3b3b3</color>
+    <color name="color_FF6161">#FF6161</color>
+    <color name="color_4FB84A">#4FB84A</color>
+    <color name="color_006400">#006400</color>
+    <color name="color_008783">#008783</color>
+    <color name="color_548235">#548235</color>
+    <color name="color_92b2be">#92b2be</color>
+    <color name="color_7a3100">#7a3100</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+
+</resources>

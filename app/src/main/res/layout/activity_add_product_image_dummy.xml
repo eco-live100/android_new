@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".shop_owner.AddProductImageDummyActivity">
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_width="match_parent"
+    tools:listitem="@layout/row_list_add_product_image_view_two"
+    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    app:spanCount="4"
+    android:layout_height="match_parent">
+</androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5ssp"
+        android:layout_marginTop="@dimen/_15ssp"
+        android:layout_marginEnd="@dimen/_5ssp"
+        android:elevation="@dimen/_5sdp"
+
+        app:cardCornerRadius="@dimen/_8sdp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/_12ssp">
+
+            <LinearLayout
+                android:id="@+id/linerTop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10ssp"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="start"
+                    android:text="0345"
+                    android:textColor="@color/color_ACACAC"
+
+                    android:textSize="@dimen/_11sdp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/color_707070" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="9 March 2021"
+                    android:textColor="@color/color_ACACAC"
+                    android:textSize="@dimen/_11sdp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/color_707070" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="6:30 PM"
+                    android:textColor="@color/color_ACACAC"
+                    android:textSize="@dimen/_11sdp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/color_707070" />
+
+                <TextView
+                    android:id="@+id/tvIsReceived"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="Received"
+                    android:textColor="@color/color_ACACAC"
+                    android:textSize="@dimen/_11sdp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvOrderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="John doe's 10 TH orders"
+                android:textColor="@color/color_3663F5"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linerTop" />
+
+
+            <TextView
+                android:id="@+id/tvItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_7ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="2 X Smart watch"
+                android:textColor="@color/color_ACACAC"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOrderName" />
+
+
+            <TextView
+                android:id="@+id/tvItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="2 X Men Shoes"
+                android:textColor="@color/color_ACACAC"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvItem1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="$ 410"
+                android:textColor="@color/color_3663F5"
+                app:layout_constraintBottom_toBottomOf="@+id/tvItem1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvItem1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="$ 210"
+                android:textColor="@color/color_3663F5"
+                app:layout_constraintBottom_toBottomOf="@+id/tvItem2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvItem2" />
+
+            <View
+                android:id="@+id/viewLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/color_707070"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvItem2" />
+
+            <TextView
+                android:id="@+id/tvTrackOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_marginEnd="@dimen/_10ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Track Order"
+                android:padding="@dimen/_10ssp"
+                android:textColor="@color/color_3663F5"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewLine" />
+
+
+            <TextView
+                android:id="@+id/tvTotBill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginEnd="@dimen/_10ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Total bill $ 620"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvTrackOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvTrackOrder" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

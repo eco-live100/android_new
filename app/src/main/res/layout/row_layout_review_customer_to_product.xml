@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingVertical="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_user_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Petey Cruiser"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView35"
+            app:layout_constraintStart_toEndOf="@+id/imageView35"
+            app:layout_constraintTop_toTopOf="@+id/imageView35" />
+
+        <TextView
+            android:id="@+id/textView99"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wireless Bluetooth Headphones"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shapeableImageView"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:theme="@style/ShapeAppearanceOverlay.App.CornerSize5PercentALL"
+            android:src="@drawable/bg_mask_profile"
+            android:scaleType="centerCrop"
+            android:layout_height="@dimen/_45sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView101" />
+
+        <TextView
+            android:id="@+id/textView102"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Very nice headphone. Delivered very quickly there. Awesome looking."
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />
+
+        <TextView
+            android:id="@+id/textView100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Reviewed in Tokyo on 8 march 2021"
+            android:textColor="@color/color_9F9F9F"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView99" />
+
+        <TextView
+            android:id="@+id/textView101"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="Battery Life: 2o Hours | Wireless | Type: Over-ear"
+            android:textColor="@color/color_9F9F9F"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView100" />
+
+        <RatingBar
+            android:id="@+id/ratingBar2"
+            android:layout_marginTop="@dimen/_5sdp"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressTint="@color/color_F5BB36"
+            android:rating="4.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView35" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

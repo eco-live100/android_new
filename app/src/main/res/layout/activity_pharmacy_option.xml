@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".pharmacy_module.PharmacyOptionActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar_without_round"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/hospitalPharmacyProfile"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardBackgroundColor="@color/color_050D4C"
+                    android:layout_height="@dimen/_100sdp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Hospital/Pharmacy Profile"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_10sdp"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/HealthProfile"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardBackgroundColor="@color/color_050D4C"
+                    android:layout_height="@dimen/_100sdp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Health profile"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_10sdp"/>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/AllMedication"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardBackgroundColor="@color/color_050D4C"
+                    android:layout_height="@dimen/_100sdp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="All Medication"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_10sdp"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/AllHospitalAndPharmacy"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardBackgroundColor="@color/color_050D4C"
+                    android:layout_height="@dimen/_100sdp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="All Hospital/Pharmacy"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="@dimen/_12sdp"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="@dimen/_10sdp"/>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

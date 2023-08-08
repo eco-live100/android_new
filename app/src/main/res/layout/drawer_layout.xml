@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainDrawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_80sdp"
+            android:background="@color/color_050D4C"
+            android:paddingHorizontal="@dimen/_14sdp"
+            android:paddingVertical="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView18"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:src="@drawable/ic_baseline_person_pin_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sideMenuUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="Hello, John Doe"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView18"
+                app:layout_constraintTop_toTopOf="@+id/imageView18" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/homepageDrawerHome"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="Home"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+        <TextView
+            android:id="@+id/homepageDrawerHome2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableStart="@drawable/ic_sign_in"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="Sign in"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome" />
+
+        <TextView
+            android:id="@+id/homepageDrawerHome3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableStart="@drawable/ic_add_user"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="Sign up"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/homepageDrawerMyAccount"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="My Account"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+        <TextView
+            android:id="@+id/homepageDrawerHome5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableStart="@drawable/ic_order"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="Change Language"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerMyAccount" />
+
+        <TextView
+            android:id="@+id/homepageDrawerMyOrder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="My order"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome5" />
+
+        <TextView
+            android:id="@+id/sideMenuLogout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="#F5F5F5"
+            android:drawableStart="@drawable/ic_icon_feather_log_out"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="Sign out"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#f6f6f6"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#f6f6f6"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome2" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#f6f6f6"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome3" />
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#f6f6f6"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerMyAccount" />
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#f6f6f6"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome5" />
+
+        <View
+            android:id="@+id/view8"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#f6f6f6"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerMyOrder" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/color_85A2FF"
+            android:paddingVertical="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view8">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_20ssp"
+                android:text="Switch"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView18">
+
+                <Spinner
+                    android:id="@+id/sideMenuSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_20ssp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/white"
+                android:drawableEnd="@drawable/ic_dropdown"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_20ssp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="As a Rider"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".review_module.ReviewCustomerToShopActivity">
+
+        <include
+            android:id="@+id/include3"
+            layout="@layout/custom_toolbar" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:id="@+id/tvShopName"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_maps_and_flags"
+            android:drawablePadding="@dimen/_7sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_18"
+            android:text="Sweet sport"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/include3" />
+        <TextView
+            android:id="@+id/textView88"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_marginStart="@dimen/_minus10sdp"
+            android:text="(210)"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingBar2"
+            app:layout_constraintStart_toEndOf="@+id/ratingBar2"
+            app:layout_constraintTop_toTopOf="@+id/ratingBar2" />
+
+        <RatingBar
+            android:id="@+id/ratingBar2"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_minus5sdp"
+            android:progressTint="@color/color_F5BB36"
+            android:rating="4.2"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvShopName" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="@color/color_D4D4D4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline1"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            tools:listitem="@layout/row_layout_review_rider_to_customer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

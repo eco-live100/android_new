@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F5F5F5">
+
+
+        <include
+            android:id="@+id/toolbarProfileUpdate"
+            layout="@layout/custom_toolbar" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profileUpdateImage"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarProfileUpdate">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/userProfileImage"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="@dimen/_85sdp"
+                android:src="@drawable/dummy_female_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:src="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/profileUpdateName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/bg_edittext"
+            android:drawableRight="@drawable/ic_user_fill14"
+            android:drawablePadding="@dimen/_10ssp"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_20ssp"
+            android:paddingTop="@dimen/_10ssp"
+            android:paddingEnd="@dimen/_20ssp"
+            android:textColor="@color/color_333333"
+            android:paddingBottom="@dimen/_10ssp"
+            android:singleLine="true"
+            android:text="John Doe"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileUpdateImage" />
+
+        <TextView
+            android:id="@+id/profileUpdateEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/bg_edittext"
+            android:drawableRight="@drawable/ic_email"
+            android:drawablePadding="@dimen/_10ssp"
+            android:paddingStart="@dimen/_20ssp"
+            android:paddingTop="@dimen/_10ssp"
+            android:paddingEnd="@dimen/_20ssp"
+            android:paddingBottom="@dimen/_10ssp"
+            android:text="JohnDoe@gamil.com"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileUpdateName" />
+
+        <TextView
+            android:id="@+id/profileUpdatePhno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/bg_edittext"
+
+            android:drawableRight="@drawable/ic_call_fill_blk24"
+            android:drawablePadding="@dimen/_10ssp"
+            android:paddingStart="@dimen/_20ssp"
+            android:paddingTop="@dimen/_10ssp"
+            android:paddingEnd="@dimen/_20ssp"
+            android:paddingBottom="@dimen/_10ssp"
+            android:text="+44 123456790"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileUpdateEmail" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/appCompatButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:background="@drawable/bg_blue_round_button"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="UPDATE"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileUpdatePhno" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

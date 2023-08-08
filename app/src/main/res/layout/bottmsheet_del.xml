@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/botmSheetTitle"
+        android:layout_width="wrap_content"
+        android:text="Title"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:textSize="@dimen/_15ssp"
+        android:textColor="@color/color_3663F5"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/botmSheetDel"
+        android:layout_width="match_parent"
+        android:text="Delete Store"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_19sdp"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="@dimen/_10ssp"
+        android:drawableStart="@drawable/ic_delete_24"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/color_333333"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+</layout>

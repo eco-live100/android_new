@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_30sdp">
+
+        <ImageView
+            android:id="@+id/locCloseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:paddingLeft="@dimen/_10ssp"
+            android:paddingTop="@dimen/_15ssp"
+            android:paddingRight="@dimen/_15ssp"
+            android:src="@drawable/ic_icon_cancel_loc" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Search location"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sendMoneySearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:elevation="4dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarSendMoney">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/PlaceSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@null"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Search for location"
+                android:padding="@dimen/_10sdp"
+                android:singleLine="true"
+                android:textColorHint="@color/color_707070"
+                android:textSize="@dimen/_12ssp" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/myLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:drawableStart="@drawable/ic_my_location_red"
+            android:drawablePadding="@dimen/_10ssp"
+            android:paddingStart="@dimen/_10ssp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="Use current location"
+            android:textColor="@color/color_FF6161" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginStart="@dimen/_10ssp"
+
+            android:layout_marginEnd="@dimen/_10ssp"
+            android:background="@color/color_D4D4D4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Nearby location"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:drawableStart="@drawable/ic_map15"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="ISCKON ELEGANCE"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_33ssp"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="piazza del duamo, 80777 Firenze fi, italy"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_10ssp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:drawableStart="@drawable/ic_map15"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="OLIVO - Bhatia"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_33ssp"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Dalmial, kuwait"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_10ssp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:layout_marginEnd="@dimen/_10ssp"
+            android:background="@color/color_D4D4D4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Recent locations"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:drawableStart="@drawable/ic_time12"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="RIVERA"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_33ssp"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="al warda tower, Kuwait city"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_10ssp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:drawableStart="@drawable/ic_time12"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="ARBORIO"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_33ssp"
+            android:layout_marginTop="@dimen/_2ssp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="al warda tower, Kuwait city"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_10ssp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:layout_marginEnd="@dimen/_10ssp"
+            android:background="@color/color_D4D4D4" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmLocation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:text="Confirm location"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_blue_round_button"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+
+    </LinearLayout>
+</layout>
+

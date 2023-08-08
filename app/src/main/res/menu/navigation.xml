@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/sendmoney_icon_selector"
+        android:title="Send Money">
+    </item>
+
+    <item
+        android:id="@+id/navigation_categories"
+        android:icon="@drawable/nav_add_money"
+        android:title="Add money">
+    </item>
+
+    <item
+        android:id="@+id/navigation_wishlist"
+        android:icon="@drawable/nav_make_money"
+        android:title="Make payment">
+    </item>
+
+    <item
+        android:id="@+id/navigation_bag"
+        android:icon="@drawable/nav_message"
+        android:title="Messages">
+    </item>
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/nav_call"
+        android:title="Call Friends">
+    </item>
+
+</menu>

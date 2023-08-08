@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:paddingBottom="@dimen/_20sdp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#445DA0"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                >
+                <ImageView
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:src="@drawable/coffe_button"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_weight="4"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/roboto_medium"
+
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:text="You are currently at:\nJaipur"/>
+                <ImageView
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:src="@drawable/scan_icon"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Menu"
+                    android:textColor="@color/black"
+                    android:background="@color/white"
+                    android:padding="@dimen/_5sdp"
+                    android:textSize="@dimen/_14sdp"
+
+                    android:fontFamily="@font/roboto_medium"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Read QR code/scan bar code to price display "
+                    android:textColor="@color/white"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_bold"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <RadioButton
+                    android:id="@+id/radioPayAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    android:checked="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:buttonTint="@color/white"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Pay the whole bill myself"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/_5sdp">
+
+                <RadioButton
+                    android:id="@+id/radioPaymultiple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    android:buttonTint="@color/white"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Split the bill between"/>
+
+                <TextView
+                    android:id="@+id/txtminus"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="-"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/grey"/>
+                <TextView
+                    android:id="@+id/txtPeopleCount"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="0"
+                    android:textSize="@dimen/_16sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:background="@color/white"/>
+                <TextView
+                    android:id="@+id/txtPlus"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="+"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="people"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                     />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Optional: want to leave a tip ?"
+                    android:textSize="@dimen/_14sdp"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    />
+
+
+                <TextView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="-"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/grey"/>
+                <TextView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="0$"
+                    android:textSize="@dimen/_16sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:background="@color/white"/>
+                <TextView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:text="+"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total : "
+                    android:textSize="@dimen/_14sdp"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/black"
+                    />
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="0.00"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:background="@color/white"/>
+                <TextView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="$"
+                    android:textSize="@dimen/_16sdp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:background="@color/white"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:gravity="center">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnCancel"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@drawable/bg_white5dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="@dimen/_14sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:text="Cancel"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnConfirm"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:text="@string/Confirm"
+                    android:background="@drawable/bg_white5dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textSize="@dimen/_14sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

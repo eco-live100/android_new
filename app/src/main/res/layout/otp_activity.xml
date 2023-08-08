@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F5F5F5">
+
+        <ImageView
+            android:id="@+id/otpLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:src="@drawable/ic_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/otpOtpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="OTP"
+            android:textColor="@color/color_ACACAC"
+            android:textSize="@dimen/_18ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpLogo" />
+
+        <TextView
+            android:id="@+id/otpEnterCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Enter Code"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_25ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpOtpText" />
+
+
+        <TextView
+            android:id="@+id/otpPlzVerify"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_5ssp"
+            android:layout_marginEnd="@dimen/_15ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Please Enter the Verification Code sent to Mobile No"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpEnterCode" />
+
+        <in.aabhasjindal.otptextview.OtpTextView
+            android:id="@+id/containerOtp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/color_333333"
+            app:bar_active_color="@color/color_blue"
+
+            app:bar_error_color="@color/red"
+            app:bar_inactive_color="@color/color_707070"
+            app:bar_success_color="@color/color_51E555"
+            app:height="@dimen/_41sdp"
+            app:hide_otp="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpPlzVerify"
+            app:length="6"
+            app:otp_box_background="@drawable/bg_white_round_pop"
+            app:otp_text_size="@dimen/_18ssp"
+            app:width="@dimen/_40sdp" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/otpConstrentSendAgain"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/containerOtp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05352798" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <TextView
+                android:id="@+id/otpDidnot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:text="OTP not received?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/otpSendAgain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_10ssp"
+                android:text="@string/Send_Again"
+                android:textColor="@color/color_898A8D"
+                android:textDirection="locale"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toEndOf="@+id/otpDidnot"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15ssp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="end"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_1sdp"
+                android:text="00:59"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="@+id/otpDidnot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/otpDidnot" />
+
+           <!-- <com.dinuscxj.progressbar.CircleProgressBar
+                android:id="@+id/mLineProgressBar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/bg_progress_timmer"
+                android:backgroundTint="@color/black"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:line_count="30"
+                app:progress_background_color="@color/color_blue"
+                app:progress_end_color="@android:color/black"
+                app:progress_start_color="@android:color/black"
+                app:progress_start_degree="0"
+                app:progress_stroke_width="3dp"
+                app:progress_style="solid"
+                app:progress_text_color="@color/black"
+                app:progress_text_size="0dp" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/otpSubmitBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:background="@drawable/bg_blue_round_button"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="SUBMIT"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpConstrentSendAgain" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

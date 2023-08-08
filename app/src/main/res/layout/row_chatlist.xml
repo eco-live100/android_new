@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:layout_marginEnd="@dimen/_15ssp"
+        android:background="@color/color_F5F5F5">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/chatImage"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:src="@drawable/apple_watch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/color_b3b3b3"
+            app:strokeWidth="@dimen/_1ssp" />
+
+        <TextView
+            android:id="@+id/chatTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Title"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toStartOf="@+id/chatTimeAgo"
+            app:layout_constraintStart_toEndOf="@+id/chatImage"
+            app:layout_constraintTop_toTopOf="@+id/chatImage" />
+
+        <TextView
+            android:id="@+id/chatTimeAgo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="15 min ago"
+            android:visibility="invisible"
+            android:textColor="@color/color_9F9F9F"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/chatImage" />
+
+        <ImageView
+            android:id="@+id/chatTicIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="invisible"
+            android:src="@drawable/ic_gray_double_tic"
+            app:layout_constraintStart_toStartOf="@+id/chatTitle"
+            app:layout_constraintTop_toBottomOf="@+id/chatTitle" />
+
+
+        <TextView
+            android:id="@+id/chatSubTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5ssp"
+            android:drawablePadding="@dimen/_5ssp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Title"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/chatTicIcon"
+            app:layout_constraintEnd_toStartOf="@+id/chatMsgCount"
+            app:layout_constraintStart_toEndOf="@+id/chatTicIcon"
+            app:layout_constraintTop_toTopOf="@+id/chatTicIcon" />
+
+        <TextView
+            android:id="@+id/chatMsgCount"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:background="@drawable/circle_blue120"
+            android:gravity="center"
+            android:text="11"
+            android:visibility="invisible"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/chatSubTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintTop_toTopOf="@+id/chatSubTitle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:background="@color/color_D4D4D4"
+            app:layout_constraintTop_toBottomOf="@+id/chatImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
