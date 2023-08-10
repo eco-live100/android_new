@@ -369,6 +369,12 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
+
+        <activity
+            android:name=".login_module.ResetPasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.EcoliveApp" />
         <activity
             android:name=".user_module.MyOrderActivity2"
             android:exported="true"

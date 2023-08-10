@@ -8,6 +8,7 @@ data class LoginModel(
 ) {
     data class Data(
         val _id: String,
+        val userId: String,
         val accessToken: String,
         val checkEmailVerified: CheckEmailVerified,
         val checkMobileVerified: CheckMobileVerified,

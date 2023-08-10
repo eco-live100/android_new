@@ -53,6 +53,11 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
         return loginModel
     }
 
+    fun resetPassword(map: JSONObject): LiveData<ApiSampleResource<LoginModel>> {
+        loginModel = webServiceRepository.resetPassword(map)
+        return loginModel
+    }
+
     fun addAddress(map: JSONObject): LiveData<ApiSampleResource<AddressModel>> {
         addressModel = webServiceRepository.addAddres(map)
         return addressModel

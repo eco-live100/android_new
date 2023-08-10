@@ -24,29 +24,20 @@ import org.json.JSONObject
 class UserSignupActivity : BaseActivity() {
     lateinit var binding: ActivityUserSignupBinding
     private val progressDialog = CustomProgressDialog()
-    //google
-    private val RC_SIGN_IN = 1
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_signup)
         statusBarColor()
         initView()
-        binding.userName.setText(intent.getStringExtra(AppConstant.SOCIAL_LOGIN_NAME))
-        binding.userEmail.setText(intent.getStringExtra(AppConstant.SOCIAL_LOGIN_EMAIL))
-        //gooogle
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+
     }
 
     private fun initView() {
         setTouchNClick(binding.userSignInBtn)
         setTouchNClick(binding.userSignupBtn)
-        setTouchNClick(binding.signupGoogleBtn)
+
 
     }
 
@@ -61,44 +52,13 @@ class UserSignupActivity : BaseActivity() {
                     userSignUpApiCall()
                 }
             }
-            binding.signupGoogleBtn -> {
-                googleLogin()
-            }
+
         }
     }
 
-    private fun googleLogin() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === RC_SIGN_IN) {
-//            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
-//            handleSignInResult(result!!)
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d("ok", "firebaseAuthWithGoogle:" + account.id)
-                Log.d("ok", "firebaseAuthWithGoogle:" + account.idToken!!)
-                var vv1 = account.id
-                var vv3 = account.email
-                var vv4 = account.displayName
-                var vv5 = account.photoUrl
-                binding.userName.setText(account.displayName)
-                binding.userEmail.setText(account.email)
-                // firebaseAuthWithGoogle(account.idToken!!)
-              //  socialLoginAPICall("google", account.id,account.email,account.displayName)
-                googleSignInClient.signOut()//logout from google
-                FirebaseAuth.getInstance().signOut()
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("ok", "Google sign in failed", e)
-            }
-        }
-    }
+
+
 
     private fun isValidateInput(): Boolean {
         if (binding.userName.text.toString().isBlank()) {
@@ -121,7 +81,7 @@ class UserSignupActivity : BaseActivity() {
             MyApp.popErrorMsg("", "Please enter mobile number", THIS!!)
             return false
 
-        } else if (binding.userPhno.text.toString().length < 9) {
+        } else if (binding.userPhno.text.toString().length < 6) {
             MyApp.popErrorMsg("", "Please enter correct phone number", THIS!!)
             return false
 
