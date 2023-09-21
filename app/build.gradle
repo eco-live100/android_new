@@ -132,4 +132,6 @@ configurations.all {
      implementation 'com.adevinta.android:leku:10.1.0'
 
      implementation 'com.hbb20:ccp:2.7.0'
+
+     implementation 'com.google.zxing:core:3.4.0'
  }

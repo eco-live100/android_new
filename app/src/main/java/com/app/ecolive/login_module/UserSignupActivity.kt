@@ -138,7 +138,7 @@ class UserSignupActivity : BaseActivity() {
                                     binding.userPhno.text.toString()
                                 ).putExtra(
                                     AppConstant.COUNTRY_CODE,
-                                    binding.forgotContryPicker.selectedCountryCode.toString()
+                                    binding.forgotContryPicker.selectedCountryCodeWithPlus.toString()
                                 ).putExtra("FROM","normal")
                         )
                         finish()

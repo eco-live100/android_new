@@ -1,6 +1,7 @@
 package com.app.ecolive.msg_module
 
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,9 +9,11 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +29,10 @@ import com.app.ecolive.utils.PopUpVehicleChoose
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 import com.bumptech.glide.Glide
+import com.cometchat.pro.core.Call
+import com.cometchat.pro.core.CallSettings
 import com.cometchat.pro.core.CometChat
+import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.*
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
@@ -34,7 +40,7 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity() ,CometChatInterface{
     lateinit var binding: ChatActivityBinding
     var id: String = ""
     lateinit var chatAdapter: ChatAdapter
@@ -282,5 +288,63 @@ class ChatActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         cometchat.onMessageReciverStop()
+    }
+
+    fun startCall(sessionId: String) {
+        val sessionID = sessionId
+        var callView: RelativeLayout =binding.conslayout
+        var activity: Activity
+
+        val callSettings = CallSettings.CallSettingsBuilder(this, callView)
+            .setSessionId(sessionID)
+            .build()
+
+        CometChat.startCall(callSettings, object : CometChat.OngoingCallListener {
+            override fun onUserJoined(user: User) {
+                Log.d("TAG", "onUserJoined: Name " + user.name)
+            }
+
+            override fun onUserLeft(user: User) {
+                Log.d("TAG", "onUserLeft: " + user.name)
+            }
+
+            override fun onError(e: CometChatException) {
+                Log.d("TAG", "onError: " + e.message)
+            }
+
+            override fun onCallEnded(call: Call) {
+                Log.d("TAG", "onCallEnded: " + call.toString())
+            }
+
+            override fun onUserListUpdated(list: List<User>) {
+                Log.d("TAG", "onUserListUpdated: $list")
+            }
+
+            override fun onAudioModesUpdated(list: List<AudioMode?>) {
+                Log.d("TAG", "onAudioModesUpdated: $list")
+            }
+
+            override fun onRecordingStarted(p0: User?) {
+
+            }
+
+            override fun onRecordingStopped(p0: User?) {
+
+            }
+
+            override fun onUserMuted(p0: User?, p1: User?) {
+
+            }
+
+            override fun onCallSwitchedToVideo(p0: String?, p1: User?, p2: User?) {
+
+            }
+        })
+    }
+
+    override fun onStartCall(sessionId: String?) {
+        if (sessionId != null) {
+            startCall(sessionId)
+        }
     }
 }

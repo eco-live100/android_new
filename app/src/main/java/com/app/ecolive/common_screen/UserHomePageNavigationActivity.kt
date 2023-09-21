@@ -331,7 +331,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
-        binding.include.constraintSendMoney.setOnClickListener {
+      /*  binding.include.constraintSendMoney.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
             } else {
@@ -342,7 +342,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                     )
                 )
             }
-        }
+        }*/
 
         binding.include.constraintTaxi.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
@@ -367,8 +367,10 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                         .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
                 )*/
                 startActivity(
-                    Intent(this@UserHomePageNavigationActivity, SelectPaymentAction::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(
+                        this@UserHomePageNavigationActivity,
+                        SendMoneyHomePageActivity::class.java
+                    )
                 )
             }
 

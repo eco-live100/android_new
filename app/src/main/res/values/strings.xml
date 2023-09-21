@@ -37,6 +37,7 @@
     <string name="Something_went_wrong">Something went wrong. Please contact with admin.</string>
     <string name="Network_Failure">Network Failure,Please try again.</string>
     <string name="Internal_server_error">Internal server error.</string>
+    <string name="technical_issue">Some technical issue please try again</string>
     <string name="Parsing_Problem">Parsing Error.</string>
     <string name="No_data_found">No Data Found</string>
     <string name="Send_Again"><u>Send Again</u></string>
@@ -108,7 +109,8 @@
         <item>Currency</item>
         <item>INR</item>
         <item>USD</item>
-
+        <item >YEN</item>
+        <item >ETB </item>
     </string-array>
 
 
@@ -143,6 +145,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="forgot_password">Forgot password?</string>
+
+
 
 
 </resources>

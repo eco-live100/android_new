@@ -48,7 +48,7 @@ class SendMoneyHomePageActivity : AppCompatActivity(), View.OnClickListener {
              }
 
              binding.sendMoneyBnkTrans->{
-                 startActivity(Intent(this@SendMoneyHomePageActivity,SendMoneyInternationLocl::class.java))
+                // startActivity(Intent(this@SendMoneyHomePageActivity,SendMoneyInternationLocl::class.java))
              }
              binding.tvBalanceHistory->{
                  startActivity(Intent(this@SendMoneyHomePageActivity,TransactionHistoryActivity::class.java))

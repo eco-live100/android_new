@@ -449,6 +449,12 @@ class WebServiceRepository(application: Activity) {
                                 null))
 
                         }
+                        else->{
+                        venueListResponseModel.postValue( ApiSampleResource.error(
+                            response.code(),
+                            application.resources.getString(R.string.technical_issue),
+                            null))
+                        }
                     }
                 }
 

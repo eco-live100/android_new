@@ -46,7 +46,7 @@ class ForgotPwdActivity : BaseActivity() {
         val otpViewModel = CommonViewModel(THIS!!)
         val json = JSONObject()
         json.put("sendOtpType", "forgetpassword")//forgetpassword
-        json.put("countryCode", binding.forgotContryPicker.selectedCountryCode.toString())
+        json.put("countryCode", binding.forgotContryPicker.selectedCountryCodeWithPlus.toString())
 //        json.put("countryCode", "91")
         json.put("mobileNumber", binding.forgotPhoneNumber.text.toString())
 
@@ -63,7 +63,7 @@ class ForgotPwdActivity : BaseActivity() {
                             binding.forgotPhoneNumber.text.toString()
                         ).putExtra(
                             AppConstant.COUNTRY_CODE,
-                            binding.forgotContryPicker.selectedCountryCode.toString()
+                            binding.forgotContryPicker.selectedCountryCodeWithPlus.toString()
                         ).putExtra("FROM","forgetpassword")
                     )
                 }

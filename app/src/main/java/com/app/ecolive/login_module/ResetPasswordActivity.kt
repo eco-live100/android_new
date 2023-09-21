@@ -100,8 +100,6 @@ class ResetPasswordActivity : BaseActivity() {
                         finish()
 
 
-
-
                     }
 
                 }
