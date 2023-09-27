@@ -10,6 +10,7 @@ import com.app.ecolive.rider_module.model.VehicalCatgryListModel
 import com.app.ecolive.service.ApiSampleResource
 import com.app.ecolive.service.WebServiceRepository
 import com.app.ecolive.shop_owner.model.*
+import com.app.ecolive.taximodule.model.ConfirmTaxiModel
 import com.app.ecolive.user_module.model.AddressModel
 import okhttp3.MultipartBody
 
@@ -31,6 +32,7 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
     private lateinit var getProductModelViewModel: LiveData<ApiSampleResource<ProductModel>>
     private lateinit var addtoCartViewModel: LiveData<ApiSampleResource<ProductModel>>
     private lateinit var getCartViewModel: LiveData<ApiSampleResource<GetCartModel>>
+    private lateinit var confirmViewModel: LiveData<ApiSampleResource<ConfirmTaxiModel>>
 
 
     fun userSignUp(map: JSONObject): LiveData<ApiSampleResource<LoginModel>> {
@@ -123,5 +125,11 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
         getCartViewModel = webServiceRepository.getCart(json)
         return getCartViewModel
     }
+
+    fun confirmTaxi(json: JSONObject): LiveData<ApiSampleResource<ConfirmTaxiModel>> {
+        confirmViewModel = webServiceRepository.confirmTaxiApi(json)
+        return confirmViewModel
+    }
+
 
 }

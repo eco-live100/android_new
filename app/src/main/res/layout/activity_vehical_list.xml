@@ -357,6 +357,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/taxiConfirmButton"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
