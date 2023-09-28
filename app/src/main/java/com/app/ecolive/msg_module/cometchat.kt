@@ -24,6 +24,7 @@ object cometchat {
        CometChat.createUser(user, authKey, object : CometChat.CallbackListener<User>() {
            override fun onSuccess(user: User) {
                Log.d("createUser", user.toString())
+
            }
 
            override fun onError(e: CometChatException) {
@@ -211,7 +212,7 @@ object cometchat {
     fun initCall(uid: String){
         val receiverID = uid
         val receiverType = CometChatConstants.RECEIVER_TYPE_USER
-        val callType = CometChatConstants.CALL_TYPE_VIDEO
+        val callType = CometChatConstants.CALL_TYPE_AUDIO
 
         val call = Call(receiverID, receiverType, callType)
 

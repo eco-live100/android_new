@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="isShimmerShow"
+            type="Boolean" />
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -122,305 +127,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sendMoneyLinearBank" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contactListRecycle"
+            android:visibility="@{isShimmerShow? View.GONE:View.VISIBLE,default=gone }"
+            android:layout_margin="@dimen/_5sdp"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/leftCircleTextView"
-                android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/circle_blue120"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="GA"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/topTextTitle"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-
-                android:text="Gerry Atric"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_16"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView"
-                app:layout_constraintTop_toTopOf="@+id/leftCircleTextView" />
-
-            <TextView
-                android:id="@+id/topTextSubTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="01234 56789"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_9F9F9F"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/topTextTitle" />
-            
-            <View
-                app:layout_constraintTop_toBottomOf="@+id/leftCircleTextView"
-                android:layout_width="match_parent"
-
-
-                android:layout_marginTop="@dimen/_7sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@color/color_D4D4D4"
-                android:layout_height="1dp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/row_user_list"
+            tools:itemCount="5"/>
+        <include
+            android:id="@+id/layoutShimmer"
+            android:layout_margin="@dimen/_5sdp"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/leftCircleTextView2"
-                  android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/circle_blue120"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="GA"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/topTextTitle2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Gerry Atric"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_16"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView2"
-                app:layout_constraintTop_toTopOf="@+id/leftCircleTextView2" />
-
-            <TextView
-                android:id="@+id/topTextSubTitle2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="01234 56789"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_9F9F9F"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView2"
-                app:layout_constraintTop_toBottomOf="@+id/topTextTitle2" />
-
-            <View
-                app:layout_constraintTop_toBottomOf="@+id/leftCircleTextView2"
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{isShimmerShow? View.VISIBLE:View.GONE,default=visible }"
+            layout="@layout/row_uset_list_shimmer"/>
 
 
-                android:layout_marginTop="@dimen/_7sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@color/color_D4D4D4"
-                android:layout_height="1dp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/leftCircleTextView3"
-                  android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/circle_blue120"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="GA"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/topTextTitle3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Gerry Atric"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_333333"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textSize="@dimen/sp_16"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView3"
-                app:layout_constraintTop_toTopOf="@+id/leftCircleTextView3" />
-
-            <TextView
-                android:id="@+id/topTextSubTitle3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="01234 56789"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_9F9F9F"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView3"
-                app:layout_constraintTop_toBottomOf="@+id/topTextTitle3" />
-
-            <View
-                app:layout_constraintTop_toBottomOf="@+id/leftCircleTextView3"
-                android:layout_width="match_parent"
-
-
-                android:layout_marginTop="@dimen/_7sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@color/color_D4D4D4"
-                android:layout_height="1dp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/leftCircleTextView4"
-                  android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/circle_blue120"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="GA"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/topTextTitle4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Gerry Atric"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_333333"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textSize="@dimen/sp_16"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView4"
-                app:layout_constraintTop_toTopOf="@+id/leftCircleTextView4" />
-
-            <TextView
-                android:id="@+id/topTextSubTitle4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="01234 56789"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_9F9F9F"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView4"
-                app:layout_constraintTop_toBottomOf="@+id/topTextTitle4" />
-
-            <View
-                app:layout_constraintTop_toBottomOf="@+id/leftCircleTextView4"
-                android:layout_width="match_parent"
-
-
-                android:layout_marginTop="@dimen/_7sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@color/color_D4D4D4"
-                android:layout_height="1dp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/leftCircleTextView5"
-                  android:layout_width="@dimen/_38sdp"
-                android:layout_height="@dimen/_38sdp"
-                android:background="@drawable/circle_blue120"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:text="GA"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/topTextTitle5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Gerry Atric"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_333333"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:textSize="@dimen/sp_16"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView5"
-                app:layout_constraintTop_toTopOf="@+id/leftCircleTextView5" />
-
-            <TextView
-                android:id="@+id/topTextSubTitle5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="01234 56789"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:textColor="@color/color_9F9F9F"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leftCircleTextView5"
-                app:layout_constraintTop_toBottomOf="@+id/topTextTitle5" />
-
-            <View
-                app:layout_constraintTop_toBottomOf="@+id/leftCircleTextView5"
-                android:layout_width="match_parent"
-
-
-                android:layout_marginTop="@dimen/_7sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@color/color_D4D4D4"
-                android:layout_height="1dp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

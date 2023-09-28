@@ -91,6 +91,10 @@ interface APIInterface {
     @GET("taxi-category-list")
     fun getVehicalApi( ): Call<ResponseBody>
 
+    //Payment
+    @GET("user-list")
+    fun getUserList( ): Call<ResponseBody>
+
 //    @GET("city-list")
 //    fun getCityListAPI(): Call<ResponseBody>
 

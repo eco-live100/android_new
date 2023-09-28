@@ -57,13 +57,13 @@ class ChatAdapter(var context: Context, var dataList: List<BaseMessage?>) :
 
         when (holder) {
             is ViewHolder -> {
-                if(!dataList[position]?.type.equals("video")){
+                if(!(dataList[position]?.type.equals("video")||dataList[position]?.type.equals("audio"))){
                     holder.binding.message.text =dataList[position]!!.rawMessage.getJSONObject("data").getString("text")
 
                 }
             }
             is ViewHolder2 ->{
-                if(!dataList[position]?.type.equals("video")) {
+                if(!(dataList[position]?.type.equals("video")||dataList[position]?.type.equals("audio"))) {
                     holder.binding.message.text =
                         dataList[position]!!.rawMessage.getJSONObject("data").getString("text")
 

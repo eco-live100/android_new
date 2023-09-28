@@ -480,9 +480,11 @@
                         android:fontFamily="@font/roboto_medium"
                         android:hint="Enter the amount"
                         android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:background="@color/transparent"
                         android:padding="@dimen/_10sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_10ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                     <View
                         android:layout_width="match_parent"

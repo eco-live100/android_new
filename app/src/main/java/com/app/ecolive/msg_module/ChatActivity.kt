@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -290,61 +291,5 @@ class ChatActivity : AppCompatActivity() ,CometChatInterface{
         cometchat.onMessageReciverStop()
     }
 
-    fun startCall(sessionId: String) {
-        val sessionID = sessionId
-        var callView: RelativeLayout =binding.conslayout
-        var activity: Activity
 
-        val callSettings = CallSettings.CallSettingsBuilder(this, callView)
-            .setSessionId(sessionID)
-            .build()
-
-        CometChat.startCall(callSettings, object : CometChat.OngoingCallListener {
-            override fun onUserJoined(user: User) {
-                Log.d("TAG", "onUserJoined: Name " + user.name)
-            }
-
-            override fun onUserLeft(user: User) {
-                Log.d("TAG", "onUserLeft: " + user.name)
-            }
-
-            override fun onError(e: CometChatException) {
-                Log.d("TAG", "onError: " + e.message)
-            }
-
-            override fun onCallEnded(call: Call) {
-                Log.d("TAG", "onCallEnded: " + call.toString())
-            }
-
-            override fun onUserListUpdated(list: List<User>) {
-                Log.d("TAG", "onUserListUpdated: $list")
-            }
-
-            override fun onAudioModesUpdated(list: List<AudioMode?>) {
-                Log.d("TAG", "onAudioModesUpdated: $list")
-            }
-
-            override fun onRecordingStarted(p0: User?) {
-
-            }
-
-            override fun onRecordingStopped(p0: User?) {
-
-            }
-
-            override fun onUserMuted(p0: User?, p1: User?) {
-
-            }
-
-            override fun onCallSwitchedToVideo(p0: String?, p1: User?, p2: User?) {
-
-            }
-        })
-    }
-
-    override fun onStartCall(sessionId: String?) {
-        if (sessionId != null) {
-            startCall(sessionId)
-        }
-    }
 }

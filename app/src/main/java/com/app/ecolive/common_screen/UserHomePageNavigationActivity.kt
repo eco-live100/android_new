@@ -137,7 +137,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
     }
 
     override fun onGotoCall() {
-        startActivity(Intent(this, CallActivity::class.java) )
+        //startActivity(Intent(this, CallActivity::class.java) )
     }
 
     override fun onClick(v: View?) {

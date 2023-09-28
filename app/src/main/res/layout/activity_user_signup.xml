@@ -320,7 +320,7 @@
                         android:layout_width="@dimen/_29sdp"
                         android:layout_height="@dimen/_29sdp"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:src="@drawable/ic_twitter"
+
                         app:layout_constraintStart_toEndOf="@+id/signupGoogleBtn"
                         app:layout_constraintTop_toTopOf="parent" />
 
