@@ -26,7 +26,7 @@ data class ApiSampleResource<out T>(val status: Status, val data: T?, val messag
         fun <T> error(httpCode: Int, msg: String, data: T?): ApiSampleResource<T> {
             var message = ""
             when (httpCode) {
-               // 201->message = "The request has been fulfilled and has resulted in one or more new resources being created"
+                // 201->message = "The request has been fulfilled and has resulted in one or more new resources being created"
 
 //                502 -> message = "No Internet connection,Please check Internet connection."
 //                500 -> message = "Server seems busy.Please try after sometime."
@@ -43,7 +43,7 @@ data class ApiSampleResource<out T>(val status: Status, val data: T?, val messag
                 408 -> message = msg
                 409 -> message = msg
                 504 -> message = "Data Parsing Error"
-                else ->{
+                else -> {
                     message = "ApiSampleResource Status code not found"
                 }
 
@@ -57,7 +57,6 @@ data class ApiSampleResource<out T>(val status: Status, val data: T?, val messag
             }
 
         }
-
 
 
     }

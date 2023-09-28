@@ -36,6 +36,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -77,6 +78,7 @@ class Utils {
             }
 
         }
+
         fun isValidPassword(password: String?): Boolean {
             val pattern: Pattern
             val matcher: Matcher
@@ -89,7 +91,8 @@ class Utils {
 
         fun hideSoftKeyBoard(context: Context, view: View) {
             try {
-                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             } catch (e: Exception) {
                 // TODO: handle exception
@@ -97,6 +100,7 @@ class Utils {
             }
 
         }
+
         fun getDrawableByName(context: Context, resourceName: String?): Drawable {
             val resources: Resources = context.resources
             val resourceId: Int = resources.getIdentifier(
@@ -105,6 +109,7 @@ class Utils {
             )
             return resources.getDrawable(resourceId)
         }
+
         fun getDate(date: String): String {
             var str: String = ""
             try {
@@ -129,19 +134,19 @@ class Utils {
             return str
         }
 
-/*
-        fun showSnackBarFromTop(view: View, message: String, context: Context) {
-            val snackBarView = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-          //  snackBarView.changeFont()
-            val snackView = snackBarView.view
-            val params = snackView.layoutParams as FrameLayout.LayoutParams
-            params.gravity = Gravity.TOP
-            snackView.layoutParams = params
-            snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.color_20213A))
-            snackBarView.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-            snackBarView.show()
-        }
-*/
+        /*
+                fun showSnackBarFromTop(view: View, message: String, context: Context) {
+                    val snackBarView = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                  //  snackBarView.changeFont()
+                    val snackView = snackBarView.view
+                    val params = snackView.layoutParams as FrameLayout.LayoutParams
+                    params.gravity = Gravity.TOP
+                    snackView.layoutParams = params
+                    snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.color_20213A))
+                    snackBarView.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    snackBarView.show()
+                }
+        */
 
         fun Int.dpToPx(context: Context): Int {
             return TypedValue.applyDimension(
@@ -170,15 +175,22 @@ class Utils {
             }
         }
 
-        fun listIsEmpty(errorIv:ConstraintLayout,scrollViews:View,titleTv:TextView,messageTv:TextView,title: String?,message: String?) {
+        fun listIsEmpty(
+            errorIv: ConstraintLayout,
+            scrollViews: View,
+            titleTv: TextView,
+            messageTv: TextView,
+            title: String?,
+            message: String?
+        ) {
             errorIv.visibility = View.VISIBLE
-           scrollViews.visibility = View.GONE
+            scrollViews.visibility = View.GONE
             titleTv.text = title
             messageTv.text = message
 
         }
 
-        fun listIsNotEmpty(errorIv:ConstraintLayout,scrollViews:View) {
+        fun listIsNotEmpty(errorIv: ConstraintLayout, scrollViews: View) {
             errorIv.visibility = View.GONE
             scrollViews.visibility = View.VISIBLE
         }
@@ -234,26 +246,34 @@ class Utils {
                 spannable.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-            spannable.setSpan(UnderlineSpan(), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(
+                UnderlineSpan(),
+                0,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             Log.d(ContentValues.TAG, spannable.toString())
             return spannable
         }
-        fun getDeviceId(contentResolver:ContentResolver) : String{
+
+        fun getDeviceId(contentResolver: ContentResolver): String {
             return Secure.getString(contentResolver, Secure.ANDROID_ID)
         }
 
 
         fun changeStatusColor(activity: Activity, resourceColor: Int) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                activity.window.statusBarColor = ContextCompat.getColor(activity.applicationContext, resourceColor)
+                activity.window.statusBarColor =
+                    ContextCompat.getColor(activity.applicationContext, resourceColor)
             }
         }
 
         fun changeStatusTextColor(activity: Activity) {
             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
+
         fun changeStatusTextColor2(activity: Activity) {
-            val window: Window =  activity.window
+            val window: Window = activity.window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.setStatusBarColor(activity.getResources().getColor(R.color.white))
@@ -264,7 +284,7 @@ class Utils {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 // finally change the color
-            window.setStatusBarColor(ContextCompat.getColor(activity,R.color.color_050D4C));
+            window.setStatusBarColor(ContextCompat.getColor(activity, R.color.color_050D4C));
         }
 
         fun dpToPx(context: Context, dp: Int): Int {
@@ -284,9 +304,6 @@ class Utils {
             val width = displayMetrics.widthPixels
             return (pxToDp(context, width) * ratio).toInt()
         }
-
-
-
 
 
         fun setWindowFlag(activity: Activity, bits: Int, on: Boolean) {
@@ -485,9 +502,11 @@ class Utils {
         }
 
         fun checkPassword(password: String?): Boolean? {
-            val re = arrayOf("[a-zA-Z]",
+            val re = arrayOf(
+                "[a-zA-Z]",
                 //"[?=.*[@#$%!\\-_?&])(?=\\\\S+$]",
-                "[0-9]")
+                "[0-9]"
+            )
             for (r in re) {
                 if (!Pattern.compile(r).matcher(password!!).find()) return false
             }
@@ -834,31 +853,63 @@ class Utils {
 
         fun priceMultiplyByQty(price: String, qty: String): String {
             var finalAmount = ""
-            val intPrice =price.toInt()
-            val intQty =qty.toInt()
-            val intAmount=intPrice * intQty
-            finalAmount=intAmount.toString()
+            val intPrice = price.toInt()
+            val intQty = qty.toInt()
+            val intAmount = intPrice * intQty
+            finalAmount = intAmount.toString()
             return finalAmount
         }
+
+
         fun checkingPermissionIsEnabledOrNot(mContext: Context): Boolean {
-            val cameraPermission = mContext.packageManager.checkPermission(Manifest.permission.CAMERA,mContext.packageName)
+            val cameraPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                arrayOf(
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_AUDIO,
+                    Manifest.permission.READ_MEDIA_VIDEO)
+            else
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    //   Manifest.permission.ACCESS_FINE_LOCATION
+                )
+
+           // ContextCompat.checkSelfPermission( activity: Activity,cameraPermission) == PackageManager.PERMISSION_GRANTED
             // val locationPermission = mContext.packageManager.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION,mContext.packageName)
             // return cameraPermission == PackageManager.PERMISSION_GRANTED  && locationPermission == PackageManager.PERMISSION_GRANTED
-            return cameraPermission == PackageManager.PERMISSION_GRANTED
+            //return ContextCompat.per( mContext,cameraPermission) == PackageManager.PERMISSION_GRANTED
+
+            var totalCp=0
+            for (cp in cameraPermission){
+                if (ContextCompat.checkSelfPermission( mContext,cp) == PackageManager.PERMISSION_GRANTED){
+                    totalCp++
+                }
+            }
+            if (totalCp>=2){
+                return true
+            }
+            return false
+
         }
 
-        fun requestMultiplePermission(activity: Activity,requestPermissionCode:Int) {
+        fun requestMultiplePermission(activity: Activity, requestPermissionCode: Int) {
             ActivityCompat.requestPermissions(
                 activity,
-                arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    //   Manifest.permission.ACCESS_FINE_LOCATION
-                ),
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    arrayOf(
+                        Manifest.permission.READ_MEDIA_VIDEO,
+                        Manifest.permission.READ_MEDIA_IMAGES,
+                        Manifest.permission.CAMERA)
+                else
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA
+                    ),
                 requestPermissionCode
             )
         }
+
         fun saveImage(mContext: Context, myBitmap: Bitmap): String {
             val bytes = ByteArrayOutputStream()
             myBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes)
@@ -899,13 +950,11 @@ class Utils {
                         .into(it)
                 }
             } catch (e: Exception) {
-                Log.d("Glide", "setImageFullPath: "+e)
+                Log.d("Glide", "setImageFullPath: " + e)
             }
         }
 
     }
-
-
 
 
 }

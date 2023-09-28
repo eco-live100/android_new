@@ -13,6 +13,7 @@ import com.app.ecolive.pharmacy_module.model.CreatHospitalModel
 import com.app.ecolive.pharmacy_module.model.CreateHealthModel
 import com.app.ecolive.rider_module.model.VehicalCatgryListModel
 import com.app.ecolive.shop_owner.model.*
+import com.app.ecolive.taximodule.model.ConfirmTaxiModel
 import com.app.ecolive.taximodule.model.VehicleModel
 import com.app.ecolive.user_module.model.AddressModel
 import com.app.ecolive.utils.AppConstant
@@ -1593,6 +1594,60 @@ class WebServiceRepository(application: Activity) {
         } else responseData.postValue(ApiSampleResource.error(
             AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
         return responseData
+    }
+
+
+    fun confirmTaxiApi(map: JSONObject): LiveData<ApiSampleResource<ConfirmTaxiModel>> {
+        val confirmTaxiResponseModel = MutableLiveData<ApiSampleResource<ConfirmTaxiModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), map.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.confirmTaxiApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        200 ,201-> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<ConfirmTaxiModel>(data)
+                                confirmTaxiResponseModel.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                confirmTaxiResponseModel.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            confirmTaxiResponseModel.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message").getString("msg")
+                            confirmTaxiResponseModel.postValue(ApiSampleResource.error(response.code(),vv, null))
+                        }
+                        500->{
+                            confirmTaxiResponseModel.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        confirmTaxiResponseModel.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        confirmTaxiResponseModel.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else confirmTaxiResponseModel.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return confirmTaxiResponseModel
     }
 }
 

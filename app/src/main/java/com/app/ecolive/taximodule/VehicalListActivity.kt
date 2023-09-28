@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akexorcist.googledirection.DirectionCallback
@@ -14,13 +15,19 @@ import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
 import com.app.ecolive.R
+import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityVehicalListBinding
+import com.app.ecolive.msg_module.cometchat
+import com.app.ecolive.payment_module.SucessActivity
 import com.app.ecolive.service.Status
 import com.app.ecolive.taximodule.adapter.VehicleAdapter
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.PopUpCommonMsg
+import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -42,10 +49,12 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var endLatLng:LatLng
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        Utils.statusBarColor(this)
+        Utils.changeStatusTextColor(this)
+
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vehical_list)
-        Utils.changeStatusColor(this, R.color.black)
-        Utils.changeStatusTextColor(this)
 
         if (intent != null) {
             startLat = intent.getStringExtra("STARTLat")
@@ -61,6 +70,9 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.paymentOption.setOnClickListener {
             startActivity(Intent(this, TaxiPaymentActivity::class.java))
+        }
+        binding.taxiConfirmButton.setOnClickListener {
+            confirmTaxiApiCall()
         }
         getVehicalApi()
     }
@@ -153,6 +165,41 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                     var vv = it.message
                     var msg = JSONObject(it.message)
                     MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
+        }
+    }
+
+    private fun confirmTaxiApiCall() {
+        progressDialog.show(this)
+        val confirmViewModel = CommonViewModel(this)
+        val json = JSONObject()
+        json.put("driverLatitude", "${endLat}")
+        json.put("driverLongitude","${endLang}")
+        json.put("driverAddress", "Pani pech jaipur")
+        json.put("userLatitude", "${startLat}")
+        json.put("userLongitude", "${startLang}")
+        json.put("userAddress", "The Raj Vilas Hotel")
+        json.put("amount", "200")
+        json.put("distanceInKm", "15")
+        confirmViewModel.confirmTaxi(json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        var vv = it.data
+                        Toast.makeText(this, "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
+                            .show()
+                        finish()
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    val msg = it.message?.let { it1 -> JSONObject(it1) }
+                    MyApp.popErrorMsg("", "" + msg?.getString("msg"), this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

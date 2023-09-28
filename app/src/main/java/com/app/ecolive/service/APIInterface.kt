@@ -91,6 +91,9 @@ interface APIInterface {
     @GET("taxi-category-list")
     fun getVehicalApi( ): Call<ResponseBody>
 
+    @POST("request-taxi")
+    fun confirmTaxiApi(@Body params: RequestBody): Call<ResponseBody>
+
     //Payment
     @GET("user-list")
     fun getUserList( ): Call<ResponseBody>
