@@ -19,7 +19,7 @@
     <color name="color_EFEFEF">#EFEFEF</color>
     <color name="color_ACACAC">#ACACAC</color>
     <color name="color_898A8D">#898A8D</color>
-
+    <color name="colorPrimary">#0099ff</color>
     <color name="color_pedestrian">#3663F5</color>
     <color name="color_51E555">#51E555</color>
     <color name="color_ev">#90EE90</color>

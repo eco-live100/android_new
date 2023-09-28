@@ -29,9 +29,18 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
         val sessionID = sessionId
         var callView: RelativeLayout =binding.conslayout
         var activity: Activity
+        val relativeLayout = RelativeLayout(this)
+
+        val relativeParams: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT
+        )
+        relativeLayout.layoutParams =relativeParams
+
 
         val callSettings = CallSettings.CallSettingsBuilder(this, callView)
             .setSessionId(sessionID)
+            .showEndCallButton(true)
+            .showMuteAudioButton(true)
             .build()
 
         CometChat.startCall(callSettings, object : CometChat.OngoingCallListener {
@@ -41,14 +50,17 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
 
             override fun onUserLeft(user: User) {
                 Log.d("TAG", "onUserLeft: " + user.name)
+                finish()
             }
 
             override fun onError(e: CometChatException) {
                 Log.d("TAG", "onError: " + e.message)
+                finish()
             }
 
             override fun onCallEnded(call: Call) {
                 Log.d("TAG", "onCallEnded: " + call.toString())
+                finish()
             }
 
             override fun onUserListUpdated(list: List<User>) {
@@ -74,6 +86,7 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
             override fun onCallSwitchedToVideo(p0: String?, p1: User?, p2: User?) {
 
             }
+
         })
     }
 
@@ -82,4 +95,5 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
             startCall(sessionId)
         }
     }
+
 }

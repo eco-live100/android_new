@@ -21,9 +21,14 @@
 
                 <include
                     android:id="@+id/toolbarAddMoney"
-                    layout="@layout/custom_toolbar" />
+                    layout="@layout/custom_toolbar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.core.widget.NestedScrollView
+
+
+             <!--   <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:fillViewport="true"
@@ -419,10 +424,100 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.core.widget.NestedScrollView>
+                </androidx.core.widget.NestedScrollView>-->
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/linearLayoutCompat14"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toolbarAddMoney"
+                    tools:layout_editor_absoluteX="13dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Eco live add money"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="You can add upto 10000.00"
+                        android:textColor="@color/quantum_grey"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:alpha="0.4"
+                        android:background="@color/grey" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Add money"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/amountEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:backgroundTint="@null"
+                        android:digits="0123456789"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="Enter the amount"
+                        android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:background="@color/transparent"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Maximum limit to add money is 10000.00 per month and \n100000.00 per year."
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonContinue"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_30sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="CONTINUE"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCompat14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

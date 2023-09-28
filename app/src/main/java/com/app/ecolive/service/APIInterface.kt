@@ -12,6 +12,9 @@ interface APIInterface {
     @POST("user-signup")
     fun userSignupAPI(@Body params: RequestBody): Call<ResponseBody>
 
+    @POST("reset-password")
+    fun resetPassword(@Body params: RequestBody): Call<ResponseBody>
+
     @POST("send-mobile-otp")
     fun sendMobileOtpAPI(@Body params: RequestBody): Call<ResponseBody>
 
@@ -90,6 +93,10 @@ interface APIInterface {
 
     @POST("request-taxi")
     fun confirmTaxiApi(@Body params: RequestBody): Call<ResponseBody>
+
+    //Payment
+    @GET("user-list")
+    fun getUserList( ): Call<ResponseBody>
 
 //    @GET("city-list")
 //    fun getCityListAPI(): Call<ResponseBody>

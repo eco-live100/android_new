@@ -11,7 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/img_chat_bg">
-
+        <RelativeLayout
+            android:id="@+id/conslayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <include
             android:id="@+id/toolbarChat"

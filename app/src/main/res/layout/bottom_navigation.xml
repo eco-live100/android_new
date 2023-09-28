@@ -28,38 +28,9 @@
             android:layout_alignParentBottom="true"
             android:elevation="4dp"
             android:orientation="horizontal"
-            android:weightSum="5"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintSendMoney"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingVertical="@dimen/_5sdp">
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/nav_send_money"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:gravity="center"
-                    android:text="Send Money"
-                    android:textColor="@color/color_333333"
-                    android:textSize="@dimen/_9sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintMakePayment"

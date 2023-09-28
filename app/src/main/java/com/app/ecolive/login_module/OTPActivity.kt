@@ -96,7 +96,7 @@ class OTPActivity : BaseActivity() {
         progressDialog.show(THIS!!)
         var otpViewModel = CommonViewModel(THIS!!)
         var json = JSONObject()
-        json.put("sendOtpType", "normal")//forgetpassword
+        json.put("sendOtpType", FROM)//forgetpassword
         json.put("countryCode", "$COUNTRY_CODE")
         json.put("mobileNumber", intent.getStringExtra(AppConstant.MOBILE_NUMBER))
 
@@ -137,8 +137,8 @@ class OTPActivity : BaseActivity() {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
                         if(FROM.equals("forgetpassword")){
-                            startActivity(Intent(THIS, LoginActivity::class.java))
-                            Utils.showMessage(THIS!!, it.message)
+                            startActivity(Intent(THIS, ResetPasswordActivity::class.java).putExtra("userId",it.data.userId))
+
                             finish()
                         }else{
                             var vv = it.data
@@ -150,7 +150,7 @@ class OTPActivity : BaseActivity() {
                             val name = ""+PreferenceKeeper.instance.loginResponse?.firstName+" "+PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
                             cometchat.register(uid,name)
 
-                            startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
+                            startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
                             Utils.showMessage(THIS!!, it.message)
                             finish()
                         }

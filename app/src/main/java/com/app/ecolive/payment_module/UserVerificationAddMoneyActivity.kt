@@ -17,8 +17,8 @@ class UserVerificationAddMoneyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_user_verification_add_money)
         statusBarColor()
-        binding.appCompatContinueButton.setOnClickListener { startActivity(Intent(this@UserVerificationAddMoneyActivity, AddMoneyMainActivity::class.java))
-        }
+       /* binding.appCompatContinueButton.setOnClickListener { startActivity(Intent(this@UserVerificationAddMoneyActivity, AddMoneyMainActivity::class.java))
+        }*/
     }
 
     private fun statusBarColor() {

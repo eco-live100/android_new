@@ -187,16 +187,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-
-
             <ImageView
                 android:id="@+id/loginTwitterBtn"
                 android:layout_width="@dimen/_29sdp"
                 android:layout_height="@dimen/_29sdp"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:src="@drawable/ic_twitter"
                 app:layout_constraintStart_toEndOf="@+id/loginGoogleBtn"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -247,7 +242,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <TextView
             android:id="@+id/loginSkipNow"

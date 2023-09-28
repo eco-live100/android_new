@@ -30,7 +30,7 @@ class ChatListAdapter(var context: Context, var dataList: ArrayList<Conversation
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.chatTitle.text=  (dataList[position].conversationWith as User).name?:""
-        if(dataList[position].lastMessage.type.equals("video")){
+        if(dataList[position].lastMessage.type.equals("video")||dataList[position].lastMessage.type.equals("audio")){
             holder.binding.chatSubTitle.text=""
 
         }else{

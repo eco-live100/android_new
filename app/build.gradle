@@ -43,6 +43,29 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res', 'src\\main\\res\\eco-live\\layout', 'src\\main\\res\\layout\\message', 'src\\main\\res\\eco-live\\message'
+            }
+        }
+    }
+    /*  signingConfigs {
+          debug {
+              storeFile file('keystore/debug.keystore')
+              keyAlias 'androiddebugkey'
+              keyPassword 'android'
+              storePassword 'android'
+          }
+          *//*
+          release {
+              storeFile file('release.keystore')
+              storePassword "mystorepassword"
+              keyAlias "mykeyalias"
+              keyPassword "mykeypassword"
+          }
+          *//*
+      }*/
     namespace 'com.app.ecolive'
     /*  signingConfigs {
           debug {
@@ -114,12 +137,12 @@ configurations.all {
 //    implementation 'com.github.joielechong:countrycodepicker:2.4.1'
 
      //google
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
-     implementation 'com.google.firebase:firebase-core:21.0.0'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+     implementation 'com.google.firebase:firebase-core:21.1.1'
 
     implementation 'com.github.Mindinventory:Lassi:0.2.2'
     implementation 'com.android.support:multidex:2.0.1'
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
    // implementation 'com.github.duanhong169:colorpicker:1.1.6'
     implementation 'com.github.mrudultora:Colorpicker:1.2.0'
     implementation 'io.github.g00fy2.quickie:quickie-bundled:1.5.1'
@@ -134,4 +157,14 @@ configurations.all {
      implementation 'com.adevinta.android:leku:10.1.0'
 
      implementation 'com.hbb20:ccp:2.7.0'
+
+     implementation 'com.google.zxing:core:3.4.0'
+     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+     implementation 'androidx.emoji:emoji:1.1.0-rc01'
+     implementation 'androidx.emoji:emoji-bundled:1.1.0'
+
+     implementation 'androidx.emoji:emoji-appcompat:1.0.0'
+
+
  }
