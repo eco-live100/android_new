@@ -12,6 +12,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -30,6 +31,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.adevinta.leku.getFullAddressString
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.adapters.DrawerCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
@@ -70,6 +72,10 @@ import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -890,14 +896,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
-                        MyApp.locationLast =location
-                        val geocoder = Geocoder(this, Locale.getDefault())
-                        val list: List<Address> =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
-
-                        MyApp.lastLocationAddress=  list[0].getAddressLine(0)
-
-
+                        MyApp.lastLocationAddress= Utils.getAddress(this,location.latitude,location.longitude)
                     }
                 }
             } else {

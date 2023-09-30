@@ -1,49 +1,22 @@
 package com.app.ecolive.login_module
 
 
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.Dialog
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityLoginBinding
 import com.app.ecolive.msg_module.cometchat
 import com.app.ecolive.service.Status
-import com.app.ecolive.shop_owner.ShopOwnerHomePageNavigationActivity
-import com.app.ecolive.utils.*
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.PreferenceKeeper
+import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
-
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener
-import com.google.firebase.auth.TwitterAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.offercity.base.BaseActivity
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 

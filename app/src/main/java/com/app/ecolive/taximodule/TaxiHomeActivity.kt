@@ -2,10 +2,8 @@ package com.app.ecolive.taximodule
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -24,12 +22,9 @@ import com.app.ecolive.databinding.ActivityTaxiHomeBinding
 import com.app.ecolive.taximodule.fragment.ActivityFragment
 import com.app.ecolive.taximodule.fragment.FragmentSchudle
 import com.app.ecolive.taximodule.fragment.HomeFragment
-import com.app.ecolive.utils.CurrentLocation
 import com.app.ecolive.utils.MyApp
-import com.app.ecolive.utils.OnLocationUpdate
 import com.app.ecolive.utils.Utils
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import java.util.*
 
 class TaxiHomeActivity : AppCompatActivity()   {
@@ -53,7 +48,7 @@ class TaxiHomeActivity : AppCompatActivity()   {
 
         binding.activityll.setOnClickListener {
             val newFragment: Fragment = ActivityFragment()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
+            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).addToBackStack(null).commit()
         }
         binding.homell.setOnClickListener {
             val newFragment: Fragment = HomeFragment()
@@ -62,7 +57,7 @@ class TaxiHomeActivity : AppCompatActivity()   {
 
         binding.schudlell.setOnClickListener {
             val newFragment: Fragment = FragmentSchudle()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
+            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).addToBackStack(null).commit()
         }
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -103,12 +98,7 @@ class TaxiHomeActivity : AppCompatActivity()   {
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
-                        val geocoder = Geocoder(this, Locale.getDefault())
-                        val list: List<Address> =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
-
-                                MyApp.lastLocationAddress=  list[0].getAddressLine(0)
-
+                        MyApp.lastLocationAddress = Utils.getAddress(this,location.latitude,location.longitude)
                     }
                 }
             } else {
@@ -123,7 +113,7 @@ class TaxiHomeActivity : AppCompatActivity()   {
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )

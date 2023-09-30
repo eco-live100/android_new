@@ -43,7 +43,7 @@ class LocationSelectActivity : AppCompatActivity() {
         binding.AddStop.setOnClickListener {
             startActivity(Intent(this,AddStopActivity::class.java))
         }
-        binding.startLocation.text =MyApp.lastLocationAddress.toString()
+        binding.startLocation.text = MyApp.lastLocationAddress.toString()
         startLocation =LatLng(MyApp.locationLast!!.latitude,MyApp.locationLast!!.longitude)
         placeApiInit()
 
@@ -73,7 +73,7 @@ class LocationSelectActivity : AppCompatActivity() {
     private fun placeApiInit() {
 
         Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
-        binding.startLocation.setOnClickListener(View.OnClickListener {
+        binding.startLocation.setOnClickListener {
             val fieldList: List<Place.Field> =
                 Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
@@ -83,8 +83,8 @@ class LocationSelectActivity : AppCompatActivity() {
             ).build(this)
 
             startActivityForResult(intent, 111)
-        })
-        binding.DestinationLocation.setOnClickListener(View.OnClickListener {
+        }
+        binding.DestinationLocation.setOnClickListener {
             val fieldList: List<Place.Field> =
                 Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
@@ -94,7 +94,7 @@ class LocationSelectActivity : AppCompatActivity() {
             ).build(this)
 
             startActivityForResult(intent, 222)
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
@@ -107,8 +107,8 @@ class LocationSelectActivity : AppCompatActivity() {
         if (requestCode == 111 && resultCode == RESULT_OK) {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
-            binding.startLocation.setText(place.address)
-            startLocation =place.latLng
+            binding.startLocation.text =  place.address
+            startLocation = place.latLng
             Log.d(
                 "TAG",
                 "onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude)
@@ -116,7 +116,7 @@ class LocationSelectActivity : AppCompatActivity() {
             if(binding.DestinationLocation.text.trim()!=""){
                 startActivity(Intent(this,VehicalListActivity::class.java).
                 putExtra("STARTLat",startLocation!!.latitude.toString())
-                    . putExtra("STARTLang",startLocation!!.longitude.toString())
+                    .putExtra("STARTLang",startLocation!!.longitude.toString())
                     .putExtra("ENDLat",endLocation!!.latitude.toString())
                     .putExtra("ENDLang",endLocation!!.longitude.toString()))
             }
@@ -127,12 +127,12 @@ class LocationSelectActivity : AppCompatActivity() {
         if (requestCode == 222 && resultCode == RESULT_OK) {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
-            endLocation =place.latLng
-            binding.DestinationLocation.setText(place.address)
+            endLocation = place.latLng
+            binding.DestinationLocation.text = place.address
                if(binding.startLocation.text.trim()!=""){
                    startActivity(Intent(this,VehicalListActivity::class.java).
                    putExtra("STARTLat",startLocation!!.latitude.toString())
-                       . putExtra("STARTLang",startLocation!!.longitude.toString())
+                       .putExtra("STARTLang",startLocation!!.longitude.toString())
                        .putExtra("ENDLat",endLocation!!.latitude.toString())
                        .putExtra("ENDLang",endLocation!!.longitude.toString()))
                }

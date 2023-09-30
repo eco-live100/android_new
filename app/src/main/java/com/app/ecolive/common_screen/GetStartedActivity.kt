@@ -32,10 +32,10 @@ class GetStartedActivity : BaseActivity() {
     private var currentIndex: Int = 0
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
+        statusBarColor()
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_get_started)
         initView()
-        statusBarColor()
         utilityAPICAll()
     }
 

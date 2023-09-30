@@ -13,6 +13,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.location.Address
+import android.location.Geocoder
 import android.media.MediaMetadataRetriever
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -44,6 +46,11 @@ import androidx.fragment.app.FragmentManager
 import com.app.ecolive.R
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
+import org.webrtc.ContextUtils.getApplicationContext
 import java.io.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -416,29 +423,50 @@ class Utils {
             return TextUtils.isEmpty(string) || string == "null"
         }
 
-//        fun getAddress(latitude: Double, longitude: Double): String {
-//            try {
-//                val geo = Geocoder(
-//                    getApplicationContext(),
-//                    Locale.getDefault()
-//                )
-//                val addresses: List<Address> = geo.getFromLocation(latitude, longitude, 1)
-//                if (addresses.isEmpty()) {
-//                    Log.d("Waiting for Location", "")
-//                } else {
-//                    if (addresses.isNotEmpty()) {
-//
-//                        return addresses[0].featureName
-//                            .toString() + ", " + addresses[0].locality + ", " + addresses[0].adminArea + ", " + addresses[0].countryName
-//
-//                        //Toast.makeText(getApplicationContext(), "Address:- " + addresses.get(0).getFeatureName() + addresses.get(0).getAdminArea() + addresses.get(0).getLocality(), Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            } catch (e: java.lang.Exception) {
-//                e.printStackTrace() // getFromLocation() may sometimes fail
-//            }
-//            return ""
-//        }
+        fun getAddress(context: Context,latitude: Double, longitude: Double): String {
+            try {
+               /* CoroutineScope(Dispatchers.IO).launch {
+                    val job = withTimeoutOrNull(20000) {*/
+                var address = ""
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        if (Build.VERSION.SDK_INT >= 33) {
+                            // declare here the geocodeListener, as it requires Android API 33
+                            geocoder.getFromLocation(latitude, longitude, 1
+                            ) { addresses ->
+                                run {
+                                    if (addresses.isNotEmpty())
+                                        address = addresses[0].getAddressLine(0).toString()
+                                }
+                            }
+                        } else {
+                            val list: MutableList<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
+                            address= list?.get(0)?.getAddressLine(0).toString()
+                            // For Android SDK < 33, the addresses list will be still obtained from the getFromLocation() method
+                        }
+
+                return address;
+                    /*}
+                    if (job == null) {
+                        println("Request taking longer than expected")
+                    }
+                }*/
+
+             /*   val addresses: List<Address> = geo.getFromLocation(latitude, longitude, 1)
+                if (addresses.isEmpty()) {
+                    Log.d("Waiting for Location", "")
+                } else {
+                    if (addresses.isNotEmpty()) {
+
+                        return addresses[0].featureName
+                            .toString() + ", " + addresses[0].locality + ", " + addresses[0].adminArea + ", " + addresses[0].countryName
+
+                    }
+                }*/
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace() // getFromLocation() may sometimes fail
+            }
+            return ""
+        }
 
         fun currentDate(
             outPutFormat: String?,

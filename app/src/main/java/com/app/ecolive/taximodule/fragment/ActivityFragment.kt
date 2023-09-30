@@ -11,14 +11,20 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.FragmentActivityBinding
 import com.app.ecolive.localmodel.MyOrderListModel
 import com.app.ecolive.rider_module.TrackingWithProgressActivity
+import com.app.ecolive.service.Status
+import com.app.ecolive.taximodule.adapter.TaxiBookingRequestListAdapter
+import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.user_module.user_adapter.UserMyOrderList2Adapter
-import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import org.json.JSONObject
 
 
 class ActivityFragment : Fragment() {
 
         lateinit var binding:FragmentActivityBinding
-    lateinit var adapter: UserMyOrderList2Adapter
+    lateinit var adapter: TaxiBookingRequestListAdapter
+    private val progressDialog = CustomProgressDialog()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,32 +32,50 @@ class ActivityFragment : Fragment() {
         // Inflate the layout for this fragment
         binding =FragmentActivityBinding.inflate(inflater, container, false)
         binding.toolbar.toolbarTitle.text ="User activities"
-        binding.toolbar.ivBack.visibility =View.INVISIBLE
-        productList()
+        binding.toolbar.ivBack.visibility =View.VISIBLE
+
+        binding.toolbar.ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        binding.recyclerviewMyOrder.layoutManager = LinearLayoutManager(requireContext())
+        getTaxiBookingRequestList()
         return binding.root
 
 
     }
-    private fun productList() {
-        val arrayList = ArrayList<MyOrderListModel>()
-        var item = MyOrderListModel("(4.1)","Relish analogue men's watch","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.product_image1))
-        arrayList.add(item)
-        item = MyOrderListModel("(3.8)","The best Beats headphones","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch_white))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Black office chair","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Lunch box","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch_white))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Relish analogue men's watch","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.product_image3))
-        arrayList.add(item)
-        binding.recyclerviewMyOrder.layoutManager = LinearLayoutManager(requireContext())
-        adapter = UserMyOrderList2Adapter(requireContext(), arrayList,object : UserMyOrderList2Adapter.ClickListener{
-            override fun onClick(pos: Int) {
-                startActivity(Intent(requireContext(), TrackingWithProgressActivity::class.java))
-            }
-        })
-        binding.recyclerviewMyOrder.adapter = adapter
 
+    private fun getTaxiBookingRequestList() {
+        progressDialog.show(requireContext())
+        var viewModel = TaxiViewModel(requireActivity())
+        var json = JSONObject()
+
+        viewModel.getTaxiBookingRequestList(json).observe(requireActivity()) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        adapter = TaxiBookingRequestListAdapter(requireContext(), it.data,object : TaxiBookingRequestListAdapter.ClickListener{
+                            override fun onClick(pos: Int) {
+                                startActivity(Intent(requireContext(), TrackingWithProgressActivity::class.java))
+                            }
+                        })
+                        binding.recyclerviewMyOrder.adapter = adapter
+
+
+                    }
+
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + msg.getString("msg"), requireContext())
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
+        }
     }
 
 }

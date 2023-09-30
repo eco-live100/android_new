@@ -91,6 +91,11 @@ interface APIInterface {
     @POST("request-taxi")
     fun confirmTaxiApi(@Body params: RequestBody): Call<ResponseBody>
 
+    @POST("schedule-ride")
+    fun scheduleRideApi(@Body params: RequestBody): Call<ResponseBody>
+
+    @GET("bokings-request")
+    fun getTaxiBookingRequestListApi( ): Call<ResponseBody>
 //    @GET("city-list")
 //    fun getCityListAPI(): Call<ResponseBody>
 

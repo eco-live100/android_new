@@ -1,51 +1,51 @@
 package com.app.ecolive.taximodule.fragment
 
 import android.Manifest
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Address
 import android.os.Bundle
-import android.util.Log
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.adevinta.leku.*
-import com.adevinta.leku.locale.SearchZoneRect
 import com.app.ecolive.R
 import com.app.ecolive.databinding.FragmentHome2Binding
 import com.app.ecolive.taximodule.LocationSelectActivity
 import com.app.ecolive.taximodule.SavePlaceActivity
-import com.app.ecolive.taximodule.SavelocationActivity2
-import com.app.ecolive.taximodule.TaxiHomeActivity
 import com.app.ecolive.utils.MyApp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
     lateinit var binding: FragmentHome2Binding
+    lateinit var date1: TextView
+    lateinit var time: TextView
+    lateinit var setPickUpTimeButton: AppCompatButton
+
     val myCalendar: Calendar = Calendar.getInstance()
     val date =
         DatePickerDialog.OnDateSetListener { view, year, month, day ->
             myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
-
+            val datef = myCalendar.time
+            val formatter = SimpleDateFormat("EE, MMM dd") //or use getDateInstance()
+            val formatedDate = formatter.format(datef)
+            date1.text = formatedDate
         }
 
     val myTimeListener =
@@ -54,16 +54,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 myCalendar.set(Calendar.MINUTE, minute)
             }
+            time.text = DateFormat.format("hh:mm aaa", myCalendar.time).toString()
+
         }
-
-
-
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHome2Binding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         val mapFragment =
@@ -77,18 +76,27 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             startActivity(Intent(requireContext(), SavePlaceActivity::class.java))
         }
 
-         binding.imgArrowDestinatioOnMAp.setOnClickListener {
-          //  startActivity(Intent(requireContext(), SavelocationActivity2::class.java))
+        binding.imgArrowDestinatioOnMAp.setOnClickListener {
+            //  startActivity(Intent(requireContext(), SavelocationActivity2::class.java))
 
         }
 
+
+
         binding.nowImg.setOnClickListener {
-            val bottomSheetDialog =  BottomSheetDialog(requireContext(),R.style.CustomBottomSheetDialogTheme);
-            bottomSheetDialog.setContentView(R.layout.bottom_dialog_schudle);
-          val date1=  bottomSheetDialog.findViewById<TextView>(R.id.datetxt)
-          val time =  bottomSheetDialog.findViewById<TextView>(R.id.timeTxt)
-            bottomSheetDialog.show();
-            date1!!.setOnClickListener {
+
+            val bottomSheetDialog =
+                BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialogTheme)
+            bottomSheetDialog.setContentView(R.layout.bottom_dialog_schudle)
+            date1 = bottomSheetDialog.findViewById(R.id.datetxt)!!
+            time = bottomSheetDialog.findViewById(R.id.timeTxt)!!
+           // setPickUpTimeButton  = bottomSheetDialog.findViewById(R.id.setPickUpTimeButton)!!
+            bottomSheetDialog.show()
+          /*  setPickUpTimeButton.setOnClickListener {
+                startActivity(Intent(requireContext(), LocationSelectActivity::class.java))
+            }
+*/
+            date1.setOnClickListener {
                 var dialog = DatePickerDialog(
                     requireContext(),
                     R.style.my_dialog_theme,
@@ -98,24 +106,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     myCalendar[Calendar.DAY_OF_MONTH]
                 )
                 dialog.show()
-                dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.black))
-                dialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.black))
+                dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                    .setTextColor(resources.getColor(R.color.black))
+                dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                    .setTextColor(resources.getColor(R.color.black))
             }
 
-            time!!.setOnClickListener {
+            time.setOnClickListener {
                 val timePickerDialog = TimePickerDialog(
                     requireContext(),
                     R.style.my_dialog_theme,
                     myTimeListener,
                     myCalendar[Calendar.HOUR],
                     myCalendar[Calendar.MINUTE],
-                    false
+                    true
                 )
 
                 timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.white)
                 timePickerDialog.show()
-                timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.black))
-                timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.black))
+                timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE)
+                    .setTextColor(resources.getColor(R.color.black))
+                timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
+                    .setTextColor(resources.getColor(R.color.black))
             }
         }
 
@@ -135,15 +147,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            mMap.isMyLocationEnabled =true
-            val latLng = LatLng( MyApp.locationLast!!.latitude,  MyApp.locationLast!!.longitude)
+            mMap.isMyLocationEnabled = true
+            val latLng = LatLng(MyApp.locationLast!!.latitude, MyApp.locationLast!!.longitude)
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
 
-        }else{
+        } else {
 
 
         }
-
 
 
     }

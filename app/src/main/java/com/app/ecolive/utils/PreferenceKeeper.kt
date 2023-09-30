@@ -3,13 +3,9 @@ package com.app.ecolive.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.app.ecolive.login_module.LoginModel
+import com.app.ecolive.login_module.model.LoginModel
 
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-
-
-import java.util.HashMap
 
 /**
  * Class is used to save user data in preference.

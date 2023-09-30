@@ -3,7 +3,7 @@ package com.app.ecolive.viewmodel
 import android.app.Activity
 import androidx.databinding.BaseObservable
 import androidx.lifecycle.LiveData
-import com.app.ecolive.login_module.LoginModel
+import com.app.ecolive.login_module.model.LoginModel
 import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
 import com.app.ecolive.rider_module.model.VehicalCatgryListModel
@@ -11,6 +11,8 @@ import com.app.ecolive.service.ApiSampleResource
 import com.app.ecolive.service.WebServiceRepository
 import com.app.ecolive.shop_owner.model.*
 import com.app.ecolive.taximodule.model.ConfirmTaxiModel
+import com.app.ecolive.taximodule.model.ScheduleRideModel
+import com.app.ecolive.taximodule.model.TaxiBookingRequestList
 import com.app.ecolive.user_module.model.AddressModel
 import okhttp3.MultipartBody
 
@@ -32,7 +34,6 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
     private lateinit var getProductModelViewModel: LiveData<ApiSampleResource<ProductModel>>
     private lateinit var addtoCartViewModel: LiveData<ApiSampleResource<ProductModel>>
     private lateinit var getCartViewModel: LiveData<ApiSampleResource<GetCartModel>>
-    private lateinit var confirmViewModel: LiveData<ApiSampleResource<ConfirmTaxiModel>>
 
 
     fun userSignUp(map: JSONObject): LiveData<ApiSampleResource<LoginModel>> {
@@ -126,10 +127,7 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
         return getCartViewModel
     }
 
-    fun confirmTaxi(json: JSONObject): LiveData<ApiSampleResource<ConfirmTaxiModel>> {
-        confirmViewModel = webServiceRepository.confirmTaxiApi(json)
-        return confirmViewModel
-    }
+
 
 
 }

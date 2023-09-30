@@ -14,21 +14,9 @@
         tools:context=".user_module.MyOrderActivity">
         <include
             android:id="@+id/toolbar"
+
+
             layout="@layout/custom_toolbar_black"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -36,9 +24,11 @@
             android:layout_height="0dp"
             android:id="@+id/recyclerviewMyOrder"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/row_my_order_list"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            tools:itemCount="10"
+            android:layout_margin="@dimen/dimen_5dp"
+            tools:listitem="@layout/taxi_booking_requesti_list_item"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

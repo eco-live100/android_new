@@ -21,10 +21,10 @@ import java.security.NoSuchAlgorithmException
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        statusBarColor()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        statusBarColor()
-       startSplash()
+        startSplash()
       // startActivity(Intent(this@SplashActivity, GetStartedActivity::class.java))
       //  printHashKey(this@SplashActivity)
     }

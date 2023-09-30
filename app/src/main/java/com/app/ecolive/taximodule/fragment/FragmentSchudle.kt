@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -17,13 +18,19 @@ import com.adevinta.leku.*
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityNotifactionBinding
 import com.app.ecolive.databinding.FragmentSchudleBinding
+import com.app.ecolive.service.Status
+import com.app.ecolive.taximodule.TaxiHomeActivity
 import com.app.ecolive.taximodule.VehicalListActivity
+import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
+import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
+import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,6 +42,7 @@ class FragmentSchudle : Fragment() {
     var endLocation:LatLng? =null
     var SelectedDate =1
     var SelectedTime =1
+    private val progressDialog = CustomProgressDialog()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +50,7 @@ class FragmentSchudle : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentSchudleBinding.inflate(inflater, container, false)
         binding.toolbar.toolbarTitle.text = "Schedule rides for a\nweek/month"
-        binding.toolbar.ivBack.visibility =View.INVISIBLE
+        binding.toolbar.ivBack.visibility =View.VISIBLE
         val sdf = SimpleDateFormat("dd-MM-yyyy")
         val currentDate = sdf.format(Date())
         System.out.println(" C DATE is  "+currentDate)
@@ -176,13 +184,24 @@ class FragmentSchudle : Fragment() {
         binding.startLocation.setText(MyApp.lastLocationAddress.toString())
         startLocation = LatLng(MyApp.locationLast!!.latitude,MyApp.locationLast!!.longitude)
         placeApiInit()
+        binding.confirmButton.setOnClickListener {
+            scheduleRideApiCall()
+        }
+        binding.cancelButton.setOnClickListener {
+            parentFragmentManager.popBackStack();
+        }
+        binding.toolbar.ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+
         return binding.root
 
     }
     private fun placeApiInit() {
 
         Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
-        binding.startLocation.setOnClickListener(View.OnClickListener {
+        binding.startLocation.setOnClickListener{
             val fieldList: List<Place.Field> =
                 Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
@@ -192,8 +211,8 @@ class FragmentSchudle : Fragment() {
             ).build(requireContext())
 
             startActivityForResult(intent, 111)
-        })
-        binding.DestinationLocation.setOnClickListener(View.OnClickListener {
+        }
+        binding.DestinationLocation.setOnClickListener{
             val fieldList: List<Place.Field> =
                 Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
@@ -203,7 +222,7 @@ class FragmentSchudle : Fragment() {
             ).build(requireContext())
 
             startActivityForResult(intent, 222)
-        })
+        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -250,5 +269,40 @@ class FragmentSchudle : Fragment() {
 
         }
 
+    }
+
+    private fun scheduleRideApiCall() {
+        progressDialog.show(requireContext())
+        val scheduleRideViewModel = TaxiViewModel(requireActivity())
+        val json = JSONObject()
+        json.put("fromLatitude", "${startLocation?.latitude}")
+        json.put("fromLongitude","${startLocation?.longitude}")
+        //json.put("toLatitude", "Pani pech jaipur")
+        json.put("toLatitude", "${endLocation?.latitude}")
+        json.put("toLongitude", "${endLocation?.longitude}")
+        //json.put("userAddress", "The Raj Vilas Hotel")
+        json.put("fromDate", "${binding.fromDate.text.toString()}")
+        json.put("toDate", "${binding.fromDate.text.toString()}")
+        json.put("pickUpTime", "${binding.toDestinationTime.text.toString()}")
+        scheduleRideViewModel.scheduleRideTaxi(json).observe(requireActivity()) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        var vv = it.data
+                        Toast.makeText(requireContext(), "Request Send SuccessFully for schedule weekly/monthly ride.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    val msg = it.message?.let { it1 -> JSONObject(it1) }
+                    MyApp.popErrorMsg("", "" + msg?.getString("msg"), requireContext())
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
+        }
     }
 }

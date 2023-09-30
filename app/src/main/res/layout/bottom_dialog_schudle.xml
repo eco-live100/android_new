@@ -56,13 +56,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp"
-                android:text="10:25 PM - 10:35 PM"
+                android:text="10:25 PM"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
                 android:gravity="center_horizontal"
                 android:fontFamily="@font/roboto_medium"/>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/setPickUpTimeButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_15sdp"

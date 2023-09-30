@@ -50,7 +50,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        Utils.statusBarColor(this)
+        Utils.changeStatusColor(this, R.color.black)
         Utils.changeStatusTextColor(this)
 
         super.onCreate(savedInstanceState)
@@ -173,7 +173,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun confirmTaxiApiCall() {
         progressDialog.show(this)
-        val confirmViewModel = CommonViewModel(this)
+        val confirmViewModel = TaxiViewModel(this)
         val json = JSONObject()
         json.put("driverLatitude", "${endLat}")
         json.put("driverLongitude","${endLang}")
@@ -191,6 +191,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                         var vv = it.data
                         Toast.makeText(this, "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
                             .show()
+                        startActivity(Intent(this, TaxiHomeActivity::class.java))
                         finish()
                     }
                 }
