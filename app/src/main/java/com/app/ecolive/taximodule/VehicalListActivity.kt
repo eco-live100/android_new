@@ -2,10 +2,13 @@ package com.app.ecolive.taximodule
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.akexorcist.googledirection.DirectionCallback
@@ -15,28 +18,23 @@ import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityVehicalListBinding
-import com.app.ecolive.msg_module.cometchat
-import com.app.ecolive.payment_module.SucessActivity
 import com.app.ecolive.service.Status
 import com.app.ecolive.taximodule.adapter.VehicleAdapter
+import com.app.ecolive.taximodule.model.VehicleModel
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
-import com.app.ecolive.utils.PopUpCommonMsg
-import com.app.ecolive.utils.PreferenceKeeper
-import com.app.ecolive.utils.Utils
-import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import org.json.JSONObject
-import java.util.ArrayList
 
 class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var binding: ActivityVehicalListBinding
@@ -44,26 +42,46 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
     var startLang: String? = null
     var endLat: String? = null
     var endLang: String? = null
+    var scheduleRideType: String? = null
+    var rideDate: String? = null
+    var rideTime: String? = null
     var polyline: Polyline? = null
-    lateinit var startLatLng:LatLng
-    lateinit var endLatLng:LatLng
+    lateinit var startLatLng: LatLng
+    lateinit var endLatLng: LatLng
+    var startAddress: String = ""
+    var endAddress: String = ""
+    var startOrEndAddress: Int = 1
+    lateinit var vehicleModelData: VehicleModel.Data
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        Utils.changeStatusColor(this, R.color.black)
-        Utils.changeStatusTextColor(this)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            var flags: Int = window.decorView.systemUiVisibility
+            flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            window.decorView.systemUiVisibility = flags
+        }
 
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vehical_list)
-
+        mInstance = this
+        TaxiPaymentActivity.paymentType = "cash"
         if (intent != null) {
             startLat = intent.getStringExtra("STARTLat")
             startLang = intent.getStringExtra("STARTLang")
             endLat = intent.getStringExtra("ENDLat")
             endLang = intent.getStringExtra("ENDLang")
+            startAddress = intent.getStringExtra("startAddress").toString()
+            endAddress = intent.getStringExtra("endAddress").toString()
+            rideDate = intent.getStringExtra("scheduleRideDate")
+            rideTime = intent.getStringExtra("scheduleRideTime")
+            scheduleRideType = intent.getStringExtra("scheduleRideType")
         }
         startLatLng = LatLng(startLat!!.toDouble(), startLang!!.toDouble())
-          endLatLng = LatLng(endLat!!.toDouble(), endLang!!.toDouble())
+        endLatLng = LatLng(endLat!!.toDouble(), endLang!!.toDouble())
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.taximap2) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
@@ -74,12 +92,12 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.taxiConfirmButton.setOnClickListener {
             confirmTaxiApiCall()
         }
-        getVehicalApi()
+        getVehicleApi()
     }
 
     override fun onMapReady(mMap: GoogleMap) {
-       /* val latLng = LatLng(28.4747789, 77.0419619)
-        ;*/
+        /* val latLng = LatLng(28.4747789, 77.0419619)
+         ;*/
         val builder = LatLngBounds.Builder()
 
         builder.include(startLatLng)
@@ -96,9 +114,19 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
 //                            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, zoomHeight, zoomWidth, zoomPadding));
 
 
-        mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds,   50));
+        mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng, 10F))
         if (mMap != null) {
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(startLatLng) //                .flat(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            )
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(endLatLng) //                .flat(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            )
             GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY")
                 .from(startLatLng)
                 .to(endLatLng)
@@ -140,7 +168,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun getVehicalApi() {
+    private fun getVehicleApi() {
         progressDialog.show(this)
         var viewModel = TaxiViewModel(this)
         var json = JSONObject()
@@ -150,15 +178,13 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                    var adapter =VehicleAdapter(this,it.data)
-                        var layoutManager =LinearLayoutManager(this)
-                        binding.recycleVehicle.layoutManager =layoutManager
-                        binding.recycleVehicle.adapter=adapter
-
-
+                        var adapter = VehicleAdapter(this, it.data)
+                        var layoutManager = LinearLayoutManager(this)
+                        binding.recycleVehicle.layoutManager = layoutManager
+                        binding.recycleVehicle.adapter = adapter
                     }
-
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -175,35 +201,55 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         progressDialog.show(this)
         val confirmViewModel = TaxiViewModel(this)
         val json = JSONObject()
+
+        json.put("taxiId", "${vehicleModelData._id}")
         json.put("driverLatitude", "${endLat}")
-        json.put("driverLongitude","${endLang}")
-        json.put("driverAddress", "Pani pech jaipur")
+        json.put("driverLongitude", "${endLang}")
+        json.put("driverAddress", "$endAddress")
         json.put("userLatitude", "${startLat}")
         json.put("userLongitude", "${startLang}")
-        json.put("userAddress", "The Raj Vilas Hotel")
-        json.put("amount", "200")
+        json.put("userAddress", "$startAddress")
+        json.put("amount", vehicleModelData.amount.toString())
         json.put("distanceInKm", "15")
-        confirmViewModel.confirmTaxi(json).observe(this) { it ->
-            when (it.status) {
-                Status.SUCCESS -> {
-                    progressDialog.dialog.dismiss()
-                    it.data?.let {
-                        var vv = it.data
-                        Toast.makeText(this, "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
-                            .show()
-                        startActivity(Intent(this, TaxiHomeActivity::class.java))
-                        finish()
+        json.put("paymentType", TaxiPaymentActivity.paymentType)
+        json.put("rideDate", rideDate?:"")
+        json.put("rideTime", rideTime?:"")
+        json.put("rideScheduleType", TaxiPaymentActivity.paymentType)
+
+        Log.d("Utils", "startAddress=: $startAddress")
+        Log.d("Utils", "endAddress=: $endAddress")
+            confirmViewModel.confirmTaxi(json).observe(this) { it ->
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        progressDialog.dialog.dismiss()
+                        it.data?.let {
+                            var vv = it.data
+                            Toast.makeText(this, "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
+                                .show()
+                            startActivity(Intent(this, TaxiHomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                            finish()
+                        }
+                    }
+
+                    Status.LOADING -> {}
+                    Status.ERROR -> {
+                        progressDialog.dialog.dismiss()
+                        var vv = it.message
+                        val msg = it.message?.let { it1 -> JSONObject(it1) }
+                        MyApp.popErrorMsg("", "" + msg?.getString("msg"), this)
+                        // MyApp.popErrorMsg("", "" + vv, THIS!!)
                     }
                 }
-                Status.LOADING -> {}
-                Status.ERROR -> {
-                    progressDialog.dialog.dismiss()
-                    var vv = it.message
-                    val msg = it.message?.let { it1 -> JSONObject(it1) }
-                    MyApp.popErrorMsg("", "" + msg?.getString("msg"), this)
-                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
-                }
             }
-        }
+    }
+    companion object {
+        private var mInstance: VehicalListActivity? = null
+    }
+    fun getInstance() : VehicalListActivity? {
+        return mInstance
+    }
+
+    fun selectedVehicleData(vehicleModel: VehicleModel.Data)  {
+        vehicleModelData = vehicleModel
     }
 }

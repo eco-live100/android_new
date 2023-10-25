@@ -20,6 +20,7 @@ import com.app.ecolive.databinding.FragmentHome2Binding
 import com.app.ecolive.taximodule.LocationSelectActivity
 import com.app.ecolive.taximodule.SavePlaceActivity
 import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.Utils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -90,12 +91,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             bottomSheetDialog.setContentView(R.layout.bottom_dialog_schudle)
             date1 = bottomSheetDialog.findViewById(R.id.datetxt)!!
             time = bottomSheetDialog.findViewById(R.id.timeTxt)!!
-           // setPickUpTimeButton  = bottomSheetDialog.findViewById(R.id.setPickUpTimeButton)!!
+            date1.text = Utils.currentDate(outPutFormat = "EE, MMM dd",null,setMin = false,setMax = false)
+            time.text = Utils.currentTime("hh:mm aaa")
+            setPickUpTimeButton  = bottomSheetDialog.findViewById(R.id.setPickUpTimeButton)!!
             bottomSheetDialog.show()
-          /*  setPickUpTimeButton.setOnClickListener {
-                startActivity(Intent(requireContext(), LocationSelectActivity::class.java))
+            setPickUpTimeButton.setOnClickListener {
+                startActivity(Intent(requireContext(), LocationSelectActivity::class.java)
+                    .putExtra("scheduleRideDate",date1.text)
+                    .putExtra("scheduleRideTime",time.text))
             }
-*/
             date1.setOnClickListener {
                 var dialog = DatePickerDialog(
                     requireContext(),

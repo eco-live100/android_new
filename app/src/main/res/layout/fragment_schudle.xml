@@ -228,7 +228,7 @@
                             android:id="@+id/fromDate"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:text="Sun,Oct 30"
+                            android:hint="Sun,Oct 30"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_13sdp"
                             android:fontFamily="@font/roboto_medium"
@@ -263,10 +263,10 @@
                             android:textColor="#9F9F9F"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/ToDate"
+                            android:id="@+id/toDate"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:text="Sun,Oct 30"
+                            android:hint="Sun,Oct 30"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_13sdp"
                             android:fontFamily="@font/roboto_medium"
@@ -330,7 +330,7 @@
                             android:id="@+id/toDestinationTime"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:text="11:00 AM"
+                            android:hint="11:00 AM"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_13sdp"
                             android:fontFamily="@font/roboto_medium"
@@ -365,10 +365,10 @@
                             android:textColor="#9F9F9F"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/FromDestinationTime"
+                            android:id="@+id/fromDestinationTime"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:text="10:30 PM"
+                            android:hint="10:30 PM"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_13sdp"
                             android:fontFamily="@font/roboto_medium"

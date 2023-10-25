@@ -61,6 +61,7 @@
 
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -91,6 +92,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
             
             <androidx.cardview.widget.CardView
+                android:id="@+id/walletCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -152,22 +154,23 @@
                         app:layout_constraintStart_toEndOf="@+id/imageView3"
                         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
 
-                    <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:checked="true"
-                        android:theme="@style/switchtheam"
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/walletCheckBox"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/check_icon"
                         android:layout_marginEnd="@dimen/_15sdp"
-                        app:layout_constraintTop_toTopOf="@+id/appCompatTextView"
-                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+                        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/appCompatTextView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cashCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -219,6 +222,8 @@
 
 
                     <ImageView
+                        android:visibility="visible"
+                        android:id="@+id/cashCheckBox"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/check_icon"
@@ -232,6 +237,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"

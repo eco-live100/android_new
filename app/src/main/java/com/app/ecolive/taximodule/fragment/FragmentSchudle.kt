@@ -6,25 +6,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.adevinta.leku.*
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityNotifactionBinding
 import com.app.ecolive.databinding.FragmentSchudleBinding
 import com.app.ecolive.service.Status
-import com.app.ecolive.taximodule.TaxiHomeActivity
-import com.app.ecolive.taximodule.VehicalListActivity
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
-import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -51,13 +45,13 @@ class FragmentSchudle : Fragment() {
         binding = FragmentSchudleBinding.inflate(inflater, container, false)
         binding.toolbar.toolbarTitle.text = "Schedule rides for a\nweek/month"
         binding.toolbar.ivBack.visibility =View.VISIBLE
-        val sdf = SimpleDateFormat("dd-MM-yyyy")
+        val sdf = SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH)
         val currentDate = sdf.format(Date())
-        System.out.println(" C DATE is  "+currentDate)
+        System.out.println(" C DATE is  $currentDate")
         binding.fromDate.text =currentDate
-        binding.ToDate.text =currentDate
-        binding.FromDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
-        binding.toDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
+        binding.toDate.text =currentDate
+        binding.fromDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.time).toString()
+        binding.toDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.time).toString()
 
         val date =
             DatePickerDialog.OnDateSetListener { view, year, month, day ->
@@ -66,14 +60,14 @@ class FragmentSchudle : Fragment() {
                 myCalendar.set(Calendar.DAY_OF_MONTH, day)
                 if(SelectedDate==1){
                     val date = myCalendar.time
-                    val formatter = SimpleDateFormat("dd-MM-yyyy") //or use getDateInstance()
+                    val formatter = SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH) //or use getDateInstance()
                     val formatedDate = formatter.format(date)
                     binding.fromDate.text =formatedDate
                 }else{
                     val date = myCalendar.time
-                    val formatter = SimpleDateFormat("dd-MM-yyyy") //or use getDateInstance()
+                    val formatter = SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH) //or use getDateInstance()
                     val formatedDate = formatter.format(date)
-                    binding.ToDate.text =formatedDate
+                    binding.toDate.text =formatedDate
                 }
 
             }
@@ -87,7 +81,7 @@ class FragmentSchudle : Fragment() {
                 if(SelectedTime==1){
                     binding.toDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
                 }else{
-                    binding.FromDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
+                    binding.fromDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
                 }
             }
         binding.calender1.setOnClickListener {
@@ -135,9 +129,6 @@ class FragmentSchudle : Fragment() {
             timePickerDialog.show()
             timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.black))
             timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.black))
-
-
-
         }
 
         binding.timePicker2.setOnClickListener {
@@ -181,7 +172,7 @@ class FragmentSchudle : Fragment() {
 
             startActivityForResult(locationPickerIntent,100)
         }
-        binding.startLocation.setText(MyApp.lastLocationAddress.toString())
+        binding.startLocation.text = MyApp.lastLocationAddress.toString()
         startLocation = LatLng(MyApp.locationLast!!.latitude,MyApp.locationLast!!.longitude)
         placeApiInit()
         binding.confirmButton.setOnClickListener {
@@ -203,7 +194,7 @@ class FragmentSchudle : Fragment() {
         Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
         binding.startLocation.setOnClickListener{
             val fieldList: List<Place.Field> =
-                Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+                listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
@@ -214,7 +205,7 @@ class FragmentSchudle : Fragment() {
         }
         binding.DestinationLocation.setOnClickListener{
             val fieldList: List<Place.Field> =
-                Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+                listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
@@ -229,10 +220,7 @@ class FragmentSchudle : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d(
-            "TAG>>>",
-            "onActivityResult: "+requestCode
-        )
+        Log.d("TAG>>>", "onActivityResult: $requestCode")
         if (requestCode == 111 && resultCode == AppCompatActivity.RESULT_OK) {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
@@ -282,8 +270,10 @@ class FragmentSchudle : Fragment() {
         json.put("toLongitude", "${endLocation?.longitude}")
         //json.put("userAddress", "The Raj Vilas Hotel")
         json.put("fromDate", "${binding.fromDate.text.toString()}")
-        json.put("toDate", "${binding.fromDate.text.toString()}")
-        json.put("pickUpTime", "${binding.toDestinationTime.text.toString()}")
+        json.put("toDate", "${binding.toDate.text.toString()}")
+        json.put("pickUpTimeFromDestination", "${binding.fromDestinationTime.text.toString()}")
+        json.put("pickUpTimeToDestination", "${binding.toDestinationTime.text.toString()}")
+        json.put("rideScheduleType", "${binding.toDestinationTime.text.toString()}")
         scheduleRideViewModel.scheduleRideTaxi(json).observe(requireActivity()) { it ->
             when (it.status) {
                 Status.SUCCESS -> {

@@ -43,7 +43,7 @@
                     android:background="@drawable/bg_edittext_blue2"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
-                    android:hint="Hospital name"
+                    android:hint="@string/name"
                     android:paddingStart="@dimen/_10sdp"
                     android:textSize="@dimen/_10sdp" />
 
@@ -56,7 +56,7 @@
                     android:background="@drawable/bg_edittext_blue2"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
-                    android:hint="Mobile number"
+                    android:hint="@string/mobile_number"
                     android:paddingStart="@dimen/_10sdp"
                     android:textSize="@dimen/_10sdp" />
 
@@ -72,9 +72,8 @@
                     android:hint="Services"
                     android:paddingStart="@dimen/_10sdp"
                     android:textSize="@dimen/_10sdp" />
-
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/consultfee"
+                    android:id="@+id/idNumberTv"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
@@ -82,7 +81,78 @@
                     android:background="@drawable/bg_edittext_blue2"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
-                    android:hint="Consult fee"
+                    android:hint="@string/enter_your_id_number"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/profession"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+                <RadioGroup
+                    android:id="@+id/professionRG"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/dimen_10dp">
+
+                    <RadioButton
+                        android:id="@+id/doctorRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I am a Doctor"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/_10sdp"/>
+                    <RadioButton
+                        android:id="@+id/nurseLpnRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I am a Nurse (LPN)"
+                        android:textColor="@color/black"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/nurseNpRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I am a Nurse (NP)"
+                        android:textColor="@color/black"
+                        />
+                    <RadioButton
+                        android:id="@+id/pharmacistRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I am a Pharmacist"
+                        android:textColor="@color/black"
+                        />
+                    <RadioButton
+                        android:id="@+id/dentistRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I am a Dentist"
+                        android:textColor="@color/black"
+                        />
+
+                </RadioGroup>
+
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/consultFee"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+
+                    android:background="@drawable/bg_edittext_blue2"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    android:hint="@string/consult_fee"
                     android:paddingStart="@dimen/_10sdp"
                     android:textSize="@dimen/_10sdp" />
 
@@ -95,9 +165,194 @@
                     android:background="@drawable/bg_edittext_blue2"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_vertical"
-                    android:hint="Hospital location"
+                    android:hint="@string/location"
                     android:paddingStart="@dimen/_10sdp"
                     android:textSize="@dimen/_10sdp" />
+
+                <!--<androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableTint="@color/color_blue"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
+                    android:text="Select your monthly work schedule"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    app:drawableEndCompat="@drawable/calender_icon" />-->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableTint="@color/color_blue"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/select_your_visiting_hour"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:layout_margin="@dimen/_10sdp">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_5sdp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:text="@string/from"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="#9F9F9F"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/fromVisitingTimeTv"
+                            android:layout_width="wrap_content"
+                            android:hint="11:00 AM"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/black"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/fromVisitingTimeIcon"
+                            android:layout_width="wrap_content"
+                            android:padding="2dp"
+                            android:src="@drawable/clock_icon"
+                            android:layout_height="@dimen/_20sdp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end"
+                        android:layout_marginTop="@dimen/_5sdp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:text="@string/to"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="#9F9F9F"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/toVisitingTimeTv"
+                            android:layout_width="wrap_content"
+                            android:hint="10:30 PM"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/black"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/toVisitingTimeIcon"
+                            android:layout_width="wrap_content"
+                            android:padding="2dp"
+                            android:src="@drawable/clock_icon"
+                            android:layout_height="@dimen/_20sdp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableTint="@color/color_blue"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
+                    android:text="@string/add_another_visiting_hour"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:layout_margin="@dimen/_10sdp">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_5sdp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:text="@string/from"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="#9F9F9F"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/fromAnotherVisitingTimeTv"
+                            android:layout_width="wrap_content"
+                            android:hint="11:00 AM"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/black"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/fromAnotherVisitingTimeIcon"
+                            android:layout_width="wrap_content"
+                            android:padding="2dp"
+                            android:src="@drawable/clock_icon"
+                            android:layout_height="@dimen/_20sdp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end"
+                        android:layout_marginTop="@dimen/_5sdp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:text="@string/to"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="#9F9F9F"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/toAnotherVisitingTimeTv"
+                            android:layout_width="wrap_content"
+                            android:hint="10:30 PM"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_13sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/black"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/toAnotherVisitingTimeIcon"
+                            android:layout_width="wrap_content"
+                            android:padding="2dp"
+                            android:src="@drawable/clock_icon"
+                            android:layout_height="@dimen/_20sdp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <CheckBox
+                    android:id="@+id/saveAndRepeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/save_amp_repeat_this_schedule_time_every_month"
+                    android:textColor="@color/black" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/hospitalbackground"

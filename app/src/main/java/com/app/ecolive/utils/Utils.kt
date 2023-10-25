@@ -38,19 +38,16 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.app.ecolive.R
 import com.bumptech.glide.Glide
+import com.google.android.gms.identity.intents.model.UserAddress
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
-import org.webrtc.ContextUtils.getApplicationContext
+import io.github.g00fy2.quickie.content.QRContent.*
 import java.io.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -100,7 +97,7 @@ class Utils {
             try {
                 val imm =
                     context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm?.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                imm.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             } catch (e: Exception) {
                 // TODO: handle exception
                 e.printStackTrace()
@@ -245,7 +242,7 @@ class Utils {
             )
         }
 
-        fun getColoredString(mString: String?, colorId: Int): Spannable? {
+        fun getColoredString(mString: String?, colorId: Int): Spannable {
             val spannable: Spannable = SpannableString(mString)
             spannable.setSpan(
                 ForegroundColorSpan(colorId),
@@ -283,15 +280,15 @@ class Utils {
             val window: Window = activity.window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.setStatusBarColor(activity.getResources().getColor(R.color.white))
+            window.statusBarColor = activity.resources.getColor(R.color.white)
 
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
 // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
 // finally change the color
-            window.setStatusBarColor(ContextCompat.getColor(activity, R.color.color_050D4C));
+            window.statusBarColor = ContextCompat.getColor(activity, R.color.black)
         }
 
         fun dpToPx(context: Context, dp: Int): Int {
@@ -362,7 +359,7 @@ class Utils {
         //
         //        return url;
         //    }
-        fun getCarBitmap(context: Context, car: Int): Bitmap? {
+        fun getCarBitmap(context: Context, car: Int): Bitmap {
             val bitmap = BitmapFactory.decodeResource(context.resources, car)
             return Bitmap.createScaledBitmap(bitmap, 50, 100, false)
         }
@@ -423,51 +420,117 @@ class Utils {
             return TextUtils.isEmpty(string) || string == "null"
         }
 
-        fun getAddress(context: Context,latitude: Double, longitude: Double): String {
-            try {
-               /* CoroutineScope(Dispatchers.IO).launch {
-                    val job = withTimeoutOrNull(20000) {*/
-                var address = ""
-                        val geocoder = Geocoder(context, Locale.getDefault())
-                        if (Build.VERSION.SDK_INT >= 33) {
-                            // declare here the geocodeListener, as it requires Android API 33
-                            geocoder.getFromLocation(latitude, longitude, 1
-                            ) { addresses ->
-                                run {
-                                    if (addresses.isNotEmpty())
-                                        address = addresses[0].getAddressLine(0).toString()
-                                }
-                            }
-                        } else {
-                            val list: MutableList<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
-                            address= list?.get(0)?.getAddressLine(0).toString()
-                            // For Android SDK < 33, the addresses list will be still obtained from the getFromLocation() method
-                        }
+        fun getDirectionsUrl(origin: LatLng, dest: LatLng): String {
 
-                return address;
-                    /*}
-                    if (job == null) {
-                        println("Request taking longer than expected")
-                    }
-                }*/
+            // Origin of route
+            val str_origin = "origin=" + origin.latitude + "," + origin.longitude
 
-             /*   val addresses: List<Address> = geo.getFromLocation(latitude, longitude, 1)
-                if (addresses.isEmpty()) {
-                    Log.d("Waiting for Location", "")
-                } else {
-                    if (addresses.isNotEmpty()) {
+            // Destination of route
+            val str_dest = "destination=" + dest.latitude + "," + dest.longitude
 
-                        return addresses[0].featureName
-                            .toString() + ", " + addresses[0].locality + ", " + addresses[0].adminArea + ", " + addresses[0].countryName
+            // Sensor enabled
+            val sensor = "sensor=false"
+            val mode = "mode=driving"
+            val alternative = "alternatives=true"
+            val key = "key=" + "AIzaSyBZeDsuDfoEz3uk6fALVbRzA94fzAbjiWg"
+            // Building the parameters to the web service
+            val parameters = "$str_origin&$str_dest&$sensor&$mode&$alternative&$key"
 
-                    }
-                }*/
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace() // getFromLocation() may sometimes fail
-            }
-            return ""
+            // Output format
+            val output = "json"
+
+            // Building the url to the web service
+            val url = "https://maps.googleapis.com/maps/api/directions/$output?$parameters"
+            Log.e("url", url)
+            return url
         }
 
+        fun getAddressUrl(origin: LatLng): String {
+
+            // Origin of route
+            val str_origin = "origin=" + origin.latitude + "," + origin.longitude
+
+            // Destination of route
+            //val str_dest = "destination=" + dest.latitude + "," + dest.longitude
+
+            // Sensor enabled
+            val sensor = "sensor=false"
+            val mode = "mode=driving"
+            val alternative = "alternatives=true"
+            val key = "key=" + "AIzaSyBZeDsuDfoEz3uk6fALVbRzA94fzAbjiWg"
+            // Building the parameters to the web service
+            val parameters = "$str_origin&&$sensor&$mode&$alternative&$key"
+
+            // Output format
+            val output = "json"
+
+            // Building the url to the web service
+            val url = "https://maps.googleapis.com/maps/api/geocode/$output?$parameters"
+            Log.e("url", url)
+            return url
+        }
+
+/*        fun getAddressFromCoordinates(geocoder: Geocoder,lat: Double, lng: Double) {
+            try {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    val addressForAPI33AndAbove =
+                        geocoder.getFromLocation(lat, lng, 1,
+                            object : Geocoder.GeocodeListener {
+                                override fun onGeocode(p0: MutableList<Address>) {
+                                    val address = p0[0]
+                                    val userAddress = loadUserAddress(address, lat, lng)
+                                    //use userAddress :)
+                                }
+                            })
+                } else {
+
+                    val address = geocoder.getFromLocation(lat, lng, 1)?.get(0)
+                    if (address != null) {
+                        val userAddress = loadUserAddress(address, lat, lng)
+                        //use userAddress :)
+                    } else {
+                        //todo: Snackbar error msg
+                    }
+                }
+            } catch (e: IOException) {
+                Log.d("TAG", "Check internet: ${e.message}")
+            }
+        }
+
+        fun loadUserAddress(address: Address, lat: Double, lng: Double): UserAddress {
+            return UserAddress(
+                postcode = address.postalCode,
+                fullAddressLine = address.getAddressLine(0),
+                latitude = lat,
+                longitude = lng,
+                adminArea = address.adminArea,
+                subAdminArea = address.subAdminArea,
+                country = address.countryName
+            )
+        }*/
+     /*   fun getLocationFromAddress(strAddress: String?): GeoPoint? {
+            val coder = Geocoder(this)
+            val address: List<Address>?
+            var p1: GeoPoint? = null
+            try {
+                address = coder.getFromLocationName(strAddress!!, 5)
+                if (address == null) {
+                    return null
+                }
+                val location = address[0]
+                location.latitude
+                location.longitude
+                p1 = GeoPoint(
+                    (location.latitude * 1E6),
+                    (location.longitude * 1E6)
+                )
+                return p1
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            return null
+        }*/
         fun currentDate(
             outPutFormat: String?,
             calendarView: CalendarView?,
@@ -529,7 +592,7 @@ class Utils {
             Log.d("sdfasdfasdfas", toString!!)
         }
 
-        fun checkPassword(password: String?): Boolean? {
+        fun checkPassword(password: String?): Boolean {
             val re = arrayOf(
                 "[a-zA-Z]",
                 //"[?=.*[@#$%!\\-_?&])(?=\\\\S+$]",
@@ -779,7 +842,7 @@ class Utils {
         fun addClickablePartTextViewResizable(
             strSpanned: String, tv: TextView, maxLine: Int,
             spanableText: String, viewMore: Boolean
-        ): SpannableStringBuilder? {
+        ): SpannableStringBuilder {
             val ssb = SpannableStringBuilder(strSpanned)
             if (strSpanned.contains(spanableText)) {
                 ssb.setSpan(
@@ -894,7 +957,8 @@ class Utils {
                 arrayOf(
                     Manifest.permission.READ_MEDIA_IMAGES,
                     Manifest.permission.READ_MEDIA_AUDIO,
-                    Manifest.permission.READ_MEDIA_VIDEO)
+                    Manifest.permission.READ_MEDIA_VIDEO
+                )
             else
                 arrayOf(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -902,18 +966,22 @@ class Utils {
                     //   Manifest.permission.ACCESS_FINE_LOCATION
                 )
 
-           // ContextCompat.checkSelfPermission( activity: Activity,cameraPermission) == PackageManager.PERMISSION_GRANTED
+            // ContextCompat.checkSelfPermission( activity: Activity,cameraPermission) == PackageManager.PERMISSION_GRANTED
             // val locationPermission = mContext.packageManager.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION,mContext.packageName)
             // return cameraPermission == PackageManager.PERMISSION_GRANTED  && locationPermission == PackageManager.PERMISSION_GRANTED
             //return ContextCompat.per( mContext,cameraPermission) == PackageManager.PERMISSION_GRANTED
 
-            var totalCp=0
-            for (cp in cameraPermission){
-                if (ContextCompat.checkSelfPermission( mContext,cp) == PackageManager.PERMISSION_GRANTED){
+            var totalCp = 0
+            for (cp in cameraPermission) {
+                if (ContextCompat.checkSelfPermission(
+                        mContext,
+                        cp
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
                     totalCp++
                 }
             }
-            if (totalCp>=2){
+            if (totalCp >= 2) {
                 return true
             }
             return false
@@ -927,7 +995,8 @@ class Utils {
                     arrayOf(
                         Manifest.permission.READ_MEDIA_VIDEO,
                         Manifest.permission.READ_MEDIA_IMAGES,
-                        Manifest.permission.CAMERA)
+                        Manifest.permission.CAMERA
+                    )
                 else
                     arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,

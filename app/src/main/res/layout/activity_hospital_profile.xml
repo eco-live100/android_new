@@ -10,8 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/quantum_grey200"
-           android:paddingBottom="@dimen/_20sdp"
-            tools:context=".shop_owner.RestaurantProfileActivity">
+            android:paddingBottom="@dimen/_20sdp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/appCompatImageView2"
@@ -33,7 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/appCompatTextView3"
+                android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -46,14 +45,14 @@
                 app:layout_constraintTop_toTopOf="@+id/ivBack" />
 
             <ImageView
-                android:id="@+id/edit"
+                android:id="@+id/editProfileIcon"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:src="@drawable/edit_img"
-                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView3"
-                app:layout_constraintStart_toEndOf="@+id/appCompatTextView3"
-                app:layout_constraintTop_toTopOf="@+id/appCompatTextView3" />
+                app:layout_constraintBottom_toBottomOf="@+id/toolbarTitle"
+                app:layout_constraintStart_toEndOf="@+id/toolbarTitle"
+                app:layout_constraintTop_toTopOf="@+id/toolbarTitle" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView8"
@@ -65,7 +64,7 @@
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3">
+                app:layout_constraintTop_toBottomOf="@+id/toolbarTitle">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -133,7 +132,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dimen_5dp"
-                                android:text="Message"
+                                android:text="@string/message"
                                 android:textColor="@color/quantum_grey"
                                 android:textSize="@dimen/_8sdp" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -199,7 +198,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dimen_5dp"
-                                android:text="Share"
+                                android:text="@string/share"
                                 android:textColor="@color/quantum_grey"
                                 android:textSize="@dimen/_8sdp" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -221,7 +220,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dimen_5dp"
-                                android:text="Qr Code"
+                                android:text="@string/qr_code"
                                 android:textColor="@color/quantum_grey"
                                 android:textSize="@dimen/_8sdp" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -328,7 +327,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Specialties &amp; Services"
+                    android:text="@string/specialties_amp_services"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp" />
 
@@ -336,7 +335,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="View all"
+                    android:text="@string/view_all"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_12sdp" />
 
@@ -389,7 +388,7 @@
                     android:text="+ Add"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/white"/>
-                <androidx.appcompat.widget.AppCompatTextView
+     <!--           <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -584,7 +583,7 @@
                         android:textColorHint="@color/black"
                         android:textSize="@dimen/_12ssp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
+-->
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

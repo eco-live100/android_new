@@ -2,6 +2,7 @@ package com.app.ecolive.common_screen
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -30,8 +31,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.adevinta.leku.getFullAddressString
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.adapters.DrawerCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
@@ -73,9 +74,9 @@ import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -130,7 +131,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                     // Update UI with location data
                     // ...
 
-                    MyApp.locationLast =location
+                    MyApp.locationLast = location
                     Log.d(
                         "TAG",
                         "onLocationResult: " + location.latitude + "\n" + location.longitude
@@ -896,7 +897,10 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
-                        MyApp.lastLocationAddress= Utils.getAddress(this,location.latitude,location.longitude)
+                       /* ReverseGeoCoding().constructor(location.latitude,location.longitude)
+                        MyApp.lastLocationAddress = ReverseGeoCoding().getAddress1()*/
+                       /* var geocoder = Geocoder(this, Locale.ENGLISH)
+                        Utils.getAddressFromCoordinates(geocoder,location.latitude,location.longitude)*/
                     }
                 }
             } else {
@@ -908,7 +912,31 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             requestPermissions()
         }
     }
-
+   /* private fun getAddress(latitude: Double, longitude: Double) : String {
+        var address = ""
+        try {
+            var geocoder = Geocoder(this, Locale.ENGLISH)
+            if (Build.VERSION.SDK_INT >= 33) {
+                geocoder.getFromLocation(
+                    latitude, longitude, 1
+                ) { addresses ->
+                    runBlocking {
+                        address = addresses[0].getAddressLine(0).toString()
+                        MyApp.lastLocationAddress = address
+                    }
+                }
+            } else {
+                val list: MutableList<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
+                address = list?.get(0)?.getAddressLine(0).toString()
+                MyApp.lastLocationAddress = address
+            }
+            return address
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return address
+    }
+*/
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             getSystemService(Context.LOCATION_SERVICE) as LocationManager

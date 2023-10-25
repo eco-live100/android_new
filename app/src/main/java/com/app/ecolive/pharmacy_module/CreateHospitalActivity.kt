@@ -1,26 +1,28 @@
 package com.app.ecolive.pharmacy_module
 
 import android.app.Activity
+import android.app.TimePickerDialog
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityCreateHospitalBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.service.Status
-import com.app.ecolive.taximodule.VehicalListActivity
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
-import com.app.ecolive.utils.*
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.Utils
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -33,10 +35,13 @@ import com.lassi.presentation.builder.Lassi
 import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
-import java.util.*
-import kotlin.collections.ArrayList
+import java.text.SimpleDateFormat
+import java.util.Arrays
+import java.util.Calendar
+import java.util.Date
+
 
 class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
     lateinit var binding: ActivityCreateHospitalBinding
@@ -48,37 +53,182 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
     var logoImage = ""
     var multipartBody: ArrayList<MultipartBody.Part?> = ArrayList()
     private val progressDialog = CustomProgressDialog()
-    var latitude ="0"
-    var longitude ="0"
-    var address =""
-
+    var latitude = "0"
+    var longitude = "0"
+    var address = ""
+    var selectedProfession = ""
+    private val myCalendar: Calendar = Calendar.getInstance()
+    private var selectedTime = 1
+    private var primaryVisitingHour = ""
+    private var secondaryVisitingHour = ""
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        Utils.changeStatusColor(this, R.color.darkblue)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_hospital)
-        binding.toolbar.toolbarTitle.text ="Create Hospital"
+        binding.toolbar.toolbarTitle.text = "Create Profile"
         binding.toolbar.ivBack.setOnClickListener { finish() }
-      //  startActivity(Intent(this,HospitalProfile::class.java))
+        //  startActivity(Intent(this,HospitalProfile::class.java))
 
+
+        selectedProfession = ""
+        binding.professionRG.setOnCheckedChangeListener { group, _ ->
+
+            when (group.checkedRadioButtonId) {
+                R.id.doctorRB -> {
+                    selectedProfession = getString(R.string.doctor)
+                }
+
+                R.id.nurseLpnRB -> {
+                    selectedProfession = getString(R.string.nurseLpn)
+                }
+
+                R.id.nurseNpRB -> {
+                    selectedProfession = getString(R.string.nurseNp)
+                }
+
+                R.id.pharmacistRB -> {
+                    selectedProfession = getString(R.string.pharmacist)
+                }
+
+                R.id.dentistRB -> {
+                    selectedProfession = getString(R.string.dentist)
+                }
+            }
+        }
+        val myTimeListener =
+            TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                if (view.isShown) {
+                    myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    myCalendar.set(Calendar.MINUTE, minute)
+                }
+                when (selectedTime) {
+                    1 -> {
+                        binding.fromVisitingTimeTv.text =
+                            DateFormat.format("hh:mm aaa", myCalendar.time).toString()
+                    }
+
+                    2 -> {
+                        binding.toVisitingTimeTv.text =
+                            DateFormat.format("hh:mm aaa", myCalendar.time).toString()
+                    }
+
+                    3 -> {
+                        binding.fromAnotherVisitingTimeTv.text =
+                            DateFormat.format("hh:mm aaa", myCalendar.time).toString()
+                    }
+
+                    else -> {
+                        binding.toAnotherVisitingTimeTv.text =
+                            DateFormat.format("hh:mm aaa", myCalendar.time).toString()
+                    }
+                }
+            }
+        binding.fromVisitingTimeIcon.setOnClickListener {
+            selectedTime = 1
+            val timePickerDialog = TimePickerDialog(
+                this,
+                R.style.my_dialog_theme,
+                myTimeListener,
+                myCalendar[Calendar.HOUR],
+                myCalendar[Calendar.MINUTE],
+                false
+            )
+
+            timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.white)
+            timePickerDialog.show()
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.black))
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(resources.getColor(R.color.black))
+        }
+        binding.toVisitingTimeIcon.setOnClickListener {
+            selectedTime = 2
+            val timePickerDialog = TimePickerDialog(
+                this,
+                R.style.my_dialog_theme,
+                myTimeListener,
+                myCalendar[Calendar.HOUR],
+                myCalendar[Calendar.MINUTE],
+                false
+            )
+
+            timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.white)
+            timePickerDialog.show()
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.black))
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(resources.getColor(R.color.black))
+        }
+        binding.fromAnotherVisitingTimeIcon.setOnClickListener {
+            selectedTime = 3
+            val timePickerDialog = TimePickerDialog(
+                this,
+                R.style.my_dialog_theme,
+                myTimeListener,
+                myCalendar[Calendar.HOUR],
+                myCalendar[Calendar.MINUTE],
+                false
+            )
+
+            timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.white)
+            timePickerDialog.show()
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.black))
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(resources.getColor(R.color.black))
+        }
+        binding.toAnotherVisitingTimeIcon.setOnClickListener {
+            selectedTime = 4
+            val timePickerDialog = TimePickerDialog(
+                this,
+                R.style.my_dialog_theme,
+                myTimeListener,
+                myCalendar[Calendar.HOUR],
+                myCalendar[Calendar.MINUTE],
+                false
+            )
+
+            timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.white)
+            timePickerDialog.show()
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.black))
+            timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(resources.getColor(R.color.black))
+        }
         binding.createBtn.setOnClickListener {
-            startActivity(Intent(this,HospitalProfile::class.java))
-         /*   if (binding.hospitalName.text.toString() == ""){
+            primaryVisitingHour = timeDifference(
+                date1 = binding.fromVisitingTimeTv.text.toString(),
+                date2 = binding.toVisitingTimeTv.text.toString()
+            )
+            secondaryVisitingHour = timeDifference(
+                date1 = binding.fromAnotherVisitingTimeTv.text.toString(),
+                date2 = binding.toAnotherVisitingTimeTv.text.toString()
+            )
+            if (binding.hospitalName.text.toString() == "") {
                 Toast.makeText(this, "Enter hospital name", Toast.LENGTH_SHORT).show()
 
-            }else if (binding.mobileNumber.text.toString() == ""){
+            } else if (binding.mobileNumber.text.toString() == "") {
                 Toast.makeText(this, "Enter mobileNumber", Toast.LENGTH_SHORT).show()
 
-            }else if (binding.services.text.toString() == ""){
+            } else if (binding.services.text.toString() == "") {
                 Toast.makeText(this, "Enter services", Toast.LENGTH_SHORT).show()
 
-            }else if (binding.consultfee.text.toString() == ""){
-                Toast.makeText(this, "Enter consultfee", Toast.LENGTH_SHORT).show()
+            } else if (selectedProfession.isEmpty()) {
+                Toast.makeText(this, "Please select Profession", Toast.LENGTH_SHORT).show()
+            }else if (primaryVisitingHour.isEmpty()) {
+                Toast.makeText(this, "Please select primary hours", Toast.LENGTH_SHORT).show()
+            }else if (secondaryVisitingHour.isEmpty()) {
+                Toast.makeText(this, "Please select secondary hours", Toast.LENGTH_SHORT).show()
+            } else if (binding.consultFee.text.toString() == "") {
+                Toast.makeText(this, "Enter consultFee", Toast.LENGTH_SHORT).show()
 
-            }else if (binding.hospitalLocation.text.toString() == ""){
+            } else if (binding.hospitalLocation.text.toString() == "") {
                 Toast.makeText(this, "Enter hospitalLocation", Toast.LENGTH_SHORT).show()
 
-            }else{
-               CreatHospital()
-            }*/
+            } else {
+                createHospital()
+            }
 
         }
         binding.backgroundImg.setOnClickListener {
@@ -92,7 +242,7 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
 
         Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
         binding.hospitalLocation.setOnClickListener(View.OnClickListener {
-            option =3
+            option = 3
             val fieldList: List<Place.Field> =
                 Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
@@ -101,8 +251,24 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
                 fieldList
             ).build(this)
 
-             receiveData.launch(intent)
+            receiveData.launch(intent)
         })
+    }
+
+    private fun timeDifference(date1: String, date2: String): String {
+        val format = SimpleDateFormat("hh:mm aaa")
+        val date1Cov: Date = format.parse(date1)
+        val date2Cov: Date = format.parse(date2)
+        val diff = ""
+        try {
+            val millis: Long = date1Cov.time - date2Cov.time
+            val hours: Int = (millis / (1000 * 60 * 60)).toInt()
+            val mins = (millis / (1000 * 60) % 60).toInt()
+            val diff = "$hours:$mins"
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return diff
     }
 
     private fun onSelectImage() {
@@ -148,7 +314,7 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
     private val receiveData =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                if (option == 1||option==2){
+                if (option == 1 || option == 2) {
                     val selectedMedia =
                         it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
                     if (!selectedMedia.isNullOrEmpty()) {
@@ -166,7 +332,7 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
                             } catch (e: Exception) {
                                 Log.d("crashImage", "onActivityResult: " + e)
                             }
-                        } else if(option==2){
+                        } else if (option == 2) {
                             logoImage = selectedMedia[0].path!!
                             val bitmap: Bitmap?
                             bitmap = BitmapFactory.decodeFile(selectedMedia[0].path)
@@ -182,16 +348,15 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
                         }
 
 
-
                         //  setBody(bitmap!!, "vehicleDocument")
 
                     }
-                }else{
+                } else {
                     val place = Autocomplete.getPlaceFromIntent(it.data!!)
                     binding.hospitalLocation.text = place.address
-                    latitude =place.latLng.latitude.toString()
-                    longitude =place.latLng.longitude.toString()
-                    address =(place.address)
+                    latitude = place.latLng.latitude.toString()
+                    longitude = place.latLng.longitude.toString()
+                    address = (place.address)
                 }
 
 
@@ -199,7 +364,7 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
         }
 
 
-    private fun CreatHospital() {
+    private fun createHospital() {
         try {
             MyApp.hideSoftKeyboard(this)
         } catch (e: Exception) {
@@ -209,13 +374,18 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
         builder.addFormDataPart("fullName", binding.hospitalName.text.toString())
+        builder.addFormDataPart("mobileNumber", binding.hospitalName.text.toString())
+        builder.addFormDataPart("services", binding.services.text.toString())
+        builder.addFormDataPart("idNumber", binding.idNumberTv.text.toString())
+        builder.addFormDataPart("professionType", selectedProfession)
+        builder.addFormDataPart("consultFees", binding.consultFee.text.toString())
         builder.addFormDataPart("latitude", latitude)
         builder.addFormDataPart("longitude", longitude)
         builder.addFormDataPart("address", address)
-        builder.addFormDataPart("cosultationFees", binding.consultfee.text.toString())
-        builder.addFormDataPart("services", binding.services.text.toString())
-        builder.addFormDataPart("allowPublicToViewEmployees", "false")
-      //  builder.addFormDataPart("medications", arrayListOf<String>("test","test").toString())
+        builder.addFormDataPart("primaryVisitingHour", primaryVisitingHour)
+        builder.addFormDataPart("secondaryVisitingHour", secondaryVisitingHour)
+        builder.addFormDataPart("allowPublicToViewEmployees", "${binding.saveAndRepeat.isChecked}")
+        //  builder.addFormDataPart("medications", arrayListOf<String>("test","test").toString())
 
         if (multipartBody != null) {
             setBodyBgImg()
@@ -229,12 +399,15 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-
+                        startActivity(Intent(this,HospitalProfile::class.java))
+                        finish()
                     }
                 }
+
                 Status.LOADING -> {
                     Log.d("ok", "LOADING: ")
                 }
+
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     Log.d("ok", "ERROR: ")
@@ -247,13 +420,14 @@ class CreateHospitalActivity : AppCompatActivity(), OnSelectOptionListener {
 
     private fun setBodyBgImg() {
         val filePath = File(backgroundImg)
-        val reqFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), filePath)
+        val reqFile = filePath.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         multipartBody.add(MultipartBody.Part.createFormData("picture", filePath.name, reqFile))
 
     }
+
     private fun setBodyLogo() {
         val filePath = File(logoImage)
-        val reqFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), filePath)
+        val reqFile = filePath.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         multipartBody.add(MultipartBody.Part.createFormData("picture", filePath.name, reqFile))
 
     }

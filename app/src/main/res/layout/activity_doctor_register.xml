@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".pharmacy_module.DoctorRegisterActivity">
@@ -14,170 +13,170 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="1.0">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-
-                android:background="#ECECEC"
                 android:layout_marginHorizontal="@dimen/_15sdp"
+
                 android:layout_marginTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_15sdp"
-                >
+                android:background="#ECECEC"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="This form can only be completed
 by medical professional. Only doctors
 and pharmacist should fill in their info."
-                    android:textColor="@color/red"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:textAlignment="center"
-                    android:layout_marginTop="@dimen/_10sdp"/>
+                    android:textColor="@color/red" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="I am a Doctor"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="@dimen/_10sdp"/>
+                    android:textColor="@color/black" />
+
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I am a Nurse (LPN)"
-                    android:textColor="@color/black"
-                    />
+                    android:textColor="@color/black" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I am a Nurse (NP)"
-                    android:textColor="@color/black"
-                    />
+                    android:textColor="@color/black" />
+
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I am a Pharmacist"
-                    android:textColor="@color/black"
-                    />
+                    android:textColor="@color/black" />
+
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I am a Dentist"
-                    android:textColor="@color/black"
-                    />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:layout_width="@dimen/_75sdp"
                     android:layout_height="@dimen/_75sdp"
-                    android:background="@drawable/addbg"
-                    android:text="Upload/take a picture"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:textSize="@dimen/_10sdp"
-                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/addbg"
                     android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:text="Upload/take a picture"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext_5dp"
-                    android:textSize="@dimen/_12sdp"
+                    android:hint="Type your full name"
                     android:paddingStart="@dimen/_10sdp"
-                    android:hint="Type your full name"/>
+                    android:textSize="@dimen/_12sdp" />
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext_5dp"
-                    android:textSize="@dimen/_12sdp"
+                    android:hint="What hospital/pharmacy do you work for?"
                     android:paddingStart="@dimen/_10sdp"
-                    android:hint="What hospital/pharmacy do you work for?"/>
+                    android:textSize="@dimen/_12sdp" />
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext_5dp"
-                    android:textSize="@dimen/_12sdp"
+                    android:hint="Enter your ID number"
                     android:paddingStart="@dimen/_10sdp"
-                    android:hint="Enter your ID number"/>
+                    android:textSize="@dimen/_12sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableTint="@color/color_blue"
                     android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
                     android:text="Select your monthly work schedule"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
-                    android:gravity="center_vertical"
-                    app:drawableEndCompat="@drawable/calender_icon"
-                    android:drawableTint="@color/color_blue"/>
+                    app:drawableEndCompat="@drawable/calender_icon" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableTint="@color/color_blue"
                     android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
                     android:text="Select your visiting hour"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
-                    android:gravity="center_vertical"
-                    app:drawableEndCompat="@drawable/ic_time12"
-                    android:drawableTint="@color/color_blue"/>
+                    app:drawableEndCompat="@drawable/ic_time12" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="Add another visiting hour"
                     android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableTint="@color/color_blue"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center_vertical"
+                    android:text="Add another visiting hour"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
-                    android:gravity="center_vertical"
-                    app:drawableEndCompat="@drawable/ic_time12"
-                    android:drawableTint="@color/color_blue"/>
+                    app:drawableEndCompat="@drawable/ic_time12" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:text="Save &amp; repeat this schedule/time every
-month."
-                    android:textColor="@color/black"
-                    />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Save &amp; repeat this schedule/time every month."
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/finish"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:text="Finish &amp; Submit"
-                    android:textColor="@color/white"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/bg_blue_round_button"
-                    />
+                    android:text="Finish &amp; Submit"
+                    android:textColor="@color/white" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </ScrollView>

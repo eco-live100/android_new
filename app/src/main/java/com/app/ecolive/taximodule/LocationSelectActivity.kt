@@ -29,13 +29,16 @@ class LocationSelectActivity : AppCompatActivity() {
     lateinit var binding :ActivityLocationSelectBinding
     var startLocation:LatLng? =null
     var endLocation:LatLng? =null
-
+    var scheduleRideType = "scheduleNow"
+    var rideDate : String? = null
+    var rideTime  : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Utils.changeStatusColor(this, R.color.black)
+        Utils.changeStatusTextColor2(this)
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_location_select)
-        Utils.changeStatusColor(this, R.color.black)
-        Utils.changeStatusTextColor(this)
+
         binding.toolbar.toolbarTitle.text ="Select a location"
         binding.toolbar.ivBack.setOnClickListener {
             finish()
@@ -43,6 +46,20 @@ class LocationSelectActivity : AppCompatActivity() {
         binding.AddStop.setOnClickListener {
             startActivity(Intent(this,AddStopActivity::class.java))
         }
+        if (intent != null) {
+            rideDate = intent.getStringExtra("scheduleRideDate")
+            rideTime = intent.getStringExtra("scheduleRideTime")
+            if (rideDate!=null && rideTime!=null ){
+                scheduleRideType="scheduleOnDate"
+                binding.scheduleNoteTv.visibility = View.VISIBLE
+                binding.scheduleNoteTv.text = "Scheduling this ride for $rideDate pickup time is $rideTime"
+            }else{
+                binding.scheduleNoteTv.visibility = View.INVISIBLE
+                binding.scheduleNoteTv.text = ""
+            }
+        }
+
+        Log.d("LocationSelection", "Location_Selection_Start_address :  ${MyApp.lastLocationAddress.toString()}")
         binding.startLocation.text = MyApp.lastLocationAddress.toString()
         startLocation =LatLng(MyApp.locationLast!!.latitude,MyApp.locationLast!!.longitude)
         placeApiInit()
@@ -113,12 +130,18 @@ class LocationSelectActivity : AppCompatActivity() {
                 "TAG",
                 "onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude)
             )
-            if(binding.DestinationLocation.text.trim()!=""){
+            if(binding.DestinationLocation.text.trim().isNotEmpty()&&binding.startLocation.text.trim().isNotEmpty()){
                 startActivity(Intent(this,VehicalListActivity::class.java).
                 putExtra("STARTLat",startLocation!!.latitude.toString())
                     .putExtra("STARTLang",startLocation!!.longitude.toString())
                     .putExtra("ENDLat",endLocation!!.latitude.toString())
-                    .putExtra("ENDLang",endLocation!!.longitude.toString()))
+                    .putExtra("ENDLang",endLocation!!.longitude.toString())
+                    .putExtra("startAddress",binding.startLocation.text.toString())
+                    .putExtra("endAddress",binding.DestinationLocation.text.toString())
+                    .putExtra("scheduleRideType",scheduleRideType)
+                    .putExtra("scheduleRideDate",rideDate)
+                    .putExtra("scheduleRideTime",rideTime)
+                )
             }
             binding.DestinationLocation.text =""
             //setMarker
@@ -127,14 +150,19 @@ class LocationSelectActivity : AppCompatActivity() {
         if (requestCode == 222 && resultCode == RESULT_OK) {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
-            endLocation = place.latLng
+            endLocation =place.latLng
             binding.DestinationLocation.text = place.address
                if(binding.startLocation.text.trim()!=""){
-                   startActivity(Intent(this,VehicalListActivity::class.java).
-                   putExtra("STARTLat",startLocation!!.latitude.toString())
+                   startActivity(Intent(this,VehicalListActivity::class.java)
+                       .putExtra("STARTLat",startLocation!!.latitude.toString())
                        .putExtra("STARTLang",startLocation!!.longitude.toString())
                        .putExtra("ENDLat",endLocation!!.latitude.toString())
-                       .putExtra("ENDLang",endLocation!!.longitude.toString()))
+                       .putExtra("ENDLang",endLocation!!.longitude.toString())
+                       .putExtra("startAddress",binding.startLocation.text.toString())
+                       .putExtra("endAddress",binding.DestinationLocation.text.toString())
+                       .putExtra("scheduleRideType",scheduleRideType)
+                       .putExtra("scheduleRideDate",rideDate)
+                       .putExtra("scheduleRideTime",rideTime))
                }
             binding.DestinationLocation.text =""
             Log.d(
@@ -146,11 +174,17 @@ class LocationSelectActivity : AppCompatActivity() {
         }
 
         if (requestCode == 100 && resultCode == RESULT_OK) {
-            startActivity(Intent(this,VehicalListActivity::class.java).
-            putExtra("STARTLat",startLocation!!.latitude.toString())
-                . putExtra("STARTLang",startLocation!!.longitude.toString())
+            startActivity(Intent(this,VehicalListActivity::class.java)
+                .putExtra("STARTLat",startLocation!!.latitude.toString())
+                .putExtra("STARTLang",startLocation!!.longitude.toString())
                 .putExtra("ENDLat",data?.getDoubleExtra(LATITUDE, 0.0).toString())
-                .putExtra("ENDLang",data?.getDoubleExtra(LONGITUDE, 0.0).toString()))
+                .putExtra("ENDLang",data?.getDoubleExtra(LONGITUDE, 0.0).toString())
+                .putExtra("startAddress",binding.startLocation.text.toString())
+                .putExtra("endAddress",binding.DestinationLocation.text.toString())
+                .putExtra("scheduleRideType",scheduleRideType)
+                .putExtra("scheduleRideDate",rideDate)
+                .putExtra("scheduleRideTime",rideTime)
+            )
 
             binding.DestinationLocation.text =""
         }
