@@ -109,8 +109,8 @@
         <item>Currency</item>
         <item>INR</item>
         <item>USD</item>
-        <item >YEN</item>
-        <item >ETB </item>
+        <item>YEN</item>
+        <item>ETB </item>
     </string-array>
 
 
@@ -145,8 +145,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="forgot_password">Forgot password?</string>
-
-
 
 
 </resources>

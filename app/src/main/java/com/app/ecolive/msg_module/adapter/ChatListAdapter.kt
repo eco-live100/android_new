@@ -43,9 +43,12 @@ class ChatListAdapter(var context: Context, var dataList: ArrayList<Conversation
         holder.itemView.setOnClickListener {
             clickListern.onClick((dataList[position].conversationWith as User).uid)
         }
+
         holder.binding.chatImage.setOnClickListener {
             clickListern.onClickImg(position)
+
         }
+
      /*   holder.binding.chatTimeAgo.text=dataList[position].time
         holder.binding.chatMsgCount.text=dataList[position].msgCount
         holder.binding.chatImage.setImageResource(dataList[position].img)
@@ -68,6 +71,7 @@ class ChatListAdapter(var context: Context, var dataList: ArrayList<Conversation
         holder.binding.chatImage.setOnClickListener {
             clickListern.onClickImg(position)
         }*/
+
     }
 
     override fun getItemCount(): Int {
@@ -78,5 +82,6 @@ class ChatListAdapter(var context: Context, var dataList: ArrayList<Conversation
         fun onClick(pos: String)
         fun onClickImg(pos: Int)
     }
+
 }
 

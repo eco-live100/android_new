@@ -40,10 +40,10 @@ class MessagingService : FirebaseMessagingService() {
         val alert = payload["alert"]
         Log.e( "onMessageReceived: ", "$payload \n $message \n $title $alert")
         if (message is Call) {
-            initiateCallService(message)
+          //  initiateCallService(message)
         } else {
-            count++
-            showMessageNotification(message, title!!, alert!!);
+           /* count++
+            showMessageNotification(message, title!!, alert!!);*/
         }
 
     }

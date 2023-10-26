@@ -31,6 +31,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
+import com.app.ecolive.cometchat.CometChatMainActivity
 import com.app.ecolive.common_screen.adapters.DrawerCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeProductListAdapter
@@ -38,10 +39,8 @@ import com.app.ecolive.databinding.ActivityUserHomePageNavigationBinding
 import com.app.ecolive.localmodel.HomeProductListModel
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.CallActivity
-import com.app.ecolive.msg_module.ChatListActivity
 import com.app.ecolive.msg_module.CometChatInterface
 import com.app.ecolive.msg_module.cometchat
-import com.app.ecolive.payment_module.SelectPaymentAction
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.pharmacy_module.PharmacyOptionActivity
 import com.app.ecolive.rider_module.HomeRiderrActivity
@@ -55,6 +54,8 @@ import com.app.ecolive.user_module.*
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
+import com.cometchat.pro.core.CometChat
+import com.cometchat.pro.exceptions.CometChatException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -63,6 +64,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.messaging.FirebaseMessaging
 import com.localmerchants.ui.localModels.DrawerCategoryListModel
 import com.nightout.ui.fragment.SearchLocBottomSheet
 import com.offercity.base.BaseActivity
@@ -133,11 +135,24 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             }
         }
         getLocation()
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            if(!it.isNullOrEmpty()){
+                CometChat.registerTokenForPushNotification(it, object : CometChat.CallbackListener<String?>() {
+                    override fun onSuccess(s: String?) {
+                        Log.e("onSuccessPN: ", s.toString())
+                    }
+
+                    override fun onError(e: CometChatException) {
+                        Log.e("onErrorPN: ", e.message.toString())
+                    }
+                })
+            }
+        }
 
     }
 
-    override fun onGotoCall() {
-        //startActivity(Intent(this, CallActivity::class.java) )
+    override fun onGotoCall(sessionId: String?) {
+        startActivity(Intent(this, CallActivity::class.java).putExtra("sessionId",sessionId) )
     }
 
     override fun onClick(v: View?) {
@@ -395,7 +410,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 goLoginScreen()
             } else {
                 startActivity(
-                    Intent(this@UserHomePageNavigationActivity, ChatListActivity::class.java)
+                    Intent(this@UserHomePageNavigationActivity, CometChatMainActivity::class.java)
                         .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
                 )
             }
@@ -889,19 +904,24 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
     private fun getLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
-                    val location: Location? = task.result
-                    if (location != null) {
-                        MyApp.locationLast =location
-                        val geocoder = Geocoder(this, Locale.getDefault())
-                        val list: List<Address> =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
 
-                        MyApp.lastLocationAddress=  list[0].getAddressLine(0)
+               try {
+                   mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                       val location: Location? = task.result
+                       if (location != null) {
+                           MyApp.locationLast =location
+                           val geocoder = Geocoder(this, Locale.getDefault())
+                           val list: List<Address> =
+                               geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
+
+                           MyApp.lastLocationAddress=  list[0].getAddressLine(0)
 
 
-                    }
-                }
+                       }
+                   }
+               }catch (e:java.lang.Exception){
+
+               }
             } else {
                 Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)

@@ -1,31 +1,51 @@
 package com.app.ecolive.msg_module
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityCallBinding
 import com.cometchat.pro.core.Call
 import com.cometchat.pro.core.CallSettings
 import com.cometchat.pro.core.CometChat
+import com.cometchat.pro.core.CometChat.CallbackListener
 import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.AudioMode
 import com.cometchat.pro.models.User
 
 class CallActivity : AppCompatActivity() ,CometChatInterface {
     lateinit var binding:  ActivityCallBinding
+    var sessionId=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_call)
         cometchat.onInstance(this)
+        sessionId =if (intent!=null) intent.getStringExtra("sessionId")?:"" else ""
+    /*    binding.CallDeline.setOnClickListener {
+            CometChat.endCall(sessionId, object : CallbackListener<Call?>() {
+                override fun onSuccess(call: Call?) {
+                    // handle end call success
+                    finish()
+                }
+
+                override fun onError(e: CometChatException) {
+                    // handled end call error
+                    finish()
+                }
+            })
+        }*/
+        binding.CallDeline.setOnClickListener{
+            cometchat.acceptCall(sessionId)
+        }
 
     }
 
     fun startCall(sessionId: String) {
+
         val sessionID = sessionId
         var callView: RelativeLayout =binding.conslayout
         var activity: Activity
@@ -46,6 +66,7 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
         CometChat.startCall(callSettings, object : CometChat.OngoingCallListener {
             override fun onUserJoined(user: User) {
                 Log.d("TAG", "onUserJoined: Name " + user.name)
+                binding.CallLayout.visibility = View.GONE
             }
 
             override fun onUserLeft(user: User) {
@@ -65,6 +86,7 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
 
             override fun onUserListUpdated(list: List<User>) {
                 Log.d("TAG", "onUserListUpdated: $list")
+                binding.CallLayout.visibility = View.GONE
             }
 
             override fun onAudioModesUpdated(list: List<AudioMode?>) {
@@ -92,6 +114,7 @@ class CallActivity : AppCompatActivity() ,CometChatInterface {
 
     override fun onStartCall(sessionId: String?) {
         if (sessionId != null) {
+            this.sessionId=sessionId
             startCall(sessionId)
         }
     }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="isShimmerShow"
+            type="Boolean" />
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F5F5F5"
+        tools:context=".cometchat.Fragments.ChatFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleChatList"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:layout_height="match_parent"
+            android:visibility="@{isShimmerShow? View.GONE:View.VISIBLE,default=gone }"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/userListShimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{isShimmerShow? View.VISIBLE:View.GONE,default=visible }"
+            >
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/row_uset_list_shimmer" />
+
+                <include layout="@layout/row_uset_list_shimmer" />
+
+                <include layout="@layout/row_uset_list_shimmer" />
+
+                <include layout="@layout/row_uset_list_shimmer" />
+
+                <include layout="@layout/row_uset_list_shimmer" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,9 +1,6 @@
 package com.app.ecolive.msg_module
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
-import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.core.*
 import com.cometchat.pro.exceptions.CometChatException
@@ -65,7 +62,7 @@ object cometchat {
 
     fun userlist(instance: CometChatInterface) {
         var usersRequest: UsersRequest? = null
-        val limit = 60
+        val limit = 100
 
         usersRequest = UsersRequest.UsersRequestBuilder().setLimit(limit).build()
 
@@ -212,7 +209,7 @@ object cometchat {
     fun initCall(uid: String){
         val receiverID = uid
         val receiverType = CometChatConstants.RECEIVER_TYPE_USER
-        val callType = CometChatConstants.CALL_TYPE_AUDIO
+        val callType = CometChatConstants.CALL_TYPE_VIDEO
 
         val call = Call(receiverID, receiverType, callType)
 
@@ -236,10 +233,10 @@ object cometchat {
                 Log.d("TAG", "Outgoing call accepted: " + p0?.toString())
                 instance1!!.onStartCall(p0!!.sessionId)
             }
-            override fun onIncomingCallReceived(p0: Call?) {
-                Log.d("TAG", "Incoming call: " + p0?.toString())
-                acceptCall(p0!!.sessionId)
-                context.onGotoCall()
+            override fun onIncomingCallReceived(call: Call?) {
+                Log.d("TAG", "Incoming call: " + call?.toString())
+              //  acceptCall(p0!!.sessionId)
+                context.onGotoCall(call?.sessionId)
 
             }
 
@@ -291,6 +288,6 @@ interface CometChatInterface{
     fun onTypingStop(){}
     fun onRecentChat(list: List<Conversation>?) {}
     fun onStartCall( sessionId: String?) {}
-    fun onGotoCall() {}
+    fun onGotoCall(sessionId: String?) {}
 
 }
