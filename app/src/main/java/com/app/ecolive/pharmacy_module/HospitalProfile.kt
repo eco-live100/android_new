@@ -3,15 +3,23 @@ package com.app.ecolive.pharmacy_module
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityHospitalProfileBinding
+import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
+import com.app.ecolive.service.Status
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.PreferenceKeeper
+import org.json.JSONObject
 
 class HospitalProfile : AppCompatActivity() {
     lateinit var binding : ActivityHospitalProfileBinding
+    private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -29,10 +37,40 @@ class HospitalProfile : AppCompatActivity() {
         }
         binding.toolbarTitle.text = getString(R.string.profile)
         binding.editProfileIcon.setOnClickListener {
-            startActivity(Intent(this, CreateHospitalActivity::class.java))
+            startActivity(Intent(this, CreatePharmacyProfileActivity::class.java)
+                .putExtra("hospitalEmployeeUserId","")
+            )
         }
         binding.ivBack.setOnClickListener {
             onBackPressedDispatcher
+        }
+        getProfile()
+    }
+
+    private fun getProfile() {
+        progressDialog.show(this)
+        var pharmacyViewModel = PharmacyViewModel(this)
+        val userId = PreferenceKeeper.instance.loginResponse!!._id
+        val professionType = "doctor"
+
+        pharmacyViewModel.getProfile(userId = userId, professionType = professionType).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        Log.d("TAG", "getProfile: ${it.toString()}")
+                    }
+
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
         }
     }
 }

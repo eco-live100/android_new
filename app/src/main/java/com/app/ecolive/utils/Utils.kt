@@ -13,8 +13,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.location.Address
-import android.location.Geocoder
 import android.media.MediaMetadataRetriever
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -44,7 +42,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.app.ecolive.R
 import com.bumptech.glide.Glide
-import com.google.android.gms.identity.intents.model.UserAddress
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import io.github.g00fy2.quickie.content.QRContent.*
@@ -950,63 +947,25 @@ class Utils {
             finalAmount = intAmount.toString()
             return finalAmount
         }
-
-
         fun checkingPermissionIsEnabledOrNot(mContext: Context): Boolean {
-            val cameraPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                arrayOf(
-                    Manifest.permission.READ_MEDIA_IMAGES,
-                    Manifest.permission.READ_MEDIA_AUDIO,
-                    Manifest.permission.READ_MEDIA_VIDEO
-                )
-            else
-                arrayOf(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                    //   Manifest.permission.ACCESS_FINE_LOCATION
-                )
-
-            // ContextCompat.checkSelfPermission( activity: Activity,cameraPermission) == PackageManager.PERMISSION_GRANTED
+            val cameraPermission = mContext.packageManager.checkPermission(Manifest.permission.CAMERA,mContext.packageName)
             // val locationPermission = mContext.packageManager.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION,mContext.packageName)
             // return cameraPermission == PackageManager.PERMISSION_GRANTED  && locationPermission == PackageManager.PERMISSION_GRANTED
-            //return ContextCompat.per( mContext,cameraPermission) == PackageManager.PERMISSION_GRANTED
-
-            var totalCp = 0
-            for (cp in cameraPermission) {
-                if (ContextCompat.checkSelfPermission(
-                        mContext,
-                        cp
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    totalCp++
-                }
-            }
-            if (totalCp >= 2) {
-                return true
-            }
-            return false
-
+            return cameraPermission == PackageManager.PERMISSION_GRANTED
         }
 
-        fun requestMultiplePermission(activity: Activity, requestPermissionCode: Int) {
+        fun requestMultiplePermission(activity: Activity,requestPermissionCode:Int) {
             ActivityCompat.requestPermissions(
                 activity,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                    arrayOf(
-                        Manifest.permission.READ_MEDIA_VIDEO,
-                        Manifest.permission.READ_MEDIA_IMAGES,
-                        Manifest.permission.CAMERA
-                    )
-                else
-                    arrayOf(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA
-                    ),
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    //   Manifest.permission.ACCESS_FINE_LOCATION
+                ),
                 requestPermissionCode
             )
         }
-
         fun saveImage(mContext: Context, myBitmap: Bitmap): String {
             val bytes = ByteArrayOutputStream()
             myBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes)

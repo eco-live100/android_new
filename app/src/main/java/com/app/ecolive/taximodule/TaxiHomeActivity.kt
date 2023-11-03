@@ -1,6 +1,5 @@
 package com.app.ecolive.taximodule
 
-import VolleyApi
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -22,19 +21,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityTaxiHomeBinding
-import com.app.ecolive.service.VolleyApiCompleteTask
 import com.app.ecolive.taximodule.fragment.ActivityFragment
 import com.app.ecolive.taximodule.fragment.FragmentSchudle
 import com.app.ecolive.taximodule.fragment.HomeFragment
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
-import org.json.JSONException
-import org.json.JSONObject
 import java.util.*
 
-class TaxiHomeActivity : AppCompatActivity() , VolleyApiCompleteTask  {
+class TaxiHomeActivity : AppCompatActivity()  {
     lateinit var binding :ActivityTaxiHomeBinding
     private lateinit var locationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -56,7 +51,7 @@ class TaxiHomeActivity : AppCompatActivity() , VolleyApiCompleteTask  {
 
         binding.activityll.setOnClickListener {
             val newFragment: Fragment = ActivityFragment()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).addToBackStack(null).commit()
+            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
         }
         binding.homell.setOnClickListener {
             val newFragment: Fragment = HomeFragment()
@@ -65,7 +60,7 @@ class TaxiHomeActivity : AppCompatActivity() , VolleyApiCompleteTask  {
 
         binding.schudlell.setOnClickListener {
             val newFragment: Fragment = FragmentSchudle()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).addToBackStack(null).commit()
+            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
         }
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -119,37 +114,8 @@ class TaxiHomeActivity : AppCompatActivity() , VolleyApiCompleteTask  {
             requestPermissions()
         }
     }
-    private fun getDirection(update_src: LatLng?,destination_n: LatLng?) {
-        if (update_src != null && destination_n != null) {
-            val requestApi = Utils.getDirectionsUrl(update_src, destination_n)
-            Log.d("TAG", "getDirection requestApi: $requestApi")
-            val objectNew: HashMap<String, String> = HashMap()
-            VolleyApi(
-                this,
-                requestApi,
-                objectNew,
-                this,
-                100,
-                3
-            )
-        }
-    }
 
-    private fun getAddress(latLng: LatLng) {
-        if (latLng != null) {
-            val requestApi = Utils.getAddressUrl(latLng)
-            Log.d("TAG", "getDirection requestApi: $requestApi")
-            val objectNew: HashMap<String, String> = HashMap()
-            VolleyApi(
-                this,
-                requestApi,
-                objectNew,
-                this,
-                101,
-                3
-            )
-        }
-    }
+
     private fun getAddress(latitude: Double, longitude: Double) : String {
         var address = ""
         try {
@@ -292,72 +258,7 @@ class TaxiHomeActivity : AppCompatActivity() , VolleyApiCompleteTask  {
         stopLocationUpdates()
     }
 
-    override fun onComplete(response: String?, taskcode: Int) {
-        Log.d("response", response!!)
-        if (taskcode == 100) {
-            var jsonObject: JSONObject? = null
-            var totalDistance = 0.0
-            var totalDuration: Long = 0
-            try {
-                jsonObject = JSONObject(response)
-                val jsonArray = jsonObject.getJSONArray("routes")
-                val sie = jsonArray.length()
-                for (i in 0 until jsonArray.length()) {
-                    val route = jsonArray.getJSONObject(i)
-                    val poly = route.getJSONObject("overview_polyline")
-                    val polyline = poly.getString("points")
 
-//                        for (i in 0 until jsonArray.length()) {
-                    val jLegs = (jsonArray.get(i) as JSONObject).getJSONArray("legs")
-//                            for (j in 0 until jLegs.length()) {
-                    val legs1 = jLegs.getJSONObject(0)
-                    val distance = legs1.getJSONObject("distance")
-                    val duration = legs1.getJSONObject("duration")
-                    totalDistance += distance.getLong("value")
-                    totalDuration += duration.getLong("value")
-//                            }
-//                        }
-                    totalDistance /= 1000
-                    totalDuration /= 60
-                    totalDistance = Math.round(totalDistance * 10) / 10.0
-                    Log.i("Total_distance", "${distance.getString("text")}")
-                    Log.i("Total_duration", "${duration.getString("text")}")
-                   /* binding.timeDistanceTv.text =
-                        "${duration.getString("text")}\nDistance : ${distance.getString("text")}"
-
-                    polyLineList =
-                        DirectionsJSONParser.decodePoly(polyline) as List<LatLng?>*/
-                }
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-            /*val parserTask = ParserTask(this)
-            parserTask.execute(response)*/
-        }
-
-        if (taskcode == 101) {
-            var jsonObject: JSONObject? = null
-            try {
-                jsonObject = JSONObject(response)
-                val jsonArray = jsonObject.getJSONArray("results")
-                val sie = jsonArray.length()
-                for (i in 0 until jsonArray.length()) {
-                    val route = jsonArray.getJSONObject(i)
-                    val poly = route.getJSONObject("overview_polyline")
-                    val polyline = poly.getString("points")
-
-//                        for (i in 0 until jsonArray.length()) {
-                    val jLegs = (jsonArray.get(i) as JSONObject).getJSONArray("legs")
-//                            for (j in 0 until jLegs.length()) {
-                    val legs1 = jLegs.getJSONObject(0)
-                }
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-            /*val parserTask = ParserTask(this)
-            parserTask.execute(response)*/
-        }
-    }
 
 
 }

@@ -4,17 +4,17 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityPharmacyProcessBinding
-import com.app.ecolive.payment_module.SendMoneyHomePageActivity
+import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 
 class PharmacyProcessActivity : AppCompatActivity() {
@@ -35,12 +35,22 @@ class PharmacyProcessActivity : AppCompatActivity() {
 
 
         binding.nextButton.setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    CreateHealthActivity::class.java
+            if(PreferenceKeeper.instance.isHealthProfileCreate){
+                startActivity(
+                    Intent(
+                        this,
+                        MedicationListActivity::class.java
+                    )
                 )
-            )
+            }else{
+                startActivity(
+                    Intent(
+                        this,
+                        CreateHealthActivity::class.java
+                    )
+                )
+            }
+
         }
     }
 

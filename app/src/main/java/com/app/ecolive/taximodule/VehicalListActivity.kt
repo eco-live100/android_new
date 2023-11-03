@@ -50,9 +50,10 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var endLatLng: LatLng
     var startAddress: String = ""
     var endAddress: String = ""
-    var startOrEndAddress: Int = 1
-    lateinit var vehicleModelData: VehicleModel.Data
+    private lateinit var vehicleModelData: VehicleModel.Data
     private val progressDialog = CustomProgressDialog()
+    var totalDistance: Double = 0.0
+    var totalDuration: Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
 
         window.setFlags(
@@ -79,9 +80,10 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
             rideDate = intent.getStringExtra("scheduleRideDate")
             rideTime = intent.getStringExtra("scheduleRideTime")
             scheduleRideType = intent.getStringExtra("scheduleRideType")
+            startLatLng = LatLng(startLat!!.toDouble(), startLang!!.toDouble())
+            endLatLng = LatLng(endLat!!.toDouble(), endLang!!.toDouble())
         }
-        startLatLng = LatLng(startLat!!.toDouble(), startLang!!.toDouble())
-        endLatLng = LatLng(endLat!!.toDouble(), endLang!!.toDouble())
+
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.taximap2) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
@@ -92,7 +94,6 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.taxiConfirmButton.setOnClickListener {
             confirmTaxiApiCall()
         }
-        getVehicleApi()
     }
 
     override fun onMapReady(mMap: GoogleMap) {
@@ -158,17 +159,34 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                                 )
                             )
                         }
+                        Log.d("TAG", "safsafsafsadgsaasf: ")
 
+                        val routeArray = direction.routeList
+                        for (i in 0 until routeArray.size) {
+                            val legs1 = direction.routeList[i].legList[0]
+                            Log.d("TAG", "safsafsafsadgsaasf: ")
+                            val distance = legs1.distance
+                            val duration = legs1.duration
+                            totalDistance += distance.value
+                            totalDuration += duration.value
+                            totalDistance /= 1000
+                            totalDuration /= 60
+                            totalDistance= (totalDistance* 10) / 10.0
+                            Log.d("TAG","Total_distance:  - ${distance.text}")
+                            Log.d("TAG","Total_duration: - ${duration.text}")
+                        }
+                        binding.timeDistanceTotalTv.text = String.format("Estimated Distance : %.2f km And Time : %.0f mins", totalDistance,totalDuration)
+                        getVehicleApi(totalDistance)
                     }
 
                     override fun onDirectionFailure(t: Throwable) {
-                        Log.d("TAG", "onDirectionSuccess: " + t.message.toString())
+                        Log.d("TAG", "onDirectionFailure: " + t.message.toString())
                     }
                 })
         }
     }
 
-    private fun getVehicleApi() {
+    private fun getVehicleApi(totalDistance: Double) {
         progressDialog.show(this)
         var viewModel = TaxiViewModel(this)
         var json = JSONObject()
@@ -178,7 +196,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        var adapter = VehicleAdapter(this, it.data)
+                        var adapter = VehicleAdapter(this, it.data,totalDistance)
                         var layoutManager = LinearLayoutManager(this)
                         binding.recycleVehicle.layoutManager = layoutManager
                         binding.recycleVehicle.adapter = adapter
@@ -203,53 +221,63 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         val json = JSONObject()
 
         json.put("taxiId", "${vehicleModelData._id}")
-        json.put("driverLatitude", "${endLat}")
-        json.put("driverLongitude", "${endLang}")
-        json.put("driverAddress", "$endAddress")
-        json.put("userLatitude", "${startLat}")
-        json.put("userLongitude", "${startLang}")
-        json.put("userAddress", "$startAddress")
-        json.put("amount", vehicleModelData.amount.toString())
-        json.put("distanceInKm", "15")
-        json.put("paymentType", TaxiPaymentActivity.paymentType)
-        json.put("rideDate", rideDate?:"")
-        json.put("rideTime", rideTime?:"")
-        json.put("rideScheduleType", TaxiPaymentActivity.paymentType)
+        json.put("fromLatitude", "$startLat")
+        json.put("fromLongitude", "$startLang")
+        json.put("fromAddress", "$startAddress")
+        json.put("toLatitude", "$endLat")
+        json.put("toLongitude", "$endLang")
+        json.put("toAddress", "$endAddress")
+        json.put("fromDate", rideDate ?: "")
+        json.put("toDate", "")
+        json.put("pickUpTimeFrom", rideTime ?: "")
+        json.put("pickUpTimeTo", "")
+        json.put("paymentType", if (TaxiPaymentActivity.paymentType == "cash") 0 else 1)
+        json.put("amount", String.format("%.2f", (totalDistance * vehicleModelData.amount.toDouble())))
+        json.put("distanceInKm", String.format("%.0f", totalDistance))
+        json.put("bookingType", if (scheduleRideType == "request") 0 else 1)
 
         Log.d("Utils", "startAddress=: $startAddress")
         Log.d("Utils", "endAddress=: $endAddress")
-            confirmViewModel.confirmTaxi(json).observe(this) { it ->
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        progressDialog.dialog.dismiss()
-                        it.data?.let {
-                            var vv = it.data
-                            Toast.makeText(this, "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
-                                .show()
-                            startActivity(Intent(this, TaxiHomeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                            finish()
-                        }
-                    }
-
-                    Status.LOADING -> {}
-                    Status.ERROR -> {
-                        progressDialog.dialog.dismiss()
-                        var vv = it.message
-                        val msg = it.message?.let { it1 -> JSONObject(it1) }
-                        MyApp.popErrorMsg("", "" + msg?.getString("msg"), this)
-                        // MyApp.popErrorMsg("", "" + vv, THIS!!)
+        confirmViewModel.confirmTaxi(json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        var vv = it.data
+                        Toast.makeText(this, "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
+                            .show()
+                        startActivity(
+                            Intent(
+                                this,
+                                TaxiHomeActivity::class.java
+                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        )
+                        finish()
                     }
                 }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    val msg = it.message?.let { it1 -> JSONObject(it1) }
+                    MyApp.popErrorMsg("", "" + msg?.getString("msg"), this)
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
             }
+        }
     }
+
     companion object {
         private var mInstance: VehicalListActivity? = null
     }
-    fun getInstance() : VehicalListActivity? {
+
+    fun getInstance(): VehicalListActivity? {
         return mInstance
     }
 
-    fun selectedVehicleData(vehicleModel: VehicleModel.Data)  {
+    fun selectedVehicleData(vehicleModel: VehicleModel.Data) {
         vehicleModelData = vehicleModel
     }
 }

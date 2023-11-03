@@ -1,6 +1,8 @@
 package com.app.ecolive.utils
 
 object AppConstant {
+
+    const val BASE_URL = "https://api.ecolive.global/api1/"
     const val NO_INTERNET = 502
     const val INTERNAL_ERROR = 500
     const val PARSING_ERROR = 504
@@ -48,6 +50,8 @@ object AppConstant {
     const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
     const val NOTIFICATION_CHANNEL_NAME = "Tracking"
     const val NOTIFICATION_ID = 1
+    var FireBaseToken = "fireBaseToken"
+    var fcmToken = "fcmToken"
 
 
 

@@ -98,6 +98,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <ImageView
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
@@ -320,14 +321,14 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="0dp"
                             android:layout_weight="1.5"
-                            android:text="To destination:"
+                            android:text="@string/from_destination"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_13sdp"
                             android:fontFamily="@font/roboto_medium"
                             android:textColor="#9F9F9F"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/toDestinationTime"
+                            android:id="@+id/fromDestinationTime"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:hint="11:00 AM"
@@ -336,7 +337,7 @@
                             android:fontFamily="@font/roboto_medium"
                             android:textColor="@color/black"/>
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/timePicker"
+                            android:id="@+id/timePickerFrom"
                             android:layout_width="0dp"
                             android:layout_weight="0.5"
                             android:padding="2dp"
@@ -358,14 +359,14 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="0dp"
                             android:layout_weight="1.5"
-                            android:text="From destination:"
+                            android:text="@string/to_destination"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_13sdp"
                             android:fontFamily="@font/roboto_medium"
                             android:textColor="#9F9F9F"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/fromDestinationTime"
+                            android:id="@+id/toDestinationTime"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:hint="10:30 PM"
@@ -374,7 +375,7 @@
                             android:fontFamily="@font/roboto_medium"
                             android:textColor="@color/black"/>
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/timePicker2"
+                            android:id="@+id/timePickerTo"
                             android:layout_width="0dp"
                             android:layout_weight="0.5"
                             android:padding="2dp"

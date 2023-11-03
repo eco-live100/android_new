@@ -10,9 +10,8 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.ChatlistActivityBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.adapter.ChatListAdapter
-import com.app.ecolive.rider_module.HomeRiderrActivity
+import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
-import com.app.ecolive.user_module.FullImageActivity
 import com.app.ecolive.utils.PopUpVehicleChoose
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
@@ -135,7 +134,7 @@ class ChatListActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@ChatListActivity,
-                        HomeRiderrActivity::class.java
+                        HomeRiderActivity::class.java
                     )
                 )
                 finish()

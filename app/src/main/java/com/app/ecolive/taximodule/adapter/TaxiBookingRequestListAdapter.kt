@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
-import com.app.ecolive.databinding.*
+import com.app.ecolive.databinding.TaxiBookingRequestiListItemBinding
 import com.app.ecolive.taximodule.model.TaxiBookingRequestList
 
 
@@ -31,18 +31,22 @@ class TaxiBookingRequestListAdapter(var context: Context, var dataList: List<Tax
         if(item.bookingStatus=="requested"){
             holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
             holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_red))
-        }else{
+        }else if(item.bookingStatus=="accepted"){
             holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
             holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_51E555))
         }
 
         holder.binding.bookingIdTv.text="Booking Id:- ${item.bookingNumber}"
         holder.binding.bookingDateTv.text="${item.createdAt}"
-        holder.binding.fromAddressTv.text="From Address:- ${item.userAddress}"
-        holder.binding.toAddressTv.text="To Address:- ${item.driverAddress}"
+        holder.binding.fromAddressTv.text="From Address:- ${item.fromAddress}"
+        holder.binding.toAddressTv.text="To Address:- ${item.toAddress}"
         holder.binding.tvTotBill.text="Total Bill:- $ ${item.amount}"
         //holder.binding.toAddressTv.setImageDrawable(dataList[position].image)
-        holder.binding.tvTrackOrder.setOnClickListener { onClickListener.onClick(position) }
+        holder.binding.tvTrackOrder.setOnClickListener {
+            if(item.bookingStatus=="accepted"){
+                onClickListener.onClick(position)
+            }
+        }
     }
 
     override fun getItemCount(): Int {

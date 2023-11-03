@@ -15,6 +15,7 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.getFcmTokenAndSave
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.offercity.base.BaseActivity
 import org.json.JSONObject
@@ -30,8 +31,8 @@ class LoginActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         getExtraDataIntent()
+        this.getFcmTokenAndSave()
         initView()
-
     }
 
 
@@ -58,6 +59,8 @@ class LoginActivity : BaseActivity() {
         var json = JSONObject()
         json.put("emailMobile", binding.loginPhNo.text.toString())
         json.put("password", binding.loginPwd.text.toString())
+        json.put(AppConstant.fcmToken, PreferenceKeeper.instance.fcmTokenSave)
+
         loginViewModel.userLogin(json).observe(THIS!!) { it ->
             when (it.status) {
                 Status.SUCCESS -> {

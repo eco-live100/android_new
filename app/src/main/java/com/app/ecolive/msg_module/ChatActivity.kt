@@ -20,13 +20,12 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.ChatActivityBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.adapter.ChatAdapter
-import com.app.ecolive.rider_module.HomeRiderrActivity
+import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.utils.PopUpVehicleChoose
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 import com.bumptech.glide.Glide
-import com.cometchat.pro.core.CometChat
 import com.cometchat.pro.models.*
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
@@ -196,7 +195,7 @@ class ChatActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@ChatActivity,
-                        HomeRiderrActivity::class.java
+                        HomeRiderActivity::class.java
                     )
                 )
                 finish()

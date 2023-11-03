@@ -1,17 +1,13 @@
 package com.app.ecolive.payment_module
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityFriendsListBinding
 import com.app.ecolive.databinding.ActivityRecipentListBinding
-import com.app.ecolive.msg_module.adapter.ChatListAdapter
-import com.app.ecolive.msg_module.adapter.FriendListAdapter
 import com.app.ecolive.payment_module.adapters.RecipentAdapterAdapter
-import com.app.ecolive.user_module.FullImageActivity
 import com.app.ecolive.utils.Utils
 
 class RecipentListListActivity : AppCompatActivity() {

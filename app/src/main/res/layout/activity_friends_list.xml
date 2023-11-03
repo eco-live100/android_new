@@ -71,7 +71,7 @@
                 android:id="@+id/recycleFriends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/row_friendlist" />
+                tools:listitem="@layout/row_doctor_list" />
 
 
         </LinearLayout>

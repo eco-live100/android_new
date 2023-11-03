@@ -4,14 +4,21 @@ import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.ecolive.R
-import com.app.ecolive.login_module.model.LoginModel
 import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
+import com.app.ecolive.login_module.model.LoginModel
 import com.app.ecolive.pharmacy_module.model.CommonMedicationModel
 import com.app.ecolive.pharmacy_module.model.CreatHospitalModel
 import com.app.ecolive.pharmacy_module.model.CreateHealthModel
+import com.app.ecolive.pharmacy_module.model.DoctorListModel
+import com.app.ecolive.pharmacy_module.model.RegisterDoctorModel
 import com.app.ecolive.rider_module.model.VehicalCatgryListModel
-import com.app.ecolive.shop_owner.model.*
+import com.app.ecolive.shop_owner.model.AttributeModel
+import com.app.ecolive.shop_owner.model.GetCartModel
+import com.app.ecolive.shop_owner.model.ProductModel
+import com.app.ecolive.shop_owner.model.ShopCategryListModel
+import com.app.ecolive.shop_owner.model.ShopListModel
+import com.app.ecolive.taximodule.model.CommonModel
 import com.app.ecolive.taximodule.model.ConfirmTaxiModel
 import com.app.ecolive.taximodule.model.ScheduleRideModel
 import com.app.ecolive.taximodule.model.TaxiBookingRequestList
@@ -1371,18 +1378,18 @@ class WebServiceRepository(application: Activity) {
         return venueListResponseModel
     }
 
-    fun creatHospitalApi(body: MultipartBody): LiveData<ApiSampleResource<CreatHospitalModel>> {
-        val venueListResponseModel = MutableLiveData<ApiSampleResource<CreatHospitalModel>>()
+    fun registerHospitalEmployeeApi(body: MultipartBody): LiveData<ApiSampleResource<RegisterDoctorModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<RegisterDoctorModel>>()
         if (networkHelper.isNetworkConnected()) {
 //            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json.toString())
-            val responseBody: Call<ResponseBody> = apiInterfaceHeader.creatHospitalApi(body)
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.registerHospitalEmployeeApi(body)
             responseBody.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     when (response.code()) {
-                        201 -> {
+                        200,201 -> {
                             val data = response.body()?.string()!!
                             try {
-                                val dataResponse = fromJson<CreatHospitalModel>(data)
+                                val dataResponse = fromJson<RegisterDoctorModel>(data)
                                 venueListResponseModel.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
                             } catch (ex: Exception) {
                                 ex.printStackTrace()
@@ -1642,6 +1649,274 @@ class WebServiceRepository(application: Activity) {
             AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
         return responseData
     }
+
+    fun getProfileApi(userId: String,professionType:String): LiveData<ApiSampleResource<CreatHospitalModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<CreatHospitalModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.getProfileApi(userId = userId, professionType = professionType)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<CreatHospitalModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun getDoctorListApi(body: JSONObject): LiveData<ApiSampleResource<DoctorListModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<DoctorListModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.getDoctorListApi()
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<DoctorListModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun acceptBookingRequestRideApi(map: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
+        val scheduleRideResponseModel = MutableLiveData<ApiSampleResource<CommonModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), map.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.acceptBookingRequestRideApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        200 ,201-> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<CommonModel>(data)
+                                scheduleRideResponseModel.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                scheduleRideResponseModel.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            scheduleRideResponseModel.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message").getString("msg")
+                            scheduleRideResponseModel.postValue(ApiSampleResource.error(response.code(),vv, null))
+                        }
+                        500->{
+                            scheduleRideResponseModel.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        scheduleRideResponseModel.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        scheduleRideResponseModel.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else scheduleRideResponseModel.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return scheduleRideResponseModel
+    }
+
+    fun declineBookingRequestRideApi(map: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
+        val scheduleRideResponseModel = MutableLiveData<ApiSampleResource<CommonModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), map.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.declineBookingRequestRideApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        200 ,201-> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<CommonModel>(data)
+                                scheduleRideResponseModel.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                scheduleRideResponseModel.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            scheduleRideResponseModel.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message").getString("msg")
+                            scheduleRideResponseModel.postValue(ApiSampleResource.error(response.code(),vv, null))
+                        }
+                        500->{
+                            scheduleRideResponseModel.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        scheduleRideResponseModel.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        scheduleRideResponseModel.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else scheduleRideResponseModel.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return scheduleRideResponseModel
+    }
+
+    fun completeBookingRequestRideApi(map: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
+        val scheduleRideResponseModel = MutableLiveData<ApiSampleResource<CommonModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), map.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.completeBookingRequestRideApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        200 ,201-> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<CommonModel>(data)
+                                scheduleRideResponseModel.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                scheduleRideResponseModel.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            scheduleRideResponseModel.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message").getString("msg")
+                            scheduleRideResponseModel.postValue(ApiSampleResource.error(response.code(),vv, null))
+                        }
+                        500->{
+                            scheduleRideResponseModel.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        scheduleRideResponseModel.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        scheduleRideResponseModel.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else scheduleRideResponseModel.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return scheduleRideResponseModel
+    }
+
 
 }
 

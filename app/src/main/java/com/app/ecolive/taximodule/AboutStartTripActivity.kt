@@ -1,6 +1,5 @@
 package com.app.ecolive.taximodule
 
-import VolleyApi
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -21,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityAboutTostartTripBinding
+import com.app.ecolive.service.VolleyApi
 import com.app.ecolive.service.VolleyApiCompleteTask
 import com.app.ecolive.services.LocationService
 import com.app.ecolive.utils.AppConstant
@@ -536,7 +536,8 @@ class AboutStartTripActivity : AppCompatActivity(), VolleyApiCompleteTask, OnMap
                                 "Location saved to the Firebasedatabase",
                                 Toast.LENGTH_LONG
                             ).show()
-                        }*//*
+                        }*/
+    /*
 
                     }
                 }

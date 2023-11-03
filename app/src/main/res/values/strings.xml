@@ -168,5 +168,17 @@
     <string name="qr_code">Qr Code</string>
     <string name="view_all">View all</string>
     <string name="specialties_amp_services"><![CDATA[Specialties & Services]]></string>
+    <string name="please_wait">Please wait...\n</string>
+    <string name="pharmacy_profile">Pharmacy Profile</string>
+    <string name="health_profile">Health profile</string>
+    <string name="all_medication">All Medication</string>
+    <string name="all_pharmacy">All Pharmacy</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_address">Enter address</string>
+    <string name="enter_ssn_number">Enter SSN number</string>
+    <string name="eco_live_health_profile">Eco- Live Health Profile</string>
+    <string name="enter_name_or_mobile_number">Enter name or mobile number</string>
+    <string name="from_destination">From destination:</string>
+    <string name="to_destination">To destination:</string>
 
 </resources>

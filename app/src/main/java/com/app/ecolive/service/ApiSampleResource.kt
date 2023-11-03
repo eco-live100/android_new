@@ -11,6 +11,7 @@ data class ApiSampleResource<out T>(val status: Status, val data: T?, val messag
             var message = ""
             when (httpCode) {
                 200 -> message = "Successfully"
+                201 -> message = msg
                 204 -> message = "Sorry Records Not Found."
                 409 -> message = msg
             }
@@ -35,7 +36,7 @@ data class ApiSampleResource<out T>(val status: Status, val data: T?, val messag
                 502 -> message = msg
                 500 -> message = msg
                 400 -> message = msg
-                201 -> message = msg
+                //201 -> message = msg
                 404 -> message = msg
                 401 -> message = msg
                 205 -> message = msg

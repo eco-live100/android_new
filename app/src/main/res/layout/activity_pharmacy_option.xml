@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".pharmacy_module.PharmacyOptionActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".pharmacy_module.PharmacyOptionActivity">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/toolbar"
@@ -40,7 +40,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Hospital/Pharmacy Profile"
+                        android:text="@string/pharmacy_profile"
                         android:textColor="@color/white"
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="@dimen/_12sdp"
@@ -59,7 +59,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Health profile"
+                        android:text="@string/health_profile"
                         android:textColor="@color/white"
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="@dimen/_12sdp"
@@ -84,7 +84,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="All Medication"
+                        android:text="@string/all_medication"
                         android:textColor="@color/white"
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="@dimen/_12sdp"
@@ -103,7 +103,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="All Hospital/Pharmacy"
+                        android:text="@string/all_pharmacy"
                         android:textColor="@color/white"
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="@dimen/_12sdp"

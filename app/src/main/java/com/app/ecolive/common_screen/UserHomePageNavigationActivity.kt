@@ -2,18 +2,14 @@ package com.app.ecolive.common_screen
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -31,7 +27,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.adapters.DrawerCategoryListAdapter
@@ -47,7 +42,7 @@ import com.app.ecolive.msg_module.cometchat
 import com.app.ecolive.payment_module.SelectPaymentAction
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.pharmacy_module.PharmacyOptionActivity
-import com.app.ecolive.rider_module.HomeRiderrActivity
+import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.service.Status
 import com.app.ecolive.shop_owner.ShopOwnerHomePageNavigationActivity
@@ -73,10 +68,6 @@ import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -233,7 +224,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 startActivity(
                     Intent(
                         this@UserHomePageNavigationActivity,
-                        HomeRiderrActivity::class.java
+                        HomeRiderActivity::class.java
                     )
                 )
                 finish()

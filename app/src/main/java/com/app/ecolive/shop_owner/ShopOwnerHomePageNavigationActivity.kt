@@ -13,7 +13,7 @@ import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityShopOwnerHomePageNavigationBinding
 import com.app.ecolive.login_module.LoginActivity
-import com.app.ecolive.rider_module.HomeRiderrActivity
+import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.service.Status
 import com.app.ecolive.shop_owner.adapters.ShopListAdapter
@@ -145,7 +145,7 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
         if (PreferenceKeeper.instance.loginResponse != null) {
             if (PreferenceKeeper.instance.loginResponse!!.isRider) {
                 // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
-                startActivity(Intent(this@ShopOwnerHomePageNavigationActivity, HomeRiderrActivity::class.java))
+                startActivity(Intent(this@ShopOwnerHomePageNavigationActivity, HomeRiderActivity::class.java))
                 finish()
             } else {
                 startActivity(Intent(this@ShopOwnerHomePageNavigationActivity, VehicleInfoActivity::class.java))

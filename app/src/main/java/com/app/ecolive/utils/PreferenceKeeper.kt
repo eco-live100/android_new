@@ -94,10 +94,9 @@ class PreferenceKeeper private constructor(context: Context?) {
                 .apply()
         }
 
-
-
-
-
-
-
+    var fcmTokenSave: String?
+        get() = prefs!!.getString(AppConstant.FireBaseToken, "")
+        set(cnt) {
+            prefs!!.edit().putString(AppConstant.FireBaseToken, cnt).apply()
+        }
 }

@@ -43,13 +43,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
                 <EditText
+                    android:id="@+id/searchUserEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:drawableStart="@drawable/ic_search"
                     android:drawablePadding="@dimen/_5sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:hint="Enter name or mobile number"
+                    android:hint="@string/enter_name_or_mobile_number"
                     android:padding="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColorHint="@color/color_707070"
@@ -57,6 +58,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/totalList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -71,13 +73,14 @@
                 android:id="@+id/recycleFriends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/row_friendlist" />
+                tools:listitem="@layout/row_doctor_list" />
 
 
         </LinearLayout>
 
 
         <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
             android:id="@+id/appCompatButton3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"

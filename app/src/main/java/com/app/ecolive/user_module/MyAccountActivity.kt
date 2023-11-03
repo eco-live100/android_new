@@ -6,14 +6,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityAceptedDeclineOrderBinding
 import com.app.ecolive.databinding.ActivityMyAccountBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.payment_module.MyWalletActivity
-import com.app.ecolive.rider_module.HomeRiderrActivity
+import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
-import com.app.ecolive.shop_owner.ShopOwnerHomePageNavigationActivity
-import com.app.ecolive.shop_owner.ShopUserSignupActivityNew
 import com.app.ecolive.utils.PopUpVehicleChoose
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
@@ -105,7 +102,7 @@ class MyAccountActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@MyAccountActivity,
-                        HomeRiderrActivity::class.java
+                        HomeRiderActivity::class.java
                     )
                 )
                 finish()

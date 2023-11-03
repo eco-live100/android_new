@@ -1,4 +1,4 @@
-
+package com.app.ecolive.service
 
 import android.app.Activity
 import android.app.ProgressDialog
@@ -9,12 +9,11 @@ import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.app.ecolive.R
-import com.app.ecolive.service.NetworkHelper
-import com.app.ecolive.service.VolleyApiCompleteTask
 import com.app.ecolive.utils.Utils
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+
 /**
  * Created by mukesh verma on 3/12/17.
  */
@@ -60,10 +59,10 @@ class VolleyApi {
 //            volleyStringRequestGet();
 //        }
         try {
-            if (!NetworkHelper(context).isNetworkConnected()) {
+        /*    if (!Network.isConnectingToInternet(context)) {
                 Utils.showMessage(context, context.getString(R.string.network_error_msg))
                 return
-            } else {
+            } else {*/
                 Utils.hideSoftKeyBoard(context as Activity)
                 when (mathod) {
                     1 -> {
@@ -85,7 +84,7 @@ class VolleyApi {
                         volleyStringRequestGetLn()
                     }
                 }
-            }
+           // }
         } catch (e: Exception) {
             e.printStackTrace()
         }

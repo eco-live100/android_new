@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityPharmacyInsuranceBinding
 import com.app.ecolive.databinding.ActivityPharmacyStepBinding
 import com.app.ecolive.utils.Utils
 
@@ -24,7 +23,7 @@ class PharmacyStepActivity : AppCompatActivity() {
         }
 
         binding.requestPrescriptionNow.setOnClickListener {
-          startActivity(Intent(this,FriendListPharmacyActivity::class.java))
+          startActivity(Intent(this,DoctorListPharmacyActivity::class.java))
         }
         binding.placeOrder.setOnClickListener {
           startActivity(Intent(this,PharmacyOrderFormActivity::class.java))

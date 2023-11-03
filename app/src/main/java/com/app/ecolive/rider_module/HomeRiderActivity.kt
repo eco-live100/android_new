@@ -36,7 +36,7 @@ import com.nightout.ui.fragment.SearchLocBottomSheet
 import com.offercity.base.BaseActivity
 
 
-class HomeRiderrActivity : BaseActivity()  {
+class HomeRiderActivity : BaseActivity()  {
     lateinit var binding: HomeriderActivityBinding
     var adapter: HomeCategoryListAdapter? = null
     var adapterCategory: DrawerCategoryListAdapter? = null
@@ -68,9 +68,9 @@ class HomeRiderrActivity : BaseActivity()  {
         listHome.add(RiderHomeOrderModel("Jenny Wilson",R.drawable.dummy_male_user,false))
 
 
-        riderHomeOrderAdapter = RiderHomeOrderAdapter(this@HomeRiderrActivity,listHome,object:RiderHomeOrderAdapter.ClickListener{
+        riderHomeOrderAdapter = RiderHomeOrderAdapter(this@HomeRiderActivity,listHome,object:RiderHomeOrderAdapter.ClickListener{
             override fun onClik(pos: Int) {
-                startActivity(Intent(this@HomeRiderrActivity,RideDetailActivity::class.java))
+                startActivity(Intent(this@HomeRiderActivity,RideDetailActivity::class.java))
 
             }
 
@@ -87,7 +87,7 @@ class HomeRiderrActivity : BaseActivity()  {
     override fun onClick(v: View?) {
         super.onClick(v)
         if(v==binding.include.contentHome.headerHome.homepageToolbarSwitchToUser){
-            startActivity(Intent(this@HomeRiderrActivity, UserHomePageNavigationActivity::class.java))
+            startActivity(Intent(this@HomeRiderActivity, UserHomePageNavigationActivity::class.java))
             finish()
            // riderLoginChk()
 
@@ -96,24 +96,24 @@ class HomeRiderrActivity : BaseActivity()  {
            shopLoginChk()
         }
         else if(v==binding.include.contentHome.riderChkDemand){
-            startActivity(Intent(this@HomeRiderrActivity,CheckDemandActivity::class.java))
+            startActivity(Intent(this@HomeRiderActivity,CheckDemandActivity::class.java))
         }else if(v==binding.include.contentHome.starttrip){
-            startActivity(Intent(this@HomeRiderrActivity,AboutStartTripActivity::class.java))
+            startActivity(Intent(this@HomeRiderActivity,AboutStartTripActivity::class.java))
         }
 
     }
     private fun goLoginScreen() {
         Utils.showMessage(THIS!!,"You have to login first")
-        startActivity(Intent(this@HomeRiderrActivity, LoginActivity::class.java))
+        startActivity(Intent(this@HomeRiderActivity, LoginActivity::class.java))
         finish()
     }
     private fun shopLoginChk() {
         if(PreferenceKeeper.instance.loginResponse!=null){
             if(PreferenceKeeper.instance.loginResponse!!.isVendor){
               //  MyApp.popErrorMsg("","Your Shop details is in under verification",THIS!!)
-               startActivity(Intent(this@HomeRiderrActivity, ShopOwnerHomePageNavigationActivity::class.java))
+               startActivity(Intent(this@HomeRiderActivity, ShopOwnerHomePageNavigationActivity::class.java))
             }else{
-                startActivity(Intent(this@HomeRiderrActivity, ShopUserSignupActivityNew::class.java))
+                startActivity(Intent(this@HomeRiderActivity, ShopUserSignupActivityNew::class.java))
             }
         }else{
             goLoginScreen()
@@ -124,9 +124,9 @@ class HomeRiderrActivity : BaseActivity()  {
         if(PreferenceKeeper.instance.loginResponse!=null){
             if(PreferenceKeeper.instance.loginResponse!!.isRider){
                // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
-                   startActivity(Intent(this@HomeRiderrActivity, CurrentOrderListActivity::class.java))
+                   startActivity(Intent(this@HomeRiderActivity, CurrentOrderListActivity::class.java))
             }else{
-                startActivity(Intent(this@HomeRiderrActivity, VehicleInfoActivity::class.java))
+                startActivity(Intent(this@HomeRiderActivity, VehicleInfoActivity::class.java))
             }
         }
         else{
@@ -155,7 +155,7 @@ class HomeRiderrActivity : BaseActivity()  {
 
 
         binding.includeLeftDrawer.homepageDrawerMyAccount.setOnClickListener {
-            startActivity(Intent(this@HomeRiderrActivity, MyAccountActivity::class.java))
+            startActivity(Intent(this@HomeRiderActivity, MyAccountActivity::class.java))
         }
 
         binding.includeLeftDrawer.homepageDrawerHome.setOnClickListener {
@@ -178,7 +178,7 @@ class HomeRiderrActivity : BaseActivity()  {
 
 
         binding.includeLeftDrawer.homepageDrawerMyOrder.setOnClickListener {
-            startActivity(Intent(this@HomeRiderrActivity, MyOrderActivity2::class.java))
+            startActivity(Intent(this@HomeRiderActivity, MyOrderActivity2::class.java))
         }
         binding.includeLeftDrawer.homepageDrawerMyAccount.visibility=View.VISIBLE
         binding.includeLeftDrawer.view6.visibility=View.VISIBLE
@@ -189,7 +189,7 @@ class HomeRiderrActivity : BaseActivity()  {
             }else {
                 startActivity(
                     Intent(
-                        this@HomeRiderrActivity,
+                        this@HomeRiderActivity,
                         SendMoneyHomePageActivity::class.java
                     )
                 )
@@ -202,7 +202,7 @@ class HomeRiderrActivity : BaseActivity()  {
             }else {
                 startActivity(
                     Intent(
-                        this@HomeRiderrActivity,
+                        this@HomeRiderActivity,
                         UserVerificationAddMoneyActivity::class.java
                     )
                 )
@@ -214,7 +214,7 @@ class HomeRiderrActivity : BaseActivity()  {
             if(PreferenceKeeper.instance.loginResponse==null){
                 goLoginScreen()
             }else {
-                startActivity(Intent(this@HomeRiderrActivity, AddMoneyMainActivity::class.java)
+                startActivity(Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java)
                     .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))
             }
 
@@ -226,7 +226,7 @@ class HomeRiderrActivity : BaseActivity()  {
             if(PreferenceKeeper.instance.loginResponse==null){
                 goLoginScreen()
             }else {
-                startActivity(Intent(this@HomeRiderrActivity, ContactListActivity::class.java)
+                startActivity(Intent(this@HomeRiderActivity, ContactListActivity::class.java)
                     .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))
             }
 
@@ -235,7 +235,7 @@ class HomeRiderrActivity : BaseActivity()  {
             if(PreferenceKeeper.instance.loginResponse==null){
                 goLoginScreen()
             }else {
-                startActivity(Intent(this@HomeRiderrActivity, ChatListActivity::class.java)
+                startActivity(Intent(this@HomeRiderActivity, ChatListActivity::class.java)
                     .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))
             }
 
@@ -259,7 +259,7 @@ class HomeRiderrActivity : BaseActivity()  {
 
                     }
                     else if(position==1){
-                        startActivity(Intent(this@HomeRiderrActivity, UserHomePageNavigationActivity::class.java))
+                        startActivity(Intent(this@HomeRiderActivity, UserHomePageNavigationActivity::class.java))
                         finish()
                          //   riderLoginChk()
                     }
@@ -351,7 +351,7 @@ class HomeRiderrActivity : BaseActivity()  {
             if(drawerLayout!!.isDrawerOpen(GravityCompat.START)){
                 drawerLayout!!.closeDrawer(GravityCompat.START)
             } else {
-                Utils.showMessage(this@HomeRiderrActivity,getResources().getString(R.string.press_again))
+                Utils.showMessage(this@HomeRiderActivity,getResources().getString(R.string.press_again))
                 back_pressed_time = System.currentTimeMillis()
             }
         }

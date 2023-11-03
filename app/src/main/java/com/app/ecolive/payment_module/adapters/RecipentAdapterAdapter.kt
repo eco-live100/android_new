@@ -1,33 +1,26 @@
 package com.app.ecolive.payment_module.adapters
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
-import com.app.ecolive.databinding.*
-import com.app.ecolive.localmodel.ChatListModel
-import com.app.ecolive.localmodel.SimilarProductListModel
-import com.app.ecolive.localmodel.TransactionHistoryListModel
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
+import com.app.ecolive.databinding.RowDoctorListBinding
 
 
 class RecipentAdapterAdapter(var context: Context, var clickListern:ClickListener) :
     RecyclerView.Adapter<RecipentAdapterAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView : RowFriendlistBinding)
+    inner class ViewHolder(itemView : RowDoctorListBinding)
         : RecyclerView.ViewHolder(itemView.root){
-        var  binding : RowFriendlistBinding = itemView
+        var  binding : RowDoctorListBinding = itemView
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: RowFriendlistBinding = DataBindingUtil.inflate(
+        val binding: RowDoctorListBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.row_friendlist, parent, false)
+            R.layout.row_doctor_list, parent, false)
         return ViewHolder(binding)
     }
 

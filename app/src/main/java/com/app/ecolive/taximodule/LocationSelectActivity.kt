@@ -1,13 +1,11 @@
 package com.app.ecolive.taximodule
 
 import android.content.Intent
-import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LONGITUDE
@@ -20,16 +18,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import java.util.*
+import java.util.Arrays
 
 class LocationSelectActivity : AppCompatActivity() {
     lateinit var binding :ActivityLocationSelectBinding
     var startLocation:LatLng? =null
     var endLocation:LatLng? =null
-    var scheduleRideType = "scheduleNow"
+    var scheduleRideType = "request"
     var rideDate : String? = null
     var rideTime  : String? = null
 
@@ -50,7 +46,7 @@ class LocationSelectActivity : AppCompatActivity() {
             rideDate = intent.getStringExtra("scheduleRideDate")
             rideTime = intent.getStringExtra("scheduleRideTime")
             if (rideDate!=null && rideTime!=null ){
-                scheduleRideType="scheduleOnDate"
+                scheduleRideType="booking"
                 binding.scheduleNoteTv.visibility = View.VISIBLE
                 binding.scheduleNoteTv.text = "Scheduling this ride for $rideDate pickup time is $rideTime"
             }else{

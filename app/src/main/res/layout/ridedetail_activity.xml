@@ -426,6 +426,20 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pDetailDashLIne" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/pDetailComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="Complete Ride"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/pDetailDecline"
+                    app:layout_constraintTop_toBottomOf="@+id/pDetailTotBills" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/pDetailAccept"
@@ -438,10 +452,9 @@
                     android:text="Accept"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_16"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/pDetailDecline"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailTotBills" />
+                    app:layout_constraintTop_toBottomOf="@+id/pDetailComplete" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -454,12 +467,11 @@
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
                     android:text="Decline"
-
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintEnd_toStartOf="@+id/pDetailAccept"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailTotBills" />
+                    app:layout_constraintTop_toBottomOf="@+id/pDetailComplete" />
 
                 <View
                     app:layout_constraintTop_toBottomOf="@+id/pDetailDecline"

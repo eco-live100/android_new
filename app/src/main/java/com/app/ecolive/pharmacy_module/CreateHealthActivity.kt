@@ -1,33 +1,21 @@
 package com.app.ecolive.pharmacy_module
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityCreateHealthBinding
-import com.app.ecolive.databinding.ActivityPharmacyProcessBinding
-import com.app.ecolive.payment_module.RecipentListListActivity
-import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.utils.Utils
 
 class CreateHealthActivity : AppCompatActivity() {
     lateinit var binding:ActivityCreateHealthBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_create_health)
         Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
+        binding= DataBindingUtil.setContentView(this,R.layout.activity_create_health)
         binding.toolbar.toolbarTitle.text ="Eco- Live Health Profile"
         binding.toolbar.help.visibility = View.VISIBLE
         binding.toolbar.ivBack.setOnClickListener {

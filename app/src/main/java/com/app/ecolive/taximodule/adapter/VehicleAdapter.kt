@@ -13,12 +13,17 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.RowVehicleListBinding
 import com.app.ecolive.taximodule.VehicalListActivity
 import com.app.ecolive.taximodule.model.VehicleModel
+import com.bumptech.glide.Glide
 
-class VehicleAdapter(var context: Context, var data: List<VehicleModel.Data>):
+class VehicleAdapter(
+    var context: Context,
+    var data: List<VehicleModel.Data>,
+    var totalDistance: Double
+) :
     RecyclerView.Adapter<VehicleAdapter.ViewHolder>() {
-    inner class ViewHolder(itemView : RowVehicleListBinding)
-        : RecyclerView.ViewHolder(itemView.root){
-        var  binding : RowVehicleListBinding = itemView
+    inner class ViewHolder(itemView: RowVehicleListBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        var binding: RowVehicleListBinding = itemView
 
     }
 
@@ -28,13 +33,14 @@ class VehicleAdapter(var context: Context, var data: List<VehicleModel.Data>):
         animZoomIn = AnimationUtils.loadAnimation(context, R.anim.zoom_in)
         val binding: RowVehicleListBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.row_vehicle_list, parent, false)
+            R.layout.row_vehicle_list, parent, false
+        )
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.binding.let {
-            var item = data[position]
+            val item = data[position]
             if (position == selectedPosition) {
                 VehicalListActivity().getInstance()?.selectedVehicleData(item)
                 it.cardView.startAnimation(animZoomIn)
@@ -50,10 +56,16 @@ class VehicleAdapter(var context: Context, var data: List<VehicleModel.Data>):
             }
 
 
-            it.Amount.text =item.amount.toString()
-            it.vehicalName.text =item.taxiCategory.toString()
-            it.dropOff.text =item.dropOffAt.toString()
-            it.fuleType.text =item.taxiType.toString()
+            item.amount.let { amt ->
+                if (amt.isNotEmpty()) {
+                    it.Amount.text = String.format("%.2f", (totalDistance * amt.toDouble()))
+                }
+            }
+            if (item.logo.isNotEmpty())
+                Glide.with(context).load(item.logo).into(it.vehicleImg)
+            it.vehicalName.text = item.taxiCategory.toString()
+            it.dropOff.text = item.dropOffAt.toString()
+            it.fuleType.text = item.taxiType.toString()
             it.color.setBackgroundColor(Color.parseColor(item.vehicleTypeColor))
         }
 

@@ -1,6 +1,5 @@
 package com.app.ecolive.taximodule
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -26,9 +25,9 @@ class TaxiPaymentActivity : AppCompatActivity() {
         binding.toolbar.ivBack.setOnClickListener {
             finish()
         }
-        binding.paymentBussiness.setOnClickListener {
+      /*  binding.paymentBussiness.setOnClickListener {
            startActivity(Intent(this,FriendListTaxiActivity::class.java))
-        }
+        }*/
 
         binding.cashCardView.setOnClickListener {
             binding.cashCheckBox.visibility = View.VISIBLE

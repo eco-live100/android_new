@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 
@@ -53,7 +54,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <activity
-            android:name=".pharmacy_module.CreateHospitalActivity"
+            android:name=".pharmacy_module.CreatePharmacyProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
@@ -197,7 +198,7 @@
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".pharmacy_module.FriendListPharmacyActivity"
+            android:name=".pharmacy_module.DoctorListPharmacyActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
@@ -320,7 +321,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
         <activity
-            android:name=".rider_module.HomeRiderrActivity"
+            android:name=".rider_module.HomeRiderActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
@@ -592,6 +593,13 @@
         <service android:name=".services.LocationService"
             android:enabled="true"
             android:exported="true"/>
+        <service
+            android:name=".firebase.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

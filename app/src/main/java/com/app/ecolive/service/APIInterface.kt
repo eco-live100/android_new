@@ -3,8 +3,8 @@ package com.app.ecolive.service
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface APIInterface {
@@ -83,7 +83,28 @@ interface APIInterface {
     @POST("register-hospital")
     fun creatHospitalApi(@Body requestBody: MultipartBody): Call<ResponseBody>
 
-    //Taxi
+    @POST("register-hospital-employee")
+    fun registerHospitalEmployeeApi(@Body requestBody: RequestBody): Call<ResponseBody>
+
+
+    @Multipart
+    @POST("register-hospital-employee")
+    suspend fun registerHospitalEmployeeApi(
+        @Part("hospitalId") hospitalId: RequestBody,
+        @Part("profession") profession: RequestBody,
+        @Part("fullName") fullName: RequestBody,
+        @Part("idNumber") idNumber: RequestBody,
+        @Part("primaryVisitingHour") primaryVisitingHour: RequestBody,
+        @Part("secondryVisitingHour") secondryVisitingHour: RequestBody,
+        @Part("professionType") professionType: RequestBody,
+        @Part("mobileNumber") mobileNumber: RequestBody,
+        @Part("services") services: RequestBody,
+        @Part("consultFees") consultFees: RequestBody,
+        @Part("location") location: RequestBody,
+        @Part("isRepeated") isRepeated: RequestBody,
+        @Part backgroundPicture: MultipartBody.Part,
+        @Part logo: MultipartBody.Part,
+    ): Response<ResponseBody>
 
     @GET("taxi-category-list")
     fun getVehicalApi( ): Call<ResponseBody>
@@ -96,6 +117,24 @@ interface APIInterface {
 
     @GET("bokings-request")
     fun getTaxiBookingRequestListApi( ): Call<ResponseBody>
+    @GET("get-employee-profile?{userId}/{professionType}")
+    fun getProfileApi(
+        @Path("userId") userId : String,
+        @Path("professionType") professionType : String,
+    ) : Call<ResponseBody>
+
+    @GET("doctor-list")
+    fun getDoctorListApi( ): Call<ResponseBody>
+
+    @POST("accept-booking-request")
+    fun acceptBookingRequestRideApi(@Body params: RequestBody): Call<ResponseBody>
+
+    @POST("decline-booking-request")
+    fun declineBookingRequestRideApi(@Body params: RequestBody): Call<ResponseBody>
+
+    @POST("complete-booking-request")
+    fun completeBookingRequestRideApi(@Body params: RequestBody): Call<ResponseBody>
+
 //    @GET("city-list")
 //    fun getCityListAPI(): Call<ResponseBody>
 

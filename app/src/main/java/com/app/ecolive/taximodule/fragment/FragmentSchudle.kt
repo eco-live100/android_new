@@ -37,6 +37,7 @@ class FragmentSchudle : Fragment() {
     var SelectedDate =1
     var SelectedTime =1
     private val progressDialog = CustomProgressDialog()
+    val newFragment: Fragment = HomeFragment()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +45,7 @@ class FragmentSchudle : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentSchudleBinding.inflate(inflater, container, false)
         binding.toolbar.toolbarTitle.text = "Schedule rides for a\nweek/month"
-        binding.toolbar.ivBack.visibility =View.VISIBLE
+        binding.toolbar.ivBack.visibility =View.GONE
         val sdf = SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH)
         val currentDate = sdf.format(Date())
         System.out.println(" C DATE is  $currentDate")
@@ -79,14 +80,14 @@ class FragmentSchudle : Fragment() {
                     myCalendar.set(Calendar.MINUTE, minute)
                 }
                 if(SelectedTime==1){
-                    binding.toDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
+                    binding.fromDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.time).toString()
                 }else{
-                    binding.fromDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.getTime()).toString()
+                    binding.toDestinationTime.text =DateFormat.format("hh:mm aaa",myCalendar.time).toString()
                 }
             }
         binding.calender1.setOnClickListener {
             SelectedDate= 1
-            var dialog = DatePickerDialog(
+            val dialog = DatePickerDialog(
                 requireContext(),
                 R.style.my_dialog_theme,
                 date,
@@ -114,7 +115,7 @@ class FragmentSchudle : Fragment() {
             dialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.black))
 
         }
-        binding.timePicker.setOnClickListener {
+        binding.timePickerFrom.setOnClickListener {
             SelectedTime =1
             val timePickerDialog = TimePickerDialog(
                 requireContext(),
@@ -131,7 +132,7 @@ class FragmentSchudle : Fragment() {
             timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.black))
         }
 
-        binding.timePicker2.setOnClickListener {
+        binding.timePickerTo.setOnClickListener {
             SelectedTime =2
             val timePickerDialog = TimePickerDialog(
                 requireContext(),
@@ -176,10 +177,17 @@ class FragmentSchudle : Fragment() {
         startLocation = LatLng(MyApp.locationLast!!.latitude,MyApp.locationLast!!.longitude)
         placeApiInit()
         binding.confirmButton.setOnClickListener {
-            scheduleRideApiCall()
+            if(binding.startLocation.text.isEmpty()){
+                Toast.makeText(requireContext(), "Select Start Location", Toast.LENGTH_SHORT).show()
+            }else if(binding.DestinationLocation.text.isEmpty()){
+                Toast.makeText(requireContext(), "Select Destination Location", Toast.LENGTH_SHORT).show()
+            }else{
+                confirmTaxiApiCall()
+            }
         }
         binding.cancelButton.setOnClickListener {
-            parentFragmentManager.popBackStack();
+            //parentFragmentManager.popBackStack();
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment,newFragment)?.commit()
         }
         binding.toolbar.ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -224,32 +232,23 @@ class FragmentSchudle : Fragment() {
         if (requestCode == 111 && resultCode == AppCompatActivity.RESULT_OK) {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
-            binding.startLocation.setText(place.address)
+            binding.startLocation.text = place.address
             startLocation =place.latLng
-            Log.d(
-                "TAG",
-                "onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude)
-            )
-
-            //setMarker
-
+            Log.d("TAG>>>","onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude))
         }
         if (requestCode == 222 && resultCode == AppCompatActivity.RESULT_OK) {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
             endLocation =place.latLng
-            binding.DestinationLocation.setText(place.address)
+            binding.DestinationLocation.text = place.address
 
-            Log.d(
-                "TAG",
-                "onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude)
-            )
+            Log.d("TAG>>>","onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude))
             //setMarker
 
         }
 
         if (requestCode == 100 && resultCode == AppCompatActivity.RESULT_OK) {
-            binding.DestinationLocation.setText(data?.getStringExtra(LOCATION_ADDRESS))
+            binding.DestinationLocation.text = data?.getStringExtra(LOCATION_ADDRESS)
            // var latLng =LatLng(data?.getDoubleExtra(LATITUDE, 0.0)!!,data?.getDoubleExtra(LONGITUDE, 0.0)!!)
            // endLocation =latLng
 
@@ -259,6 +258,7 @@ class FragmentSchudle : Fragment() {
 
     }
 
+/*
     private fun scheduleRideApiCall() {
         progressDialog.show(requireContext())
         val scheduleRideViewModel = TaxiViewModel(requireActivity())
@@ -282,8 +282,57 @@ class FragmentSchudle : Fragment() {
                         var vv = it.data
                         Toast.makeText(requireContext(), "Request Send SuccessFully for schedule weekly/monthly ride.", Toast.LENGTH_SHORT)
                             .show()
+                        parentFragmentManager.popBackStack();
                     }
                 }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    val msg = it.message?.let { it1 -> JSONObject(it1) }
+                    MyApp.popErrorMsg("", "" + msg?.getString("msg"), requireContext())
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
+        }
+    }
+*/
+
+    private fun confirmTaxiApiCall() {
+        progressDialog.show(requireContext())
+        val confirmViewModel = TaxiViewModel(requireActivity())
+        val json = JSONObject()
+
+        json.put("taxiId", "")
+        json.put("fromLatitude", "${startLocation?.latitude}")
+        json.put("fromLongitude","${startLocation?.longitude}")
+        json.put("fromAddress",  binding.startLocation.text.toString())
+        json.put("toLatitude", "${endLocation?.latitude}")
+        json.put("toLongitude", "${endLocation?.longitude}")
+        json.put("toAddress", binding.DestinationLocation.text.toString())
+        json.put("fromDate", "${binding.fromDate.text.toString()}")
+        json.put("toDate", "${binding.toDate.text.toString()}")
+        json.put("pickUpTimeFrom", "${binding.fromDestinationTime.text.toString()}")
+        json.put("pickUpTimeTo", "${binding.toDestinationTime.text.toString()}")
+        json.put("paymentType", 0)
+        json.put("amount", "")
+        json.put("distanceInKm", "")
+        json.put("bookingType", 2)
+
+        Log.d("Utils", "startAddress=: ${binding.startLocation.text}")
+        Log.d("Utils", "endAddress=: ${binding.DestinationLocation.text}")
+        confirmViewModel.confirmTaxi(json).observe(requireActivity()) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        var vv = it.data
+                        Toast.makeText(requireContext(), "Taxi Request Send SuccessFully", Toast.LENGTH_SHORT)
+                            .show()
+                        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment,newFragment)?.commit()
+                    }
+                }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
