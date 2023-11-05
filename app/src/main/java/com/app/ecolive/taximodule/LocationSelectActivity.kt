@@ -19,7 +19,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import java.util.Arrays
 
 class LocationSelectActivity : AppCompatActivity() {
     lateinit var binding :ActivityLocationSelectBinding
@@ -90,23 +89,24 @@ class LocationSelectActivity : AppCompatActivity() {
         Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
         binding.startLocation.setOnClickListener {
             val fieldList: List<Place.Field> =
-                Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+                listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
+
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
                 fieldList
-            ).build(this)
+            ).setCountries(listOf("IN")).build(this)
 
             startActivityForResult(intent, 111)
         }
         binding.DestinationLocation.setOnClickListener {
             val fieldList: List<Place.Field> =
-                Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+                listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
                 fieldList
-            ).build(this)
+            ).setCountries(listOf("IN")).build(this)
 
             startActivityForResult(intent, 222)
         }

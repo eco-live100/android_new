@@ -114,22 +114,22 @@ class VehicleInfoActivity : BaseActivity() {
         builder.addFormDataPart("vehicleName", binding.vehicalName.text.toString())
         builder.addFormDataPart("vehicleNumber", binding.vehicalNumber.text.toString())
 
-        vehicleDocUri?.let {
+      /*  vehicleDocUri?.let {
             builder.addPart(multipartBodyFile(it,"vehicleDocument").body)
         }
         dlUri?.let {
             builder.addPart(multipartBodyFile(it,"driverLicense").body)
-        }
-       /* if (vehicleDocUri != null) {
-            builder.addPart(multipartBodyFile(vehicleDocUri,"vehicleDocument").body)
+        }*/
+       if (vehicleDocUri != null) {
+           builder.addPart(multipartBodyFile(vehicleDocUri!!,"vehicleDocument").body)
         } else {
             builder.addFormDataPart("vehicleDocument", "")
         }
         if (dlUri != null) {
-            builder.addPart(multipartBodyFile)
+            builder.addPart(multipartBodyFile(dlUri!!,"driverLicense").body)
         } else {
             builder.addFormDataPart("driverLicense", "")
-        }*/
+        }
         progressDialog.show(THIS!!)
         val vehicleViewModel = CommonViewModel(THIS!!)
         vehicleViewModel.updateVehicleProfile(builder.build()).observe(THIS!!) {

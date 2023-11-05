@@ -207,7 +207,7 @@ class FragmentSchudle : Fragment() {
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
                 fieldList
-            ).build(requireContext())
+            ).setCountries(listOf("IN")).build(requireContext())
 
             startActivityForResult(intent, 111)
         }
@@ -218,7 +218,7 @@ class FragmentSchudle : Fragment() {
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
                 fieldList
-            ).build(requireContext())
+            ).setCountries(listOf("IN")).build(requireContext())
 
             startActivityForResult(intent, 222)
         }

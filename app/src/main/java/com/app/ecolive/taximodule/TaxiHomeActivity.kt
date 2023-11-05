@@ -10,7 +10,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
@@ -27,40 +26,45 @@ import com.app.ecolive.taximodule.fragment.HomeFragment
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
 import com.google.android.gms.location.*
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
-class TaxiHomeActivity : AppCompatActivity()  {
-    lateinit var binding :ActivityTaxiHomeBinding
+class TaxiHomeActivity : AppCompatActivity() {
+    lateinit var binding: ActivityTaxiHomeBinding
     private lateinit var locationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var locationRequest: LocationRequest? = null
-    var locationLast :Location ?=null
-    var lastLocationAddress =""
+    var locationLast: Location? = null
+    var lastLocationAddress = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Utils.changeStatusTextColor2(this)
 //        Utils.changeStatusTextColor(this)this
         super.onCreate(savedInstanceState)
-        binding=DataBindingUtil.setContentView(this,R.layout.activity_taxi_home)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_taxi_home)
 
 
         if (savedInstanceState == null) {
             val newFragment: Fragment = HomeFragment()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
+            var far = supportFragmentManager.beginTransaction().replace(R.id.fragment, newFragment)
+                .commit()
         }
 
         binding.activityll.setOnClickListener {
             val newFragment: Fragment = ActivityFragment()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
+            var far = supportFragmentManager.beginTransaction().replace(R.id.fragment, newFragment)
+                .commit()
         }
         binding.homell.setOnClickListener {
             val newFragment: Fragment = HomeFragment()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
+            var far = supportFragmentManager.beginTransaction().replace(R.id.fragment, newFragment)
+                .commit()
         }
 
         binding.schudlell.setOnClickListener {
             val newFragment: Fragment = FragmentSchudle()
-            var far =supportFragmentManager.beginTransaction().replace(R.id.fragment,newFragment).commit()
+            var far = supportFragmentManager.beginTransaction().replace(R.id.fragment, newFragment)
+                .commit()
         }
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -76,7 +80,7 @@ class TaxiHomeActivity : AppCompatActivity()  {
                     // Update UI with location data
                     // ...
 
-                    MyApp.locationLast =location
+                    MyApp.locationLast = location
                     Log.d(
                         "TAG",
                         "onLocationResult: " + location.latitude + "\n" + location.longitude
@@ -101,8 +105,7 @@ class TaxiHomeActivity : AppCompatActivity()  {
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
-                        // getDirection(LatLng(location.latitude,location.longitude),LatLng(location.latitude,location.longitude))
-                            getAddress(location.latitude,location.longitude)
+                        getAddress(location.latitude, location.longitude)
                     }
                 }
             } else {
@@ -116,15 +119,16 @@ class TaxiHomeActivity : AppCompatActivity()  {
     }
 
 
-    private fun getAddress(latitude: Double, longitude: Double) : String {
+    private fun getAddress(latitude: Double, longitude: Double): String {
         var address = ""
         try {
-            var geocoder = Geocoder(this, Locale.ENGLISH)
+            val geocoder = Geocoder(this, Locale.ENGLISH)
             if (Build.VERSION.SDK_INT >= 33) {
-                geocoder.getFromLocation(
-                    latitude, longitude, 1
-                ) { addresses ->
-                    Handler(mainLooper).post{
+                runBlocking {
+                    geocoder.getFromLocation(
+                        latitude, longitude, 1
+                    ) { addresses ->
+
                         MyApp.lastLocationAddress = addresses[0].getAddressLine(0).toString()
                     }
                 }
@@ -140,32 +144,32 @@ class TaxiHomeActivity : AppCompatActivity()  {
         return address
     }
 
-/*    private fun getAddress(
-        context: Activity, latitude: Double, longitude: Double) {
-        var address = ""
-        //try {
-            val geocoder = Geocoder(context, Locale.getDefault())
-            if (Build.VERSION.SDK_INT >= 33) {
-                // declare here the geocodeListener, as it requires Android API 33
-                geocoder.getFromLocation(
-                    latitude, longitude, 1
-                ) { addresses ->
-                    if (addresses.isNotEmpty()) {
-                        Log.d("Utils", "getAddress13>=: ${addresses[0]}")
-                        address = addresses[0].getAddressLine(0).toString()
-                        Log.d("Utils", "getAddress13>=: $address")
-                        MyApp.lastLocationAddress = address
+    /*    private fun getAddress(
+            context: Activity, latitude: Double, longitude: Double) {
+            var address = ""
+            //try {
+                val geocoder = Geocoder(context, Locale.getDefault())
+                if (Build.VERSION.SDK_INT >= 33) {
+                    // declare here the geocodeListener, as it requires Android API 33
+                    geocoder.getFromLocation(
+                        latitude, longitude, 1
+                    ) { addresses ->
+                        if (addresses.isNotEmpty()) {
+                            Log.d("Utils", "getAddress13>=: ${addresses[0]}")
+                            address = addresses[0].getAddressLine(0).toString()
+                            Log.d("Utils", "getAddress13>=: $address")
+                            MyApp.lastLocationAddress = address
+                        }
                     }
+                } else {
+                    val list: MutableList<Address>? =
+                        geocoder.getFromLocation(latitude, longitude, 1)
+                    address = list?.get(0)?.getAddressLine(0).toString()
+                    MyApp.lastLocationAddress = address
+                    Log.d("Utils", "getAddress13<=: $address")
+                    // For Android SDK < 33, the addresses list will be still obtained from the getFromLocation() method
                 }
-            } else {
-                val list: MutableList<Address>? =
-                    geocoder.getFromLocation(latitude, longitude, 1)
-                address = list?.get(0)?.getAddressLine(0).toString()
-                MyApp.lastLocationAddress = address
-                Log.d("Utils", "getAddress13<=: $address")
-                // For Android SDK < 33, the addresses list will be still obtained from the getFromLocation() method
-            }
-     *//*   } catch (e: java.lang.Exception) {
+         *//*   } catch (e: java.lang.Exception) {
             e.printStackTrace() // getFromLocation() may sometimes fail
         }*//*
     }*/
@@ -257,8 +261,6 @@ class TaxiHomeActivity : AppCompatActivity()  {
         super.onPause()
         stopLocationUpdates()
     }
-
-
 
 
 }
