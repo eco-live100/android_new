@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:826700708931:android:7a7bb808302a87aefbe8f6",
+        "mobilesdk_app_id": "1:826700708931:android:8fd195757bcb2141fbe8f6",
         "android_client_info": {
           "package_name": "com.app.ecolive"
         }
       },
       "oauth_client": [
         {
-          "client_id": "826700708931-mgiajkf12tvchis4cumhbmbec2sr2o4q.apps.googleusercontent.com",
+          "client_id": "826700708931-3tcouri8a3spir7ohbfijnur9bntnib1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.ecolive",
-            "certificate_hash": "215b3d235df0eec2357363c26c6183719b76a0a4"
+            "certificate_hash": "6f4c80704e894177f035205ecbba6c3105756a1a"
           }
         },
         {

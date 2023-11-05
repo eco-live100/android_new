@@ -10,7 +10,6 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
@@ -152,9 +151,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
-            val latLng = LatLng(MyApp.locationLast!!.latitude, MyApp.locationLast!!.longitude)
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-
+            val latLng = MyApp.locationLast?.let { LatLng(it.latitude, it.longitude) }
+            latLng?.let {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it, 17f))
+            }
         } else {
 
 

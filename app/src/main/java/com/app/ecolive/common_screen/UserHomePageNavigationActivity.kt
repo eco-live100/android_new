@@ -8,9 +8,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
@@ -117,7 +121,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         locationRequest!!.priority = Priority.PRIORITY_HIGH_ACCURACY;
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                locationResult ?: return
+                locationResult
                 for (location in locationResult.locations) {
                     // Update UI with location data
                     // ...
@@ -888,6 +892,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
+                        getAddress(location.latitude,location.longitude)
                        /* ReverseGeoCoding().constructor(location.latitude,location.longitude)
                         MyApp.lastLocationAddress = ReverseGeoCoding().getAddress1()*/
                        /* var geocoder = Geocoder(this, Locale.ENGLISH)
@@ -903,7 +908,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             requestPermissions()
         }
     }
-   /* private fun getAddress(latitude: Double, longitude: Double) : String {
+    private fun getAddress(latitude: Double, longitude: Double) : String {
         var address = ""
         try {
             var geocoder = Geocoder(this, Locale.ENGLISH)
@@ -911,9 +916,8 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 geocoder.getFromLocation(
                     latitude, longitude, 1
                 ) { addresses ->
-                    runBlocking {
-                        address = addresses[0].getAddressLine(0).toString()
-                        MyApp.lastLocationAddress = address
+                    Handler(mainLooper).post{
+                        MyApp.lastLocationAddress = addresses[0].getAddressLine(0).toString()
                     }
                 }
             } else {
@@ -927,7 +931,6 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         }
         return address
     }
-*/
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             getSystemService(Context.LOCATION_SERVICE) as LocationManager

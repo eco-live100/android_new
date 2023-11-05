@@ -53,7 +53,11 @@ class HomeRiderActivity : BaseActivity()  {
         }else{
             binding.includeLeftDrawer.sideMenuUserName.text= "Hello, "+PreferenceKeeper.instance.loginResponse?.firstName
         }
-
+        var user = PreferenceKeeper.instance.loginResponse
+        if (user != null) {
+            binding.include.contentHome.riderUserName.text ="${user.firstName} ${user.lastName}"
+            //Glide.with(this).load(user.profilePicture).into(binding.include.contentHome.riderUserPic)
+        }
         setDummyList()
 
 

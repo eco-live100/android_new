@@ -56,8 +56,10 @@ class LocationSelectActivity : AppCompatActivity() {
         }
 
         Log.d("LocationSelection", "Location_Selection_Start_address :  ${MyApp.lastLocationAddress.toString()}")
-        binding.startLocation.text = MyApp.lastLocationAddress.toString()
-        startLocation =LatLng(MyApp.locationLast!!.latitude,MyApp.locationLast!!.longitude)
+
+        MyApp.lastLocationAddress?.let { binding.startLocation.text = it}
+        MyApp.locationLast?.let { startLocation = LatLng(it.latitude,it.longitude) }
+
         placeApiInit()
 
         binding.SetDestinationMap.setOnClickListener {
@@ -128,10 +130,10 @@ class LocationSelectActivity : AppCompatActivity() {
             )
             if(binding.DestinationLocation.text.trim().isNotEmpty()&&binding.startLocation.text.trim().isNotEmpty()){
                 startActivity(Intent(this,VehicalListActivity::class.java).
-                putExtra("STARTLat",startLocation!!.latitude.toString())
-                    .putExtra("STARTLang",startLocation!!.longitude.toString())
-                    .putExtra("ENDLat",endLocation!!.latitude.toString())
-                    .putExtra("ENDLang",endLocation!!.longitude.toString())
+                putExtra("STARTLat",startLocation?.latitude.toString())
+                    .putExtra("STARTLang",startLocation?.longitude.toString())
+                    .putExtra("ENDLat",endLocation?.latitude.toString())
+                    .putExtra("ENDLang",endLocation?.longitude.toString())
                     .putExtra("startAddress",binding.startLocation.text.toString())
                     .putExtra("endAddress",binding.DestinationLocation.text.toString())
                     .putExtra("scheduleRideType",scheduleRideType)
@@ -150,10 +152,10 @@ class LocationSelectActivity : AppCompatActivity() {
             binding.DestinationLocation.text = place.address
                if(binding.startLocation.text.trim()!=""){
                    startActivity(Intent(this,VehicalListActivity::class.java)
-                       .putExtra("STARTLat",startLocation!!.latitude.toString())
-                       .putExtra("STARTLang",startLocation!!.longitude.toString())
-                       .putExtra("ENDLat",endLocation!!.latitude.toString())
-                       .putExtra("ENDLang",endLocation!!.longitude.toString())
+                       .putExtra("STARTLat",startLocation?.latitude.toString())
+                       .putExtra("STARTLang",startLocation?.longitude.toString())
+                       .putExtra("ENDLat",endLocation?.latitude.toString())
+                       .putExtra("ENDLang",endLocation?.longitude.toString())
                        .putExtra("startAddress",binding.startLocation.text.toString())
                        .putExtra("endAddress",binding.DestinationLocation.text.toString())
                        .putExtra("scheduleRideType",scheduleRideType)
@@ -163,7 +165,7 @@ class LocationSelectActivity : AppCompatActivity() {
             binding.DestinationLocation.text =""
             Log.d(
                 "TAG",
-                "onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude)
+                "onActivityResult: " + (place.latLng?.latitude.toString() + "/ " + place.latLng?.longitude)
             )
             //setMarker
 
@@ -171,8 +173,8 @@ class LocationSelectActivity : AppCompatActivity() {
 
         if (requestCode == 100 && resultCode == RESULT_OK) {
             startActivity(Intent(this,VehicalListActivity::class.java)
-                .putExtra("STARTLat",startLocation!!.latitude.toString())
-                .putExtra("STARTLang",startLocation!!.longitude.toString())
+                .putExtra("STARTLat",startLocation?.latitude.toString())
+                .putExtra("STARTLang",startLocation?.longitude.toString())
                 .putExtra("ENDLat",data?.getDoubleExtra(LATITUDE, 0.0).toString())
                 .putExtra("ENDLang",data?.getDoubleExtra(LONGITUDE, 0.0).toString())
                 .putExtra("startAddress",binding.startLocation.text.toString())

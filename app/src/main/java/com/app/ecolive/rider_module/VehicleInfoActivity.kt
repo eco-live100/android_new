@@ -1,16 +1,22 @@
 package com.app.ecolive.rider_module
 
-import android.app.Activity
+import android.Manifest
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.view.View.INVISIBLE
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
@@ -18,36 +24,43 @@ import com.app.ecolive.databinding.ActivityVehicleInfoBinding
 import com.app.ecolive.rider_module.adapter.CstmVehleCatgryAdapter
 import com.app.ecolive.rider_module.model.VehicalCatgryListModel
 import com.app.ecolive.service.Status
-import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
-import com.app.ecolive.utils.*
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.PreferenceKeeper
+import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.getFilePath
 import com.app.ecolive.viewmodel.CommonViewModel
-import com.lassi.common.utils.KeyUtils
-import com.lassi.data.media.MiMedia
-import com.lassi.domain.media.LassiOption
-import com.lassi.domain.media.MediaType
-import com.lassi.presentation.builder.Lassi
-import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
 import com.offercity.base.BaseActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
-class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
+class VehicleInfoActivity : BaseActivity() {
     lateinit var binding: ActivityVehicleInfoBinding
     private val progressDialog = CustomProgressDialog()
-    private lateinit var selectSourceBottomSheetFragment: SelectSourceBottomSheetFragment
-    var body: MultipartBody.Part? = null
+    /* private lateinit var selectSourceBottomSheetFragment: SelectSourceBottomSheetFragment
+   var body: MultipartBody.Part? = null
     var bodyLisence: MultipartBody.Part? = null
     private lateinit var reqFile: RequestBody
-    private var filePath: File? = null
-    var isVehicalDocImageBtnClick = false
+    private var filePath: File? = null*/
+    //var isVehicalDocImageBtnClick = false
 
     lateinit var vehicleCatgryListID: ArrayList<String>
     var selectedVehicleTypeName = ""
     var selectedVehicleTypeID = ""
     var selectedVehicleCategoryID = ""
+
+    private val REQUEST_CAMERA_PERMISSION = 1
+    private var imageUri: Uri? = null
+    private var vehicleDocUri : Uri? = null
+    private var dlUri : Uri? = null
+    var vehicleDoc = 1
+    var dl = 2
+    var option = 1
 
     companion object {
         const val requestPermissionCode = 101
@@ -68,11 +81,13 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
                 riderVehicleDetailsAPICall(false)
             }
         } else if (v == binding.vehicalDocImage) {
-            isVehicalDocImageBtnClick = true
-            onSelectImage()
+            //isVehicalDocImageBtnClick = true
+            option = vehicleDoc
+            imagePopup()
         } else if (v == binding.vehicalLicenseImage) {
-            isVehicalDocImageBtnClick = false
-            onSelectImageLicense()
+            //isVehicalDocImageBtnClick = false
+            option = dl
+            imagePopup()
         } else if (v == binding.vehicalSignupBtnAnother) {
             if (isValidInput()) {
                 riderVehicleDetailsAPICall(true)
@@ -81,7 +96,12 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
             finish()
         }
     }
-
+    private fun multipartBodyFile(imageUri : Uri,requestParam : String) : MultipartBody.Part {
+        val filePath = getFilePath(this, imageUri)
+        val file = File(filePath)
+        val reqFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData(requestParam, file.name, reqFile)
+    }
     private fun riderVehicleDetailsAPICall(wannaAddMore: Boolean) {
         try {
             MyApp.hideSoftKeyboard(THIS!!)
@@ -93,18 +113,25 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
         builder.addFormDataPart("vehicleTypeId", selectedVehicleTypeID)
         builder.addFormDataPart("vehicleName", binding.vehicalName.text.toString())
         builder.addFormDataPart("vehicleNumber", binding.vehicalNumber.text.toString())
-        if (body != null) {
-            builder.addPart(body!!)
+
+        vehicleDocUri?.let {
+            builder.addPart(multipartBodyFile(it,"vehicleDocument").body)
+        }
+        dlUri?.let {
+            builder.addPart(multipartBodyFile(it,"driverLicense").body)
+        }
+       /* if (vehicleDocUri != null) {
+            builder.addPart(multipartBodyFile(vehicleDocUri,"vehicleDocument").body)
         } else {
             builder.addFormDataPart("vehicleDocument", "")
         }
-        if (bodyLisence != null) {
-            builder.addPart(bodyLisence!!)
+        if (dlUri != null) {
+            builder.addPart(multipartBodyFile)
         } else {
             builder.addFormDataPart("driverLicense", "")
-        }
+        }*/
         progressDialog.show(THIS!!)
-        var vehicleViewModel = CommonViewModel(THIS!!)
+        val vehicleViewModel = CommonViewModel(THIS!!)
         vehicleViewModel.updateVehicleProfile(builder.build()).observe(THIS!!) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -259,19 +286,133 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
     }
 
 
-    private fun onSelectImage() {
-        if (!Utils.checkingPermissionIsEnabledOrNot(THIS!!)) {
-            Utils.requestMultiplePermission(THIS!!, requestPermissionCode)
-        } else {
-            selectSourceBottomSheetFragment = SelectSourceBottomSheetFragment(this, "")
-            selectSourceBottomSheetFragment.show(
-                THIS!!.supportFragmentManager,
-                "selectSourceBottomSheetFragment"
-            )
+    private fun imagePopup() {
+        try {
+            val dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.pop_profile)
+            dialog.show()
+            val txtGallery = dialog.findViewById<View>(R.id.layoutGallery) as LinearLayout
+            val txtCamera = dialog.findViewById<View>(R.id.layoutCamera) as LinearLayout
+            txtCamera.setOnClickListener {
+                val currentAPIVersion = Build.VERSION.SDK_INT
+                if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.CAMERA
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ),
+                            REQUEST_CAMERA_PERMISSION
+                        )
+                    } else {
+                        selectCameraImage()
+                        dialog.dismiss()
+                    }
+                } else {
+                    selectCameraImage()
+                    dialog.dismiss()
+                }
+            }
+            txtGallery.setOnClickListener { v: View? ->
+                val currentAPIVersion = Build.VERSION.SDK_INT
+                if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                    arrayOf(
+                        if (ActivityCompat.checkSelfPermission(
+                                this,
+                                Manifest.permission.CAMERA
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(
+                                    Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                                ),
+                                2
+                            )
+                        } else {
+                            dialog.dismiss()
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                            intent.type = "image/*"
+//                            intent.type = "*/*";
+                            intent.action = Intent.ACTION_PICK
+                            startActivityForResult(
+                                Intent.createChooser(intent, "Select Image"),
+                                100
+                            )
+                        }
+                    )
+
+                } else {
+                    dialog.dismiss()
+                    val intent =
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    intent.type = "image/*"
+//                    intent.type = "*/*";
+                    intent.action = Intent.ACTION_PICK
+                    startActivityForResult(Intent.createChooser(intent, "Select Image"), 100)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+    }
+    private fun selectCameraImage() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(takePictureIntent, 200)
+        }
+    }
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            imageUri = data.data
+            if(option==vehicleDoc){
+                vehicleDocUri = imageUri
+                binding.vehicalDocImage.setImageURI(vehicleDocUri)
+            }
+            if(option==dl){
+                dlUri = imageUri
+                binding.vehicalLicenseImage.setImageURI(dlUri)
+            }
+        } else if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
+            val extras: Bundle = data.extras!!
+            val imageBitmap = extras["data"] as Bitmap?
+            imageUri = getImageUri(this, imageBitmap!!)
+            if(option==vehicleDoc){
+                vehicleDocUri = imageUri
+                binding.vehicalDocImage.setImageURI(vehicleDocUri)
+            }
+            if(option==dl){
+                dlUri = imageUri
+                binding.vehicalLicenseImage.setImageURI(dlUri)
+            }
+            Log.d("TAG", "iamgedsfas:: $imageUri")
+        }
+
     }
 
-    private fun onSelectImageLicense() {
+/*    private fun onSelectImage() {
         if (!Utils.checkingPermissionIsEnabledOrNot(THIS!!)) {
             Utils.requestMultiplePermission(THIS!!, requestPermissionCode)
         } else {
@@ -281,7 +422,19 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
                 "selectSourceBottomSheetFragment"
             )
         }
-    }
+    }*/
+
+/*    private fun onSelectImageLicense() {
+        if (!Utils.checkingPermissionIsEnabledOrNot(THIS!!)) {
+            Utils.requestMultiplePermission(THIS!!, requestPermissionCode)
+        } else {
+            selectSourceBottomSheetFragment = SelectSourceBottomSheetFragment(this, "")
+            selectSourceBottomSheetFragment.show(
+                THIS!!.supportFragmentManager,
+                "selectSourceBottomSheetFragment"
+            )
+        }
+    }*/
 
     private fun isValidInput(): Boolean {
         if (binding.spinVehicleType.selectedItem.toString() == resources.getString(R.string.plz_selectvehicleCategory)) {
@@ -319,7 +472,7 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
 
     }
 
-    override fun onOptionSelect(option: String) {
+/*    override fun onOptionSelect(option: String) {
         if (option == AppConstant.CAMERA_KEY) {
             selectSourceBottomSheetFragment.dismiss()
             //  ImagePicker.onCaptureImage(this)
@@ -343,8 +496,9 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
                 .build()
             receiveData.launch(intent)
         }
-    }
+    }*/
 
+/*
     private val receiveData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val selectedMedia =
@@ -377,8 +531,9 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
                 }
             }
         }
+*/
 
-    private fun setBody(bitmap: Bitmap, flag: String) {
+/*    private fun setBody(bitmap: Bitmap, flag: String) {
         val filePath = Utils.saveImage(THIS!!, bitmap)
         this.filePath = File(filePath)
         reqFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), this.filePath!!)
@@ -387,5 +542,5 @@ class VehicleInfoActivity : BaseActivity(), OnSelectOptionListener {
         else
             bodyLisence = MultipartBody.Part.createFormData(flag, this.filePath!!.name, reqFile)
 
-    }
+    }*/
 }
