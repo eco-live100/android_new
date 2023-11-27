@@ -1,139 +1,433 @@
 package com.app.ecolive.rider_module
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.akexorcist.googledirection.DirectionCallback
+import com.akexorcist.googledirection.GoogleDirection
+import com.akexorcist.googledirection.constant.AvoidType
+import com.akexorcist.googledirection.constant.TransportMode
+import com.akexorcist.googledirection.model.Direction
+import com.akexorcist.googledirection.util.DirectionConverter
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
-import com.app.ecolive.common_screen.adapters.DrawerCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
-import com.app.ecolive.common_screen.adapters.HomeProductListAdapter
 import com.app.ecolive.databinding.HomeriderActivityBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.ChatListActivity
 import com.app.ecolive.payment_module.AddMoneyMainActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.payment_module.UserVerificationAddMoneyActivity
-import com.app.ecolive.rider_module.adapter.RiderHomeOrderAdapter
-import com.app.ecolive.rider_module.model.RiderHomeOrderModel
+import com.app.ecolive.rider_module.adapter.RiderOrderListAdapter
+import com.app.ecolive.service.Status
+import com.app.ecolive.services.LocationService
 import com.app.ecolive.shop_owner.ShopOwnerHomePageNavigationActivity
 import com.app.ecolive.shop_owner.ShopUserSignupActivityNew
 import com.app.ecolive.taximodule.AboutStartTripActivity
+import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.user_module.*
 import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
 import com.localmerchants.ui.localModels.DrawerCategoryListModel
-import com.nightout.ui.fragment.SearchLocBottomSheet
 import com.offercity.base.BaseActivity
+import org.json.JSONObject
 
 
-class HomeRiderActivity : BaseActivity()  {
-    lateinit var binding: HomeriderActivityBinding
+class HomeRiderActivity : BaseActivity() {
+    private lateinit var binding: HomeriderActivityBinding
     var adapter: HomeCategoryListAdapter? = null
-    var adapterCategory: DrawerCategoryListAdapter? = null
-    private var mMap: GoogleMap? = null
     private val drawerCategoryListModel = ArrayList<DrawerCategoryListModel>()
-    var adapterProduct: HomeProductListAdapter? = null
     private var drawerLayout: DrawerLayout? = null
+    private val progressDialog = CustomProgressDialog()
+    lateinit var dialog: Dialog
+    private var isRiderOnline: Boolean = PreferenceKeeper.instance.isDriverOnline
+
+
+    var polyline: Polyline? = null
+    private lateinit var startLatLng: LatLng
+    private lateinit var endLatLng: LatLng
+    var totalDistance: Double = 0.0
+    var totalDuration: Double = 0.0
+    private lateinit var riderOrderListAdapter: RiderOrderListAdapter
+
+/*    private var locationRequest: LocationRequest? = null
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.homerider_activity)
         initView()
-        if(PreferenceKeeper.instance.loginResponse==null){
-            binding.includeLeftDrawer.sideMenuUserName.text= "Hello User"
-        }else{
-            binding.includeLeftDrawer.sideMenuUserName.text= "Hello, "+PreferenceKeeper.instance.loginResponse?.firstName
+
+        dialog = Dialog(this)
+        if (PreferenceKeeper.instance.loginResponse == null) {
+            binding.includeLeftDrawer.sideMenuUserName.text = getString(R.string.hello_user)
+        } else {
+            binding.includeLeftDrawer.sideMenuUserName.text =
+                "Hello, " + PreferenceKeeper.instance.loginResponse?.firstName
         }
-        var user = PreferenceKeeper.instance.loginResponse
+        val user = PreferenceKeeper.instance.loginResponse
         if (user != null) {
-            binding.include.contentHome.riderUserName.text ="${user.firstName} ${user.lastName}"
+            binding.include.contentHome.riderUserName.text =
+                "${user.firstName.replaceFirstChar { it.uppercase() }} ${user.lastName}"
             //Glide.with(this).load(user.profilePicture).into(binding.include.contentHome.riderUserPic)
         }
-        setDummyList()
-
-
+        MyApp.driverlocation = null
+/*
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = LocationRequest.create()
+        locationRequest?.interval = 4000
+        locationRequest?.fastestInterval = 2000
+        locationRequest?.priority = Priority.PRIORITY_HIGH_ACCURACY
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult
+                for (location in locationResult.locations) {
+                    MyApp.driverlocation = location
+                    Log.d(
+                        "TAG",
+                        "HomeRiderActivity onLocationResult: " + location.latitude + "\n" + location.longitude
+                    )
+                }
+            }
+        }
+*/
+        riderSwitchButton()
+        binding.include.contentHome.riderRecycle.layoutManager = LinearLayoutManager(this)
+        getProfileAPI()
     }
 
-    lateinit var riderHomeOrderAdapter: RiderHomeOrderAdapter
-    private fun setDummyList() {
-    var listHome  =  ArrayList<RiderHomeOrderModel>()
-        listHome.add(RiderHomeOrderModel("Jenny Wilson",R.drawable.dummy_male_user,true))
-        listHome.add(RiderHomeOrderModel("Jenny Wilson",R.drawable.dummy_male_user,true))
-        listHome.add(RiderHomeOrderModel("Jenny Wilson",R.drawable.dummy_female_user,false))
-        listHome.add(RiderHomeOrderModel("Jenny Wilson",R.drawable.dummy_male_user,false))
+/*    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
 
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            123
+        )
+    }
 
-        riderHomeOrderAdapter = RiderHomeOrderAdapter(this@HomeRiderActivity,listHome,object:RiderHomeOrderAdapter.ClickListener{
-            override fun onClik(pos: Int) {
-                startActivity(Intent(this@HomeRiderActivity,RideDetailActivity::class.java))
+    @SuppressLint("MissingSuperCall")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 123) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+               // getLocation()
+            }
+        }
+    }
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }*/
+/*    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                    val location: Location? = task.result
+                    if (location != null) {
+                        MyApp.driverlocation = location
+                        //getAddress(location.latitude,location.longitude)
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }*/
+
+    private fun riderRequestPopUp(riderId: String,bookingNumber: String) {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.custom_request_dialog)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val mDialogNo = dialog.findViewById<ImageView>(R.id.frmNo)
+        startLatLng = LatLng(26.8775, 75.8822254)
+        endLatLng = LatLng(26.8947446, 75.8301169)
+        (supportFragmentManager.findFragmentById(R.id.pDetailMap) as SupportMapFragment?)?.getMapAsync { googleMap ->
+            onMapReady(googleMap)
+        }
+        val pDetailAccept = dialog.findViewById<AppCompatButton>(R.id.pDetailAccept)
+        val pDetailDecline = dialog.findViewById<AppCompatButton>(R.id.pDetailDecline)
+        val pDetailComplete = dialog.findViewById<AppCompatButton>(R.id.pDetailComplete)
+        mDialogNo.setOnClickListener {
+            dialog.dismiss()
+        }
+        pDetailAccept.setOnClickListener {
+            if (isRiderOnline) {
+                if(MyApp.driverlocation==null){
+                    Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
+                }else {
+                    acceptAPI(
+                        riderId = riderId,
+                        bookingNumber = bookingNumber,
+                        latitude = MyApp.driverlocation?.latitude.toString(),
+                        longitude = MyApp.driverlocation?.longitude.toString()
+                    )
+                }
+            }else{
 
             }
 
+        }
+        pDetailDecline.setOnClickListener {
+            if(MyApp.driverlocation==null){
+                Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
+            }else {
+                declineAPI(
+                    riderId = riderId,
+                    bookingNumber = bookingNumber,
+                    latitude = MyApp.driverlocation?.latitude.toString(),
+                    longitude = MyApp.driverlocation?.longitude.toString()
+                )
+            }
+        }
+        pDetailComplete.setOnClickListener {
+            if(MyApp.driverlocation==null){
+                Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
+            }else {
+                completeAPI(
+                    riderId = riderId,
+                    bookingNumber = bookingNumber,
+                    latitude = MyApp.driverlocation?.latitude.toString(),
+                    longitude = MyApp.driverlocation?.longitude.toString()
+                )
+            }
+        }
+        dialog.show()
+    }
 
-        })
+    override fun onResume() {
+        super.onResume()
+        //startLocationUpdates()
+        locationServiceForRiderDuty()
+    }
 
-        binding.include.contentHome.riderRecycle.also {
-            it.layoutManager = LinearLayoutManager(THIS!!,LinearLayoutManager.VERTICAL,false)
-            it.adapter = riderHomeOrderAdapter
+    private fun onMapReady(mMap: GoogleMap) {
+        val builder = LatLngBounds.Builder()
+
+        builder.include(startLatLng)
+        builder.include(endLatLng)
+
+        val bounds = builder.build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val padding = (width * 0.12).toInt() // offset from edges of the map 12% of screen
+
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        mMap.animateCamera(cu)
+
+        mMap.addMarker(
+            MarkerOptions()
+                .position(startLatLng) //                .flat(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        )
+        mMap.addMarker(
+            MarkerOptions()
+                .position(endLatLng) //                .flat(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+        )
+        GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY")
+            .from(startLatLng)
+            .to(endLatLng)
+            .avoid(AvoidType.FERRIES)
+            .alternativeRoute(false)
+            .transportMode(TransportMode.DRIVING)
+            .execute(object : DirectionCallback {
+                override fun onDirectionSuccess(direction: Direction?) {
+                    Log.d("TAG", "onDirectionSuccess: " + direction?.routeList)
+                    val directionPositionList: ArrayList<LatLng> =
+                        direction?.routeList?.get(0)?.legList?.get(0)?.directionPoint!!
+                    if (polyline == null) {
+                        polyline = mMap.addPolyline(
+                            DirectionConverter.createPolyline(
+                                this@HomeRiderActivity,
+                                directionPositionList,
+                                3,
+                                Color.BLACK
+                            )
+                        )
+                    } else {
+                        polyline!!.remove()
+                        polyline = mMap.addPolyline(
+                            DirectionConverter.createPolyline(
+                                this@HomeRiderActivity,
+                                directionPositionList,
+                                3,
+                                Color.BLACK
+                            )
+                        )
+                    }
+                    Log.d("TAG", "safsafsafsadgsaasf: ")
+
+                    val routeArray = direction.routeList
+                    for (i in 0 until routeArray.size) {
+                        val legs1 = direction.routeList[i].legList[0]
+                        val distance = legs1.distance
+                        val duration = legs1.duration
+                        totalDistance += distance.value
+                        totalDuration += duration.value
+                        totalDistance /= 1000
+                        totalDuration /= 60
+                        totalDistance = (totalDistance * 10) / 10.0
+                        Log.d("TAG", "Total_distance:  - ${distance.text}")
+                        Log.d("TAG", "Total_duration: - ${duration.text}")
+                    }
+                    // binding.timeDistanceTotalTv.text = String.format("Estimated Distance : %.2f km And Time : %.0f mins", totalDistance,totalDuration)
+                    //getVehicleApi(totalDistance)
+                }
+
+                override fun onDirectionFailure(t: Throwable) {
+                    Log.d("TAG", "onDirectionFailure: " + t.message.toString())
+                }
+            })
+    }
+    private fun getRiderOrderList(riderId: String) {
+        val taxiViewModel = TaxiViewModel(this)
+        progressDialog.show(this)
+        taxiViewModel.riderOrderListApi(riderId).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        riderOrderListAdapter = RiderOrderListAdapter(
+                            this@HomeRiderActivity,
+                            it.data,
+                            object : RiderOrderListAdapter.ClickListener {
+                                override fun onClick(pos: Int) {
+                                    startActivity(Intent(this@HomeRiderActivity,
+                                        RideDetailActivity::class.java)
+                                        .putExtra(AppConstant.trackOrderDetail, it.data[pos]))
+                                }
+                            })
+                        binding.include.contentHome.riderRecycle.adapter = riderOrderListAdapter
+                    }
+
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
         }
     }
 
 
     override fun onClick(v: View?) {
         super.onClick(v)
-        if(v==binding.include.contentHome.headerHome.homepageToolbarSwitchToUser){
-            startActivity(Intent(this@HomeRiderActivity, UserHomePageNavigationActivity::class.java))
-            finish()
-           // riderLoginChk()
+        when (v) {
+            binding.include.contentHome.headerHome.homepageToolbarSwitchToUser -> {
+                startActivity(
+                    Intent(
+                        this@HomeRiderActivity,
+                        UserHomePageNavigationActivity::class.java
+                    )
+                )
+                finish()
+            }
 
-        }
-        else if(v ==  binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor){
-           shopLoginChk()
-        }
-        else if(v==binding.include.contentHome.riderChkDemand){
-            startActivity(Intent(this@HomeRiderActivity,CheckDemandActivity::class.java))
-        }else if(v==binding.include.contentHome.starttrip){
-            startActivity(Intent(this@HomeRiderActivity,AboutStartTripActivity::class.java))
+            binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor -> {
+                shopLoginChk()
+            }
+
+            binding.include.contentHome.starttrip -> {
+                startActivity(Intent(this@HomeRiderActivity, AboutStartTripActivity::class.java))
+            }
+
         }
 
     }
+
     private fun goLoginScreen() {
-        Utils.showMessage(THIS!!,"You have to login first")
+        Utils.showMessage(THIS!!, "You have to login first")
         startActivity(Intent(this@HomeRiderActivity, LoginActivity::class.java))
         finish()
     }
+
     private fun shopLoginChk() {
-        if(PreferenceKeeper.instance.loginResponse!=null){
-            if(PreferenceKeeper.instance.loginResponse!!.isVendor){
-              //  MyApp.popErrorMsg("","Your Shop details is in under verification",THIS!!)
-               startActivity(Intent(this@HomeRiderActivity, ShopOwnerHomePageNavigationActivity::class.java))
-            }else{
+        if (PreferenceKeeper.instance.loginResponse != null) {
+            if (PreferenceKeeper.instance.loginResponse!!.isVendor) {
+                //  MyApp.popErrorMsg("","Your Shop details is in under verification",THIS!!)
+                startActivity(
+                    Intent(
+                        this@HomeRiderActivity,
+                        ShopOwnerHomePageNavigationActivity::class.java
+                    )
+                )
+            } else {
                 startActivity(Intent(this@HomeRiderActivity, ShopUserSignupActivityNew::class.java))
             }
-        }else{
+        } else {
             goLoginScreen()
         }
     }
 
     private fun riderLoginChk() {
-        if(PreferenceKeeper.instance.loginResponse!=null){
-            if(PreferenceKeeper.instance.loginResponse!!.isRider){
-               // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
-                   startActivity(Intent(this@HomeRiderActivity, CurrentOrderListActivity::class.java))
-            }else{
+        if (PreferenceKeeper.instance.loginResponse != null) {
+            if (PreferenceKeeper.instance.loginResponse!!.isRider) {
+                // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
+                startActivity(Intent(this@HomeRiderActivity, CurrentOrderListActivity::class.java))
+            } else {
                 startActivity(Intent(this@HomeRiderActivity, VehicleInfoActivity::class.java))
             }
-        }
-        else{
+        } else {
             goLoginScreen()
         }
     }
@@ -143,9 +437,9 @@ class HomeRiderActivity : BaseActivity()  {
         statusBarColor()
 
         setTouchNClick(binding.include.contentHome.headerHome.homepageToolbarSwitchToUser)
-        setTouchNClick( binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor)
-        setTouchNClick( binding.include.contentHome.riderChkDemand)
-        setTouchNClick( binding.include.contentHome.starttrip)
+        setTouchNClick(binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor)
+        //setTouchNClick(binding.include.contentHome.riderChkDemand)
+        setTouchNClick(binding.include.contentHome.starttrip)
 
         drawerLayout = binding.drawerLayout
         binding.include.contentHome.headerHome.ivMenu.setOnClickListener { openCloseNavigationDrawerStart() }
@@ -168,8 +462,10 @@ class HomeRiderActivity : BaseActivity()  {
 
 
         binding.includeLeftDrawer.sideMenuLogout.setOnClickListener {
-            PreferenceKeeper.instance.isUserLogin=false
+            /*PreferenceKeeper.instance.isUserLogin=false
             PreferenceKeeper.instance.loginResponse = null
+*/
+            PreferenceKeeper.instance.clearData()
             val i = Intent(applicationContext, LoginActivity::class.java)
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -184,13 +480,13 @@ class HomeRiderActivity : BaseActivity()  {
         binding.includeLeftDrawer.homepageDrawerMyOrder.setOnClickListener {
             startActivity(Intent(this@HomeRiderActivity, MyOrderActivity2::class.java))
         }
-        binding.includeLeftDrawer.homepageDrawerMyAccount.visibility=View.VISIBLE
-        binding.includeLeftDrawer.view6.visibility=View.VISIBLE
+        binding.includeLeftDrawer.homepageDrawerMyAccount.visibility = View.VISIBLE
+        binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
         binding.include.constraintSendMoney.setOnClickListener {
-            if(PreferenceKeeper.instance.loginResponse==null){
+            if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
-            }else {
+            } else {
                 startActivity(
                     Intent(
                         this@HomeRiderActivity,
@@ -201,9 +497,9 @@ class HomeRiderActivity : BaseActivity()  {
         }
 
         binding.include.constraintAddMoney.setOnClickListener {
-            if(PreferenceKeeper.instance.loginResponse==null){
+            if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
-            }else {
+            } else {
                 startActivity(
                     Intent(
                         this@HomeRiderActivity,
@@ -215,101 +511,122 @@ class HomeRiderActivity : BaseActivity()  {
         }
 
         binding.include.constraintMakePayment.setOnClickListener {
-            if(PreferenceKeeper.instance.loginResponse==null){
+            if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
-            }else {
-                startActivity(Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java)
-                    .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))
+            } else {
+                startActivity(
+                    Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java)
+                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                )
             }
 
         }
 
 
 
-        binding.include.constraintCallFriends.setOnClickListener{
-            if(PreferenceKeeper.instance.loginResponse==null){
+        binding.include.constraintCallFriends.setOnClickListener {
+            if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
-            }else {
-                startActivity(Intent(this@HomeRiderActivity, ContactListActivity::class.java)
-                    .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))
+            } else {
+                startActivity(
+                    Intent(this@HomeRiderActivity, ContactListActivity::class.java)
+                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                )
             }
 
         }
-        binding.include.constraintMessage.setOnClickListener{
-            if(PreferenceKeeper.instance.loginResponse==null){
+        binding.include.constraintMessage.setOnClickListener {
+            if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
-            }else {
-                startActivity(Intent(this@HomeRiderActivity, ChatListActivity::class.java)
-                    .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))
+            } else {
+                startActivity(
+                    Intent(this@HomeRiderActivity, ChatListActivity::class.java)
+                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                )
             }
 
         }
+
+/*
+        binding.include.contentHome.riderDutyStatusSwitch.setOnCheckedChangeListener { _, isChecked ->
+            checkDemandAPI(isChecked)
+        }*/
 
     }
 
     private fun setSpinnerSideMenu() {
-        var list = ArrayList<String>()
+        val list = ArrayList<String>()
         list.add("As a User")
         list.add("As a Rider")
         list.add("As a Shop-Owner")
 
-        val aa: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
+        val aa: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeLeftDrawer.sideMenuSpinner.adapter=aa
+        binding.includeLeftDrawer.sideMenuSpinner.adapter = aa
         binding.includeLeftDrawer.sideMenuSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    if(position==0){
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    when (position) {
+                        0 -> {
 
-                    }
-                    else if(position==1){
-                        startActivity(Intent(this@HomeRiderActivity, UserHomePageNavigationActivity::class.java))
-                        finish()
-                         //   riderLoginChk()
-                    }
-                    else if(position==2){
+                        }
+
+                        1 -> {
+                            startActivity(
+                                Intent(
+                                    this@HomeRiderActivity,
+                                    UserHomePageNavigationActivity::class.java
+                                )
+                            )
+                            finish()
+                            //   riderLoginChk()
+                        }
+
+                        2 -> {
                             shopLoginChk()
+                        }
                     }
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
     }
-
-    lateinit var secrachLocationBtmSheet: SearchLocBottomSheet
-    fun openCloseNavigationDrawerStart() {
+    private fun openCloseNavigationDrawerStart() {
         when {
             drawerLayout!!.isDrawerOpen(GravityCompat.START) -> {
                 drawerLayout!!.closeDrawer(GravityCompat.START)
             }
+
             else -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
             }
         }
     }
+
     fun openCloseNavigationDrawerEnd() {
         when {
             drawerLayout!!.isDrawerOpen(GravityCompat.END) -> {
                 drawerLayout!!.closeDrawer(GravityCompat.END)
             }
+
             else -> {
                 drawerLayout!!.openDrawer(GravityCompat.END)
             }
         }
     }
 
-
-
-
-
     private fun statusBarColor() {
         Utils.changeStatusColor(this, R.color.color_050D4C)
-       // Utils.changeStatusTextColor(this)
+        // Utils.changeStatusTextColor(this)
     }
 
-
-
-    private fun sideMenuCategoryList()
-    {
+    private fun sideMenuCategoryList() {
         var item1 = DrawerCategoryListModel("Fashion & Beauty")
         drawerCategoryListModel.add(item1)
         item1 = DrawerCategoryListModel("Electronics and Devices")
@@ -340,27 +657,305 @@ class HomeRiderActivity : BaseActivity()  {
         drawerCategoryListModel.add(item1)
 
 
-
     }
-
 
 
     private var back_pressed_time: Long = 0
     private val PERIOD: Long = 2000
+
     @SuppressLint("WrongConstant")
     override fun onBackPressed() {
+        super.onBackPressed()
         if (back_pressed_time + PERIOD > System.currentTimeMillis())
             finishAffinity()
         else {
-            if(drawerLayout!!.isDrawerOpen(GravityCompat.START)){
+            if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout!!.closeDrawer(GravityCompat.START)
             } else {
-                Utils.showMessage(this@HomeRiderActivity,getResources().getString(R.string.press_again))
+                Utils.showMessage(this@HomeRiderActivity, resources.getString(R.string.press_again))
                 back_pressed_time = System.currentTimeMillis()
             }
         }
     }
 
+    private fun checkDemandAPI(isChecked: Boolean,riderId: String,) {
+        val taxiViewModel = TaxiViewModel(this)
+        progressDialog.show(this)
+        isRiderOnline = isChecked
+        val json = JSONObject()
+        json.put("driverId", "$riderId")
+        json.put("taxiId", "$riderId")
+        json.put("driverOnDuty", isRiderOnline)
 
+        taxiViewModel.checkDemandRideApi(json).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        riderSwitchButton()
+                        PreferenceKeeper.instance.isDriverOnline = isRiderOnline
+                        startActivity(
+                            Intent(
+                                this@HomeRiderActivity,
+                                CheckDemandActivity::class.java
+                            ).putExtra("RiderStatus", isRiderOnline)
+                        )
+                    }
+                }
+
+                Status.LOADING -> {
+                    Log.d("ok", "LOADING: ")
+                }
+
+                Status.ERROR -> {
+                    binding.include.contentHome.riderDutyStatusSwitch.isChecked = false
+                    binding.include.contentHome.riderDutyStatusSwitch.text =
+                        getString(R.string.offline)
+                    binding.include.contentHome.riderDutyStatusSwitch.setTextColor(
+                        resources.getColor(
+                            R.color.color_red
+                        )
+                    )
+
+                    progressDialog.dialog.dismiss()
+                    Log.d("ok", "ERROR: ")
+                    MyApp.popErrorMsg("", it.message!!, this)
+
+                }
+            }
+        }
+    }
+
+    private fun getProfileAPI() {
+        val taxiViewModel = TaxiViewModel(this)
+        progressDialog.show(this)
+        val json = JSONObject()
+        taxiViewModel.getRiderProfileApi(json).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.data?.let { data->
+                        binding.include.contentHome.riderUserName.text =
+                            "${data.firstName.capitalize() } ${data.lastName.capitalize()}"
+                        data.totalEarning.let { earning->binding.include.contentHome.riderTotalAmount.text = "\$$earning" }
+                        data.totalBookings.let { trip->binding.include.contentHome.riderTotalTrip.text = trip.toString() }
+                        data.todayEarning.let { earning->binding.include.contentHome.riderAmountEarnToday.text = "\$$earning" }
+                        data.todayBookings.let { trip->binding.include.contentHome.riderTotalTripToday.text = trip.toString() }
+                        binding.include.contentHome.riderDutyStatusSwitch.setOnClickListener {
+                            checkDemandAPI(binding.include.contentHome.riderDutyStatusSwitch.isChecked,data._id)
+                        }
+                        getRiderOrderList(data._id)
+                        riderRequestPopUp(data._id,data.latitude)
+                    }
+                }
+
+                Status.LOADING -> {
+                    Log.d("ok", "LOADING: ")
+                }
+
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    Log.d("ok", "ERROR: ")
+                    MyApp.popErrorMsg("", it.message!!, this)
+
+                }
+            }
+        }
+    }
+
+    private fun acceptAPI(riderId: String,bookingNumber: String, latitude: String, longitude: String) {
+        var taxiViewModel = TaxiViewModel(this)
+        progressDialog.show(this)
+        val json = JSONObject()
+        json.put("bookingNumber", "$bookingNumber")
+        json.put("driverId", "$riderId")
+        json.put("taxiId", "$riderId")
+        json.put("driverLatitude", "$latitude")
+        json.put("driverLongitude", "$longitude")
+        json.put("driverAddress", "this is Address")
+
+        taxiViewModel.acceptBookingRequestRideApi(json).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        dialog.isShowing.let {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+
+                Status.LOADING -> {
+                    Log.d("ok", "LOADING: ")
+                }
+
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    Log.d("ok", "ERROR: ")
+                    MyApp.popErrorMsg("", it.message!!, this)
+
+                }
+            }
+        }
+    }
+
+    private fun declineAPI(riderId: String,bookingNumber: String, latitude: String, longitude: String) {
+        var taxiViewModel = TaxiViewModel(this)
+        progressDialog.show(this)
+        val json = JSONObject()
+        json.put("bookingNumber", "$bookingNumber")
+        json.put("driverId", "$riderId")
+        json.put("taxiId", "$riderId")
+        json.put("driverLatitude", "$latitude")
+        json.put("driverLongitude", "$longitude")
+        json.put("driverAddress", "this is Address")
+
+        taxiViewModel.declineBookingRequestRideApi(json).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        dialog.isShowing.let {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+
+                Status.LOADING -> {
+                    Log.d("ok", "LOADING: ")
+                }
+
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    Log.d("ok", "ERROR: ")
+                    MyApp.popErrorMsg("", it.message!!, this)
+
+                }
+            }
+        }
+    }
+
+    private fun completeAPI(riderId: String,bookingNumber: String, latitude: String, longitude: String) {
+        var taxiViewModel = TaxiViewModel(this)
+        progressDialog.show(this)
+        val json = JSONObject()
+        json.put("bookingNumber", "$bookingNumber")
+        json.put("driverId", "$riderId")
+        json.put("taxiId", "$riderId")
+        json.put("driverLatitude", "$latitude")
+        json.put("driverLongitude", "$longitude")
+        json.put("driverAddress", "this is Address")
+
+        taxiViewModel.completeBookingRequestRideApi(json).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        dialog.isShowing.let {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+
+                Status.LOADING -> {
+                    Log.d("ok", "LOADING: ")
+                }
+
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    Log.d("ok", "ERROR: ")
+                    MyApp.popErrorMsg("", it.message!!, this)
+
+                }
+            }
+        }
+    }
+
+
+    private fun locationServiceForRiderDuty(){
+        val serviceStarted = LocationService.isServiceStarted
+        if (!serviceStarted) {
+
+            if (isRiderOnline) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(
+                        Intent(
+                            this,
+                            LocationService::class.java
+                        )
+                    )
+                } else {
+                    startService(
+                        Intent(
+                            this,
+                            LocationService::class.java
+                        )
+                    )
+                }
+                Log.d("TAG", "onCreate: Location_Service_Started:true")
+
+            } else {
+//                stopService(
+//                    Intent(
+//                        this,
+//                        LocationService::class.java
+//                    )
+//                )
+                Log.d("TAG", "onCreate: Location_Service_Started:Online_False")
+            }
+        } else {
+            Log.d("TAG", "onCreate: Location_Service_Started:true1")
+        }
+    }
+
+    private fun riderSwitchButton(){
+        binding.include.contentHome.riderDutyStatusSwitch.isChecked = isRiderOnline
+        if (isRiderOnline) {
+            binding.include.contentHome.riderDutyStatusSwitch.text =
+                getString(R.string.online)
+            binding.include.contentHome.riderDutyStatusSwitch.setTextColor(
+                resources.getColor(
+                    R.color.color_006400
+                )
+            )
+        } else {
+            binding.include.contentHome.riderDutyStatusSwitch.text =
+                getString(R.string.offline)
+            binding.include.contentHome.riderDutyStatusSwitch.setTextColor(
+                resources.getColor(
+                    R.color.color_red
+                )
+            )
+        }
+    }
+
+    /*     private fun startLocationUpdates() {
+           if (ActivityCompat.checkSelfPermission(
+                   this,
+                   Manifest.permission.ACCESS_FINE_LOCATION
+               ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                   this,
+                   Manifest.permission.ACCESS_COARSE_LOCATION
+               ) != PackageManager.PERMISSION_GRANTED
+           ) {
+               return
+           }
+           locationRequest?.let {
+               mFusedLocationClient.requestLocationUpdates(
+                   it,
+                   locationCallback,
+                   Looper.getMainLooper()
+               )
+           }
+       }
+
+       private fun stopLocationUpdates() {
+           mFusedLocationClient.removeLocationUpdates(locationCallback)
+       }
+
+     override fun onPause() {
+           super.onPause()
+           stopLocationUpdates()
+       }*/
 
 }

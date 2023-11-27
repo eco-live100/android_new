@@ -180,5 +180,18 @@
     <string name="enter_name_or_mobile_number">Enter name or mobile number</string>
     <string name="from_destination">From destination:</string>
     <string name="to_destination">To destination:</string>
+    <string name="hello_user">Hello User</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="today_trips">Today Trips</string>
+    <string name="total_earning">Total Earning</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="enter_medicine_name">Enter medicine name</string>
+    <string name="ride_detail">Ride Detail</string>
+    <string name="order_detail">Order Detail</string>
+    <string name="track_order">Track Order</string>
+    <string name="distance">Distance</string>
+    <string name="order_amount">Order amount</string>
+    <string name="arrival_time">Arrival time</string>
 
 </resources>

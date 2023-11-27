@@ -54,10 +54,12 @@ class LocationSelectActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("LocationSelection", "Location_Selection_Start_address :  ${MyApp.lastLocationAddress.toString()}")
 
         MyApp.lastLocationAddress?.let { binding.startLocation.text = it}
-        MyApp.locationLast?.let { startLocation = LatLng(it.latitude,it.longitude) }
+        MyApp.locationLast?.let {
+            startLocation = LatLng(it.latitude,it.longitude)
+        }
+        Log.d("LocationSelection", "Location_Selection_Start_address :  ${MyApp.lastLocationAddress.toString()}--$startLocation")
 
         placeApiInit()
 

@@ -47,11 +47,16 @@ object AppConstant {
     const val TIMER_UPDATE_INTERVAL = 50L
 
     // Notifications
-    const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
-    const val NOTIFICATION_CHANNEL_NAME = "Tracking"
+    const val NOTIFICATION_CHANNEL_ID = "ecolive"
+    const val NOTIFICATION_CHANNEL_NAME = "Ecolive"
     const val NOTIFICATION_ID = 1
     var FireBaseToken = "fireBaseToken"
     var fcmToken = "fcmToken"
+
+
+    var trackOrderDetail = "trackOrder"
+    var driverId = "DriverId"
+    var IsDriverOnline = "isDriverOnline"
 
 
 

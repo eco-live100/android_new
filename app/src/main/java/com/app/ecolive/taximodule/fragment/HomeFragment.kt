@@ -32,13 +32,13 @@ import java.util.Calendar
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
     lateinit var binding: FragmentHome2Binding
-    lateinit var date1: TextView
-    lateinit var time: TextView
-    lateinit var setPickUpTimeButton: AppCompatButton
+    private lateinit var date1: TextView
+    private lateinit var time: TextView
+    private lateinit var setPickUpTimeButton: AppCompatButton
 
-    val myCalendar: Calendar = Calendar.getInstance()
-    val date =
-        DatePickerDialog.OnDateSetListener { view, year, month, day ->
+    private val myCalendar: Calendar = Calendar.getInstance()
+    private val date =
+        DatePickerDialog.OnDateSetListener { _, year, month, day ->
             myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             date1.text = formatedDate
         }
 
-    val myTimeListener =
+    private val myTimeListener =
         TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
             if (view.isShown) {
                 myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -133,10 +133,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     .setTextColor(resources.getColor(R.color.black))
             }
         }
-
-
-
-
         return binding.root
     }
 
@@ -159,8 +155,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
         }
-
-
     }
 
 }

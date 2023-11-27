@@ -3,6 +3,7 @@ package com.app.ecolive.login_module
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
@@ -15,8 +16,9 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
-import com.app.ecolive.utils.getFcmTokenAndSave
 import com.app.ecolive.viewmodel.CommonViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offercity.base.BaseActivity
 import org.json.JSONObject
 
@@ -31,7 +33,18 @@ class LoginActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         getExtraDataIntent()
-        this.getFcmTokenAndSave()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("fire_base_newToken", token)
+            PreferenceKeeper.instance.fcmTokenSave= token
+
+        })
         initView()
     }
 
@@ -59,7 +72,7 @@ class LoginActivity : BaseActivity() {
         var json = JSONObject()
         json.put("emailMobile", binding.loginPhNo.text.toString())
         json.put("password", binding.loginPwd.text.toString())
-        json.put(AppConstant.fcmToken, PreferenceKeeper.instance.fcmTokenSave)
+        json.put("fcmToken", PreferenceKeeper.instance.fcmTokenSave)
 
         loginViewModel.userLogin(json).observe(THIS!!) { it ->
             when (it.status) {

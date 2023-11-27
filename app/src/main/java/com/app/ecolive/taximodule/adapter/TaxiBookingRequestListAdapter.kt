@@ -1,6 +1,7 @@
 package com.app.ecolive.taximodule.adapter
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -27,19 +28,29 @@ class TaxiBookingRequestListAdapter(var context: Context, var dataList: List<Tax
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        var item = dataList[position]
-        if(item.bookingStatus=="requested"){
-            holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
-            holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_red))
-        }else if(item.bookingStatus=="accepted"){
-            holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
-            holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_51E555))
+        val item = dataList[position]
+        when (item.bookingStatus) {
+            "requested" -> {
+                holder.binding.tvTotBill.visibility = View.GONE
+                holder.binding.tvTrackOrder.visibility = View.GONE
+                holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
+                holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_red))
+            }
+            "accepted" -> {
+                holder.binding.tvTotBill.visibility = View.VISIBLE
+                holder.binding.tvTrackOrder.visibility = View.VISIBLE
+                holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
+                holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_006400))
+            }
+            else -> {
+                holder.binding.tvTotBill.visibility = View.GONE
+                holder.binding.tvTrackOrder.visibility = View.GONE
+            }
         }
-
         holder.binding.bookingIdTv.text="Booking Id:- ${item.bookingNumber}"
         holder.binding.bookingDateTv.text="${item.createdAt}"
-        holder.binding.fromAddressTv.text="From Address:- ${item.fromAddress}"
-        holder.binding.toAddressTv.text="To Address:- ${item.toAddress}"
+        holder.binding.fromAddressTv.text="${item.fromAddress}"
+        holder.binding.toAddressTv.text="${item.toAddress}"
         holder.binding.tvTotBill.text="Total Bill:- $ ${item.amount}"
         //holder.binding.toAddressTv.setImageDrawable(dataList[position].image)
         holder.binding.tvTrackOrder.setOnClickListener {

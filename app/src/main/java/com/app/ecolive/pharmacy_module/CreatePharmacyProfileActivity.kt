@@ -34,7 +34,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -42,14 +41,12 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Arrays
 import java.util.Calendar
 import java.util.Locale
 
 @AndroidEntryPoint
 class CreatePharmacyProfileActivity : AppCompatActivity() {
     lateinit var binding: ActivityCreateHospitalBinding
-    private lateinit var selectSourceBottomSheetFragment: SelectSourceBottomSheetFragment
     var bgimg = 1
     var logo = 2
     var option = 1
@@ -76,7 +73,7 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         Utils.changeStatusColor(this, R.color.darkblue)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_hospital)
-        binding.toolbar.toolbarTitle.text = "Create Profile"
+        binding.toolbar.toolbarTitle.text = getString(R.string.create_profile)
         binding.toolbar.ivBack.setOnClickListener { finish() }
         //  startActivity(Intent(this,HospitalProfile::class.java))
 
@@ -220,10 +217,10 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         binding.idNumberTv.setText("32332")
         binding.doctorRB.isChecked = true;
         binding.consultFee.setText("10")
-        binding.fromVisitingTimeTv.setText("10:00 am")
-        binding.toVisitingTimeTv.setText("05:00 pm")
-        binding.fromAnotherVisitingTimeTv.setText("10:00 am")
-        binding.toAnotherVisitingTimeTv.setText("06:00 pm")
+       binding.fromVisitingTimeTv.text = "10:00 am"
+       binding.toVisitingTimeTv.text = "05:00 pm"
+       binding.fromAnotherVisitingTimeTv.text = "10:00 am"
+       binding.toAnotherVisitingTimeTv.text = "06:00 pm"
         binding.saveAndRepeat.isChecked = true
         binding.createBtn.setOnClickListener {
             Log.d("TAG", "date1 : ${binding.fromVisitingTimeTv.text}--date2 : ${binding.toVisitingTimeTv.text}")
@@ -289,7 +286,7 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
                     backgroundPicture = multiplePartBackgroundImage,
                     logo = multiplePartLogoImage,
                 )*/
-                        createAndUpdateProfile()
+                        //createAndUpdateProfile()
             }
 
         }
@@ -306,7 +303,7 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         binding.hospitalLocation.setOnClickListener {
             option = 3
             val fieldList: List<Place.Field> =
-                Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+                listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
@@ -372,7 +369,7 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
             }
-            txtGallery.setOnClickListener { v: View? ->
+            txtGallery.setOnClickListener {
                 val currentAPIVersion = Build.VERSION.SDK_INT
                 if (currentAPIVersion >= Build.VERSION_CODES.M) {
                     arrayOf(

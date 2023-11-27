@@ -27,7 +27,7 @@ class DoctorListPharmacyActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_doctor_list_phramicy)
         Utils.changeStatusColor(this, R.color.color_050D4C)
         Utils.changeStatusTextColor(this)
-        binding.toolbar.toolbarTitle.text = "Friend list(Eco-Live)"
+        binding.toolbar.toolbarTitle.text = "Doctor list(Eco-Live)"
         binding.toolbar.ivBack.setOnClickListener {
             finish()
         }

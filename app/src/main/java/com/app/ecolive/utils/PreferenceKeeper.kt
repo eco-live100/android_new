@@ -96,7 +96,14 @@ class PreferenceKeeper private constructor(context: Context?) {
 
     var fcmTokenSave: String?
         get() = prefs!!.getString(AppConstant.FireBaseToken, "")
-        set(cnt) {
-            prefs!!.edit().putString(AppConstant.FireBaseToken, cnt).apply()
+        set(fcmToken) {
+            prefs!!.edit().putString(AppConstant.FireBaseToken, fcmToken).apply()
+        }
+
+    var isDriverOnline: Boolean
+        get() = prefs!!.getBoolean(AppConstant.IsDriverOnline, false)
+        set(isDriverOnline) {
+            prefs!!.edit().putBoolean(AppConstant.IsDriverOnline, isDriverOnline)
+                .apply()
         }
 }

@@ -74,36 +74,24 @@
                     android:gravity="center">
 
                     <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/doctorProfile"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:src="@drawable/dummy_female_user"
                         app:shapeAppearance="@style/roundedImageViewRounded" />
 
                     <TextView
+                        android:id="@+id/doctorName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="Dr.Jenny"
+                        android:hint="Dr.Jenny"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:src="@drawable/dummy_female_user"
-                        app:shapeAppearance="@style/roundedImageViewRounded" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="Dr.Jenny"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <View
@@ -140,6 +128,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_edittext_blue2"
                         android:gravity="center"
+                        android:id="@+id/fileUploadLL"
                         android:orientation="vertical">
 
                         <ImageView
@@ -159,6 +148,7 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/pictureUploadLL"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_55sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
@@ -204,6 +194,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/symptomsEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -227,6 +218,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/symptomsDurationEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -250,6 +242,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/alreadyTakingMedEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -275,6 +268,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/recentHistoryEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -299,6 +293,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/allergiesEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -323,6 +318,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/smokingEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -347,6 +343,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/otherInfoEt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -372,6 +369,7 @@
 
 
                 <CheckBox
+                    android:id="@+id/aboveStatementsCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
@@ -388,6 +386,7 @@
 
 
                 <CheckBox
+                    android:id="@+id/youMaySendCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
@@ -407,6 +406,7 @@
                     android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/cancelButton"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginHorizontal="@dimen/_10sdp"
@@ -420,7 +420,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/Submit"
+                        android:id="@+id/submitButton"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginHorizontal="@dimen/_10sdp"

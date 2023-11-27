@@ -35,15 +35,14 @@ class DoctorListAdapter(var context: Context, var doctorList: ArrayList<DoctorLi
     }
 
     override fun onBindViewHolder(viewHolder: DoctorListAdapter.ViewHolder, position: Int) {
-        viewHolder.binding.let {
-            val item = doctorList[position]
-            it.chatTitle.text =item.fullName.toString()
-            //Glide.with(context).load(item.logo).into(it.chatImage)
-        }
+        val item = doctorList[position]
+        viewHolder.binding.chatTitle.text = item.fullName
         viewHolder.itemView.setOnClickListener {
             context.startActivity(
                 Intent(context, PrescriptionRequestActivity::class.java)
-            )/*.putExtra("productId", productId)*/
+                    .putExtra("doctorName","${item.fullName}")
+                    .putExtra("doctorProfile","${item.fullName}")
+            )
         }
     }
 

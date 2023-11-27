@@ -69,6 +69,8 @@ class MyApp : Application() {
         var SHARED_PREF_NAME = "Brng_Pref"
         var locationLast:Location? =null
         var lastLocationAddress:String? =null
+        var driverlocation:Location? =null
+        var driverLocationAddress:String? =null
         fun getAppContext() : Context {
             return ctx!!
         }

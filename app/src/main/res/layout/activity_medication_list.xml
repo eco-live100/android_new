@@ -50,31 +50,74 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textSize="@dimen/_14sdp" />
 
-            <androidx.cardview.widget.CardView
+        <!--    <androidx.cardview.widget.CardView
                 android:id="@+id/chatListCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:elevation="4dp"
                 app:cardCornerRadius="10dp"
+                android:background="@drawable/grey_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-                <EditText
+-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/searchCons"
+                    android:background="@drawable/grey_border"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:hint="Enter medication name"
-                    android:padding="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:textColorHint="@color/color_707070"
-                    android:textSize="@dimen/sp_14" />
-            </androidx.cardview.widget.CardView>
+                    android:transitionName="searchTran"
+                    android:layout_marginVertical="10dp">
+
+                    <ImageView
+                        android:id="@+id/searchIv"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:padding="0dp"
+                        android:src="@drawable/ic_search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/clearIv"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_close"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/searchEt"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_45sdp"
+                        android:background="@null"
+                        android:hint="@string/enter_medicine_name"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/clearIv"
+                        app:layout_constraintStart_toEndOf="@+id/searchIv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            </androidx.cardview.widget.CardView>-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -84,76 +127,13 @@
                 android:textColor="@color/color_050D4C"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textSize="@dimen/_14sdp" />
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/medicineRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Atorvastatin"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:background="@drawable/bg_edittext_blue"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alogliptin/Metformin"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:background="@drawable/bg_edittext_blue"
-                    />
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bupropion"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:background="@drawable/bg_edittext_blue"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Humalog"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:background="@drawable/bg_edittext_blue"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Spironolactone"
-                    android:padding="@dimen/_10sdp"
-                    android:textColor="@color/color_blue"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:background="@drawable/bg_edittext_blue"
-                    />
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
+                android:layout_margin="8dp"
+                tools:itemCount="5"
+                tools:listitem="@layout/medicine_item"/>
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -7,18 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
-import android.os.CountDownTimer
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.app.ecolive.R
-import com.app.ecolive.localmodel.MyCartListModel
 import com.app.ecolive.taximodule.model.LocationModel
+import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.firebase.geofire.GeoFire
-import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -77,13 +75,17 @@ class LocationService : Service() {
                         /*geoFire.setLocation(
                             user?._id , GeoLocation(location.latitude, location.longitude)
                         ) { key, error -> Log.d(TAG, "Location update on Firebase") }*/
+                        MyApp.driverlocation = location
                         val timestamp = dateFormatter.format(System.currentTimeMillis())
-                        val locationModel = LocationModel(
+                        val locationModel: LocationModel = LocationModel(
                             driverId = user?._id,
+                            email = user?.email,
+                            driverName = "${user?.firstName} ${user?.lastName}",
+                            driverNumber = "${user?.mobileNumber}",
                             latitude = location.latitude,
                             longitude = location.longitude,
                             timeStamp = timestamp)
-                            ref.child("location").setValue(locationModel)
+                            ref.child("${user?._id}").setValue(locationModel)
 
                         /*    FirebaseDatabase.getInstance().reference.child("hudibabarider")
                                 .child(session.deliveryBoyId).child("l")
@@ -110,12 +112,12 @@ class LocationService : Service() {
                 createNotificationChannel("my_service", "My Background Service") else ""
 
         val builder = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Grocito Rider")
+            .setContentTitle("EcoLive Rider")
             .setContentText("You are online")
             .setOngoing(true)
-            .setSmallIcon(R.drawable.appicon_512) //TODO change it
+            .setSmallIcon(R.drawable.appicon_512)
         startForeground(1, builder.build())
-        Log.d(TAG, "Start Forground Services")
+        Log.d(TAG, "Start Foreground Services")
         isServiceStarted = true
     }
     override fun onDestroy() {

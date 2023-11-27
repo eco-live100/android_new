@@ -14,60 +14,52 @@
         <include
 
             android:id="@+id/toolbarRideDetail"
+            layout="@layout/custom_toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            layout="@layout/custom_toolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
             android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarRideDetail">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-
-                android:layout_marginStart="@dimen/_10ssp"
-                android:layout_marginEnd="@dimen/_10ssp"
-                android:layout_marginTop="@dimen/_10ssp"
-
                 android:background="@color/white"
-                android:padding="@dimen/_10ssp"
-
-               >
+                android:padding="@dimen/_10ssp">
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/rDetailMapView"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp"
-                    android:background="@drawable/bg_blank_gray"
+                    android:layout_height="@dimen/_200sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
 
                     <fragment
-                        android:id="@+id/pDetailMap"
+                        android:id="@+id/rideDetailMap"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/_2sdp" />
+                        android:layout_height="match_parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/pDetailUserPic"
                     android:layout_width="@dimen/_55sdp"
                     android:layout_height="@dimen/_55sdp"
-
                     android:layout_marginTop="@dimen/_10sdp"
                     android:src="@drawable/dummy_male_user"
                     app:civ_border_color="@color/color_050D4C"
@@ -109,7 +101,6 @@
                     android:id="@+id/pDetailUserKm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:drawableStart="@drawable/ic_path_green"
                     android:drawablePadding="@dimen/_1sdp"
                     android:text="5KM"
@@ -119,72 +110,208 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/pDetailUserName" />
 
-                <TextView
-                    android:id="@+id/pDetailID"
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewRider"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="#46565746"
-                    android:textColor="@color/color_333333"
-                    android:textSize="@dimen/_13ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/pDetailRating"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:elevation="@dimen/dimen_4dp"
+                    app:cardCornerRadius="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/pDetailRating" />
+                    app:layout_constraintTop_toBottomOf="@+id/pDetailRating">
 
 
-                <TextView
-                    android:id="@+id/pDetailAddrs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:text="Address"
-                    android:textColor="@color/color_9F9F9F"
-                    android:textSize="@dimen/_13ssp"
-                    app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintNext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/_12ssp">
+
+                        <TextView
+                            android:id="@+id/bookingIdTv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10ssp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:gravity="start"
+                            android:text="Booking Id"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/linerTop"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_10ssp"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/_5sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/bookingIdTv">
+
+                            <TextView
+                                android:id="@+id/bookingDateTv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="start"
+                                android:text="9 March 2021 | 6:30 PM"
+                                android:textColor="@color/color_ACACAC"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="10dp"
+                                android:layout_gravity="center_vertical"
+                                android:background="@color/color_707070" />
+
+                            <TextView
+                                android:id="@+id/bookingStatusTv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="end"
+                                android:text="Received"
+                                android:textColor="@color/color_ACACAC"
+                                android:textSize="@dimen/_11sdp" />
+
+                        </LinearLayout>
 
 
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailUserPic" />
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/fromOrToAddressLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="@dimen/_10sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linerTop">
 
-                <TextView
-                    android:id="@+id/pDetailAddrs1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2ssp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="ISCKON ELEGANCE"
-                    android:textColor="@color/color_333333"
-                    android:textSize="@dimen/_14ssp"
-                    app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailAddrs" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_50sdp"
+                                android:padding="@dimen/_5sdp"
+                                android:src="@drawable/sourcetodest_icon" />
 
-                <TextView
-                    android:id="@+id/pDetailAddrs2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:drawableStart="@drawable/ic_map15"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:singleLine="true"
-                    android:text="Piazza del duamo, 80777 Firenze fi, italy"
-                    android:textColor="@color/color_333333"
-                    app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailAddrs1" />
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_F5BB36"
-                    android:fontFamily="@font/roboto_regular"
-                    android:padding="@dimen/_5sdp"
-                    android:text="1 Hour Delivery"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/pDetailAddrs"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/pDetailAddrs" />
+                                <TextView
+                                    android:id="@+id/fromAddressTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="@color/transparent"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:gravity="center_vertical"
+                                    android:maxLines="1"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginHorizontal="@dimen/_5sdp"
+                                    android:background="#D6E2ED" />
+
+                                <TextView
+                                    android:id="@+id/toAddressTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:background="@null"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:gravity="center_vertical"
+                                    android:hint="Where to ?"
+                                    android:maxLines="1"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/grey"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <!--    <TextView
+                        android:id="@+id/pDetailID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="#46565746"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/_13ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/pDetailRating"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/pDetailRating" />
+
+
+                    <TextView
+                        android:id="@+id/pDetailAddrs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:text="Address"
+                        android:textColor="@color/color_9F9F9F"
+                        android:textSize="@dimen/_13ssp"
+                        app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
+
+
+                        app:layout_constraintTop_toBottomOf="@+id/pDetailUserPic" />
+
+                    <TextView
+                        android:id="@+id/pDetailAddrs1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2ssp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="ISCKON ELEGANCE"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
+                        app:layout_constraintTop_toBottomOf="@+id/pDetailAddrs" />
+
+                    <TextView
+                        android:id="@+id/pDetailAddrs2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:drawableStart="@drawable/ic_map15"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:text="Piazza del duamo, 80777 Firenze fi, italy"
+                        android:textColor="@color/color_333333"
+                        app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
+                        app:layout_constraintTop_toBottomOf="@+id/pDetailAddrs1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_F5BB36"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/_5sdp"
+                        android:text="1 Hour Delivery"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/pDetailAddrs"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/pDetailAddrs" />
+    -->
+
+<!--
                 <TextView
                     android:id="@+id/pDetailTime"
                     android:layout_width="wrap_content"
@@ -194,9 +321,7 @@
                     android:textColor="@color/color_9F9F9F"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="@+id/pDetailUserPic"
-
-
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailAddrs2" />
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewRider" />
 
                 <TextView
                     android:id="@+id/pDetailTimeValue"
@@ -403,6 +528,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/item4" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+-->
 
                 <View
                     android:id="@+id/pDetailDashLIne"
@@ -411,11 +537,11 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/dash_line"
                     android:layerType="software"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailConstrentItems" />
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewRider" />
 
 
                 <TextView
-                    android:id="@+id/pDetailTotBills"
+                    android:id="@+id/tvTotBill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -439,7 +565,7 @@
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/pDetailDecline"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailTotBills" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvTotBill" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/pDetailAccept"
@@ -450,6 +576,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
                     android:text="Accept"
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -459,6 +586,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/pDetailDecline"
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -474,10 +602,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/pDetailComplete" />
 
                 <View
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailDecline"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
                     android:background="@color/white"
-                    android:layout_height="@dimen/_20sdp"/>
+                    app:layout_constraintTop_toBottomOf="@+id/pDetailDecline" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

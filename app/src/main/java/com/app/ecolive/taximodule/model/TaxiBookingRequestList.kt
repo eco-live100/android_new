@@ -1,5 +1,7 @@
 package com.app.ecolive.taximodule.model
 
+import java.io.Serializable
+
 data class TaxiBookingRequestList(
     val `data`: List<Data>,
     val message: String,
@@ -38,7 +40,7 @@ data class TaxiBookingRequestList(
         val toLongitude: String,
         val updatedAt: String,
         val userId: String
-    )
+    ):Serializable
 
     {
         data class TaxiId(

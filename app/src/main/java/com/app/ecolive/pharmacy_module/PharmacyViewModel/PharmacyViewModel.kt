@@ -23,6 +23,7 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
     private lateinit var registerHospitalEmployee: LiveData<ApiSampleResource<RegisterDoctorModel>>
     private lateinit var getProfileViewModel: LiveData<ApiSampleResource<CreatHospitalModel>>
     private lateinit var getDoctorListModel: LiveData<ApiSampleResource<DoctorListModel>>
+    private lateinit var searchMedicationListModel: LiveData<ApiSampleResource<CommonMedicationModel>>
 
 
     fun creatHealthProfile(json: MultipartBody): LiveData<ApiSampleResource<CreateHealthModel>> {
@@ -33,9 +34,9 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
         getCommonMedication = webServiceRepository.getCommonMedicationApi()
         return getCommonMedication
     }
-
-    fun getCommonMedicationData( ): LiveData<ApiSampleResource<CommonMedicationModel>> {
-        return getCommonMedication
+    fun searchMedicineApi(): LiveData<ApiSampleResource<CommonMedicationModel>> {
+        searchMedicationListModel = webServiceRepository.searchMedicineApi()
+        return searchMedicationListModel
     }
 
    fun registerHospitalEmployeeApi(json: MultipartBody): LiveData<ApiSampleResource<RegisterDoctorModel>> {

@@ -72,17 +72,19 @@
                     app:layout_constraintStart_toEndOf="@+id/riderUserPic"
                     app:layout_constraintTop_toBottomOf="@+id/riderUserName" />
 
-                <TextView
-                    android:id="@+id/riderChkDemand"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/riderDutyStatusSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_blank_round"
                     android:padding="@dimen/_5sdp"
-                    android:text="@string/chk_demand"
+                    android:text="@string/offline"
+                    app:switchPadding="5dp"
                     android:layout_marginEnd="@dimen/_20ssp"
                     android:textColor="@color/white"
+                   style="@style/SwitchButtonStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/riderUserPic" />
+
 
                 <TextView
                     android:id="@+id/starttrip"
@@ -94,10 +96,11 @@
                     android:padding="@dimen/_5sdp"
                     android:backgroundTint="@color/white"
                     android:text="Start trip now"
+                    android:visibility="invisible"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/riderUserPic"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/riderChkDemand" />
+                    app:layout_constraintTop_toBottomOf="@+id/riderDutyStatusSwitch" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,8 +111,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/_20ssp"
-                    android:layout_marginEnd="@dimen/_20ssp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10ssp"
                     android:background="@drawable/bg_round_white_round_5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +141,6 @@
                                 android:layout_marginStart="@dimen/_10ssp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_regular"
-
                                 android:text="@string/Earned_Today"
                                 android:textColor="@color/color_9F9F9F"
                                 android:textSize="@dimen/_11ssp"
@@ -147,7 +148,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/riderAmount"
+                                android:id="@+id/riderAmountEarnToday"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_bold"
@@ -156,14 +157,13 @@
                                 android:textSize="@dimen/_20ssp"
                                 app:layout_constraintStart_toStartOf="@+id/riderEarnToday"
                                 app:layout_constraintTop_toBottomOf="@+id/riderEarnToday" />
-
                             <View
                                 android:id="@+id/riderView1"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dimen_1dp"
                                 android:layout_marginTop="@dimen/_7sdp"
                                 android:background="@color/color_F5F5F5"
-                                app:layout_constraintTop_toBottomOf="@+id/riderAmount" />
+                                app:layout_constraintTop_toBottomOf="@+id/riderAmountEarnToday" />
 
                             <LinearLayout
                                 android:id="@+id/riderLinTotTrips"
@@ -173,27 +173,26 @@
                                 app:layout_constraintTop_toBottomOf="@+id/riderView1">
 
                                 <TextView
+                                    android:id="@+id/riderTripToday"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:fontFamily="@font/roboto_regular"
                                     android:gravity="center"
-                                    android:text="@string/Total_Trips"
+                                    android:text="@string/total_earning"
                                     android:textColor="@color/color_9F9F9F"
                                     android:textSize="@dimen/_12ssp" />
-
                                 <View
                                     android:layout_width="1dp"
                                     android:layout_height="match_parent"
                                     android:background="@color/color_F5F5F5" />
-
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:fontFamily="@font/roboto_regular"
                                     android:gravity="center"
-                                    android:text="@string/Total_Trips"
+                                    android:text="@string/total_earning"
                                     android:textColor="@color/color_9F9F9F"
                                     android:textSize="@dimen/_12ssp" />
 
@@ -220,23 +219,22 @@
                                 android:paddingBottom="@dimen/_10ssp"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toBottomOf="@+id/riderLinTotTrips">
-
                                 <TextView
+                                    android:id="@+id/riderTotalTripToday"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:fontFamily="@font/roboto_bold"
                                     android:gravity="center"
-                                    android:text="15"
+                                    android:text="$180.65"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_16ssp" />
-
                                 <View
                                     android:layout_width="1dp"
                                     android:layout_height="match_parent"
                                     android:background="@color/color_F5F5F5" />
-
                                 <TextView
+                                    android:id="@+id/riderTotalAmount"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -252,6 +250,7 @@
                                     android:background="@color/color_F5F5F5" />
 
                                 <TextView
+                                    android:id="@+id/riderTotalTrip"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"

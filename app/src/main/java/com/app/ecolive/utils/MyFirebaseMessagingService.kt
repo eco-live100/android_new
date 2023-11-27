@@ -1,4 +1,4 @@
-package com.app.ecolive.firebase
+package com.app.ecolive.utils
 
 import android.Manifest
 import android.app.Notification
@@ -19,8 +19,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.app.ecolive.R
 import com.app.ecolive.rider_module.HomeRiderActivity
-import com.app.ecolive.utils.AppConstant
-import com.app.ecolive.utils.PreferenceKeeper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONObject
@@ -28,9 +26,12 @@ import kotlin.random.Random
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+
+
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
-        PreferenceKeeper.instance.fcmTokenSave = p0
+
+        PreferenceKeeper.instance.fcmTokenSave="$p0"
         Log.d("resFresh_Token : ", "$p0")
     }
 
@@ -77,11 +78,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val m: Int = random.nextInt(9999 - 1000) + 1000
 
         val intent = Intent(this, HomeRiderActivity::class.java)
-
+        var intentFlagType = PendingIntent.FLAG_ONE_SHOT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            intentFlagType =
+                PendingIntent.FLAG_IMMUTABLE // or only use FLAG_MUTABLE >> if it needs to be used with inline replies or bubbles.
+        }
         val pendingIntent = TaskStackBuilder.create(this)
             .run {
                 addNextIntentWithParentStack(intent)
-                getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                getPendingIntent(0, intentFlagType)
             }
 
         val notificationBuilder = NotificationCompat.Builder(this, AppConstant.NOTIFICATION_CHANNEL_ID)
@@ -109,18 +114,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
             manager.createNotificationChannel(channel)
         }
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         notificationManager.notify(m, notificationBuilder)

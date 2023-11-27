@@ -14,7 +14,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
@@ -74,7 +73,6 @@ import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, CometChatInterface,
@@ -115,21 +113,18 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        locationRequest = LocationRequest.create();
-        locationRequest!!.interval = 4000;
-        locationRequest!!.fastestInterval = 2000;
-        locationRequest!!.priority = Priority.PRIORITY_HIGH_ACCURACY;
+        locationRequest = LocationRequest.create()
+        locationRequest?.interval = 4000
+        locationRequest?.fastestInterval = 2000
+        locationRequest?.priority = Priority.PRIORITY_HIGH_ACCURACY
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult
                 for (location in locationResult.locations) {
-                    // Update UI with location data
-                    // ...
-
                     MyApp.locationLast = location
                     Log.d(
                         "TAG",
-                        "onLocationResult: " + location.latitude + "\n" + location.longitude
+                        "UserHome onLocationResult: " + location.latitude + "\n" + location.longitude
                     )
                 }
             }
@@ -466,12 +461,16 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                     position: Int,
                     id: Long
                 ) {
-                    if (position == 0) {
+                    when (position) {
+                        0 -> {
 
-                    } else if (position == 1) {
-                        riderLoginChk()
-                    } else if (position == 2) {
-                        shopLoginChk()
+                        }
+                        1 -> {
+                            riderLoginChk()
+                        }
+                        2 -> {
+                            shopLoginChk()
+                        }
                     }
                 }
 
@@ -505,17 +504,6 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
     private fun homeCategoryList() {
         shopCategoriesListAPICAll()
-        /* val catList = ArrayList<HomeCategoryListModel>()
-         var item = HomeCategoryListModel("Food", resources.getDrawable(R.drawable.category_image4))
-         catList.add(item)
-         item = HomeCategoryListModel("Grocery", resources.getDrawable(R.drawable.category_image3))
-         catList.add(item)
-         item = HomeCategoryListModel("Pharmacy", resources.getDrawable(R.drawable.category_image2))
-         catList.add(item)
-         item = HomeCategoryListModel("Retail", resources.getDrawable(R.drawable.category_image1))
-         catList.add(item)*/
-
-
     }
 
     private fun shopCategoriesListAPICAll() {
@@ -819,6 +807,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
     @SuppressLint("WrongConstant")
     override fun onBackPressed() {
+        super.onBackPressed()
         if (back_pressed_time + PERIOD > System.currentTimeMillis())
             finishAffinity()
         else {
@@ -844,15 +833,11 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         dialog.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT);
-
         val yesBtn = dialog.findViewById(R.id.ok) as TextView
-
         yesBtn.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.show()
-
     }
 
     private fun shopRegister() {
@@ -874,14 +859,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 )
             )
         }
-
         dialog.show()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-
     }
 
 
@@ -893,10 +871,6 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                     val location: Location? = task.result
                     if (location != null) {
                         getAddress(location.latitude,location.longitude)
-                       /* ReverseGeoCoding().constructor(location.latitude,location.longitude)
-                        MyApp.lastLocationAddress = ReverseGeoCoding().getAddress1()*/
-                       /* var geocoder = Geocoder(this, Locale.ENGLISH)
-                        Utils.getAddressFromCoordinates(geocoder,location.latitude,location.longitude)*/
                     }
                 }
             } else {
@@ -908,28 +882,24 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             requestPermissions()
         }
     }
-    private fun getAddress(latitude: Double, longitude: Double) : String {
-        var address = ""
+    private fun getAddress(latitude: Double, longitude: Double) {
         try {
-            var geocoder = Geocoder(this, Locale.ENGLISH)
+            val geocoder = Geocoder(this, Locale.ENGLISH)
             if (Build.VERSION.SDK_INT >= 33) {
                 geocoder.getFromLocation(
                     latitude, longitude, 1
                 ) { addresses ->
-                    Handler(mainLooper).post{
-                        MyApp.lastLocationAddress = addresses[0].getAddressLine(0).toString()
-                    }
+                    print("asdfsafsadf1 ${addresses[0].getAddressLine(0)}")
+                    MyApp.lastLocationAddress = addresses[0].getAddressLine(0).toString()
+                    print("asdfsafsadf2 ${addresses[0].getAddressLine(0)}")
                 }
             } else {
                 val list: MutableList<Address>? = geocoder.getFromLocation(latitude, longitude, 1)
-                address = list?.get(0)?.getAddressLine(0).toString()
-                MyApp.lastLocationAddress = address
+                MyApp.lastLocationAddress = list?.get(0)?.getAddressLine(0).toString()
             }
-            return address
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-        return address
     }
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
@@ -992,13 +962,6 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         locationRequest?.let {

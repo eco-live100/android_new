@@ -57,7 +57,7 @@
                 app:layout_constraintTop_toTopOf="@+id/circleImageView" />
 
             <TextView
-                android:id="@+id/textView73"
+                android:id="@+id/riderNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"

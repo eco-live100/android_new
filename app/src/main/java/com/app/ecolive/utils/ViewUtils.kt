@@ -34,8 +34,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.ecolive.R
 import com.app.ecolive.databinding.AlertDialogBinding
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.messaging.FirebaseMessaging
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -64,12 +65,25 @@ fun stringToInt(value: String): Int {
 }
 
 fun Activity.getFcmTokenAndSave() {
-    FirebaseInstallations.getInstance().getToken(true)
+    /*FirebaseInstallations.getInstance().getToken(true)
         .addOnSuccessListener(this) { instanceIdResult ->
             val newToken = instanceIdResult.token
             Log.e("fire_base_newToken", newToken)
             PreferenceKeeper.instance.fcmTokenSave= newToken
+        }*/
+
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+            return@OnCompleteListener
         }
+
+        // Get new FCM registration token
+        val token = task.result
+        Log.e("fire_base_newToken", token)
+        PreferenceKeeper.instance.fcmTokenSave= token
+
+    })
 }
 
 

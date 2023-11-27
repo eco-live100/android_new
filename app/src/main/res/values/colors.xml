@@ -25,6 +25,7 @@
     <color name="color_ev">#90EE90</color>
     <color name="color_motorcycles">#FFFF00</color>
     <color name="color_gas">#FF0000</color>
+    <color name="color_light_red">#F16C6C</color>
     <color name="color_red">#FF0000</color>
     <color name="color_ea0c0c">#ea0c0c</color>
     <color name="color_85A2FF">#85A2FF</color>
@@ -38,6 +39,7 @@
     <color name="color_b3b3b3">#b3b3b3</color>
     <color name="color_FF6161">#FF6161</color>
     <color name="color_4FB84A">#4FB84A</color>
+    <color name="color_light_green">#396C39</color>
     <color name="color_006400">#006400</color>
     <color name="color_008783">#008783</color>
     <color name="color_548235">#548235</color>
@@ -48,6 +50,5 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
-
-
+    <color name="borderColor">#e2e2e2</color>
 </resources>
