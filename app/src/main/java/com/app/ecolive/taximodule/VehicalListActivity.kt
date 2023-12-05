@@ -2,11 +2,9 @@ package com.app.ecolive.taximodule
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -25,6 +23,7 @@ import com.app.ecolive.taximodule.model.VehicleModel
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.Utils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -56,7 +55,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
     var totalDuration: Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        window.setFlags(
+    /*    window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
@@ -64,7 +63,8 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
             var flags: Int = window.decorView.systemUiVisibility
             flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
             window.decorView.systemUiVisibility = flags
-        }
+        }*/
+        Utils.fullScreen(this)
 
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vehical_list)
@@ -87,13 +87,20 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.taximap2) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
-
+        binding.paymentOption.visibility = View.GONE
+        binding.timeDistanceTotalTv.visibility = View.GONE
+        binding.taxiConfirmButton.visibility = View.GONE
         binding.paymentOption.setOnClickListener {
             startActivity(Intent(this, TaxiPaymentActivity::class.java))
         }
         binding.taxiConfirmButton.setOnClickListener {
             confirmTaxiApiCall()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.paymentModeTv.text  = if(TaxiPaymentActivity.paymentType == "cash") "Cash -" else "Eco-live wallet -"
     }
 
     override fun onMapReady(mMap: GoogleMap) {
@@ -115,7 +122,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
 //                            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, zoomHeight, zoomWidth, zoomPadding));
 
 
-        mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatLng, 10F))
         if (mMap != null) {
             mMap.addMarker(
@@ -139,8 +146,13 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                         Log.d("TAG", "onDirectionSuccess: " + direction!!.routeList)
                         val directionPositionList: ArrayList<LatLng> =
                             direction.routeList[0].legList[0].directionPoint
+
+                        if(directionPositionList.isNullOrEmpty()){
+                            Toast.makeText(this@VehicalListActivity,"Route not found",Toast.LENGTH_SHORT).show()
+                            return
+                        }
                         if (polyline == null) {
-                            polyline = mMap!!.addPolyline(
+                            polyline = mMap.addPolyline(
                                 DirectionConverter.createPolyline(
                                     this@VehicalListActivity,
                                     directionPositionList,
@@ -150,7 +162,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                             )
                         } else {
                             polyline!!.remove()
-                            polyline = mMap!!.addPolyline(
+                            polyline = mMap.addPolyline(
                                 DirectionConverter.createPolyline(
                                     this@VehicalListActivity,
                                     directionPositionList,
@@ -188,28 +200,32 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getVehicleApi(totalDistance: Double) {
         progressDialog.show(this)
-        var viewModel = TaxiViewModel(this)
-        var json = JSONObject()
+        val viewModel = TaxiViewModel(this)
+        val json = JSONObject()
 
         viewModel.getVehicalApi(json).observe(this) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        var adapter = VehicleAdapter(this, it.data,totalDistance)
-                        var layoutManager = LinearLayoutManager(this)
+                        val adapter = VehicleAdapter(this, it.data,totalDistance)
+                        val layoutManager = LinearLayoutManager(this)
                         binding.recycleVehicle.layoutManager = layoutManager
                         binding.recycleVehicle.adapter = adapter
+
+                        binding.paymentOption.visibility = View.VISIBLE
+                        binding.timeDistanceTotalTv.visibility = View.VISIBLE
+                        binding.taxiConfirmButton.visibility = View.VISIBLE
+
                     }
                 }
 
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
-                    var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
-                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                    val vv = it.message
+                    //val msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" +vv, this)
                 }
             }
         }
@@ -261,8 +277,8 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    val msg = it.message?.let { it1 -> JSONObject(it1) }
-                    MyApp.popErrorMsg("", "" + msg?.getString("msg"), this)
+                    //val msg = it.message?.let { it1 -> JSONObject(it1) }
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

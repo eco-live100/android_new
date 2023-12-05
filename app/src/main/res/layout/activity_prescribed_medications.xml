@@ -124,7 +124,7 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
-                        android:src="@drawable/dummy_male_user"
+                        android:src="@drawable/ic_user_blue"
                         app:shapeAppearance="@style/roundedImageViewRounded" />
 
                     <TextView

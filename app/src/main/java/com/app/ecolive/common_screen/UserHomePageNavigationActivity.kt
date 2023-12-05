@@ -102,7 +102,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             binding.includeLeftDrawer.sideMenuUserName.text =
                 "Hello, " + PreferenceKeeper.instance.loginResponse?.firstName
         }
-
+        //throw RuntimeException("Test Crash")
         if (PreferenceKeeper.instance.isUserLogin) {
             binding.include.contentHome.headerHome.homepageToolbarLogin.visibility = GONE
         }
@@ -141,7 +141,8 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         super.onClick(v)
         if (v == binding.include.contentHome.headerHome.homepageToolbarSwitchToRider) {
             // startActivity(Intent(this@UserHomePageNavigationActivity, VehicleInfoActivity::class.java))
-            showPOPUP()
+            //showPOPUP()
+            riderLoginChk()
 
         } else if (v == binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor) {
             shopLoginChk()

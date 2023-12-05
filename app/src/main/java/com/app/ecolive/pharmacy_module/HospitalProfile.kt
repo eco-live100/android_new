@@ -1,11 +1,8 @@
 package com.app.ecolive.pharmacy_module
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
@@ -21,7 +18,7 @@ class HospitalProfile : AppCompatActivity() {
     lateinit var binding : ActivityHospitalProfileBinding
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(
+       /* window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
@@ -29,7 +26,7 @@ class HospitalProfile : AppCompatActivity() {
             var flags: Int = window.decorView.systemUiVisibility
             flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
             window.decorView.systemUiVisibility = flags
-        }
+        }*/
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_hospital_profile)
         binding.add.setOnClickListener {
@@ -44,7 +41,7 @@ class HospitalProfile : AppCompatActivity() {
         binding.ivBack.setOnClickListener {
             onBackPressedDispatcher
         }
-        getProfile()
+        //getProfile()
     }
 
     private fun getProfile() {
@@ -67,7 +64,7 @@ class HospitalProfile : AppCompatActivity() {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
                     var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

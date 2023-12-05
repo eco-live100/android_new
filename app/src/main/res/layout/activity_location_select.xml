@@ -58,7 +58,7 @@
                             android:maxLines="1"
                             android:gravity="center_vertical"
                             android:hint="From ?"
-                             android:textColor="@color/black"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp" />
 
                         <View
@@ -68,7 +68,7 @@
                             android:background="#D6E2ED" />
 
                         <TextView
-                            android:id="@+id/DestinationLocation"
+                            android:id="@+id/destinationLocation"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"

@@ -1,5 +1,6 @@
 package com.app.ecolive.rider_module
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -212,6 +213,9 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
+                        val returnIntent = Intent()
+                        returnIntent.putExtra("refresh", 1)
+                        setResult(RESULT_OK, returnIntent)
                         finish()
                     }
                 }

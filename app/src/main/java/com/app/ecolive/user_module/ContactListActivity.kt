@@ -27,14 +27,14 @@ class ContactListActivity : AppCompatActivity(), OnSelectOptionListener {
     private fun setDummyLIst() {
         var list= ArrayList<UserModel>()
         list.add(UserModel("Gail Forcewind","Today at 11:47 AM",R.drawable.dummy_female_user,R.drawable.ic_missed_call))
-        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.dummy_male_user,R.drawable.ic_incoming_call2))
-        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.dummy_male_user,R.drawable.ic_missed_call))
+        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.ic_user_blue,R.drawable.ic_incoming_call2))
+        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.ic_user_blue,R.drawable.ic_missed_call))
         list.add(UserModel("Gail Forcewind","Today at 11:47 AM",R.drawable.dummy_female_user,R.drawable.ic_missed_call))
-        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.dummy_male_user,R.drawable.ic_incoming_call2))
-        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.dummy_male_user,R.drawable.ic_missed_call))
+        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.ic_user_blue,R.drawable.ic_incoming_call2))
+        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.ic_user_blue,R.drawable.ic_missed_call))
         list.add(UserModel("Gail Forcewind","Today at 11:47 AM",R.drawable.dummy_female_user,R.drawable.ic_missed_call))
-        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.dummy_male_user,R.drawable.ic_incoming_call2))
-        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.dummy_male_user,R.drawable.ic_missed_call))
+        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.ic_user_blue,R.drawable.ic_incoming_call2))
+        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.ic_user_blue,R.drawable.ic_missed_call))
         contactListAdapter = ContactListAdapter(this@ContactListActivity,list,object :ContactListAdapter.ClickListener{
             override fun onClick(pos: Int) {
                 showBotomSheet()

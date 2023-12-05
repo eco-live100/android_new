@@ -80,7 +80,7 @@
                     android:id="@+id/CurrentOrderProfileImage"
                     android:layout_width="@dimen/_98sdp"
                     android:layout_height="@dimen/_98sdp"
-                    android:src="@drawable/dummy_male_user"
+                    android:src="@drawable/ic_user_blue"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

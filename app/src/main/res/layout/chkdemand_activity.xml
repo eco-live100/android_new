@@ -56,7 +56,7 @@
                 android:id="@+id/demandProfilePic"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:src="@drawable/dummy_male_user"
+                android:src="@drawable/ic_user_blue"
                 android:layout_marginStart="@dimen/_10ssp"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="@dimen/_1ssp"

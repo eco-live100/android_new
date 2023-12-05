@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ForgotActivityBinding
-import com.app.ecolive.databinding.OtpActivityBinding
 import com.app.ecolive.service.Status
-import com.app.ecolive.utils.*
-import com.app.ecolive.utils.Utils.Companion.progressDialog
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.offercity.base.BaseActivity
 import org.json.JSONObject
@@ -74,8 +74,8 @@ class ForgotPwdActivity : BaseActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg =JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                    //var msg =JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" +vv, THIS!!)
                 }
             }
         }

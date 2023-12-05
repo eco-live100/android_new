@@ -11,7 +11,6 @@ import com.app.ecolive.service.Status
 import com.app.ecolive.user_module.user_adapter.MyAddressAdapter
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
-import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
 import org.json.JSONObject
@@ -79,8 +78,8 @@ class MyAddressActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    //var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }
@@ -106,8 +105,8 @@ class MyAddressActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                   // var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

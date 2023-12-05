@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:hint="Atorvastatin"
+            android:hint="abc"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_5sdp"
             android:layout_margin="@dimen/_3sdp"

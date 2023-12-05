@@ -1,4 +1,4 @@
-package com.app.ecolive.utils
+package com.app.ecolive.notification
 
 import android.Manifest
 import android.app.Notification
@@ -19,11 +19,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.app.ecolive.R
 import com.app.ecolive.rider_module.HomeRiderActivity
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.PreferenceKeeper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
 import kotlin.random.Random
-
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -35,49 +38,44 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d("resFresh_Token : ", "$p0")
     }
 
-
+    inline fun <reified T> fromJson(json: String): T {
+        return Gson().fromJson(json, object : TypeToken<T>() {}.type)
+    }
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.e(TAG, "From: " + remoteMessage.from)
-        if (remoteMessage == null) return
+        Log.e(TAG, "From: " + remoteMessage.toString())
+        //if (remoteMessage == null) return
 
         val body: MutableMap<String, String> = remoteMessage.data
-        val json = JSONObject(body as Map<*, *>)
-        Log.d("jsonsdff", json.toString())
-
+        val data = JSONObject(body as Map<*, *>)
+        Log.d("jsonsdff", data.toString())
+        val notification = fromJson<NotificationModel>(data.toString())
         // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-            sendNotification(json)
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
-//                scheduleJob()
-            } else {
-                // Handle message within 10 seconds
-//                handleNow()
+        if (data!=null && data.toString().isNotEmpty()) {
+                Log.d(TAG, "Message data payload: ${remoteMessage.data}")
+                sendNotification(notification)
+                if (/* Check if data needs to be processed by long running job */ true) {
+                    // For long-running tasks (10 seconds or more) use WorkManager.
+    //                scheduleJob()
+                } else {
+                    // Handle message within 10 seconds
+    //                handleNow()
+                }
             }
-        }
-
-        // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 
 
-    private fun sendNotification(remoteMessage: JSONObject) {
+    private fun sendNotification(notification: NotificationModel) {
 
-        val title = remoteMessage.get("title").toString()
-        val body = remoteMessage.get("body").toString()
-
-        Log.d("sendNotification : ", "$title---------$body")
+        Log.d("sendNotification : ", "${notification.userName}")
 
         val defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val random = Random
         val m: Int = random.nextInt(9999 - 1000) + 1000
 
-        val intent = Intent(this, HomeRiderActivity::class.java)
+        val intent = Intent(this, HomeRiderActivity::class.java).putExtra(AppConstant.notificationModel,notification)
         var intentFlagType = PendingIntent.FLAG_ONE_SHOT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             intentFlagType =
@@ -89,10 +87,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 getPendingIntent(0, intentFlagType)
             }
 
-        val notificationBuilder = NotificationCompat.Builder(this, AppConstant.NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(title)
-            .setContentText(body)
+        val notificationBuilder = NotificationCompat.Builder(this,
+            AppConstant.NOTIFICATION_CHANNEL_ID
+        )
+            .setSmallIcon(R.mipmap.appicon_144)
+            .setContentTitle(notification.title)
+            .setContentText(notification.body)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setAutoCancel(true)
             .setSound(defaultSound)

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="@color/color_F5F5F5"
-        tools:context=".rider_module.TrackingWithProgressActivity">
+        tools:context=".taximodule.TrackingWithProgressActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -39,7 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="Order number - OD202124538657"
+                        tools:text="Order number - OD202124538657"
                         android:textColor="@color/color_blue"
                         android:textSize="@dimen/sp_18"
                         android:layout_margin="@dimen/_10ssp"
@@ -65,7 +65,7 @@
                             android:layout_weight="1.5"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="start"
-                            android:text="9 March 2021 | 6:30 PM"
+                            tools:text="9 March 2021 | 6:30 PM"
                             android:textColor="@color/color_ACACAC"
                             android:textSize="@dimen/_11sdp" />
 
@@ -82,7 +82,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="end"
-                            android:text="Received"
+                            tools:text="Received"
                             android:textColor="@color/color_ACACAC"
                             android:textSize="@dimen/_11sdp" />
 
@@ -160,56 +160,9 @@
             android:paddingVertical="@dimen/_20sdp"
             app:layout_constraintTop_toBottomOf="@+id/cardViewDetail">
 
-            <TextView
-                android:id="@+id/textView77"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/arrival_time"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/textView79"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="6:10am"
-                android:textColor="@color/color_blue"
-                android:textSize="@dimen/sp_20"
-                app:layout_constraintEnd_toEndOf="@+id/textView77"
-                app:layout_constraintStart_toStartOf="@+id/textView77"
-                app:layout_constraintTop_toBottomOf="@+id/textView77" />
-
-            <TextView
-                android:id="@+id/distanceTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="5.10km"
-                android:textColor="@color/color_blue"
-                android:textSize="@dimen/sp_20"
-                app:layout_constraintStart_toStartOf="@+id/textView76"
-                app:layout_constraintTop_toBottomOf="@+id/textView77" />
-
-            <TextView
-                android:id="@+id/tvTotBill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="$00.00"
-                android:textColor="@color/color_blue"
-                android:textSize="@dimen/sp_20"
-                app:layout_constraintStart_toStartOf="@+id/textView78"
-                app:layout_constraintTop_toBottomOf="@+id/textView77" />
-
-            <TextView
-                android:id="@+id/textView76"
+                android:id="@+id/distanceLabelTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
@@ -218,10 +171,23 @@
                 android:textColor="@color/color_333333"
                 android:textSize="@dimen/sp_16"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView77"/>
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
-                android:id="@+id/textView78"
+                android:id="@+id/distanceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/roboto_medium"
+                tools:text="5.10km"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintStart_toStartOf="@+id/distanceLabelTv"
+                app:layout_constraintTop_toBottomOf="@+id/distanceLabelTv" />
+
+
+            <TextView
+                android:id="@+id/orderAmountLabelTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
@@ -232,9 +198,24 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/distanceTv"/>
 
+            <TextView
+                android:id="@+id/tvTotBill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="$00.00"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintStart_toStartOf="@+id/orderAmountLabelTv"
+                app:layout_constraintTop_toBottomOf="@+id/orderAmountLabelTv" />
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
@@ -249,55 +230,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:anchor="1may\n9:30pm"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance"-->
-                <!--                app:title="Documantation Prepared" />-->
-
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:anchor="3may\n12:08pm"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance"-->
-                <!--                app:title="Booking Arranged" />-->
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:anchor="3may\n12:08pm"-->
-                <!--                app:active="true"-->
-                <!--                app:title="In Transit"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance"/>-->
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:anchor="3may\n12:08pm"-->
-                <!--                app:title="Booking Arranged"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance" />-->
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:title="Arrived at Destination"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance" />-->
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:title="Out of delivery"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance" />-->
-                <!--            <com.transferwise.sequencelayout.SequenceStep-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:anchor=""-->
-                <!--                app:title="Delivered"-->
-                <!--                app:anchorTextAppearance="@style/titleAppearance"-->
-                <!--                app:titleTextAppearance="@style/titleAppearance" />-->
             </com.transferwise.sequencelayout.SequenceLayout>
         </ScrollView>
 

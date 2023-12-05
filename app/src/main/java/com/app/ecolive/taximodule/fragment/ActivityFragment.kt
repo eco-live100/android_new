@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.databinding.FragmentActivityBinding
-import com.app.ecolive.rider_module.TrackingWithProgressActivity
 import com.app.ecolive.service.Status
+import com.app.ecolive.taximodule.TrackingWithProgressActivity
 import com.app.ecolive.taximodule.adapter.TaxiBookingRequestListAdapter
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.utils.AppConstant
@@ -58,7 +58,7 @@ class ActivityFragment : Fragment() {
                             it.data,
                             object : TaxiBookingRequestListAdapter.ClickListener {
                                 override fun onClick(pos: Int) {
-                                    Intent(requireContext(), TrackingWithProgressActivity::class.java).also {intent->
+                                    Intent(requireContext(), TrackingWithProgressActivity::class.java).also { intent->
                                         intent.putExtra(AppConstant.trackOrderDetail, it.data[pos])
                                         startActivity(intent)
                                     }
@@ -73,8 +73,8 @@ class ActivityFragment : Fragment() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), requireContext())
+                    //var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" +vv, requireContext())
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

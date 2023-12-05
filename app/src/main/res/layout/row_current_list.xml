@@ -21,7 +21,7 @@
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_10sdp"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10PercentALL"
-            android:src="@drawable/dummy_male_user"
+            android:src="@drawable/ic_user_blue"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

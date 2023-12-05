@@ -30,6 +30,8 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.Window
 import android.view.WindowManager
@@ -39,12 +41,16 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentManager
 import com.app.ecolive.R
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import io.github.g00fy2.quickie.content.QRContent.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -237,6 +243,21 @@ class Utils {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
+        }
+
+        fun fullScreen(activity: Activity) {
+            if (Build.VERSION.SDK_INT in 21..29) {
+                activity.window.statusBarColor = Color.TRANSPARENT
+                activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                activity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                activity.window.decorView.systemUiVisibility =
+                    SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or SYSTEM_UI_FLAG_LAYOUT_STABLE
+
+            } else if (Build.VERSION.SDK_INT >= 30) {
+                activity.window.statusBarColor = Color.TRANSPARENT
+                // Making status bar overlaps with the activity
+                WindowCompat.setDecorFitsSystemWindows(activity.window, false)
+            }
         }
 
         fun getColoredString(mString: String?, colorId: Int): Spannable {
@@ -1008,6 +1029,12 @@ class Utils {
             } catch (e: Exception) {
                 Log.d("Glide", "setImageFullPath: " + e)
             }
+        }
+        fun multipartBodyFile(context: Context,imageUri : Uri,requestParam : String) : MultipartBody.Part {
+            val filePath = getFilePath(context, imageUri)
+            val file = File(filePath)
+            val reqFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            return MultipartBody.Part.createFormData(requestParam, file.name, reqFile)
         }
 
     }

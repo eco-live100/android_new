@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityMyOrderBinding
 import com.app.ecolive.localmodel.MyOrderListModel
-import com.app.ecolive.rider_module.TrackingWithProgressActivity
+import com.app.ecolive.taximodule.TrackingWithProgressActivity
 import com.app.ecolive.user_module.user_adapter.UserMyOrderListAdapter
 import com.app.ecolive.utils.Utils
 

@@ -25,8 +25,6 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         startSplash()
-      // startActivity(Intent(this@SplashActivity, GetStartedActivity::class.java))
-      //  printHashKey(this@SplashActivity)
     }
 
     private fun statusBarColor() {

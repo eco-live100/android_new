@@ -29,7 +29,7 @@ class FullImageActivity : AppCompatActivity() {
             }
         }
 
-        Glide.with(this@FullImageActivity).load(R.drawable.dummy_male_user).listener(object :
+        Glide.with(this@FullImageActivity).load(R.drawable.ic_user_blue).listener(object :
             RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,

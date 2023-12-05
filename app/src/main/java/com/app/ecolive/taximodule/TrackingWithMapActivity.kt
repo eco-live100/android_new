@@ -1,4 +1,4 @@
-package com.app.ecolive.user_module
+package com.app.ecolive.taximodule
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -50,12 +50,12 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
     // Coordinates of a park nearby
     private var destinationLatitude: Double = 28.5151087
     private var destinationLongitude: Double = 77.3932163
-    val user= PreferenceKeeper.instance.loginResponse
+    val user = PreferenceKeeper.instance.loginResponse
 
-    private var vehicleImage:Int?=null
-    var destination_n:LatLng? = null
-    var src_latlng:LatLng? = null
-    var update_src:LatLng? = null
+    private var vehicleImage: Int? = null
+    var destination_n: LatLng? = null
+    var src_latlng: LatLng? = null
+    var update_src: LatLng? = null
     private val carMarker: Marker? = null
     fun getBearing(begin: LatLng, end: LatLng): Float {
         val lat = Math.abs(begin.latitude - end.latitude)
@@ -72,6 +72,7 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
         ) + 270).toFloat()
         return (-1).toFloat()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_tracking_with_map)
@@ -88,12 +89,12 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 intent.getSerializableExtra(AppConstant.trackOrderDetail) as TaxiBookingRequestList.Data
             }
         trackOrderDetail?.let { item ->
-            if(item.bookingStatus=="accepted") {
+            if (item.bookingStatus == "accepted") {
                 item.driverLatitude.let { originLatitude = it.toDouble() }
                 item.driverLongitude.let { originLongitude = it.toDouble() }
                 item.fromLatitude.let { destinationLatitude = it.toDouble() }
                 item.fromLongitude.let { destinationLongitude = it.toDouble() }
-            }else{
+            } else {
                 item.driverLatitude.let { originLatitude = it.toDouble() }
                 item.driverLongitude.let { originLongitude = it.toDouble() }
                 item.toLatitude.let { destinationLatitude = it.toDouble() }
@@ -104,7 +105,7 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
         riderTracking()
     }
 
-    fun riderTracking(){
+    private fun riderTracking() {
         val ref = FirebaseDatabase.getInstance().reference.child("EcoLive").child("${user?._id}")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -114,72 +115,72 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
                         Log.i("dataSnapshot json", "dataSnapshot" + JSONObject(value1))
                         val jsonObject = JSONObject(value1)
                         Log.d("jsondata", jsonObject.toString() + "")
-                       /* if (jsonObject.optString("jobStatus")
-                                .compareTo("Pending", ignoreCase = true) == 0
-                        ) {
-                            Toast.makeText(
-                                this@TrackingWithMapActivity,
-                                "product not dispatched yet",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else if (jsonObject.optString("jobStatus")
-                                .compareTo("start", ignoreCase = true) == 0
-                        ) {*/
+                        /* if (jsonObject.optString("jobStatus")
+                                 .compareTo("Pending", ignoreCase = true) == 0
+                         ) {
+                             Toast.makeText(
+                                 this@TrackingWithMapActivity,
+                                 "product not dispatched yet",
+                                 Toast.LENGTH_LONG
+                             ).show()
+                         } else if (jsonObject.optString("jobStatus")
+                                 .compareTo("start", ignoreCase = true) == 0
+                         ) {*/
                         Log.d("TAG", "Start Trip but AnimateMaker NOt Call")
-                            val lat = jsonObject.optString("latitude").toString()
-                            val lng = jsonObject.optString("longitude").toString()
-                            val riderName = jsonObject.optString("driverName").toString()
-                            val driverNumber = jsonObject.optString("driverNumber").toString()
-                            val email = jsonObject.optString("email").toString()
-                            val timeStamp = jsonObject.optString("timeStamp").toString()
+                        val lat = jsonObject.optString("latitude").toString()
+                        val lng = jsonObject.optString("longitude").toString()
+                        val riderName = jsonObject.optString("driverName").toString()
+                        val driverNumber = jsonObject.optString("driverNumber").toString()
+                        val email = jsonObject.optString("email").toString()
+                        val timeStamp = jsonObject.optString("timeStamp").toString()
                         binding.riderNameTv.text = "$riderName"
                         originLatitude = lat.toDouble()
                         originLongitude = lng.toDouble()
                         Log.d("TAG", "gsdgsdgffdsg:-$lat----$lng")
                         initView()
-                            update_src =
-                                LatLng(lat.toDouble(), lng.toDouble())
-                            if (!originLatitude.equals(lat) || !originLongitude.equals(lng)) {
-                                val location = Location("")
-                                location.latitude = lat.toDouble()
-                                location.longitude = lng.toDouble()
-                                if (TextUtils.isEmpty(
-                                        originLatitude.toString()
-                                    )
-                                ) {
-                                    location.bearing = getBearing(
-                                        LatLng(lat.toDouble(), lng.toDouble()),
-                                        LatLng(lat.toDouble(), lng.toDouble())
-                                    )
-                                } else {
-                                    location.bearing = getBearing(
-                                        LatLng(
-                                            originLatitude,
-                                            originLongitude
-                                        ),
-                                        LatLng(lat.toDouble(), lng.toDouble())
-                                    )
-                                }
-                                animateMarker(location, carMarker)
-                                Log.d("TAG", "AnimateMaker Call")
-                                /*SharedPrefManager.setSharedPrefString(
-                                    RequestCode.SP_CURRENT_LAT,
-                                    lat
+                        update_src =
+                            LatLng(lat.toDouble(), lng.toDouble())
+                        if (!originLatitude.equals(lat) || !originLongitude.equals(lng)) {
+                            val location = Location("")
+                            location.latitude = lat.toDouble()
+                            location.longitude = lng.toDouble()
+                            if (TextUtils.isEmpty(
+                                    originLatitude.toString()
                                 )
-                                SharedPrefManager.setSharedPrefString(
-                                    RequestCode.SP_CURRENT_LONG,
-                                    lng
-                                )*/
+                            ) {
+                                location.bearing = getBearing(
+                                    LatLng(lat.toDouble(), lng.toDouble()),
+                                    LatLng(lat.toDouble(), lng.toDouble())
+                                )
                             } else {
-                                originLongitude = lat.toDouble()
-                                originLongitude = lng.toDouble()
+                                location.bearing = getBearing(
+                                    LatLng(
+                                        originLatitude,
+                                        originLongitude
+                                    ),
+                                    LatLng(lat.toDouble(), lng.toDouble())
+                                )
                             }
-                       /* } else if (jsonObject.optString("jobStatus").compareTo("end") == 0) {
-                            // Callback sample
-                           appStateMonitor = AppStateMonitor.create(application)
-                            appStateMonitor.addListener(SampleAppStateListener())
-                            appStateMonitor.start()
-                        }*/
+                            animateMarker(location, carMarker)
+                            Log.d("TAG", "AnimateMaker Call")
+                            /*SharedPrefManager.setSharedPrefString(
+                                RequestCode.SP_CURRENT_LAT,
+                                lat
+                            )
+                            SharedPrefManager.setSharedPrefString(
+                                RequestCode.SP_CURRENT_LONG,
+                                lng
+                            )*/
+                        } else {
+                            originLongitude = lat.toDouble()
+                            originLongitude = lng.toDouble()
+                        }
+                        /* } else if (jsonObject.optString("jobStatus").compareTo("end") == 0) {
+                             // Callback sample
+                            appStateMonitor = AppStateMonitor.create(application)
+                             appStateMonitor.addListener(SampleAppStateListener())
+                             appStateMonitor.start()
+                         }*/
                     } catch (e: java.lang.Exception) {
                         Log.d("exception...", e.toString())
                     }
@@ -189,6 +190,7 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
+
     fun animateMarker(destination: Location, marker: Marker?) {
         if (carMarker != null && mMap != null) {
             val startPosition: LatLng = carMarker.position
@@ -198,8 +200,8 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
             valueAnimator.interpolator = LinearInterpolator()
             valueAnimator.addUpdateListener { valueAnimator ->
                 val v = valueAnimator.animatedFraction
-                val lng = v * endPosition.longitude + (1 - v)* startPosition.longitude
-                val lat = v * endPosition.latitude + (1 - v)* startPosition.latitude
+                val lng = v * endPosition.longitude + (1 - v) * startPosition.longitude
+                val lat = v * endPosition.latitude + (1 - v) * startPosition.latitude
                 val newPos = LatLng(lat, lng)
                 val location1 = Location("")
                 location1.latitude = startPosition.latitude
@@ -254,38 +256,14 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initView() {
-
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, "AIzaSyAsq0ZEcqknyENt9moynumCdWENgfW_4NQ")
         }
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
-       /* mapFragment.getMapAsync {
-            mMap = it
-            val originLocation = LatLng(originLatitude, originLongitude)
-            mMap.addMarker(
-                MarkerOptions().position(originLocation)
-                    .icon(BitmapFromVector(applicationContext, R.drawable.home_pin))
-            )
-            val destinationLocation = LatLng(destinationLatitude, destinationLongitude)
-            mMap.addMarker(
-                MarkerOptions().position(destinationLocation)
-                    .icon(BitmapFromVector(applicationContext, R.drawable.home_pin))
-            )
-            val urll = getDirectionURL(
-                originLocation,
-                destinationLocation,
-                "AIzaSyAsq0ZEcqknyENt9moynumCdWENgfW_4NQ"
-            )
-            GetDirection(urll).execute()
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation, 14F))
-        }*/
-
     }
 
-    private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
+    private fun bitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
         // below line is use to generate a drawable.
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
 
@@ -297,7 +275,6 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
             vectorDrawable.intrinsicHeight
         )
 
-        // below line is use to create a bitmap for our
         // drawable which we have added.
         val bitmap = Bitmap.createBitmap(
             vectorDrawable.intrinsicWidth,
@@ -317,28 +294,28 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p0: GoogleMap) {
-        mMap = p0!!
+        mMap = p0
         val originLocation2 = LatLng(originLatitude, originLongitude)
         mMap.clear()
 
 
         mMap.addMarker(
             MarkerOptions().position(originLocation2)
-                .icon(BitmapFromVector(applicationContext, R.drawable.home_pin))
+                .icon(vehicleImage?.let { bitmapFromVector(applicationContext, it) })
         )
         val destinationLocation = LatLng(destinationLatitude, destinationLongitude)
         mMap.addMarker(
             MarkerOptions().position(destinationLocation)
-                .icon(BitmapFromVector(applicationContext, R.drawable.home_pin))
+                .icon(bitmapFromVector(applicationContext, R.drawable.home_pin))
         )
-        val urll = getDirectionURL(
+        val url = getDirectionURL(
             originLocation2,
             destinationLocation,
             "AIzaSyAsq0ZEcqknyENt9moynumCdWENgfW_4NQ"
         )
-        if(MyApp.isConnectingToInternet(this@TrackingWithMapActivity)){
-         GetDirection(urll).execute()}
-
+        if (MyApp.isConnectingToInternet(this@TrackingWithMapActivity)) {
+            GetDirection(url).execute()
+        }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(originLocation2, 18F))
     }

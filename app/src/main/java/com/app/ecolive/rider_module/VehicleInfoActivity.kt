@@ -29,14 +29,11 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
-import com.app.ecolive.utils.getFilePath
+import com.app.ecolive.utils.Utils.Companion.multipartBodyFile
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.offercity.base.BaseActivity
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 
 class VehicleInfoActivity : BaseActivity() {
@@ -55,11 +52,11 @@ class VehicleInfoActivity : BaseActivity() {
     var selectedVehicleCategoryID = ""
 
     private val REQUEST_CAMERA_PERMISSION = 1
-    private var imageUri: Uri? = null
+    //private var imageUri: Uri? = null
     private var vehicleDocUri : Uri? = null
     private var dlUri : Uri? = null
-    var vehicleDoc = 1
-    var dl = 2
+    private var vehicleDoc = 1
+    private var dl = 2
     var option = 1
 
     companion object {
@@ -96,12 +93,12 @@ class VehicleInfoActivity : BaseActivity() {
             finish()
         }
     }
-    private fun multipartBodyFile(imageUri : Uri,requestParam : String) : MultipartBody.Part {
+   /* private fun multipartBodyFile(imageUri : Uri,requestParam : String) : MultipartBody.Part {
         val filePath = getFilePath(this, imageUri)
         val file = File(filePath)
         val reqFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData(requestParam, file.name, reqFile)
-    }
+    }*/
     private fun riderVehicleDetailsAPICall(wannaAddMore: Boolean) {
         try {
             MyApp.hideSoftKeyboard(THIS!!)
@@ -114,19 +111,13 @@ class VehicleInfoActivity : BaseActivity() {
         builder.addFormDataPart("vehicleName", binding.vehicalName.text.toString())
         builder.addFormDataPart("vehicleNumber", binding.vehicalNumber.text.toString())
 
-      /*  vehicleDocUri?.let {
-            builder.addPart(multipartBodyFile(it,"vehicleDocument").body)
-        }
-        dlUri?.let {
-            builder.addPart(multipartBodyFile(it,"driverLicense").body)
-        }*/
        if (vehicleDocUri != null) {
-           builder.addPart(multipartBodyFile(vehicleDocUri!!,"vehicleDocument").body)
+           builder.addPart(multipartBodyFile(this,vehicleDocUri!!,"vehicleDocument"))
         } else {
             builder.addFormDataPart("vehicleDocument", "")
         }
         if (dlUri != null) {
-            builder.addPart(multipartBodyFile(dlUri!!,"driverLicense").body)
+            builder.addPart(multipartBodyFile(this,dlUri!!,"driverLicense"))
         } else {
             builder.addFormDataPart("driverLicense", "")
         }
@@ -137,8 +128,8 @@ class VehicleInfoActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        Utils.showMessage(THIS!!, it.message!!)
-                        var mdol = PreferenceKeeper.instance.loginResponse
+                        Utils.showMessage(THIS!!, it.message)
+                        val mdol = PreferenceKeeper.instance.loginResponse
                         if (mdol != null) {
                             mdol.isRider = true
                         }
@@ -386,7 +377,7 @@ class VehicleInfoActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-            imageUri = data.data
+            val imageUri = data.data
             if(option==vehicleDoc){
                 vehicleDocUri = imageUri
                 binding.vehicalDocImage.setImageURI(vehicleDocUri)
@@ -395,10 +386,12 @@ class VehicleInfoActivity : BaseActivity() {
                 dlUri = imageUri
                 binding.vehicalLicenseImage.setImageURI(dlUri)
             }
+            Log.d("TAG", "gallery_image:: $imageUri")
         } else if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
             val extras: Bundle = data.extras!!
             val imageBitmap = extras["data"] as Bitmap?
-            imageUri = getImageUri(this, imageBitmap!!)
+            val imageUri = getImageUri(this, imageBitmap!!)
+
             if(option==vehicleDoc){
                 vehicleDocUri = imageUri
                 binding.vehicalDocImage.setImageURI(vehicleDocUri)
@@ -407,35 +400,10 @@ class VehicleInfoActivity : BaseActivity() {
                 dlUri = imageUri
                 binding.vehicalLicenseImage.setImageURI(dlUri)
             }
-            Log.d("TAG", "iamgedsfas:: $imageUri")
+            Log.d("TAG", "camera_image:: $imageUri")
         }
 
     }
-
-/*    private fun onSelectImage() {
-        if (!Utils.checkingPermissionIsEnabledOrNot(THIS!!)) {
-            Utils.requestMultiplePermission(THIS!!, requestPermissionCode)
-        } else {
-            selectSourceBottomSheetFragment = SelectSourceBottomSheetFragment(this, "")
-            selectSourceBottomSheetFragment.show(
-                THIS!!.supportFragmentManager,
-                "selectSourceBottomSheetFragment"
-            )
-        }
-    }*/
-
-/*    private fun onSelectImageLicense() {
-        if (!Utils.checkingPermissionIsEnabledOrNot(THIS!!)) {
-            Utils.requestMultiplePermission(THIS!!, requestPermissionCode)
-        } else {
-            selectSourceBottomSheetFragment = SelectSourceBottomSheetFragment(this, "")
-            selectSourceBottomSheetFragment.show(
-                THIS!!.supportFragmentManager,
-                "selectSourceBottomSheetFragment"
-            )
-        }
-    }*/
-
     private fun isValidInput(): Boolean {
         if (binding.spinVehicleType.selectedItem.toString() == resources.getString(R.string.plz_selectvehicleCategory)) {
             MyApp.popErrorMsg("", resources.getString(R.string.plz_selectvehicleCategory), THIS!!)

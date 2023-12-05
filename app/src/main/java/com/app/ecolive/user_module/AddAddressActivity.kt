@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityAddAddressBinding
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.CustomProgressDialog
@@ -22,7 +21,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import org.json.JSONObject
-import java.util.*
+import java.util.Arrays
 
 
 class AddAddressActivity : AppCompatActivity() {
@@ -129,8 +128,8 @@ class AddAddressActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    //var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" +vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

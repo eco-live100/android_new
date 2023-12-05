@@ -40,7 +40,6 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:src="@drawable/nav_send_money"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -62,6 +61,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:id="@+id/constraintAddMoney"
                 android:paddingVertical="@dimen/_5sdp"
                 android:layout_height="wrap_content">
@@ -71,7 +71,6 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:src="@drawable/nav_add_money"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

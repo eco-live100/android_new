@@ -1,4 +1,4 @@
-package com.app.ecolive.rider_module
+package com.app.ecolive.taximodule
 
 import android.content.Intent
 import android.os.Build
@@ -6,10 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.adapters.TrackingStepAdapter
 import com.app.ecolive.databinding.ActivityTrackingWithProgressBinding
 import com.app.ecolive.taximodule.model.TaxiBookingRequestList
-import com.app.ecolive.user_module.TrackingWithMapActivity
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.Utils
 import com.google.android.gms.maps.model.LatLng
@@ -25,7 +23,7 @@ class TrackingWithProgressActivity : AppCompatActivity() {
         binding.toolbar.ivBack.setOnClickListener { finish() }
         binding.toolbar.toolbarTitle.text = "Track order"
         statusBarColor()
-        val items = listOf(
+      /*  val items = listOf(
             TrackingStepAdapter.MyItem(false, "1 may\n9:30pm", "Documentation Prepared"),
             TrackingStepAdapter.MyItem(false, "1 may\n9:30pm", "Booking Arranged"),
             TrackingStepAdapter.MyItem(true, "1 may\n9:30pm", "In Transit"),
@@ -33,7 +31,7 @@ class TrackingWithProgressActivity : AppCompatActivity() {
             TrackingStepAdapter.MyItem(false, "", "Out of delivery"),
             TrackingStepAdapter.MyItem(false, "", "Delivered")
         )
-        binding.sequenceLayout.setAdapter(TrackingStepAdapter(items))
+        binding.sequenceLayout.setAdapter(TrackingStepAdapter(items))*/
 
         trackOrderDetail =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

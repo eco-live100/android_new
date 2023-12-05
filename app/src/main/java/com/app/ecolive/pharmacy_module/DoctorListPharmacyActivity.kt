@@ -70,8 +70,8 @@ class DoctorListPharmacyActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    //var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

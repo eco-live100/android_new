@@ -1,23 +1,26 @@
 package com.app.ecolive.login_module
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityUserSignupBinding
-import com.app.ecolive.databinding.ActivityUserTypeOptionBinding
 import com.app.ecolive.service.Status
-import com.app.ecolive.utils.*
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.PreferenceKeeper
+import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offercity.base.BaseActivity
 import org.json.JSONObject
 
@@ -35,7 +38,20 @@ class UserSignupActivity : BaseActivity() {
         initView()
         binding.userName.setText(intent.getStringExtra(AppConstant.SOCIAL_LOGIN_NAME))
         binding.userEmail.setText(intent.getStringExtra(AppConstant.SOCIAL_LOGIN_EMAIL))
-        //gooogle
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("fire_base_newToken", token)
+            PreferenceKeeper.instance.fcmTokenSave= token
+
+        })
+        //google
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
@@ -158,7 +174,7 @@ class UserSignupActivity : BaseActivity() {
         json.put("socialLoginId", intent.getStringExtra(AppConstant.SOCIAL_LOGIN_ID))
         json.put("deviceType", "android")
         json.put("deviceId", "djksfhsdkhfdi")
-        json.put("fcmToken", "dsgsdfgdfgfdg")
+        json.put("fcmToken", PreferenceKeeper.instance.fcmTokenSave)
         json.put("latitude", "")
         json.put("longitude", "")
 

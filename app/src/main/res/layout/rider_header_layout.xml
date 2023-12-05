@@ -41,7 +41,7 @@
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:padding="@dimen/_4sdp"
-
+            android:visibility="gone"
             android:src="@drawable/ic_bell"
             app:layout_constraintBottom_toBottomOf="@+id/ivMenu"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"

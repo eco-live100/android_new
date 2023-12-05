@@ -101,7 +101,7 @@ class LocationSelectActivity : AppCompatActivity() {
 
             startActivityForResult(intent, 111)
         }
-        binding.DestinationLocation.setOnClickListener {
+        binding.destinationLocation.setOnClickListener {
             val fieldList: List<Place.Field> =
                 listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
             //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
@@ -130,20 +130,20 @@ class LocationSelectActivity : AppCompatActivity() {
                 "TAG",
                 "onActivityResult: " + (place.latLng!!.latitude.toString() + "/ " + place.latLng!!.longitude)
             )
-            if(binding.DestinationLocation.text.trim().isNotEmpty()&&binding.startLocation.text.trim().isNotEmpty()){
+            if(binding.destinationLocation.text.trim().isNotEmpty()&&binding.startLocation.text.trim().isNotEmpty()){
                 startActivity(Intent(this,VehicalListActivity::class.java).
                 putExtra("STARTLat",startLocation?.latitude.toString())
                     .putExtra("STARTLang",startLocation?.longitude.toString())
                     .putExtra("ENDLat",endLocation?.latitude.toString())
                     .putExtra("ENDLang",endLocation?.longitude.toString())
                     .putExtra("startAddress",binding.startLocation.text.toString())
-                    .putExtra("endAddress",binding.DestinationLocation.text.toString())
+                    .putExtra("endAddress",binding.destinationLocation.text.toString())
                     .putExtra("scheduleRideType",scheduleRideType)
                     .putExtra("scheduleRideDate",rideDate)
                     .putExtra("scheduleRideTime",rideTime)
                 )
             }
-            binding.DestinationLocation.text =""
+            binding.destinationLocation.text =""
             //setMarker
 
         }
@@ -151,7 +151,7 @@ class LocationSelectActivity : AppCompatActivity() {
 
             val place = Autocomplete.getPlaceFromIntent(data!!)
             endLocation =place.latLng
-            binding.DestinationLocation.text = place.address
+            binding.destinationLocation.text = place.address
                if(binding.startLocation.text.trim()!=""){
                    startActivity(Intent(this,VehicalListActivity::class.java)
                        .putExtra("STARTLat",startLocation?.latitude.toString())
@@ -159,12 +159,12 @@ class LocationSelectActivity : AppCompatActivity() {
                        .putExtra("ENDLat",endLocation?.latitude.toString())
                        .putExtra("ENDLang",endLocation?.longitude.toString())
                        .putExtra("startAddress",binding.startLocation.text.toString())
-                       .putExtra("endAddress",binding.DestinationLocation.text.toString())
+                       .putExtra("endAddress",binding.destinationLocation.text.toString())
                        .putExtra("scheduleRideType",scheduleRideType)
                        .putExtra("scheduleRideDate",rideDate)
                        .putExtra("scheduleRideTime",rideTime))
                }
-            binding.DestinationLocation.text =""
+            binding.destinationLocation.text =""
             Log.d(
                 "TAG",
                 "onActivityResult: " + (place.latLng?.latitude.toString() + "/ " + place.latLng?.longitude)
@@ -180,13 +180,13 @@ class LocationSelectActivity : AppCompatActivity() {
                 .putExtra("ENDLat",data?.getDoubleExtra(LATITUDE, 0.0).toString())
                 .putExtra("ENDLang",data?.getDoubleExtra(LONGITUDE, 0.0).toString())
                 .putExtra("startAddress",binding.startLocation.text.toString())
-                .putExtra("endAddress",binding.DestinationLocation.text.toString())
+                .putExtra("endAddress",binding.destinationLocation.text.toString())
                 .putExtra("scheduleRideType",scheduleRideType)
                 .putExtra("scheduleRideDate",rideDate)
                 .putExtra("scheduleRideTime",rideTime)
             )
 
-            binding.DestinationLocation.text =""
+            binding.destinationLocation.text =""
         }
 
     }

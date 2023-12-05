@@ -1,20 +1,23 @@
 package com.app.ecolive.rider_module
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -28,9 +31,11 @@ import com.akexorcist.googledirection.util.DirectionConverter
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
+import com.app.ecolive.databinding.CustomRequestDialogBinding
 import com.app.ecolive.databinding.HomeriderActivityBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.ChatListActivity
+import com.app.ecolive.notification.NotificationModel
 import com.app.ecolive.payment_module.AddMoneyMainActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.payment_module.UserVerificationAddMoneyActivity
@@ -47,6 +52,12 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -77,10 +88,10 @@ class HomeRiderActivity : BaseActivity() {
     var totalDuration: Double = 0.0
     private lateinit var riderOrderListAdapter: RiderOrderListAdapter
 
-/*    private var locationRequest: LocationRequest? = null
+   private var locationRequest: LocationRequest? = null
     private lateinit var locationCallback: LocationCallback
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient*/
-
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+private var notificationModel : NotificationModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.homerider_activity)
@@ -100,7 +111,16 @@ class HomeRiderActivity : BaseActivity() {
             //Glide.with(this).load(user.profilePicture).into(binding.include.contentHome.riderUserPic)
         }
         MyApp.driverlocation = null
-/*
+
+        notificationModel =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra(
+                    AppConstant.notificationModel,
+                    NotificationModel::class.java
+                )
+            } else {
+                intent.getSerializableExtra(AppConstant.notificationModel) as NotificationModel
+            }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create()
         locationRequest?.interval = 4000
@@ -118,12 +138,24 @@ class HomeRiderActivity : BaseActivity() {
                 }
             }
         }
-*/
         riderSwitchButton()
         binding.include.contentHome.riderRecycle.layoutManager = LinearLayoutManager(this)
         getProfileAPI()
     }
-
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                if (data?.getIntExtra("refresh", 0) == 1) {
+                    notificationModel = null
+                    getProfileAPI()
+                }
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
 /*    private fun checkPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -190,30 +222,46 @@ class HomeRiderActivity : BaseActivity() {
         }
     }*/
 
-    private fun riderRequestPopUp(riderId: String,bookingNumber: String) {
+    private fun riderRequestPopUp(
+        riderId: String,
+        notificationModel: NotificationModel
+    ) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.custom_request_dialog)
+        val customRequestDialogBinding : CustomRequestDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.custom_request_dialog, null, false)
+        dialog.setContentView(customRequestDialogBinding.root);
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val mDialogNo = dialog.findViewById<ImageView>(R.id.frmNo)
-        startLatLng = LatLng(26.8775, 75.8822254)
-        endLatLng = LatLng(26.8947446, 75.8301169)
+       // val mDialogNo = dialog.findViewById<ImageView>(R.id.frmNo)
+       /* startLatLng = LatLng(26.8775, 75.8822254)
+        endLatLng = LatLng(26.8947446, 75.8301169)*/
+
+        notificationModel.let {
+            customRequestDialogBinding.apply {
+                pDetailUserName.text="${it.userName.capitalize()}"
+                pDetailUserKm.text="${it.distanceInKm}KM"
+                bookingIdTv.text="Booking Id:- ${it.bookingNumber}"
+                //bookingDateTv.text="${it.createdAt}"
+                fromAddressTv.text="${it.fromAddress}"
+                toAddressTv.text="${it.toAddress}"
+                tvTotBill.text="Total Bill:- $ ${it.amount}"
+            }
+            startLatLng = LatLng(it.fromLatitude.toDouble(), it.fromLongitude.toDouble())
+            endLatLng = LatLng(it.toLatitude.toDouble(), it.toLongitude.toDouble())
+        }
+
         (supportFragmentManager.findFragmentById(R.id.pDetailMap) as SupportMapFragment?)?.getMapAsync { googleMap ->
             onMapReady(googleMap)
         }
-        val pDetailAccept = dialog.findViewById<AppCompatButton>(R.id.pDetailAccept)
-        val pDetailDecline = dialog.findViewById<AppCompatButton>(R.id.pDetailDecline)
-        val pDetailComplete = dialog.findViewById<AppCompatButton>(R.id.pDetailComplete)
-        mDialogNo.setOnClickListener {
+        customRequestDialogBinding.frmNo.setOnClickListener {
             dialog.dismiss()
         }
-        pDetailAccept.setOnClickListener {
+        customRequestDialogBinding.pDetailAccept.setOnClickListener {
             if (isRiderOnline) {
                 if(MyApp.driverlocation==null){
                     Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
                 }else {
                     acceptAPI(
                         riderId = riderId,
-                        bookingNumber = bookingNumber,
+                        bookingNumber = notificationModel.bookingNumber,
                         latitude = MyApp.driverlocation?.latitude.toString(),
                         longitude = MyApp.driverlocation?.longitude.toString()
                     )
@@ -223,25 +271,25 @@ class HomeRiderActivity : BaseActivity() {
             }
 
         }
-        pDetailDecline.setOnClickListener {
+        customRequestDialogBinding.pDetailDecline.setOnClickListener {
             if(MyApp.driverlocation==null){
                 Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
             }else {
                 declineAPI(
                     riderId = riderId,
-                    bookingNumber = bookingNumber,
+                    bookingNumber = notificationModel.bookingNumber,
                     latitude = MyApp.driverlocation?.latitude.toString(),
                     longitude = MyApp.driverlocation?.longitude.toString()
                 )
             }
         }
-        pDetailComplete.setOnClickListener {
+        customRequestDialogBinding.pDetailComplete.setOnClickListener {
             if(MyApp.driverlocation==null){
                 Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
             }else {
                 completeAPI(
                     riderId = riderId,
-                    bookingNumber = bookingNumber,
+                    bookingNumber = notificationModel.bookingNumber,
                     latitude = MyApp.driverlocation?.latitude.toString(),
                     longitude = MyApp.driverlocation?.longitude.toString()
                 )
@@ -252,7 +300,7 @@ class HomeRiderActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        //startLocationUpdates()
+        startLocationUpdates()
         locationServiceForRiderDuty()
     }
 
@@ -361,8 +409,8 @@ class HomeRiderActivity : BaseActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    //var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }
@@ -678,7 +726,7 @@ class HomeRiderActivity : BaseActivity() {
         }
     }
 
-    private fun checkDemandAPI(isChecked: Boolean,riderId: String,) {
+    private fun checkDemandAPI(isChecked: Boolean, riderId: String) {
         val taxiViewModel = TaxiViewModel(this)
         progressDialog.show(this)
         isRiderOnline = isChecked
@@ -745,7 +793,10 @@ class HomeRiderActivity : BaseActivity() {
                             checkDemandAPI(binding.include.contentHome.riderDutyStatusSwitch.isChecked,data._id)
                         }
                         getRiderOrderList(data._id)
-                        riderRequestPopUp(data._id,data.latitude)
+                        notificationModel?.let { noti->
+                            riderRequestPopUp(data._id,noti)
+                        }
+
                     }
                 }
 
@@ -781,6 +832,9 @@ class HomeRiderActivity : BaseActivity() {
                     it.data?.let {
                         dialog.isShowing.let {
                             dialog.dismiss()
+                            notificationModel = null
+                            getProfileAPI()
+
                         }
                     }
                 }
@@ -853,6 +907,8 @@ class HomeRiderActivity : BaseActivity() {
                     it.data?.let {
                         dialog.isShowing.let {
                             dialog.dismiss()
+                            notificationModel = null
+                            getProfileAPI()
                         }
                     }
                 }
@@ -929,7 +985,7 @@ class HomeRiderActivity : BaseActivity() {
         }
     }
 
-    /*     private fun startLocationUpdates() {
+         private fun startLocationUpdates() {
            if (ActivityCompat.checkSelfPermission(
                    this,
                    Manifest.permission.ACCESS_FINE_LOCATION
@@ -956,6 +1012,6 @@ class HomeRiderActivity : BaseActivity() {
      override fun onPause() {
            super.onPause()
            stopLocationUpdates()
-       }*/
+       }
 
 }

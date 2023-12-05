@@ -57,6 +57,7 @@ object AppConstant {
     var trackOrderDetail = "trackOrder"
     var driverId = "DriverId"
     var IsDriverOnline = "isDriverOnline"
+    var notificationModel = "NotificationModel"
 
 
 

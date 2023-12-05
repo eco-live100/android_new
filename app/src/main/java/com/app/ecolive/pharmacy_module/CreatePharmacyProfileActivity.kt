@@ -29,37 +29,31 @@ import com.app.ecolive.service.Status
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
-import com.app.ecolive.utils.getFilePath
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class CreatePharmacyProfileActivity : AppCompatActivity() {
     lateinit var binding: ActivityCreateHospitalBinding
-    var bgimg = 1
-    var logo = 2
+    private var bgimg = 1
+    private var logo = 2
     var option = 1
-    private var backgroundImg : Uri? = null
-    private var logoImage : Uri? = null
-    var multipartBody: ArrayList<MultipartBody.Part?> = ArrayList()
+    private var backgroundImg: Uri? = null
+    private var logoImage: Uri? = null
     private val progressDialog = CustomProgressDialog()
     var latitude = "0"
     var longitude = "0"
     var address = ""
-    var selectedProfession = ""
-    var profession = ""
-    var hospitalEmployeeUserId: String? = null
+    private var selectedProfession = ""
+    private var profession = ""
+    private var hospitalEmployeeUserId: String? = null
     private val myCalendar: Calendar = Calendar.getInstance()
     private var selectedTime = 1
     private var primaryVisitingHour = ""
@@ -67,7 +61,8 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
 
     private val REQUEST_CAMERA_PERMISSION = 1
     private var imageUri: Uri? = null
-   // private val viewModel by viewModels<PharmacyViewModel>()
+
+    // private val viewModel by viewModels<PharmacyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         Utils.changeStatusColor(this, R.color.darkblue)
@@ -75,36 +70,30 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_hospital)
         binding.toolbar.toolbarTitle.text = getString(R.string.create_profile)
         binding.toolbar.ivBack.setOnClickListener { finish() }
-        //  startActivity(Intent(this,HospitalProfile::class.java))
 
-        hospitalEmployeeUserId= ""
+        hospitalEmployeeUserId = ""
         if (intent != null) {
             hospitalEmployeeUserId = intent.getStringExtra("hospitalEmployeeUserId")
         }
         selectedProfession = ""
         binding.professionRG.setOnCheckedChangeListener { group, _ ->
-
             when (group.checkedRadioButtonId) {
                 R.id.doctorRB -> {
                     selectedProfession = getString(R.string.doctor)
                     profession = binding.doctorRB.text.toString()
                 }
-
                 R.id.nurseLpnRB -> {
                     selectedProfession = getString(R.string.nurseLpn)
                     profession = binding.nurseLpnRB.text.toString()
                 }
-
                 R.id.nurseNpRB -> {
                     selectedProfession = getString(R.string.nurseNp)
                     profession = binding.nurseNpRB.text.toString()
                 }
-
                 R.id.pharmacistRB -> {
                     selectedProfession = getString(R.string.pharmacist)
                     profession = binding.pharmacistRB.text.toString()
                 }
-
                 R.id.dentistRB -> {
                     selectedProfession = getString(R.string.dentist)
                     profession = binding.dentistRB.text.toString()
@@ -122,17 +111,14 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
                         binding.fromVisitingTimeTv.text =
                             DateFormat.format("hh:mm aaa", myCalendar.time).toString()
                     }
-
                     2 -> {
                         binding.toVisitingTimeTv.text =
                             DateFormat.format("hh:mm aaa", myCalendar.time).toString()
                     }
-
                     3 -> {
                         binding.fromAnotherVisitingTimeTv.text =
                             DateFormat.format("hh:mm aaa", myCalendar.time).toString()
                     }
-
                     else -> {
                         binding.toAnotherVisitingTimeTv.text =
                             DateFormat.format("hh:mm aaa", myCalendar.time).toString()
@@ -217,13 +203,16 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         binding.idNumberTv.setText("32332")
         binding.doctorRB.isChecked = true;
         binding.consultFee.setText("10")
-       binding.fromVisitingTimeTv.text = "10:00 am"
-       binding.toVisitingTimeTv.text = "05:00 pm"
-       binding.fromAnotherVisitingTimeTv.text = "10:00 am"
-       binding.toAnotherVisitingTimeTv.text = "06:00 pm"
+        binding.fromVisitingTimeTv.text = "10:00 am"
+        binding.toVisitingTimeTv.text = "05:00 pm"
+        binding.fromAnotherVisitingTimeTv.text = "10:00 am"
+        binding.toAnotherVisitingTimeTv.text = "06:00 pm"
         binding.saveAndRepeat.isChecked = true
         binding.createBtn.setOnClickListener {
-            Log.d("TAG", "date1 : ${binding.fromVisitingTimeTv.text}--date2 : ${binding.toVisitingTimeTv.text}")
+            Log.d(
+                "TAG",
+                "date1 : ${binding.fromVisitingTimeTv.text}--date2 : ${binding.toVisitingTimeTv.text}"
+            )
 
             if (binding.hospitalName.text.toString() == "") {
                 Toast.makeText(this, "Enter name", Toast.LENGTH_SHORT).show()
@@ -236,9 +225,9 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
 
             } else if (selectedProfession.isEmpty()) {
                 Toast.makeText(this, "Please select Profession", Toast.LENGTH_SHORT).show()
-            }else if (binding.fromVisitingTimeTv.text.isEmpty() || binding.toVisitingTimeTv.text.isEmpty()) {
+            } else if (binding.fromVisitingTimeTv.text.isEmpty() || binding.toVisitingTimeTv.text.isEmpty()) {
                 Toast.makeText(this, "Please select primary hours", Toast.LENGTH_SHORT).show()
-            }else if (binding.fromAnotherVisitingTimeTv.text.isEmpty() || binding.toAnotherVisitingTimeTv.text.isEmpty()) {
+            } else if (binding.fromAnotherVisitingTimeTv.text.isEmpty() || binding.toAnotherVisitingTimeTv.text.isEmpty()) {
                 Toast.makeText(this, "Please select secondary hours", Toast.LENGTH_SHORT).show()
             } else if (binding.consultFee.text.toString() == "") {
                 Toast.makeText(this, "Enter consultFee", Toast.LENGTH_SHORT).show()
@@ -254,39 +243,7 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
                     date2 = binding.fromAnotherVisitingTimeTv.text.toString(),
                     date1 = binding.toAnotherVisitingTimeTv.text.toString()
                 )
-//
-//                                //------------------BackGroundImage----------------------
-//                                val filePathBackgroundImage = backgroundImg?.let { it1 -> getFilePath(this, it1) }
-//                                val fileBackgroundImage = File(filePathBackgroundImage)
-//                                val requestBodyBackgroundImage = fileBackgroundImage.asRequestBody(("*/*").toMediaType())
-//                val multiplePartBackgroundImage:MultipartBody.Part = MultipartBody.Part.createFormData("backgroundPicture", fileBackgroundImage.path, requestBodyBackgroundImage)
-//
-//
-//                //------------------LogoImage----------------------
-//                val filePathLogoImage = logoImage?.let { it1 -> getFilePath(this, it1) }
-//                val fileLogoImage = File(filePathLogoImage)
-//                val requestBodyLogoImage = fileLogoImage.asRequestBody(("*/*").toMediaType())
-//                val multiplePartLogoImage:MultipartBody.Part = MultipartBody.Part.createFormData("logo", fileLogoImage.path, requestBodyLogoImage)
-
-
-                /*viewModel.registerHospitalEmployeeApi(
-                    this,
-                    hospitalId = "63bd98f4156a923e23fa2f5f",
-                    profession = profession,
-                    fullName = binding.hospitalName.text.toString(),
-                    idNumber = binding.idNumberTv.text.toString(),
-                    primaryVisitingHour = primaryVisitingHour,
-                    secondryVisitingHour = secondaryVisitingHour,
-                    professionType = selectedProfession,
-                    mobileNumber = binding.mobileNumber.text.toString(),
-                    services = binding.services.text.toString(),
-                    consultFees = binding.consultFee.text.toString(),
-                    location = binding.hospitalLocation.text.toString(),
-                    isRepeated = binding.saveAndRepeat.isChecked.toString(),
-                    backgroundPicture = multiplePartBackgroundImage,
-                    logo = multiplePartLogoImage,
-                )*/
-                        //createAndUpdateProfile()
+                createAndUpdateProfile()
             }
 
         }
@@ -312,7 +269,6 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
 
             receiveData.launch(intent)
         }
-        //createAndUpdateProfile()
     }
 
     private fun timeDifference(date1: String, date2: String): String {
@@ -418,27 +374,31 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
     private fun selectCameraImage() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
             startActivityForResult(takePictureIntent, 200)
         }
     }
+
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             imageUri = data.data
-            if(option==logo){
+            if (option == logo) {
                 logoImage = imageUri
                 binding.logoImage.setImageURI(imageUri)
             }
-            if(option==bgimg){
+            if (option == bgimg) {
                 backgroundImg = imageUri
                 binding.backgroundImg.setImageURI(imageUri)
             }
@@ -446,11 +406,11 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
             val extras: Bundle = data.extras!!
             val imageBitmap = extras["data"] as Bitmap?
             imageUri = getImageUri(this, imageBitmap!!)
-            if(option==logo){
+            if (option == logo) {
                 logoImage = imageUri
                 binding.logoImage.setImageURI(imageUri)
             }
-            if(option==bgimg){
+            if (option == bgimg) {
                 backgroundImg = imageUri
                 binding.backgroundImg.setImageURI(imageUri)
             }
@@ -459,110 +419,14 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         }
 
     }
-
-   private fun setBodyBgImg() {
-        val filePath = backgroundImg?.let { it1 -> getFilePath(this, it1) }
-        val file = File(filePath)
-        val reqFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        multipartBody.add(MultipartBody.Part.createFormData("backgroundPicture", file.name, reqFile))
-    }
-
-    private fun setBodyLogo() {
-        val filePath = logoImage?.let { it1 -> getFilePath(this, it1) }
-        val file = File(filePath)
-        val reqFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        multipartBody.add(MultipartBody.Part.createFormData("logo", file.name, reqFile))
-    }
-/*    private fun onSelectImage() {
-        if (!Utils.checkingPermissionIsEnabledOrNot(this)) {
-            Utils.requestMultiplePermission(this, VehicleInfoActivity.requestPermissionCode)
-        } else {
-            selectSourceBottomSheetFragment = SelectSourceBottomSheetFragment(this, "")
-            selectSourceBottomSheetFragment.show(
-                this.supportFragmentManager,
-                "selectSourceBottomSheetFragment"
-            )
-        }
-    }
-
-    override fun onOptionSelect(option: String) {
-        if (option == AppConstant.CAMERA_KEY) {
-            selectSourceBottomSheetFragment.dismiss()
-            //  ImagePicker.onCaptureImage(this)
-            val intent = Lassi(this)
-                .with(LassiOption.CAMERA)
-                .setMaxCount(1)
-                .setGridSize(3)
-                .setMediaType(MediaType.IMAGE)
-                .setCompressionRation(10)
-                .build()
-
-            receiveData.launch(intent)
-
-        } else if (option == AppConstant.GALLERY_KEY) {
-            selectSourceBottomSheetFragment.dismiss()
-            val intent = Lassi(this)
-                .with(LassiOption.GALLERY)
-                .setMaxCount(1)
-                .setGridSize(3)
-                .setMediaType(MediaType.IMAGE)
-                .setCompressionRation(10)
-                .build()
-
-            receiveData.launch(intent)
-        }
-    }*/
-
     private val receiveData =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-              /*  if (option == 1 || option == 2) {
-                    val selectedMedia =
-                        it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
-                    if (!selectedMedia.isNullOrEmpty()) {
-                        //storePath
-                        if (option == 1) {
-                            backgroundImg = selectedMedia[0].path!!
-                            val bitmap: Bitmap?
-                            bitmap = BitmapFactory.decodeFile(selectedMedia[0].path)
-                            //imageUrl = Uri.parse(selectedMedia[0].path)
-
-                            try {
-                                binding.backgroundImg.setImageBitmap(null)
-                                binding.backgroundImg.setImageBitmap(bitmap)
-
-                            } catch (e: Exception) {
-                                Log.d("crashImage", "onActivityResult: " + e)
-                            }
-                        } else if (option == 2) {
-                            logoImage = selectedMedia[0].path!!
-                            val bitmap: Bitmap?
-                            bitmap = BitmapFactory.decodeFile(selectedMedia[0].path)
-                            //imageUrl = Uri.parse(selectedMedia[0].path)
-
-                            try {
-                                binding.logoImage.setImageBitmap(null)
-                                binding.logoImage.setImageBitmap(bitmap)
-
-                            } catch (e: Exception) {
-                                Log.d("crashImage", "onActivityResult: " + e)
-                            }
-                        }
-
-
-                        //  setBody(bitmap!!, "vehicleDocument")
-
-                    }
-                }
-                else {*/
-                    val place = Autocomplete.getPlaceFromIntent(it.data!!)
-                    binding.hospitalLocation.text = place.address
-                    latitude = place.latLng.latitude.toString()
-                    longitude = place.latLng.longitude.toString()
-                    address = (place.address)
-               // }
-
-
+                val place = Autocomplete.getPlaceFromIntent(it.data!!)
+                binding.hospitalLocation.text = place.address
+                latitude = place.latLng.latitude.toString()
+                longitude = place.latLng.longitude.toString()
+                address = (place.address)
             }
         }
 
@@ -590,15 +454,15 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         builder.addFormDataPart("latitude", latitude)
         builder.addFormDataPart("longitude", longitude)
 
-        //builder.addFormDataPart("allowPublicToViewEmployees", "${binding.saveAndRepeat.isChecked}")
-
-        if (multipartBody != null) {
-            setBodyBgImg()
-            setBodyLogo()
-            builder.addPart(multipartBody[0]!!.body)
-            builder.addPart(multipartBody[1]!!.body)
-        }else{
-            return
+        if (backgroundImg != null) {
+            builder.addPart(Utils.multipartBodyFile(this, backgroundImg!!, "backgroundPicture"))
+        } else {
+            builder.addFormDataPart("backgroundPicture", "")
+        }
+        if (logoImage != null) {
+            builder.addPart(Utils.multipartBodyFile(this, logoImage!!, "logo"))
+        } else {
+            builder.addFormDataPart("logo", "")
         }
 
         pharmacyViewModel.registerHospitalEmployeeApi(builder.build()).observe(this) {
@@ -606,7 +470,7 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        startActivity(Intent(this,HospitalProfile::class.java))
+                        startActivity(Intent(this, HospitalProfile::class.java))
                         finish()
                     }
                 }
@@ -625,52 +489,51 @@ class CreatePharmacyProfileActivity : AppCompatActivity() {
         }
     }
 
-/*
-    private var progressIndicator: AlertDialog? = null
-    private fun createAndUpdateProfile() {
-        progressIndicator = AlertDialog.Builder(this).create()
-        lifecycleScope.launchWhenStarted {
-            viewModel.registerHospitalEmployee.collect { resultData ->
-                when (resultData) {
-                    is PharmacyViewModel.ProcessingEvents.Loading -> {
-                        Log.d("Resource_Loading", "Loading..........")
-                        progressIndicator!!.showDialog(this@CreatePharmacyProfileActivity,getString(R.string.please_wait))
-                    }
-                    is PharmacyViewModel.ProcessingEvents.Success -> {
-                        if (progressIndicator != null)
-                            progressIndicator!!.dismissDialog()
-                        val repositoriesModel = resultData.result as CommonResponse<Any>
-                        Log.d("Resource_Success", "$repositoriesModel")
+    /*
+        private var progressIndicator: AlertDialog? = null
+        private fun createAndUpdateProfile() {
+            progressIndicator = AlertDialog.Builder(this).create()
+            lifecycleScope.launchWhenStarted {
+                viewModel.registerHospitalEmployee.collect { resultData ->
+                    when (resultData) {
+                        is PharmacyViewModel.ProcessingEvents.Loading -> {
+                            Log.d("Resource_Loading", "Loading..........")
+                            progressIndicator!!.showDialog(this@CreatePharmacyProfileActivity,getString(R.string.please_wait))
+                        }
+                        is PharmacyViewModel.ProcessingEvents.Success -> {
+                            if (progressIndicator != null)
+                                progressIndicator!!.dismissDialog()
+                            val repositoriesModel = resultData.result as CommonResponse<Any>
+                            Log.d("Resource_Success", "$repositoriesModel")
 
-                        binding.rootLayout.snackBar(repositoriesModel.message!!)
-                        startActivity(Intent(this@CreatePharmacyProfileActivity,HospitalProfile::class.java))
-                        finish()
-                    }
-                    is PharmacyViewModel.ProcessingEvents.Failure -> {
-                        val error = resultData.error
-                        Log.d("Resource_Failed", " $error")
-                        binding.rootLayout.snackBar(error)
-                        if (progressIndicator != null)
-                            progressIndicator!!.dismissDialog()
-                    }
-                    is PharmacyViewModel.ProcessingEvents.Error -> {
-                        if (progressIndicator != null)
-                            progressIndicator!!.dismissDialog()
-                        val repositoriesModel = resultData.result as CommonResponse<*>
-                        binding.rootLayout.snackBar(repositoriesModel.message!!)
-                        Log.d(
-                            "Resource_Error",
-                            "${repositoriesModel.message} ${repositoriesModel.statusCode}"
-                        )
-                    }
+                            binding.rootLayout.snackBar(repositoriesModel.message!!)
+                            startActivity(Intent(this@CreatePharmacyProfileActivity,HospitalProfile::class.java))
+                            finish()
+                        }
+                        is PharmacyViewModel.ProcessingEvents.Failure -> {
+                            val error = resultData.error
+                            Log.d("Resource_Failed", " $error")
+                            binding.rootLayout.snackBar(error)
+                            if (progressIndicator != null)
+                                progressIndicator!!.dismissDialog()
+                        }
+                        is PharmacyViewModel.ProcessingEvents.Error -> {
+                            if (progressIndicator != null)
+                                progressIndicator!!.dismissDialog()
+                            val repositoriesModel = resultData.result as CommonResponse<*>
+                            binding.rootLayout.snackBar(repositoriesModel.message!!)
+                            Log.d(
+                                "Resource_Error",
+                                "${repositoriesModel.message} ${repositoriesModel.statusCode}"
+                            )
+                        }
 
-                    else -> {}
+                        else -> {}
+                    }
                 }
             }
         }
-    }
-*/
-
+    */
 
 
 }
