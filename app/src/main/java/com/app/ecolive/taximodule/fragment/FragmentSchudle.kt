@@ -329,6 +329,8 @@ class FragmentSchudle : Fragment() {
         val json = JSONObject()
 
         json.put("taxiId", "")
+        json.put("userLatitude", "$${startLocation?.latitude}")
+        json.put("userLongitude", "$${startLocation?.longitude}")
         json.put("fromLatitude", "${startLocation?.latitude}")
         json.put("fromLongitude","${startLocation?.longitude}")
         json.put("fromAddress",  binding.startLocation.text.toString())

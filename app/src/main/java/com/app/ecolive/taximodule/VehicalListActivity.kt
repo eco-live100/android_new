@@ -239,6 +239,8 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
         json.put("taxiId", "${vehicleModelData._id}")
         json.put("fromLatitude", "$startLat")
         json.put("fromLongitude", "$startLang")
+        json.put("userLatitude", "$startLat")
+        json.put("userLongitude", "$startLang")
         json.put("fromAddress", "$startAddress")
         json.put("toLatitude", "$endLat")
         json.put("toLongitude", "$endLang")
