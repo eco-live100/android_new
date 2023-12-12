@@ -28,7 +28,7 @@
             android:layout_alignParentBottom="true"
             android:elevation="4dp"
             android:orientation="horizontal"
-            android:weightSum="5"
+
             app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:paddingVertical="@dimen/_5sdp">
 
                 <ImageView

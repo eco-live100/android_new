@@ -112,15 +112,18 @@ private var notificationModel : NotificationModel? = null
         }
         MyApp.driverlocation = null
 
-        notificationModel =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra(
-                    AppConstant.notificationModel,
-                    NotificationModel::class.java
-                )
-            } else {
-                intent.getSerializableExtra(AppConstant.notificationModel) as NotificationModel
-            }
+        if(intent.extras !=null){
+            notificationModel =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getSerializableExtra(
+                        AppConstant.notificationModel,
+                        NotificationModel::class.java
+                    )
+                } else {
+                    intent.getSerializableExtra(AppConstant.notificationModel) as NotificationModel
+                }
+        }
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create()
         locationRequest?.interval = 4000

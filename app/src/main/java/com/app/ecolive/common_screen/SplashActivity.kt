@@ -35,16 +35,14 @@ class SplashActivity : AppCompatActivity() {
     private fun startSplash() {
         try {
             Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                    if( PreferenceKeeper.instance.isAPPInstallFirstTime){
+
                         if(PreferenceKeeper.instance.isUserLogin){
                             startActivity(Intent(this@SplashActivity, UserHomePageNavigationActivity::class.java))
                         }else{
                             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                         }
-                    }else{
-                        startActivity(Intent(this@SplashActivity, GetStartedActivity::class.java))
-                    }
-                PreferenceKeeper.instance.isAPPInstallFirstTime=true
+
+
                 finish()
                 }, 1500)
 

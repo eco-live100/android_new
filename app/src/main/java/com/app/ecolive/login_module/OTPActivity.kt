@@ -150,7 +150,7 @@ class OTPActivity : BaseActivity() {
                             val name = ""+PreferenceKeeper.instance.loginResponse?.firstName+" "+PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
                             cometchat.register(uid,name)
 
-                            startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
+                            startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
                             Utils.showMessage(THIS!!, it.message)
                             finish()
                         }
