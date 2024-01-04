@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".pharmacy_module.PharmacyOrderFormActivity">
+        tools:context=".pharmacy_module.health_profile.PharmacyOrderFormActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -46,7 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="Note: "
+                        android:text="@string/note"
                         android:textColor="@color/red"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="You can only send this form to qualified medical professionals you selected"
+                        android:text="@string/you_can_only_send_this_form_to_qualified_medical_professionals_you_selected"
                         android:textAlignment="textStart"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp"
@@ -87,7 +87,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:fontFamily="@font/roboto_bold"
-                        android:hint="Dr.Jenny"
+                        tools:hint="Dr.Jenny"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
 
@@ -107,7 +107,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Optional : if any upload a file or picture of any medical document which you want your prescriber to be aware of beforehand"
+                    android:text="@string/optional_if_any_upload_a_file_or_picture_of_any_medical_document_which_you_want_your_prescriber_to_be_aware_of_beforehand"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
@@ -142,7 +142,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="0 file has been uploaded"
+                            android:text="@string/_0_file_has_been_uploaded"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -168,7 +168,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_medium"
                             android:gravity="center"
-                            android:text="0 picture has been uploaded"
+                            android:text="@string/_0_picture_has_been_uploaded"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -188,7 +188,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Fill in symptom checker box below"
+                    android:text="@string/fill_in_symptom_checker_box_below"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -203,7 +203,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:textSize="@dimen/_11sdp"
-                    android:hint="Describe all your symtoms"
+                    android:hint="@string/describe_all_your_symtoms"
                     android:textColor="@color/grey" />
 
                 <TextView
@@ -212,7 +212,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Symptom Duration"
+                    android:text="@string/symptom_duration"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -226,7 +226,7 @@
                     android:background="@drawable/bg_edittext2"
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
-                    android:hint="When did you first notice this(these)symptom(s) ?"
+                    android:hint="@string/when_did_you_first_notice_this_these_symptom_s"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
 
@@ -236,7 +236,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Already taking medications or vitamins?"
+                    android:text="@string/already_taking_medications_or_vitamins"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -251,7 +251,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:hint="What prescription and non-prescription medication do you take ?"
+                    android:hint="@string/what_prescription_and_non_prescription_medication_do_you_take"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
 
@@ -262,7 +262,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Recent history"
+                    android:text="@string/recent_history"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -277,7 +277,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:hint="What are your medical and surgical histories ?"
+                    android:hint="@string/what_are_your_medical_and_surgical_histories"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
 
@@ -287,7 +287,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Allergies"
+                    android:text="@string/allergies"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -302,7 +302,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:hint="What allergies do you have?"
+                    android:hint="@string/what_allergies_do_you_have"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
 
@@ -312,7 +312,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Smoking,alcohol and illicit drug use"
+                    android:text="@string/smoking_alcohol_and_illicit_drug_use"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -327,7 +327,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:hint="What do you have?"
+                    android:hint="@string/what_do_you_have"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
 
@@ -337,7 +337,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Other relevant information "
+                    android:text="@string/other_relevant_information"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_11sdp" />
@@ -352,7 +352,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:hint="Enter other information"
+                    android:hint="@string/enter_other_information"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
 
@@ -362,7 +362,7 @@
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Read and check the box below"
+                    android:text="@string/read_and_check_the_box_below"
                     android:textAlignment="textStart"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/_11sdp" />
@@ -377,7 +377,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="top"
                     android:buttonTint="@color/color_blue"
-                    android:text="I confirm that all my above statements are true"
+                    android:text="@string/i_confirm_that_all_my_above_statements_are_true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -385,7 +385,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView64" />
 
 
-                <CheckBox
+         <!--       <CheckBox
                     android:id="@+id/youMaySendCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -400,7 +400,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView64" />
-
+-->
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -415,7 +415,7 @@
                         android:background="@drawable/bg_blue_round_button"
                         android:fontFamily="@font/roboto_bold"
                         android:gravity="center"
-                        android:text="Cancel"
+                        android:text="@string/cancel"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp" />
 
@@ -429,7 +429,7 @@
                         android:background="@drawable/bg_blue_round_button"
                         android:fontFamily="@font/roboto_bold"
                         android:gravity="center"
-                        android:text="Submit"
+                        android:text="@string/submit"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>

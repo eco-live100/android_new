@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".pharmacy_module.PharmacyOrderFormActivity">
+        tools:context=".pharmacy_module.health_profile.PharmacyOrderFormActivity">
         <include
             android:id="@+id/toolbar"
             layout="@layout/custom_toolbar_without_round"
@@ -75,53 +75,59 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp">
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp">
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_height="@dimen/_60sdp"
                     android:background="@drawable/bg_edittext_blue2"
-                    android:layout_marginEnd="@dimen/_5sdp">
+                    android:gravity="center"
+                    android:id="@+id/fileUploadLL"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:backgroundTint="@color/color_blue"
-                        android:background="@drawable/ic_paperclip_chat"/>
+                        android:background="@drawable/ic_paperclip_chat"
+                        android:backgroundTint="@color/color_blue" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/roboto_medium"
                         android:gravity="center"
-                        android:textColor="@color/color_b3b3b3"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="0 file has been uploaded"
-                        />
+                        android:text="@string/_0_file_has_been_uploaded"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/pictureUploadLL"
                     android:layout_width="0dp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_height="@dimen/_60sdp"
                     android:background="@drawable/bg_edittext_blue2"
-                    android:layout_marginEnd="@dimen/_5sdp">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:backgroundTint="@color/color_blue"
-                        android:background="@drawable/plus_icon_blue"/>
+                        android:background="@drawable/ic_camera_chat"
+                        android:backgroundTint="@color/color_blue" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/roboto_medium"
                         android:gravity="center"
-                        android:textColor="@color/color_b3b3b3"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="0 picture has been uploaded"
-                        />
+                        android:text="@string/_0_picture_has_been_uploaded"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -136,12 +142,14 @@
                 android:paddingStart="@dimen/_15sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_12sdp"
+                android:id="@+id/messageTv"
                 android:background="@drawable/bg_edittext_blue2"/>
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:text="Place your order now"
                 android:gravity="center"
+                android:id="@+id/placeOrderButton"
                 android:textColor="@color/white"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="@dimen/_12sdp"

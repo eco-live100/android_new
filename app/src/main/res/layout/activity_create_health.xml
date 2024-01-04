@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F5F5F5"
-        tools:context=".pharmacy_module.PharmacyProcessActivity">
+        tools:context=".pharmacy_module.health_profile.PharmacyProcessActivity">
 
         <include
             android:id="@+id/toolbar"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -76,7 +77,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="John Doe"
+                    tools:text="John Doe"
                     android:textColor="@color/color_050D4C"
                     android:textSize="@dimen/_20ssp"
                     app:layout_constraintStart_toEndOf="@+id/pDetailUserPic"
@@ -84,6 +85,7 @@
 
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/pDetailRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_path_green"
                     android:drawablePadding="@dimen/_1sdp"
-                    android:text="5KM"
+                    tools:text="5KM"
                     android:textColor="@color/color_51E555"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintBottom_toBottomOf="@+id/pDetailUserName"
@@ -118,7 +120,7 @@
                     android:elevation="@dimen/dimen_4dp"
                     app:cardCornerRadius="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pDetailRating">
+                    app:layout_constraintTop_toBottomOf="@+id/pDetailUserPic">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -160,7 +162,7 @@
                                 android:layout_weight="1.5"
                                 android:fontFamily="@font/roboto_medium"
                                 android:gravity="start"
-                                android:text="9 March 2021 | 6:30 PM"
+                                tools:text="9 March 2021 | 6:30 PM"
                                 android:textColor="@color/color_ACACAC"
                                 android:textSize="@dimen/_11sdp" />
 
@@ -177,7 +179,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/roboto_medium"
                                 android:gravity="end"
-                                android:text="Received"
+                                tools:text="Received"
                                 android:textColor="@color/color_ACACAC"
                                 android:textSize="@dimen/_11sdp" />
 
@@ -546,7 +548,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/roboto_regular"
-                    android:text="Total Bill: $1120"
+                    tools:text="Total Bill: $1120"
                     android:textColor="@color/color_050D4C"
                     android:textSize="@dimen/_14ssp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -568,15 +570,15 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvTotBill" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/pDetailAccept"
+                    android:id="@+id/startRideButton"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/bg_blue_round_button"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
-                    android:text="Accept"
-                    android:visibility="gone"
+                    android:text="@string/start_ride"
+                    android:visibility="visible"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -597,7 +599,7 @@
                     android:text="Decline"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toStartOf="@+id/pDetailAccept"
+                    app:layout_constraintEnd_toStartOf="@+id/startRideButton"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pDetailComplete" />
 

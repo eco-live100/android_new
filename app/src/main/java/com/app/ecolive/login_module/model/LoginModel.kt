@@ -33,7 +33,9 @@ data class LoginModel(
         val status: String,
         val updatedAt: String,
         val socialLoginType: String,
-        val socialLoginId: String
+        val socialLoginId: String,
+        var isDoctor: Boolean = false,
+        var isPharmacy: Boolean = false,
     )
 
     data class CheckEmailVerified(

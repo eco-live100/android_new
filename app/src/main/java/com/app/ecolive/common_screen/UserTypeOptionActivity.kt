@@ -1,17 +1,17 @@
 package com.app.ecolive.common_screen
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.R.color
-import com.app.ecolive.utils.Utils.Companion.changeStatusColor
 import com.app.ecolive.databinding.ActivityUserTypeOptionBinding
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.shop_owner.ShopUserSignupActivityNew
 import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.Utils.Companion.changeStatusColor
 
 class UserTypeOptionActivity : AppCompatActivity() {
     lateinit var binding: ActivityUserTypeOptionBinding
@@ -58,8 +58,6 @@ class UserTypeOptionActivity : AppCompatActivity() {
                         UserHomePageNavigationActivity::class.java
                     )
                 )
-
-
             } else if (userType == "rider") {
                 startActivity(Intent(this@UserTypeOptionActivity, VehicleInfoActivity::class.java)
                     .putExtra(AppConstant.IS_FROM_USERTYPEOPTIONACTIVITY,true))

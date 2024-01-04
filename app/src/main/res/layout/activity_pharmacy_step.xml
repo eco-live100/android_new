@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F5F5F5"
-        tools:context=".pharmacy_module.PharmacyProcessActivity">
+        tools:context=".pharmacy_module.health_profile.PharmacyProcessActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -139,11 +139,11 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
                 android:padding="@dimen/_10sdp"
-                android:text="Place order now"
+                android:text="@string/place_order_now"
                 android:textColor="@color/white"
                 android:fontFamily="@font/roboto_medium"
                 android:layout_marginTop="@dimen/_10sdp"/>
-            <androidx.appcompat.widget.AppCompatButton
+<!--            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/nextButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
@@ -154,7 +154,7 @@
                 android:gravity="center"
                 android:text="Continue"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_14sdp" />-->
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -30,13 +30,19 @@ class TaxiBookingRequestListAdapter(var context: Context, var dataList: List<Tax
 
         val item = dataList[position]
         when (item.bookingStatus) {
-            "requested" -> {
+            "completed" -> {
                 holder.binding.tvTotBill.visibility = View.GONE
                 holder.binding.tvTrackOrder.visibility = View.GONE
                 holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
                 holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_red))
             }
             "accepted" -> {
+                holder.binding.tvTotBill.visibility = View.VISIBLE
+                holder.binding.tvTrackOrder.visibility = View.VISIBLE
+                holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
+                holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_FF9100))
+            }
+            "started" -> {
                 holder.binding.tvTotBill.visibility = View.VISIBLE
                 holder.binding.tvTrackOrder.visibility = View.VISIBLE
                 holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()

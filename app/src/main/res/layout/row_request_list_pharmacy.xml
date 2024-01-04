@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_round_conner">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImage"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_user_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/color_b3b3b3"
+            app:strokeWidth="@dimen/_1ssp" />
+
+        <TextView
+            android:id="@+id/nameTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Arlene McCoy"
+            android:textColor="@color/color_050D4C"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toTopOf="@+id/profileImage" />
+
+        <TextView
+            android:id="@+id/symptomsTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Symptoms:- Aron,Riya,Arlene McCoy"
+            android:textColor="@color/color_050D4C"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toBottomOf="@+id/nameTv" />
+
+        <TextView
+            android:id="@+id/symptomsDurationTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10ssp"
+            android:text="Symtoms Duration:- 10 days"
+            android:textColor="@color/quantum_grey700"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/symptomsTv"
+            app:layout_constraintStart_toEndOf="@+id/profileImage" />
+
+        <ImageView
+            android:id="@+id/locationPin"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:src="@drawable/destination_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/symptomsDurationTv" />
+        <TextView
+            android:id="@+id/userLocationTv"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10ssp"
+            android:text="11-bal vihar colony near raj vilas hotel goner road jaipur 302031"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/locationPin"
+            app:layout_constraintTop_toBottomOf="@id/symptomsDurationTv" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

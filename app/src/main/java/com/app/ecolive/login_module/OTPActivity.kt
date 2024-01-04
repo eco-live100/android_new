@@ -1,34 +1,34 @@
 package com.app.ecolive.login_module
 
-import `in`.aabhasjindal.otptextview.OTPListener
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
-import com.app.ecolive.common_screen.UserTypeOptionActivity
 import com.app.ecolive.databinding.OtpActivityBinding
 import com.app.ecolive.msg_module.cometchat
 import com.app.ecolive.service.Status
-import com.app.ecolive.utils.*
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
+import com.app.ecolive.utils.PreferenceKeeper
+import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
-
 import com.offercity.base.BaseActivity
+import `in`.aabhasjindal.otptextview.OTPListener
 import org.json.JSONObject
 
 
 class OTPActivity : BaseActivity() {
     lateinit var binding: OtpActivityBinding
     private lateinit var countDownTimer: CountDownTimer
-   // private var mLineProgressBar: CircleProgressBar? = null
+
+    // private var mLineProgressBar: CircleProgressBar? = null
     private val progressDialog = CustomProgressDialog()
-    private var COUNTRY_CODE: String? =""
-    private var FROM: String? =""
+    private var COUNTRY_CODE: String? = ""
+    private var FROM: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(THIS!!, R.layout.otp_activity)
@@ -48,10 +48,10 @@ class OTPActivity : BaseActivity() {
             }
             binding.otpPlzVerify.setText(resources.getString(R.string.EnterOTPreceived) + " $COUNTRY_CODE" + mob1 + "******" + mob2)
         }
-        if(!FROM.equals("forgetpassword")){
+        if (!FROM.equals("forgetpassword")) {
             sendMobilOtpAPICAll()
 
-        }else{
+        } else {
             countdownTimer()
         }
 
@@ -61,7 +61,7 @@ class OTPActivity : BaseActivity() {
         setTouchNClick(binding.otpSubmitBtn)
         setTouchNClick(binding.otpSendAgain)
 
-     //   mLineProgressBar = binding!!.mLineProgressBar
+        //   mLineProgressBar = binding!!.mLineProgressBar
         //  countdownTimer()
         binding.otpSubmitBtn.isEnabled = false
         binding.otpSubmitBtn.isClickable = false
@@ -87,7 +87,6 @@ class OTPActivity : BaseActivity() {
         if (binding.otpSubmitBtn == v) {
             verifyMobileOtpAPICall()
         } else if (v == binding.otpSendAgain) {
-
             sendMobilOtpAPICAll()
         }
     }
@@ -110,8 +109,8 @@ class OTPActivity : BaseActivity() {
                         Utils.showMessage(THIS!!, it.message)
 
                     }
-
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -128,7 +127,7 @@ class OTPActivity : BaseActivity() {
         var otpViewModel = CommonViewModel(THIS!!)
         var json = JSONObject()
         json.put("verifyOtpType", FROM)//forgetpassword
-        json.put("otpCode", ""+binding.containerOtp.otp.toString())
+        json.put("otpCode", "" + binding.containerOtp.otp.toString())
         json.put("mobileNumber", intent.getStringExtra(AppConstant.MOBILE_NUMBER))
 
         otpViewModel.verifyMobileOtp(json).observe(THIS!!) { it ->
@@ -136,29 +135,30 @@ class OTPActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        if(FROM.equals("forgetpassword")){
+                        if (FROM.equals("forgetpassword")) {
                             startActivity(Intent(THIS, LoginActivity::class.java))
                             Utils.showMessage(THIS!!, it.message)
                             finish()
-                        }else{
-                            var vv = it.data
+                        } else {
                             PreferenceKeeper.instance.bearerTokenSave = it.data.accessToken
                             PreferenceKeeper.instance.isUserLogin = true
                             PreferenceKeeper.instance.loginResponse = it.data
                             // startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
-                            val uid = ""+PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
-                            val name = ""+PreferenceKeeper.instance.loginResponse?.firstName+" "+PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
-                            cometchat.register(uid,name)
+                            val uid =
+                                "" + PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
+                            val name =
+                                "" + PreferenceKeeper.instance.loginResponse?.firstName + " " + PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
+                            cometchat.register(uid, name)
 
-                            startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
+                            //startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
+                            startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
                             Utils.showMessage(THIS!!, it.message)
                             finish()
                         }
-
-
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -199,14 +199,14 @@ class OTPActivity : BaseActivity() {
         }.start()
     }
 
-/*    private fun simulateProgress() {
-        val animator = ValueAnimator.ofInt(0, 100)
-        animator.addUpdateListener { animation ->
-            val progress = animation.animatedValue as Int
-            mLineProgressBar!!.progress = progress
-        }
-        animator.repeatCount = ValueAnimator.INFINITE
-        animator.duration = 30000
-        animator.start()
-    }*/
+    /*    private fun simulateProgress() {
+            val animator = ValueAnimator.ofInt(0, 100)
+            animator.addUpdateListener { animation ->
+                val progress = animation.animatedValue as Int
+                mLineProgressBar!!.progress = progress
+            }
+            animator.repeatCount = ValueAnimator.INFINITE
+            animator.duration = 30000
+            animator.start()
+        }*/
 }

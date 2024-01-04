@@ -88,10 +88,11 @@ class HomeRiderActivity : BaseActivity() {
     var totalDuration: Double = 0.0
     private lateinit var riderOrderListAdapter: RiderOrderListAdapter
 
-   private var locationRequest: LocationRequest? = null
+    private var locationRequest: LocationRequest? = null
     private lateinit var locationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-private var notificationModel : NotificationModel? = null
+    private var notificationModel: NotificationModel? = null
+    private var driverAddress = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.homerider_activity)
@@ -112,15 +113,15 @@ private var notificationModel : NotificationModel? = null
         }
         MyApp.driverlocation = null
 
-        notificationModel =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (intent.extras != null) {
+            notificationModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getSerializableExtra(
-                    AppConstant.notificationModel,
-                    NotificationModel::class.java
+                    AppConstant.notificationModel, NotificationModel::class.java
                 )
             } else {
                 intent.getSerializableExtra(AppConstant.notificationModel) as NotificationModel
             }
+        }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create()
         locationRequest?.interval = 4000
@@ -142,107 +143,114 @@ private var notificationModel : NotificationModel? = null
         binding.include.contentHome.riderRecycle.layoutManager = LinearLayoutManager(this)
         getProfileAPI()
     }
-     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
+
+    /*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+            Log.d("TAG", "onActivityResult: $requestCode---$resultCode")
+            if (requestCode == 1 && resultCode == RESULT_OK) {
+                Log.d("TAG", "onActivityResult: ${data?.getIntExtra("refresh", 0)}")
                 if (data?.getIntExtra("refresh", 0) == 1) {
                     notificationModel = null
                     getProfileAPI()
                 }
             }
-            if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+        }*/
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("TAG", "onActivityResult: $requestCode---$resultCode")
+        if (requestCode==1 && resultCode == RESULT_OK && data != null) {
+            notificationModel = null
+            getProfileAPI()
         }
     }
-/*    private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
+    /*    private fun checkPermissions(): Boolean {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            }
+            return false
+        }
+
+        private fun requestPermissions() {
+            ActivityCompat.requestPermissions(
                 this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                123
+            )
+        }
+
+        @SuppressLint("MissingSuperCall")
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
         ) {
-            return true
-        }
-        return false
-    }
-
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            123
-        )
-    }
-
-    @SuppressLint("MissingSuperCall")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == 123) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-               // getLocation()
+            if (requestCode == 123) {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                   // getLocation()
+                }
             }
         }
-    }
-    private fun isLocationEnabled(): Boolean {
-        val locationManager: LocationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }*/
-/*    @SuppressLint("MissingPermission", "SetTextI18n")
-    private fun getLocation() {
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
-                    val location: Location? = task.result
-                    if (location != null) {
-                        MyApp.driverlocation = location
-                        //getAddress(location.latitude,location.longitude)
+        private fun isLocationEnabled(): Boolean {
+            val locationManager: LocationManager =
+                getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER
+            )
+        }*//*    @SuppressLint("MissingPermission", "SetTextI18n")
+        private fun getLocation() {
+            if (checkPermissions()) {
+                if (isLocationEnabled()) {
+                    mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                        val location: Location? = task.result
+                        if (location != null) {
+                            MyApp.driverlocation = location
+                            //getAddress(location.latitude,location.longitude)
+                        }
                     }
+                } else {
+                    Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
                 }
             } else {
-                Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
+                requestPermissions()
             }
-        } else {
-            requestPermissions()
-        }
-    }*/
+        }*/
 
     private fun riderRequestPopUp(
-        riderId: String,
-        notificationModel: NotificationModel
+        riderId: String, notificationModel: NotificationModel
     ) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        val customRequestDialogBinding : CustomRequestDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.custom_request_dialog, null, false)
+        val customRequestDialogBinding: CustomRequestDialogBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this), R.layout.custom_request_dialog, null, false
+        )
         dialog.setContentView(customRequestDialogBinding.root);
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-       // val mDialogNo = dialog.findViewById<ImageView>(R.id.frmNo)
-       /* startLatLng = LatLng(26.8775, 75.8822254)
-        endLatLng = LatLng(26.8947446, 75.8301169)*/
-
+        // val mDialogNo = dialog.findViewById<ImageView>(R.id.frmNo)
+        /* startLatLng = LatLng(26.8775, 75.8822254)
+         endLatLng = LatLng(26.8947446, 75.8301169)*/
+        customRequestDialogBinding.pDetailComplete.visibility = View.GONE
         notificationModel.let {
             customRequestDialogBinding.apply {
-                pDetailUserName.text="${it.userName.capitalize()}"
-                pDetailUserKm.text="${it.distanceInKm}KM"
-                bookingIdTv.text="Booking Id:- ${it.bookingNumber}"
+                pDetailUserName.text = "${it.userName.capitalize()}"
+                pDetailUserKm.text = "${it.distanceInKm}KM"
+                bookingIdTv.text = "Booking Id:- ${it.bookingNumber}"
                 //bookingDateTv.text="${it.createdAt}"
-                fromAddressTv.text="${it.fromAddress}"
-                toAddressTv.text="${it.toAddress}"
-                tvTotBill.text="Total Bill:- $ ${it.amount}"
+                fromAddressTv.text = "${it.fromAddress}"
+                toAddressTv.text = "${it.toAddress}"
+                tvTotBill.text = "Total Bill:- $ ${it.amount}"
             }
             startLatLng = LatLng(it.fromLatitude.toDouble(), it.fromLongitude.toDouble())
             endLatLng = LatLng(it.toLatitude.toDouble(), it.toLongitude.toDouble())
@@ -256,9 +264,9 @@ private var notificationModel : NotificationModel? = null
         }
         customRequestDialogBinding.pDetailAccept.setOnClickListener {
             if (isRiderOnline) {
-                if(MyApp.driverlocation==null){
-                    Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
-                }else {
+                if (MyApp.driverlocation == null) {
+                    Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show()
+                } else {
                     acceptAPI(
                         riderId = riderId,
                         bookingNumber = notificationModel.bookingNumber,
@@ -266,15 +274,15 @@ private var notificationModel : NotificationModel? = null
                         longitude = MyApp.driverlocation?.longitude.toString()
                     )
                 }
-            }else{
+            } else {
 
             }
 
         }
         customRequestDialogBinding.pDetailDecline.setOnClickListener {
-            if(MyApp.driverlocation==null){
-                Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
-            }else {
+            if (MyApp.driverlocation == null) {
+                Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show()
+            } else {
                 declineAPI(
                     riderId = riderId,
                     bookingNumber = notificationModel.bookingNumber,
@@ -284,9 +292,9 @@ private var notificationModel : NotificationModel? = null
             }
         }
         customRequestDialogBinding.pDetailComplete.setOnClickListener {
-            if(MyApp.driverlocation==null){
-                Toast.makeText(this,"Location not found",Toast.LENGTH_SHORT).show()
-            }else {
+            if (MyApp.driverlocation == null) {
+                Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show()
+            } else {
                 completeAPI(
                     riderId = riderId,
                     bookingNumber = notificationModel.bookingNumber,
@@ -319,22 +327,16 @@ private var notificationModel : NotificationModel? = null
         mMap.animateCamera(cu)
 
         mMap.addMarker(
-            MarkerOptions()
-                .position(startLatLng) //                .flat(true)
+            MarkerOptions().position(startLatLng) //                .flat(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         )
         mMap.addMarker(
-            MarkerOptions()
-                .position(endLatLng) //                .flat(true)
+            MarkerOptions().position(endLatLng) //                .flat(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         )
-        GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY")
-            .from(startLatLng)
-            .to(endLatLng)
-            .avoid(AvoidType.FERRIES)
-            .alternativeRoute(false)
-            .transportMode(TransportMode.DRIVING)
-            .execute(object : DirectionCallback {
+        GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY").from(startLatLng)
+            .to(endLatLng).avoid(AvoidType.FERRIES).alternativeRoute(false)
+            .transportMode(TransportMode.DRIVING).execute(object : DirectionCallback {
                 override fun onDirectionSuccess(direction: Direction?) {
                     Log.d("TAG", "onDirectionSuccess: " + direction?.routeList)
                     val directionPositionList: ArrayList<LatLng> =
@@ -342,20 +344,14 @@ private var notificationModel : NotificationModel? = null
                     if (polyline == null) {
                         polyline = mMap.addPolyline(
                             DirectionConverter.createPolyline(
-                                this@HomeRiderActivity,
-                                directionPositionList,
-                                3,
-                                Color.BLACK
+                                this@HomeRiderActivity, directionPositionList, 3, Color.BLACK
                             )
                         )
                     } else {
                         polyline!!.remove()
                         polyline = mMap.addPolyline(
                             DirectionConverter.createPolyline(
-                                this@HomeRiderActivity,
-                                directionPositionList,
-                                3,
-                                Color.BLACK
+                                this@HomeRiderActivity, directionPositionList, 3, Color.BLACK
                             )
                         )
                     }
@@ -383,6 +379,7 @@ private var notificationModel : NotificationModel? = null
                 }
             })
     }
+
     private fun getRiderOrderList(riderId: String) {
         val taxiViewModel = TaxiViewModel(this)
         progressDialog.show(this)
@@ -391,20 +388,28 @@ private var notificationModel : NotificationModel? = null
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        riderOrderListAdapter = RiderOrderListAdapter(
-                            this@HomeRiderActivity,
+                        riderOrderListAdapter = RiderOrderListAdapter(this@HomeRiderActivity,
                             it.data,
                             object : RiderOrderListAdapter.ClickListener {
                                 override fun onClick(pos: Int) {
-                                    startActivity(Intent(this@HomeRiderActivity,
-                                        RideDetailActivity::class.java)
-                                        .putExtra(AppConstant.trackOrderDetail, it.data[pos]))
+                                    /*startActivity(
+                                        Intent(
+                                            this@HomeRiderActivity, RideDetailActivity::class.java
+                                        ).putExtra(AppConstant.trackOrderDetail, it.data[pos])
+                                    )*/
+
+                                    val insertIntent = Intent(applicationContext, RideDetailActivity::class.java)
+                                    val b = Bundle()
+                                    b.putSerializable(AppConstant.trackOrderDetail, it.data[pos])
+                                    insertIntent.putExtras(b)
+                                    this@HomeRiderActivity.startActivityForResult(insertIntent, 1)
                                 }
                             })
                         binding.include.contentHome.riderRecycle.adapter = riderOrderListAdapter
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -424,8 +429,7 @@ private var notificationModel : NotificationModel? = null
             binding.include.contentHome.headerHome.homepageToolbarSwitchToUser -> {
                 startActivity(
                     Intent(
-                        this@HomeRiderActivity,
-                        UserHomePageNavigationActivity::class.java
+                        this@HomeRiderActivity, UserHomePageNavigationActivity::class.java
                     )
                 )
                 finish()
@@ -455,8 +459,7 @@ private var notificationModel : NotificationModel? = null
                 //  MyApp.popErrorMsg("","Your Shop details is in under verification",THIS!!)
                 startActivity(
                     Intent(
-                        this@HomeRiderActivity,
-                        ShopOwnerHomePageNavigationActivity::class.java
+                        this@HomeRiderActivity, ShopOwnerHomePageNavigationActivity::class.java
                     )
                 )
             } else {
@@ -537,8 +540,7 @@ private var notificationModel : NotificationModel? = null
             } else {
                 startActivity(
                     Intent(
-                        this@HomeRiderActivity,
-                        SendMoneyHomePageActivity::class.java
+                        this@HomeRiderActivity, SendMoneyHomePageActivity::class.java
                     )
                 )
             }
@@ -550,8 +552,7 @@ private var notificationModel : NotificationModel? = null
             } else {
                 startActivity(
                     Intent(
-                        this@HomeRiderActivity,
-                        UserVerificationAddMoneyActivity::class.java
+                        this@HomeRiderActivity, UserVerificationAddMoneyActivity::class.java
                     )
                 )
             }
@@ -563,8 +564,10 @@ private var notificationModel : NotificationModel? = null
                 goLoginScreen()
             } else {
                 startActivity(
-                    Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java).putExtra(
+                            AppConstant.INTENT_EXTRAS.IsFromHOME,
+                            true
+                        )
                 )
             }
 
@@ -577,8 +580,10 @@ private var notificationModel : NotificationModel? = null
                 goLoginScreen()
             } else {
                 startActivity(
-                    Intent(this@HomeRiderActivity, ContactListActivity::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(this@HomeRiderActivity, ContactListActivity::class.java).putExtra(
+                            AppConstant.INTENT_EXTRAS.IsFromHOME,
+                            true
+                        )
                 )
             }
 
@@ -588,17 +593,19 @@ private var notificationModel : NotificationModel? = null
                 goLoginScreen()
             } else {
                 startActivity(
-                    Intent(this@HomeRiderActivity, ChatListActivity::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(this@HomeRiderActivity, ChatListActivity::class.java).putExtra(
+                            AppConstant.INTENT_EXTRAS.IsFromHOME,
+                            true
+                        )
                 )
             }
 
         }
 
-/*
-        binding.include.contentHome.riderDutyStatusSwitch.setOnCheckedChangeListener { _, isChecked ->
-            checkDemandAPI(isChecked)
-        }*/
+        /*
+                binding.include.contentHome.riderDutyStatusSwitch.setOnCheckedChangeListener { _, isChecked ->
+                    checkDemandAPI(isChecked)
+                }*/
 
     }
 
@@ -615,10 +622,7 @@ private var notificationModel : NotificationModel? = null
         binding.includeLeftDrawer.sideMenuSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
+                    parent: AdapterView<*>, view: View, position: Int, id: Long
                 ) {
                     when (position) {
                         0 -> {
@@ -645,6 +649,7 @@ private var notificationModel : NotificationModel? = null
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
     }
+
     private fun openCloseNavigationDrawerStart() {
         when {
             drawerLayout!!.isDrawerOpen(GravityCompat.START) -> {
@@ -714,8 +719,7 @@ private var notificationModel : NotificationModel? = null
     @SuppressLint("WrongConstant")
     override fun onBackPressed() {
         super.onBackPressed()
-        if (back_pressed_time + PERIOD > System.currentTimeMillis())
-            finishAffinity()
+        if (back_pressed_time + PERIOD > System.currentTimeMillis()) finishAffinity()
         else {
             if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout!!.closeDrawer(GravityCompat.START)
@@ -744,8 +748,7 @@ private var notificationModel : NotificationModel? = null
                         PreferenceKeeper.instance.isDriverOnline = isRiderOnline
                         startActivity(
                             Intent(
-                                this@HomeRiderActivity,
-                                CheckDemandActivity::class.java
+                                this@HomeRiderActivity, CheckDemandActivity::class.java
                             ).putExtra("RiderStatus", isRiderOnline)
                         )
                     }
@@ -782,19 +785,32 @@ private var notificationModel : NotificationModel? = null
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
-                    it.data?.data?.let { data->
+                    it.data?.data?.let { data ->
                         binding.include.contentHome.riderUserName.text =
-                            "${data.firstName.capitalize() } ${data.lastName.capitalize()}"
-                        data.totalEarning.let { earning->binding.include.contentHome.riderTotalAmount.text = "\$$earning" }
-                        data.totalBookings.let { trip->binding.include.contentHome.riderTotalTrip.text = trip.toString() }
-                        data.todayEarning.let { earning->binding.include.contentHome.riderAmountEarnToday.text = "\$$earning" }
-                        data.todayBookings.let { trip->binding.include.contentHome.riderTotalTripToday.text = trip.toString() }
+                            "${data.firstName.capitalize()} ${data.lastName.capitalize()}"
+                        data.totalEarning.let { earning ->
+                            binding.include.contentHome.riderTotalAmount.text = "\$$earning"
+                        }
+                        data.totalBookings.let { trip ->
+                            binding.include.contentHome.riderTotalTrip.text = trip.toString()
+                        }
+                        data.todayEarning.let { earning ->
+                            binding.include.contentHome.riderAmountEarnToday.text = "\$$earning"
+                        }
+                        data.todayBookings.let { trip ->
+                            binding.include.contentHome.riderTotalTripToday.text = trip.toString()
+                        }
+                        PreferenceKeeper.instance.isDriverOnline = isRiderOnline
+                        isRiderOnline = data.driverOnDuty
                         binding.include.contentHome.riderDutyStatusSwitch.setOnClickListener {
-                            checkDemandAPI(binding.include.contentHome.riderDutyStatusSwitch.isChecked,data._id)
+                            checkDemandAPI(
+                                binding.include.contentHome.riderDutyStatusSwitch.isChecked,
+                                data._id
+                            )
                         }
                         getRiderOrderList(data._id)
-                        notificationModel?.let { noti->
-                            riderRequestPopUp(data._id,noti)
+                        notificationModel?.let { noti ->
+                            riderRequestPopUp(data._id, noti)
                         }
 
                     }
@@ -814,7 +830,9 @@ private var notificationModel : NotificationModel? = null
         }
     }
 
-    private fun acceptAPI(riderId: String,bookingNumber: String, latitude: String, longitude: String) {
+    private fun acceptAPI(
+        riderId: String, bookingNumber: String, latitude: String, longitude: String
+    ) {
         var taxiViewModel = TaxiViewModel(this)
         progressDialog.show(this)
         val json = JSONObject()
@@ -853,7 +871,9 @@ private var notificationModel : NotificationModel? = null
         }
     }
 
-    private fun declineAPI(riderId: String,bookingNumber: String, latitude: String, longitude: String) {
+    private fun declineAPI(
+        riderId: String, bookingNumber: String, latitude: String, longitude: String
+    ) {
         var taxiViewModel = TaxiViewModel(this)
         progressDialog.show(this)
         val json = JSONObject()
@@ -889,7 +909,9 @@ private var notificationModel : NotificationModel? = null
         }
     }
 
-    private fun completeAPI(riderId: String,bookingNumber: String, latitude: String, longitude: String) {
+    private fun completeAPI(
+        riderId: String, bookingNumber: String, latitude: String, longitude: String
+    ) {
         var taxiViewModel = TaxiViewModel(this)
         progressDialog.show(this)
         val json = JSONObject()
@@ -928,7 +950,7 @@ private var notificationModel : NotificationModel? = null
     }
 
 
-    private fun locationServiceForRiderDuty(){
+    private fun locationServiceForRiderDuty() {
         val serviceStarted = LocationService.isServiceStarted
         if (!serviceStarted) {
 
@@ -936,15 +958,13 @@ private var notificationModel : NotificationModel? = null
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(
                         Intent(
-                            this,
-                            LocationService::class.java
+                            this, LocationService::class.java
                         )
                     )
                 } else {
                     startService(
                         Intent(
-                            this,
-                            LocationService::class.java
+                            this, LocationService::class.java
                         )
                     )
                 }
@@ -964,19 +984,17 @@ private var notificationModel : NotificationModel? = null
         }
     }
 
-    private fun riderSwitchButton(){
+    private fun riderSwitchButton() {
         binding.include.contentHome.riderDutyStatusSwitch.isChecked = isRiderOnline
         if (isRiderOnline) {
-            binding.include.contentHome.riderDutyStatusSwitch.text =
-                getString(R.string.online)
+            binding.include.contentHome.riderDutyStatusSwitch.text = getString(R.string.online)
             binding.include.contentHome.riderDutyStatusSwitch.setTextColor(
                 resources.getColor(
                     R.color.color_006400
                 )
             )
         } else {
-            binding.include.contentHome.riderDutyStatusSwitch.text =
-                getString(R.string.offline)
+            binding.include.contentHome.riderDutyStatusSwitch.text = getString(R.string.offline)
             binding.include.contentHome.riderDutyStatusSwitch.setTextColor(
                 resources.getColor(
                     R.color.color_red
@@ -985,33 +1003,29 @@ private var notificationModel : NotificationModel? = null
         }
     }
 
-         private fun startLocationUpdates() {
-           if (ActivityCompat.checkSelfPermission(
-                   this,
-                   Manifest.permission.ACCESS_FINE_LOCATION
-               ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                   this,
-                   Manifest.permission.ACCESS_COARSE_LOCATION
-               ) != PackageManager.PERMISSION_GRANTED
-           ) {
-               return
-           }
-           locationRequest?.let {
-               mFusedLocationClient.requestLocationUpdates(
-                   it,
-                   locationCallback,
-                   Looper.getMainLooper()
-               )
-           }
-       }
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        locationRequest?.let {
+            mFusedLocationClient.requestLocationUpdates(
+                it, locationCallback, Looper.getMainLooper()
+            )
+        }
+    }
 
-       private fun stopLocationUpdates() {
-           mFusedLocationClient.removeLocationUpdates(locationCallback)
-       }
+    private fun stopLocationUpdates() {
+        mFusedLocationClient.removeLocationUpdates(locationCallback)
+    }
 
-     override fun onPause() {
-           super.onPause()
-           stopLocationUpdates()
-       }
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
 
 }

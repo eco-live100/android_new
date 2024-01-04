@@ -36,6 +36,7 @@ data class RiderProfileModel(
         val totalEarning: String,
         val todayBookings: Int,
         val todayEarning: String,
-        val updatedAt: String
+        val updatedAt: String,
+        val driverOnDuty: Boolean,
     )
 }

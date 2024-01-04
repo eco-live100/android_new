@@ -81,9 +81,7 @@ class LoginActivity : BaseActivity() {
                     it.data?.let {
                         var vv = it.data
                         PreferenceKeeper.instance.bearerTokenSave = it.data.accessToken
-                      //  if (binding.loginIsRemeberMe.isChecked) {
-                            PreferenceKeeper.instance.isUserLogin = true
-                       // }
+                        PreferenceKeeper.instance.isUserLogin = true
                         PreferenceKeeper.instance.loginResponse = it.data
                         val uid = ""+PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
                         val name = ""+PreferenceKeeper.instance.loginResponse?.firstName+" "+PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user

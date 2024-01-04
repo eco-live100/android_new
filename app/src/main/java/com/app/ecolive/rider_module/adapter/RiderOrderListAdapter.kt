@@ -30,7 +30,7 @@ class RiderOrderListAdapter(var context: Context, var dataList: List<RiderOrderM
 
         val item = dataList[position]
         when (item.bookingStatus) {
-            "requested" -> {
+            "completed" -> {
                 holder.binding.tvTotBill.visibility = View.GONE
                // holder.binding.tvTrackOrder.visibility = View.GONE
                 holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
@@ -39,6 +39,12 @@ class RiderOrderListAdapter(var context: Context, var dataList: List<RiderOrderM
             "accepted" -> {
                 holder.binding.tvTotBill.visibility = View.VISIBLE
                // holder.binding.tvTrackOrder.visibility = View.VISIBLE
+                holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
+                holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_FF9100))
+            }
+            "started" -> {
+                holder.binding.tvTotBill.visibility = View.VISIBLE
+                // holder.binding.tvTrackOrder.visibility = View.VISIBLE
                 holder.binding.bookingStatusTv.text="${item.bookingStatus}".capitalize()
                 holder.binding.bookingStatusTv.setTextColor(context.resources.getColor(R.color.color_006400))
             }
@@ -54,9 +60,7 @@ class RiderOrderListAdapter(var context: Context, var dataList: List<RiderOrderM
         holder.binding.tvTotBill.text="Total Bill:- $ ${item.amount}"
         //holder.binding.toAddressTv.setImageDrawable(dataList[position].image)
         holder.itemView.setOnClickListener {
-            //if(item.bookingStatus=="accepted"){
                 onClickListener.onClick(position)
-            //}
         }
     }
 

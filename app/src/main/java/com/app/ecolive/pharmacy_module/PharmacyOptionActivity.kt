@@ -7,8 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityPharmacyOptionBinding
-import com.app.ecolive.user_module.ProductListActivity
-import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.pharmacy_module.doctor.CreateAndUpdateDoctorProfile
+import com.app.ecolive.pharmacy_module.doctor.DoctorProfile
+import com.app.ecolive.pharmacy_module.health_profile.PharmacyProcessActivity
+import com.app.ecolive.pharmacy_module.pharmacy.CreateAndUpdatePharmacyProfile
+import com.app.ecolive.pharmacy_module.pharmacy.PharmacyProfile
+import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 
 class PharmacyOptionActivity : AppCompatActivity() {
@@ -21,16 +25,24 @@ class PharmacyOptionActivity : AppCompatActivity() {
         binding.toolbar.help.visibility = View.GONE
 
         binding.toolbar.ivBack.setOnClickListener {onBackPressed()}
-
-        binding.AllHospitalAndPharmacy.setOnClickListener {  }
-
         binding.hospitalPharmacyProfile .setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    CreatePharmacyProfileActivity::class.java
+
+            if (PreferenceKeeper.instance.loginResponse!!.isDoctor) {
+                // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
+                startActivity(
+                    Intent(
+                        this,
+                        DoctorProfile::class.java
+                    )
                 )
-            )
+            } else {
+                startActivity(
+                    Intent(
+                        this,
+                        CreateAndUpdateDoctorProfile::class.java
+                    )
+                )
+            }
         }
         binding.HealthProfile.setOnClickListener {
             startActivity(
@@ -40,7 +52,26 @@ class PharmacyOptionActivity : AppCompatActivity() {
                 )
             )
         }
-        binding.AllMedication.setOnClickListener {
+        binding.pharmacyCardView.setOnClickListener {
+            if (PreferenceKeeper.instance.loginResponse!!.isPharmacy) {
+                // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
+                startActivity(
+                    Intent(
+                        this,
+                        PharmacyProfile::class.java
+                    )
+                )
+            } else {
+                startActivity(
+                    Intent(
+                        this,
+                        CreateAndUpdatePharmacyProfile::class.java
+                    )
+                )
+            }
+
+        }
+/*        binding.AllMedication.setOnClickListener {
             startActivity(
                 Intent(
                     this@PharmacyOptionActivity,
@@ -48,7 +79,7 @@ class PharmacyOptionActivity : AppCompatActivity() {
                 )
                     .putExtra(AppConstant.CATEGORY, AppConstant.PHARMACY)
             )
-        }
+        }*/
 
 
 

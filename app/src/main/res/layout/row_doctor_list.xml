@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,15 +10,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10ssp"
-        android:layout_marginTop="@dimen/_15ssp"
-        android:layout_marginEnd="@dimen/_15ssp"
-        android:background="@color/white">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_white_round_conner">
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/chatImage"
-            android:layout_width="@dimen/_45sdp"
-            android:layout_height="@dimen/_45sdp"
-            android:src="@drawable/dummy_female_user"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_user_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
@@ -28,32 +29,44 @@
             android:id="@+id/chatTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10ssp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_10ssp"
             android:fontFamily="@font/roboto_bold"
-            android:text="Arlene McCoy"
+            tools:text="Arlene McCoy"
             android:textColor="@color/color_050D4C"
-            android:textSize="@dimen/_14ssp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/chatImage"
             app:layout_constraintTop_toTopOf="@+id/chatImage" />
 
-        <CheckBox
-            android:visibility="gone"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/servicesTv"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10ssp"
+            tools:text="Arlene McCoy"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chatTitle"
+            app:layout_constraintStart_toEndOf="@+id/chatImage" />
+
+        <TextView
+            android:id="@+id/locationTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            tools:text="Arlene ghgjkgjkgjhgjkgjhgjhgjhgjhgjhgjhgjhjhgjhjhjghjgjhjhgjhgjhghjgk"
+            android:drawablePadding="2dp"
+            android:layout_marginBottom="10dp"
+            android:drawableStart="@drawable/ic_map_blank"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
-
-
-
-
-
+            app:layout_constraintTop_toBottomOf="@id/chatImage"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <TextView
+        android:id="@+id/serviceTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:hint="abc"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:textColor="@color/color_blue"
+        android:textSize="@dimen/_10sdp"
+        android:fontFamily="@font/roboto_medium"
+        android:background="@drawable/bg_edittext_blue" />
+
+
+<!--
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/bg_white_round_conner">
+        <androidx.appcompat.widget.AppCompatButton
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/serviceTv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/bg_blue_round_button_10dp"
+            android:backgroundTint="#050D4C"
+            android:gravity="center"
+            tools:text="+ Add"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+-->
+</layout>

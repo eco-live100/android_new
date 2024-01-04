@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/quantum_grey200">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/pharmacyImageView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/doctor_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:background="@drawable/bg_gratiant"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_15sdp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/pharmacy_profile"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+                app:layout_constraintStart_toEndOf="@+id/ivBack"
+                app:layout_constraintTop_toTopOf="@+id/ivBack" />
+
+            <ImageView
+                android:id="@+id/editProfileIcon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:src="@drawable/edit_img"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbarTitle"
+                app:layout_constraintStart_toEndOf="@+id/toolbarTitle"
+                app:layout_constraintTop_toTopOf="@+id/toolbarTitle" />
+
+           <!-- <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/orderListTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/orders"
+                android:textColor="@color/darkblue"
+                android:textSize="@dimen/_14sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:background="@drawable/bg_white_left_round"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+                app:layout_constraintTop_toTopOf="@+id/ivBack"
+                app:layout_constraintEnd_toEndOf="parent"/>
+-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_20sdp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="-40dp"
+                app:layout_constraintTop_toBottomOf="@+id/pharmacyImageView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_15sdp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/pharmacyIcon"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_45sdp"
+                        android:src="@drawable/pharmacy_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pharmacyNameTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Alpha drug"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16sdp"
+                        app:layout_constraintStart_toEndOf="@+id/pharmacyIcon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pharmacyAddressTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:drawableStart="@drawable/destination_location"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_light"
+                        android:text="4102 Pretty View afgadfgdgdhfdhg dsfasf sf sadfas f asf dfasf sf asffdhgfhdfhdfh"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_10sdp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/pharmacyIcon"
+                        app:layout_constraintTop_toBottomOf="@+id/pharmacyNameTv"
+                        app:layout_constraintBottom_toBottomOf="@id/pharmacyIcon"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/linearLayoutCompat7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pharmacyIcon">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/openStoreTimeTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Open : 9:00AM"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/color_light_green"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/closeStoreTimeTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Close : 8:00PM"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/openStoreTimeTv"/>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/pharmacyStatusSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5sdp"
+                            tools:text="@string/offline"
+                            app:switchPadding="5dp"
+                            android:layout_marginEnd="@dimen/_20ssp"
+                            android:textColor="@color/white"
+                            style="@style/SwitchButtonStyle"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/openStoreTimeTv"
+                            app:layout_constraintBottom_toBottomOf="@id/closeStoreTimeTv"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/linearLayoutCompat9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat7"
+                        app:layout_constraintHorizontal_bias="0.538"
+                        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat7"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat7">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/myMedicineLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_blue_round_button"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:backgroundTint="@color/quantum_grey300"
+                            android:layout_marginTop="12dp"
+                            app:layout_constraintHorizontal_bias="0.538"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat9">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/request"
+                                android:tint="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/myMedicineTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:text="@string/my_medicine_s"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/contactLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_blue_round_button"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:backgroundTint="@color/quantum_grey300"
+                            android:layout_marginTop="12dp"
+                            app:layout_constraintHorizontal_bias="0.538"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat9">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/ic_phone"
+                                android:tint="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/mobileNumberTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:text="789456382"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/myCountAndMyRequestLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat9">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/orderCountLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:gravity="center">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:src="@drawable/order_deliver_icon" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/todayOrderCountTv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="Today order count\n20"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/myRequestLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_blue_round_button"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_13sdp"
+                            android:backgroundTint="@color/quantum_grey300">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/request"
+                                android:tint="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/myRequestTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:text="@string/request_list"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linearLayoutCompat10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical"
+                android:background="@drawable/bg_white_round"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView8">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/documents"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/documentImageView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_180sdp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:src="@drawable/doctor_bg"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearance="@style/cornerShape"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</layout>

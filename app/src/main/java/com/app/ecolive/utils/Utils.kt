@@ -578,6 +578,7 @@ class Utils {
         }
 
         @SuppressLint("SimpleDateFormat")
+        //yyyy-MM-dd'T'HH:mm:ss.SSS input format
         @Throws(ParseException::class)
         fun formatDateFromDateString(
             inputDateFormat: String?,

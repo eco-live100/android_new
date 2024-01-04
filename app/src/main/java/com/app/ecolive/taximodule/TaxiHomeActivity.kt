@@ -36,8 +36,6 @@ class TaxiHomeActivity : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var locationRequest: LocationRequest? = null
-    var locationLast: Location? = null
-    var lastLocationAddress = ""
     lateinit var viewModel: MainActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         Utils.changeStatusTextColor2(this)

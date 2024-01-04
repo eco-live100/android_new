@@ -8,138 +8,277 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F5F5F5"
-        tools:context=".pharmacy_module.PharmacyProcessActivity">
+        tools:context=".pharmacy_module.health_profile.PharmacyProcessActivity">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/custom_toolbar_without_round"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_10sdp"
-           android:paddingBottom="@dimen/_25sdp"
+        <ScrollView
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="@dimen/_135sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:src="@drawable/pharmicy_img" />
-
-            <TextView
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_height="0dp"
+            android:scrollbars="none"
+            >
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Let's bring the pharmacy to you"
-                android:textColor="@color/color_050D4C"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textSize="@dimen/_14sdp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Here's what to expect:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_25sdp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="1. Let's Create your health profile"
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/_14sdp" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_135sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/pharmicy_img" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="This won't take long-about 2 minutes."
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Let's bring the pharmacy to you"
+                    android:textColor="@color/color_050D4C"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textSize="@dimen/_14sdp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="2. Request your prescription"
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/_14sdp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Here's what to expect:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Contact your prescriber or we can do it for you."
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="1. Let's Create your health profile"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14sdp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="3. Place your order"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/_14sdp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="This won't take long-about 2 minutes."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="We'll let you know when you can check out."
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="2. Request your prescription"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14sdp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/nextButton"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/bg_blue_round_button"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="center"
-                android:text="Next"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Contact your prescriber or we can do it for you."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="3. Place your order"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="We'll let you know when you can check out."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/nextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:text="Next"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/skip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center_horizontal"
+                    android:text="Skip"
+                    android:textColor="#707070"
+                    android:textSize="@dimen/_14sdp" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toolbarTitle">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/nameTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_bold"
+                            tools:text="Alpha drug"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_16sdp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/addressTv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_marker"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_light"
+                            tools:text="4102 Pretty View afgadfgdgdhfdhg dsfasf sf sadfas f asf dfasf sf asffdhgfhdfhdfh"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/_10sdp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/nameTv"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/ssnTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="Last 4 Digits of SSN : 4545"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/addressTv"/>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/insuranceAndOtherInfoLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toBottomOf="@id/ssnTv">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:drawablePadding="@dimen/_10sdp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="top"
+                                android:text="Patient's common medication and vitamins"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView64" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_margin="5dp"
+                                android:layout_height="wrap_content"
+                                tools:itemCount="2"
+                                tools:listitem="@layout/service_item" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:background="@color/color_blue" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="Patient's medical insurance card"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:text="Note: no card will be visible unless patient uploaded one.Check with patient is necessary"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_120sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:src="@drawable/card_img"
+                                android:scaleType="fitXY"
+                                android:background="@drawable/bg_dash"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                        <TextView
+                            app:layout_constraintTop_toBottomOf="@id/insuranceAndOtherInfoLL"
+                            android:id="@+id/updateHealthProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:gravity="center_horizontal"
+                            android:text="Update Health Profile"
+                            android:textColor="#707070"
+                            android:textSize="@dimen/_14sdp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
 
-            <TextView
-                android:id="@+id/skip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="center_horizontal"
-                android:text="Skip"
-                android:textColor="#707070"
-                android:textSize="@dimen/_14sdp" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

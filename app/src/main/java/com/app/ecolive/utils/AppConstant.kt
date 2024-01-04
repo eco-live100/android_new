@@ -3,6 +3,7 @@ package com.app.ecolive.utils
 object AppConstant {
 
     const val BASE_URL = "https://api.ecolive.global/api1/"
+    const val BASE_URL_Image = "https://api.ecolive.global"
     const val NO_INTERNET = 502
     const val INTERNAL_ERROR = 500
     const val PARSING_ERROR = 504
@@ -58,6 +59,13 @@ object AppConstant {
     var driverId = "DriverId"
     var IsDriverOnline = "isDriverOnline"
     var notificationModel = "NotificationModel"
+
+
+    var doctorId = "DoctorId"
+    var doctorProfile = "DoctorProfile"
+    var profile = "Profile"
+    var pharmacyId = "PharmacyId"
+    var data = "Data"
 
 
 

@@ -85,6 +85,12 @@ interface APIInterface {
     @POST("register-hospital-employee")
     fun registerHospitalEmployeeApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
+    @POST("request-prescription")
+    fun requestPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>
+
+    @POST("create-order")
+    fun placeOrderApi(@Body requestBody: RequestBody): Call<ResponseBody>
+
     @GET("taxi-category-list")
     fun getVehicalApi(): Call<ResponseBody>
 
@@ -97,11 +103,14 @@ interface APIInterface {
     @GET("bokings-request")
     fun getTaxiBookingRequestListApi(): Call<ResponseBody>
 
-    @GET("get-employee-profile?{userId}/{professionType}")
-    fun getProfileApi(
-        @Path("userId") userId: String,
-        @Path("professionType") professionType: String,
+    @GET("get-doctor-profile")
+    fun getDoctorProfileApi(
     ): Call<ResponseBody>
+
+    @GET("all-health-profile")
+    fun getHealthProfile(
+    ): Call<ResponseBody>
+
     @GET("bokings-request/driver/{driverID}")
     fun riderOrderListApi(
         @Path("driverID") driverID: String,
@@ -110,11 +119,17 @@ interface APIInterface {
     @GET("doctor-list")
     fun getDoctorListApi(): Call<ResponseBody>
 
+    @GET("get-prescription-by-user")
+    fun userPrescriptionListApi(): Call<ResponseBody>
+
     @POST("change-taxi-availability-status")
     fun checkDemandRideApi(@Body params: RequestBody): Call<ResponseBody>
 
     @POST("accept-booking-request")
     fun acceptBookingRequestRideApi(@Body params: RequestBody): Call<ResponseBody>
+
+    @POST("start-booking-request")
+    fun startRideRequestRideApi(@Body params: RequestBody): Call<ResponseBody>
 
     @POST("decline-booking-request")
     fun declineBookingRequestRideApi(@Body params: RequestBody): Call<ResponseBody>
@@ -127,15 +142,34 @@ interface APIInterface {
     @GET("search-medicines")
     fun searchMedicineApi(): Call<ResponseBody>
 
-//    @GET("city-list")
-//    fun getCityListAPI(): Call<ResponseBody>
+    @POST("get-prescription-details")
+    fun prescriptionDetailApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
+    @POST("start-prescription")
+    fun startPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>
+    @POST("cancle-precription")
+    fun cancelPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
-//    @FormUrlEncoded
-//    @POST("property-list")
-//    fun propertyListAPI(@Field("city[]") city: ArrayList<Int>,@Field("status[]") status: ArrayList<String>, @Field("page") page: String , @Field("search_key") srch: String, @Field("filter") filter: String): Call<ResponseBody>
+    @POST("add-or-update-pharmacy")
+    fun createAndUpdatePharmacyApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
+    @GET("pharmacy-profile")
+    fun getPharmacyProfile(): Call<ResponseBody>
 
-//    @POST("contact-us")
-//    fun contactUsAPI(@Body requestBody: MultipartBody): Call<ResponseBody>
+    @POST("add-medicine")
+    fun addMedicine(@Body requestBody: RequestBody): Call<ResponseBody>
+
+    @GET("get-all-medicine/{userId}")
+    fun getAllMedicine(
+        @Path("userId") userId: String,
+    ): Call<ResponseBody>
+
+    @PUT("update-pharmacy-status/{pharmacyId}")
+    fun updatePharmacyStatus(
+        @Path("pharmacyId") pharmacyId: String,
+    ): Call<ResponseBody>
+
+    @POST("get-prescription-request-for-doctor")
+    fun getPrescriptionRequestForDoctor(@Body requestBody: RequestBody): Call<ResponseBody>
+
 }

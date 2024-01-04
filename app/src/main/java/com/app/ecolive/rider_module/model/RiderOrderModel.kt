@@ -33,6 +33,9 @@ data class RiderOrderModel(
         val toLatitude: String,
         val toLongitude: String,
         val updatedAt: String,
-        val userId: String
+        val userId: String,
+        val userName: String,
+        val userPhone: String,
+        val userProfilePicture: String
     ):Serializable
 }

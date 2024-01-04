@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:background="#ECECEC"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/_20sdp">
@@ -67,50 +67,8 @@
                         android:text="Jenny willson"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/call_blue_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Call"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/_11sdp" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_2sdp"
-                        android:src="@drawable/chat_green_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Chat"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/_11sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/bg_blue_round_button"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="View user's contact info"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -144,8 +102,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/symptomsTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -167,8 +126,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/symptomDurationTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -190,8 +150,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/prescriptionTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -215,8 +176,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/medicalHistoryTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -239,8 +201,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/allergiesTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -263,8 +226,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/smokingTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -287,8 +251,9 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/otherTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_edittext2"
@@ -316,9 +281,25 @@
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
-
-
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/doc1Iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:src="@drawable/card_img"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/bg_dash"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/doc2Iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:src="@drawable/card_img"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/bg_dash"/>
+                <!--<TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
@@ -352,7 +333,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView64" />
-
+-->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -375,98 +356,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView64" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="15dp"
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/_10sdp">
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_blue_round_button_10dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:gravity="center"
-                            android:text="Nice"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_blue_round_button_10dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:gravity="center"
-                            android:text="Esprin"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_blue_round_button_10dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:gravity="center"
-                            android:text="Brufen"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_blue_round_button_10dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:gravity="center"
-                            android:text="Nice"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_blue_round_button_10dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:gravity="center"
-                            android:text="Esprin"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_blue_round_button_10dp"
-                            android:fontFamily="@font/roboto_regular"
-                            android:gravity="center"
-                            android:text="Brufen"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
+                    android:layout_height="match_parent"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/service_item" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -497,6 +393,7 @@
                     android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/insuranceIv"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_120sdp"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -561,6 +458,7 @@
                         android:background="@drawable/bg_blue_round_button"
                         android:fontFamily="@font/roboto_bold"
                         android:gravity="center"
+                        android:id="@+id/declineRequestBtn"
                         android:text="Decline this request"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp" />

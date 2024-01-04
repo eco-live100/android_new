@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityFriendTaxiPaymetnBinding
-import com.app.ecolive.msg_module.adapter.DoctorListAdapter
+import com.app.ecolive.pharmacy_module.adapter.DoctorListAdapter
 import com.app.ecolive.utils.Utils
 
 class FriendListTaxiActivity : AppCompatActivity() {

@@ -1,10 +1,12 @@
 package com.app.ecolive.rider_module
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -53,46 +55,57 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
 
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.rideDetailMap) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-        binding.pDetailAccept.setOnClickListener {
-            acceptAPI()
-        }
-        binding.pDetailDecline.setOnClickListener {
-            declineAPI()
-        }
+
 
         trackOrderDetail =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra(
+                intent.extras?.getSerializable(
                     AppConstant.trackOrderDetail,
                     RiderOrderModel.Data::class.java
                 )
             } else {
-                intent.getSerializableExtra(AppConstant.trackOrderDetail) as RiderOrderModel.Data
+                intent.extras?.getSerializable(AppConstant.trackOrderDetail) as RiderOrderModel.Data
             }
-
+        binding.startRideButton.visibility = View.GONE
+        binding.pDetailComplete.visibility = View.GONE
         trackOrderDetail?.let {
             binding.apply {
                 when (it.bookingStatus) {
-                    "requested" -> {
-                        //tvTotBill.visibility = View.GONE
+                    "accepted" -> {
+                        startLatLng = LatLng(it.driverLatitude.toDouble(), it.driverLongitude.toDouble())
+                        endLatLng = LatLng(it.fromLatitude.toDouble(), it.fromLongitude.toDouble())
+                        startRideButton.visibility = View.VISIBLE
+                        pDetailComplete.visibility = View.GONE
+                        bookingStatusTv.text="${it.bookingStatus}".capitalize()
+                        bookingStatusTv.setTextColor(resources.getColor(R.color.color_FF9100))
+                    }
+                    "started" -> {
+                        startLatLng = LatLng(it.fromLatitude.toDouble(), it.fromLongitude.toDouble())
+                        endLatLng = LatLng(it.toLatitude.toDouble(), it.toLongitude.toDouble())
+                        startRideButton.visibility = View.GONE
+                        pDetailComplete.visibility = View.VISIBLE
+                        bookingStatusTv.text="${it.bookingStatus}".capitalize()
+                        bookingStatusTv.setTextColor(resources.getColor(R.color.color_006400 ))
+                    }
+                    "completed" -> {
+                        startRideButton.visibility = View.GONE
+                        pDetailComplete.visibility = View.GONE
                         bookingStatusTv.text="${it.bookingStatus}".capitalize()
                         bookingStatusTv.setTextColor(resources.getColor(R.color.color_red))
-                    }
-                    "accepted" -> {
-                        //tvTotBill.visibility = View.VISIBLE
-                        bookingStatusTv.text="${it.bookingStatus}".capitalize()
-                        bookingStatusTv.setTextColor(resources.getColor(R.color.color_006400))
                     }
                 }
                 bookingIdTv.text="Booking Id:- ${it.bookingNumber}"
                 bookingDateTv.text="${it.createdAt}"
+                pDetailUserName.text="${it.userName.capitalize()}"
                 fromAddressTv.text="${it.fromAddress}"
                 toAddressTv.text="${it.toAddress}"
                 tvTotBill.text="Total Bill:- $ ${it.amount}"
+                pDetailUserKm.text="${it.distanceInKm}KM"
             }
             startLatLng = LatLng(it.fromLatitude.toDouble(), it.fromLongitude.toDouble())
             endLatLng = LatLng(it.toLatitude.toDouble(), it.toLongitude.toDouble())
+
+            mapFragment?.getMapAsync(this)
         }
         binding.pDetailComplete.setOnClickListener {
             if(MyApp.driverlocation==null){
@@ -104,7 +117,16 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
                 )
             }
         }
-
+        binding.startRideButton.setOnClickListener {
+            if(MyApp.driverlocation==null){
+                Toast.makeText(this,"Location not found", Toast.LENGTH_SHORT).show()
+            }else {
+                startRideAPI(
+                    latitude = MyApp.driverlocation?.latitude.toString(),
+                    longitude = MyApp.driverlocation?.longitude.toString()
+                )
+            }
+        }
     }
     private fun setToolBar() {
         binding.toolbarRideDetail.ivBack.setOnClickListener { finish() }
@@ -197,18 +219,18 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
         }
     }
 
-    private fun acceptAPI() {
+    private fun startRideAPI(latitude: String, longitude: String) {
         var taxiViewModel = TaxiViewModel(this)
         progressDialog.show(this)
         val json = JSONObject()
         json.put("bookingNumber", "${trackOrderDetail?.bookingNumber}")
         json.put("driverId","${trackOrderDetail?.driverId}")
         json.put("taxiId","${trackOrderDetail?.driverId}")
-        json.put("driverLatitude",trackOrderDetail?.driverLatitude)
-        json.put("driverLongitude",trackOrderDetail?.driverLongitude)
+        json.put("driverLatitude",latitude)
+        json.put("driverLongitude",longitude)
         json.put("driverAddress","${trackOrderDetail?.driverAddress}")
 
-        taxiViewModel.acceptBookingRequestRideApi(json).observe(this) {
+        taxiViewModel.startRideRequestRideApi(json).observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
@@ -216,39 +238,6 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
                         val returnIntent = Intent()
                         returnIntent.putExtra("refresh", 1)
                         setResult(RESULT_OK, returnIntent)
-                        finish()
-                    }
-                }
-
-                Status.LOADING -> {
-                    Log.d("ok", "LOADING: ")
-                }
-
-                Status.ERROR -> {
-                    progressDialog.dialog.dismiss()
-                    Log.d("ok", "ERROR: ")
-                    MyApp.popErrorMsg("", it.message!!, this)
-
-                }
-            }
-        }
-    }
-    private fun declineAPI() {
-        var taxiViewModel = TaxiViewModel(this)
-        progressDialog.show(this)
-        val json = JSONObject()
-        json.put("bookingNumber", "${trackOrderDetail?.bookingNumber}")
-        json.put("driverId","${trackOrderDetail?.driverId}")
-        json.put("taxiId","${trackOrderDetail?.driverId}")
-        json.put("driverLatitude",trackOrderDetail?.driverLatitude)
-        json.put("driverLongitude",trackOrderDetail?.driverLongitude)
-        json.put("driverAddress","${trackOrderDetail?.driverAddress}")
-
-        taxiViewModel.declineBookingRequestRideApi(json).observe(this) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    progressDialog.dialog.dismiss()
-                    it.data?.let {
                         finish()
                     }
                 }
@@ -282,6 +271,9 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
+                        val returnIntent = Intent()
+                        returnIntent.putExtra("refresh", 1)
+                        setResult(Activity.RESULT_OK, returnIntent);
                         finish()
                     }
                 }

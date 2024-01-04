@@ -3,8 +3,8 @@ package com.app.ecolive.notification
 import java.io.Serializable
 
 data class NotificationModel(
-    val title: String="Booking Request",
-    val body: String="Someone request for taxi",
+    val title: String,
+    val body: String,
     val amount: String,
     val bookingNumber: String,
     val bookingStatus: String,

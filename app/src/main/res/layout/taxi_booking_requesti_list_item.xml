@@ -53,7 +53,7 @@
                     android:layout_weight="1.5"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="start"
-                    android:text="9 March 2021 | 6:30 PM"
+                    tools:text="9 March 2021 | 6:30 PM"
                     android:textColor="@color/color_ACACAC"
                     android:textSize="@dimen/_11sdp" />
 
@@ -70,7 +70,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="end"
-                    android:text="Received"
+                    tools:text="Received"
                     android:textColor="@color/color_ACACAC"
                     android:textSize="@dimen/_11sdp" />
 
@@ -167,7 +167,7 @@
                 android:layout_marginTop="@dimen/_10ssp"
                 android:layout_marginEnd="@dimen/_10ssp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Total bill $ 620"
+                tools:text="Total bill $ 620"
                 android:textColor="@color/color_333333"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvTrackOrder"

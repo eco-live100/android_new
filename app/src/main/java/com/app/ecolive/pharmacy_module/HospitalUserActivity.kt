@@ -1,11 +1,10 @@
 package com.app.ecolive.pharmacy_module
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityHospitalProfileBinding
 import com.app.ecolive.databinding.ActivityHospitalUserBinding
 
 class HospitalUserActivity : AppCompatActivity() {

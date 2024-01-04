@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".pharmacy_module.health_profile.PharmacyInsuranceActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar_without_round" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Which medications and vitamins are you currently taking?"
+                android:textColor="@color/color_050D4C"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="The helps our pharmacists check for drug interactions, include prescription and nonprescription medications, vitamins, and supplements."
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Medication/Vitamin Name"
+                android:textColor="#333333"
+                android:textSize="@dimen/_14sdp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/searchCons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/grey_border"
+                android:transitionName="searchTran">
+
+                <ImageView
+                    android:id="@+id/searchIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/clearIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/searchEt"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:background="@null"
+                    android:hint="@string/enter_medicine_name"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/clearIv"
+                    app:layout_constraintStart_toEndOf="@+id/searchIv"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchMedicineRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                tools:itemCount="5"
+                tools:listitem="@layout/medicine_item" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Common Medications"
+                android:textColor="@color/color_050D4C"
+                android:textSize="@dimen/_14sdp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/medicineRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                tools:itemCount="5"
+                tools:listitem="@layout/medicine_item" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:buttonTint="@color/color_blue"
+                android:fontFamily="@font/roboto_regular"
+                android:text="I am not taking medications or vitamins"
+                android:textSize="@dimen/_12sdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnContinue"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:background="@drawable/bg_blue_round_button"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

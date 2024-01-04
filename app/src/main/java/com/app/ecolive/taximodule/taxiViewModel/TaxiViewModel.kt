@@ -23,6 +23,7 @@ class TaxiViewModel(activity: Activity) : BaseObservable() {
     private lateinit var getTaxiBookingRequestListViewModel: LiveData<ApiSampleResource<TaxiBookingRequestList>>
     private lateinit var checkDemandRequestData: LiveData<ApiSampleResource<CommonModel>>
     private lateinit var acceptBookingRequestData: LiveData<ApiSampleResource<CommonModel>>
+    private lateinit var startRideRequestData: LiveData<ApiSampleResource<CommonModel>>
     private lateinit var declineBookingRequestData: LiveData<ApiSampleResource<CommonModel>>
     private lateinit var completeBookingRequestData: LiveData<ApiSampleResource<CommonModel>>
     private lateinit var getRiderProfileData: LiveData<ApiSampleResource<RiderProfileModel>>
@@ -65,6 +66,11 @@ class TaxiViewModel(activity: Activity) : BaseObservable() {
     fun acceptBookingRequestRideApi(json: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
         acceptBookingRequestData = webServiceRepository.acceptBookingRequestRideApi(json)
         return acceptBookingRequestData
+    }
+
+    fun startRideRequestRideApi(json: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
+        startRideRequestData = webServiceRepository.startRideRequestRideApi(json)
+        return startRideRequestData
     }
 
     fun declineBookingRequestRideApi(json: JSONObject): LiveData<ApiSampleResource<CommonModel>> {

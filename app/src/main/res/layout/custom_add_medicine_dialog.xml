@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_F5F5F5"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Medication name"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/nameEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:hint="Medication name"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Strength:"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/strengthEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:hint="Enter strength here"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Dose : select option or write a number below"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/doseEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:hint="Enter dose detail here"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_11sdp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Route: Select appropriate option below"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/routeEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:hint="Route detail here"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_11sdp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Frequency: Select option or write a number below"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/frequencyEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:hint="Frequency detail here"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Refills: Select option or write a number below"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/refillsEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:hint="Refills detail here"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_11sdp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/color_blue" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Indication"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/indicationEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="start"
+                android:hint="Start typing here"
+                android:minLines="3"
+                android:maxLines="3"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Additional direction"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/additionalDirectionEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bg_edittext_5dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="start"
+                android:hint="Start typing here"
+                android:minLines="3"
+                android:maxLines="3"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/closeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:backgroundTint="@color/red"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="@string/close"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/addButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_weight="0.6"
+                    android:background="@drawable/bg_blue_round_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="@string/add"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+</layout>

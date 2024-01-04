@@ -46,12 +46,17 @@ class TrackingWithProgressActivity : AppCompatActivity() {
         trackOrderDetail?.let {
             binding.apply {
                 when (it.bookingStatus) {
-                    "requested" -> {
+                    "completed" -> {
                         //tvTotBill.visibility = View.GONE
                         bookingStatusTv.text="${it.bookingStatus}".capitalize()
                         bookingStatusTv.setTextColor(resources.getColor(R.color.color_red))
                     }
                     "accepted" -> {
+                        //tvTotBill.visibility = View.VISIBLE
+                        bookingStatusTv.text="${it.bookingStatus}".capitalize()
+                        bookingStatusTv.setTextColor(resources.getColor(R.color.color_FF9100))
+                    }
+                    "started" -> {
                         //tvTotBill.visibility = View.VISIBLE
                         bookingStatusTv.text="${it.bookingStatus}".capitalize()
                         bookingStatusTv.setTextColor(resources.getColor(R.color.color_006400))

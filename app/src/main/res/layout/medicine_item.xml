@@ -2,15 +2,10 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
         <TextView
             android:id="@+id/medicineNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:gravity="center"
             android:hint="abc"
             android:paddingHorizontal="@dimen/_10sdp"
@@ -20,5 +15,4 @@
             android:textSize="@dimen/_10sdp"
             android:fontFamily="@font/roboto_medium"
             android:background="@drawable/bg_edittext_blue" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
