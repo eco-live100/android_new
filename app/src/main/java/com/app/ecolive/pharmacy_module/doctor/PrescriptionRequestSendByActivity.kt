@@ -42,9 +42,7 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
         binding.toolbar.ivBack.setOnClickListener {
             finish()
         }
-        binding.prescribeBtn.setOnClickListener {
-           startActivity(Intent(this, StartPrescribingActivity::class.java))
-        }
+
         binding.declineRequestBtn.setOnClickListener {
            cancelPrescriptionApi()
         }
@@ -77,6 +75,12 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
             Glide.with(this).load("${AppConstant.BASE_URL_Image}${requestData?.picture}")
                 .placeholder(R.drawable.ic_user_blue).centerCrop()
                 .into(binding.doc2Iv)
+
+
+            binding.prescribeBtn.setOnClickListener {
+                startActivity(Intent(this, StartPrescribingActivity::class.java)
+                    .putExtra(AppConstant.prescriptionId,requestData?._id))
+            }
 
         }
         medicineList.add("Nice")

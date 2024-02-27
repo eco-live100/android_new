@@ -62,6 +62,7 @@ object AppConstant {
 
 
     var doctorId = "DoctorId"
+    var prescriptionId = "prescriptionId"
     var doctorProfile = "DoctorProfile"
     var profile = "Profile"
     var pharmacyId = "PharmacyId"

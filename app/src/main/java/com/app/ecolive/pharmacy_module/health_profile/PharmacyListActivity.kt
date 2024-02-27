@@ -7,25 +7,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityDoctorListPhramicyBinding
+import com.app.ecolive.databinding.ActivityPharmacyListBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
-import com.app.ecolive.pharmacy_module.adapter.DoctorListAdapter
-import com.app.ecolive.pharmacy_module.model.DoctorListModel
+import com.app.ecolive.pharmacy_module.adapter.PharmacyListAdapter
+import com.app.ecolive.pharmacy_module.model.PharmacyData
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
 
-class DoctorListPharmacyActivity : AppCompatActivity() {
-    lateinit var binding: ActivityDoctorListPhramicyBinding
-    lateinit var doctorListAdapter : DoctorListAdapter
-    private var doctorList: ArrayList<DoctorListModel.Data> = ArrayList()
+class PharmacyListActivity : AppCompatActivity() {
+    lateinit var binding: ActivityPharmacyListBinding
+    lateinit var pharmacyListAdapter: PharmacyListAdapter
+    private var pharmacyList: ArrayList<PharmacyData> = ArrayList()
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Utils.changeStatusColor(this, R.color.color_050D4C)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_doctor_list_phramicy)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_pharmacy_list)
+        Utils.changeStatusColor(this, R.color.color_050D4C)
+        Utils.changeStatusTextColor(this)
         binding.toolbar.toolbarTitle.text = getString(R.string.doctor_list_eco_live)
         binding.toolbar.ivBack.setOnClickListener {
             finish()
@@ -33,34 +34,40 @@ class DoctorListPharmacyActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recycleFriends.layoutManager = layoutManager
-        doctorListAdapter = DoctorListAdapter(this, doctorList)
-        binding.recycleFriends.adapter = doctorListAdapter
+        pharmacyListAdapter = PharmacyListAdapter(this, pharmacyList)
+        binding.recycleFriends.adapter = pharmacyListAdapter
 
-        getDoctorListApi()
+        getPharmacyListApi()
 
         binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val searchedKey = binding.searchUserEditText.text.toString()
-                doctorListAdapter.filter.filter(searchedKey)
+                pharmacyListAdapter.filter.filter(searchedKey)
             }
+
             override fun afterTextChanged(s: Editable) {}
         })
     }
 
-    private fun getDoctorListApi() {
+    private fun getPharmacyListApi() {
         progressDialog.show(this)
         val viewModel = PharmacyViewModel(this)
 
-        doctorList.clear()
-        viewModel.getDoctorListApi().observe(this) { it ->
+        var lat = 26.8430479
+        var long = 75.8145549
+        var distance = 3000
+        var page = 1
+        var limit = 100
+
+        pharmacyList.clear()
+        viewModel.getPharmacyListApi(lat = lat, long = long, distance = distance, page = page, limit = limit).observe(this) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        binding.totalList.text = "Total ${it.data.size} in this list"
-                        doctorList.addAll(it.data)
-                        doctorListAdapter.notifyDataSetChanged()
+                        pharmacyList.addAll(it.data.items)
+                        pharmacyListAdapter.notifyDataSetChanged()
                     }
                 }
 

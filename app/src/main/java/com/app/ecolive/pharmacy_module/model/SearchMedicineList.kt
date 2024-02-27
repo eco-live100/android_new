@@ -1,7 +1,7 @@
 package com.app.ecolive.pharmacy_module.model
 
-data class DoctorProfileModel(
-    val `data`: DoctorDetailModel,
+data class SearchMedicineList(
+    val data: List<SearchMedicineListData>,
     val message: String,
     val statusCode: Int
 )

@@ -1,7 +1,7 @@
 package com.app.ecolive.pharmacy_module.model
 
 data class HealthProfileModel(
-    val data: List<Data>,
+    val data: Data,
     val message: String,
     val statusCode: Int
 ) {
@@ -10,15 +10,11 @@ data class HealthProfileModel(
         val _id: String,
         val address: String,
         val createdAt: String,
-        val insurance: List<Any>,
+        val insurance: String,
         val medications: List<String>,
         val name: String,
         val ssn: String,
         val updatedAt: String,
         val userId: String
-    ) {
-        data class Insurance(
-            val name: String
-        )
-    }
+    )
 }

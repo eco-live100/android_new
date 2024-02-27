@@ -25,7 +25,7 @@ import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityCreateDoctorBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
-import com.app.ecolive.pharmacy_module.model.DoctorProfileModel
+import com.app.ecolive.pharmacy_module.model.DoctorDetailModel
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
@@ -66,7 +66,7 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
     private val REQUEST_CAMERA_PERMISSION = 1
     private var imageUri: Uri? = null
 
-    private var doctorProfile: DoctorProfileModel.Data? = null
+    private var doctorProfile: DoctorDetailModel? = null
 
     // private val viewModel by viewModels<PharmacyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -211,10 +211,10 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     it.getSerializable(
                         AppConstant.doctorProfile,
-                        DoctorProfileModel.Data::class.java
+                        DoctorDetailModel::class.java
                     )
                 } else {
-                    it.getSerializable(AppConstant.doctorProfile) as DoctorProfileModel.Data
+                    it.getSerializable(AppConstant.doctorProfile) as DoctorDetailModel
                 }
             binding.doctorName.setText(doctorProfile?.fullName)
             binding.mobileNumber.setText(doctorProfile?.mobileNumber)

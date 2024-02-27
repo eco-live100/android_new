@@ -10,6 +10,7 @@ data class DoctorListModel(
         val _id: String,
         val consultFees: Int,
         val createdAt: String,
+        val countryCode: String,
         val fullName: String,
         val idNumber: String,
         val isRepeated: Boolean,
@@ -22,6 +23,9 @@ data class DoctorListModel(
         val secondryVisitingHour: String,
         val services: String,
         val updatedAt: String,
+        val picture: String,
+        val backgroungPicture: String,
+        val logo: String,
         val userId: String
     )
 }

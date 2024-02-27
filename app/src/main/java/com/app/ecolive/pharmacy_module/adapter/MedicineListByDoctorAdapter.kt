@@ -1,7 +1,6 @@
 package com.app.ecolive.pharmacy_module.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -32,29 +31,34 @@ class MedicineListByDoctorAdapter(var context: Context, var list: ArrayList<Pres
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        Log.d("TAG", "onBindViewHolder: $position")
-        if (list.isNotEmpty()) {
-            val item = list[position]
-            viewHolder.binding.apply {
-                if ((position + 1) / 2 == 0) {
-                    itemLL.setBackgroundColor(context.resources.getColor(com.adevinta.leku.R.color.quantum_bluegrey100))
-                } else {
-                    itemLL.setBackgroundColor(context.resources.getColor(`in`.aabhasjindal.otptextview.R.color.transparent))
+
+        /*if (list!=null && list.isNotEmpty()) {
+            val data = list[position]
+            Log.d("TAG", "onBindViewHolderdgd: ${data}")
+            data?.let { item->
+                viewHolder.binding.apply {
+                    if ((position + 1) / 2 == 0) {
+                        itemLL.setBackgroundColor(context.resources.getColor(com.adevinta.leku.R.color.quantum_bluegrey100))
+                    } else {
+                        itemLL.setBackgroundColor(context.resources.getColor(`in`.aabhasjindal.otptextview.R.color.transparent))
+                    }
+                    "Medication #${position + 1} ${item.medicineName}".also { nameTv.text = it }
+                    strengthTv.text = item.strength
+                    doseTv.text = item.dose
+                    routeTv.text = item.route
+                    frequencyTv.text = item.frequency
+                    refillTv.text = item.refills
+                    indicationTv.text = item.indication
+                    additionalDirectionTv.text = item.additionalDirections
                 }
-                "Medication #${position + 1} ${item.medicineName}".also { nameTv.text = it }
-                strengthTv.text = item.strength
-                doseTv.text = item.dose
-                routeTv.text = item.route
-                frequencyTv.text = item.frequency
-                refillTv.text = item.refills
-                indicationTv.text = item.indication
-                additionalDirectionTv.text = item.additionalDirection
             }
-        }
+
+        }*/
     }
 
     override fun getItemCount(): Int {
-        return if( list.size>0) list.size else 4
+        //return if( list.size>0) list.size else 4
+        return list.size
     }
 /*
     override fun getFilter(): Filter {

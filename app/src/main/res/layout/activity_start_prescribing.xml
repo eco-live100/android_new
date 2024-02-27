@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:gravity="start">
 
                     <TextView
@@ -139,6 +139,7 @@
                     android:background="@drawable/bg_blue_round_button"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
+                    android:id="@+id/sendPrescriptionToPharmacy"
                     android:text="Send prescription directly to pharmacy"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11sdp" />
@@ -162,6 +163,7 @@
                     android:background="@drawable/bg_blue_round_button"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
+                    android:id="@+id/sendPrescriptionToPatient"
                     android:text="Send prescription to patient"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11sdp" />
@@ -170,7 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_20sdp"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
                     android:text="Prescription will be received by patient who will next order from nearby pharmacies of their choice "
@@ -178,6 +180,7 @@
                     android:textSize="@dimen/_10sdp" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginHorizontal="@dimen/_20sdp"

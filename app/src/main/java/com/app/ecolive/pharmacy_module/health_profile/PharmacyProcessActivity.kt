@@ -18,10 +18,12 @@ import com.app.ecolive.databinding.ActivityPharmacyProcessBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.ServiceListAdapter
 import com.app.ecolive.service.Status
+import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -31,6 +33,7 @@ class PharmacyProcessActivity : AppCompatActivity() {
     private val progressDialog = CustomProgressDialog()
     lateinit var listAdapter: ServiceListAdapter
     private var list: ArrayList<String> = ArrayList()
+    val flexboxLayoutManager = FlexboxLayoutManager(this)
     companion object{
         var isUpdateProfile = false
     }
@@ -78,21 +81,13 @@ class PharmacyProcessActivity : AppCompatActivity() {
                 )
             }
         }
-        val flexboxLayoutManager = FlexboxLayoutManager(this)
+
         flexboxLayoutManager.apply {
             flexDirection = FlexDirection.ROW
             justifyContent = JustifyContent.CENTER
         }
-        list.add("ABC")
-        list.add("XYZ")
-        list.add("Dola-350")
-        list.add("Paracetamol")
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        listAdapter = ServiceListAdapter(this, list)
-        binding.recyclerView.apply {
-            layoutManager = flexboxLayoutManager
-            adapter = listAdapter
-        }
+
     }
 
     override fun onResume() {
@@ -144,19 +139,21 @@ class PharmacyProcessActivity : AppCompatActivity() {
                         it.data?.data.let { doctorData ->
                             binding.apply {
                                 doctorData?.let { data ->
-                                    val item = data.last()
-                                    nameTv.text = item.name.replaceFirstChar { it.uppercase() }
-                                    addressTv.text = item.address
-                                    "Last 4 digits of SSN:- ${item.ssn}".also { ssnTv.text = it }
-                                    /*  Glide.with(this@PharmacyProcessActivity).load("${AppConstant.BASE_URL_Image}${data.logo}")
-                                          .placeholder(R.drawable.ic_user_blue).centerCrop()
-                                          .into(binding.doctorProfile)*/
-
+                                    nameTv.text = data.name.replaceFirstChar { it.uppercase() }
+                                    addressTv.text = data.address
+                                    list.addAll(data.medications.toList())
+                                    listAdapter = ServiceListAdapter(this@PharmacyProcessActivity, list)
+                                    binding.recyclerView.apply {
+                                        layoutManager = flexboxLayoutManager
+                                        adapter = listAdapter
+                                    }
+                                    "Last 4 digits of SSN:- ${data.ssn}".also { ssnTv.text = it }
+                                    Glide.with(this@PharmacyProcessActivity).load("${AppConstant.BASE_URL_Image}${data.insurance}")
+                                          .placeholder(R.drawable.bg_dash).centerCrop()
+                                          .into(binding.insuranceImage)
                                 }
-
                             }
                         }
-
                     }
 
                     Status.LOADING -> {}

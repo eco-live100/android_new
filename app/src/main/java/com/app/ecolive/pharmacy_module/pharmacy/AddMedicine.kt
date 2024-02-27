@@ -22,7 +22,7 @@ import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityAddMedicineBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
-import com.app.ecolive.pharmacy_module.model.DoctorProfileModel
+import com.app.ecolive.pharmacy_module.model.DoctorDetailModel
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
@@ -46,7 +46,7 @@ class AddMedicine : AppCompatActivity() {
     private val REQUEST_CAMERA_PERMISSION = 1
     private var imageUri: Uri? = null
 
-    private var doctorProfile: DoctorProfileModel.Data? = null
+    private var doctorProfile: DoctorDetailModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         Utils.changeStatusColor(this, R.color.darkblue)

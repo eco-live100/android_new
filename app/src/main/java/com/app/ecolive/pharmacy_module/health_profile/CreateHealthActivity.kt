@@ -30,6 +30,7 @@ class CreateHealthActivity : AppCompatActivity() {
                             .putExtra("address",binding.address.text.toString().trim())
                             .putExtra("ssn",binding.ssnNumber.text.toString().trim())
                         )
+                        finish()
                     }else{
                         Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show()
                     }

@@ -1,4 +1,5 @@
 package com.app.ecolive.pharmacy_module.adapter
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,28 +11,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
 import com.app.ecolive.databinding.RowPrescriptionListBinding
 import com.app.ecolive.pharmacy_module.health_profile.PrescribedMedicationsActivity
-import com.app.ecolive.pharmacy_module.model.UserPrescriptionData
+import com.app.ecolive.pharmacy_module.model.PrescriptionRequestData
+import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.Utils
 import java.util.Locale
 
 
-class UserPrescriptionListAdapter(var context: Context, private var userPrescriptionList: ArrayList<UserPrescriptionData>) :
+class UserPrescriptionListAdapter(
+    var context: Context,
+    private var userPrescriptionList: ArrayList<PrescriptionRequestData>
+) :
     RecyclerView.Adapter<UserPrescriptionListAdapter.ViewHolder>(), Filterable {
 
 
-    private var originalTagListData: ArrayList<UserPrescriptionData> = ArrayList()
+    private var originalTagListData: ArrayList<PrescriptionRequestData> = ArrayList()
+
     init {
         originalTagListData = userPrescriptionList
     }
-    inner class ViewHolder(itemView : RowPrescriptionListBinding)
-        : RecyclerView.ViewHolder(itemView.root){
-        var  binding : RowPrescriptionListBinding = itemView
+
+    inner class ViewHolder(itemView: RowPrescriptionListBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        var binding: RowPrescriptionListBinding = itemView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: RowPrescriptionListBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.row_prescription_list, parent, false)
+            R.layout.row_prescription_list, parent, false
+        )
         return ViewHolder(binding)
     }
 
@@ -46,7 +54,12 @@ class UserPrescriptionListAdapter(var context: Context, private var userPrescrip
             item.createdAt
         )
         viewHolder.itemView.setOnClickListener {
-            context.startActivity(Intent(context, PrescribedMedicationsActivity::class.java))
+            context.startActivity(
+                Intent(
+                    context,
+                    PrescribedMedicationsActivity::class.java
+                ).putExtra(AppConstant.data, item)
+            )
         }
     }
 
@@ -64,12 +77,15 @@ class UserPrescriptionListAdapter(var context: Context, private var userPrescrip
                     results.values = originalTagListData
                     results.count = originalTagListData.size
                 } else {
-                    val filterResultsData: ArrayList<UserPrescriptionData> = ArrayList<UserPrescriptionData>()
+                    val filterResultsData: ArrayList<PrescriptionRequestData> =
+                        ArrayList<PrescriptionRequestData>()
                     for (data in userPrescriptionList) {
                         //In this loop, you'll filter through originalData and compare each item to charSequence.
                         //If you find a match, add it to your new ArrayList
                         //I'm not sure how you're going to do comparison, so you'll need to fill out this conditional
-                        if (data.symptomDescription.lowercase(Locale.ROOT).contains(charSequence.toString().lowercase(Locale.ROOT))) {
+                        if (data.symptomDescription?.lowercase(Locale.ROOT)
+                                ?.contains(charSequence.toString().lowercase(Locale.ROOT))!!
+                        ) {
                             filterResultsData.add(data)
                         }
                     }
@@ -80,7 +96,7 @@ class UserPrescriptionListAdapter(var context: Context, private var userPrescrip
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                userPrescriptionList = filterResults.values as ArrayList<UserPrescriptionData>
+                userPrescriptionList = filterResults.values as ArrayList<PrescriptionRequestData>
                 notifyDataSetChanged()
             }
         }

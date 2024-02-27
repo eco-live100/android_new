@@ -17,11 +17,14 @@ import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.MedicineListByDoctorAdapter
 import com.app.ecolive.pharmacy_module.model.PrescriptionMedicationData
 import com.app.ecolive.service.Status
+import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
+
 
 class StartPrescribingActivity : AppCompatActivity() {
     lateinit var binding: ActivityStartPrescribingBinding
@@ -29,6 +32,7 @@ class StartPrescribingActivity : AppCompatActivity() {
     lateinit var dialog: Dialog
     private lateinit var medicineListByDoctorAdapter: MedicineListByDoctorAdapter
     private var list: ArrayList<PrescriptionMedicationData> = ArrayList()
+    private lateinit var prescriptionId : String
 
     companion object {
         private var mInstance: StartPrescribingActivity? = null
@@ -52,10 +56,15 @@ class StartPrescribingActivity : AppCompatActivity() {
         binding.addMedicineBtn.setOnClickListener {
             addPrescriptionMedicine()
         }
+        prescriptionId = intent.extras?.getString(AppConstant.prescriptionId).toString()
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         medicineListByDoctorAdapter = MedicineListByDoctorAdapter(this, list)
         binding.recyclerView.adapter = medicineListByDoctorAdapter
+
+        binding.sendPrescriptionToPatient.setOnClickListener {
+            startPrescriptionApi()
+        }
 
     }
 
@@ -66,16 +75,10 @@ class StartPrescribingActivity : AppCompatActivity() {
         }
         val pharmacyViewModel = PharmacyViewModel(this)
         progressDialog.show(this)
+        val jsArray = JSONArray(list)
         val jsonObject = JSONObject()
-        jsonObject.put("prescriptionId", "precriptionId")
-        jsonObject.put("strength", "precriptionId")
-        jsonObject.put("dose", "precriptionId")
-        jsonObject.put("route", "precriptionId")
-        jsonObject.put("frequency", "precriptionId")
-        jsonObject.put("refills", "precriptionId")
-        jsonObject.put("quantify", "precriptionId")
-        jsonObject.put("indication", "precriptionId")
-        jsonObject.put("additionalDirections", "precriptionId")
+        jsonObject.put("prescriptionId", prescriptionId)
+        jsonObject.put("Medication", jsArray)
 
         pharmacyViewModel.startPrescriptionApi(jsonObject).observe(this) {
             when (it.status) {
@@ -94,7 +97,6 @@ class StartPrescribingActivity : AppCompatActivity() {
                     progressDialog.dialog.dismiss()
                     Timber.d("ERROR: ")
                     MyApp.popErrorMsg("", it.message!!, this)
-
                 }
             }
         }
@@ -122,7 +124,7 @@ class StartPrescribingActivity : AppCompatActivity() {
                         frequency = frequencyEt.text.toString(),
                         refills = refillsEt.text.toString(),
                         indication = indicationEt.text.toString(),
-                        additionalDirection = additionalDirectionEt.text.toString(),
+                        additionalDirections = additionalDirectionEt.text.toString(),
                     )
                 )
                 medicineListByDoctorAdapter.notifyDataSetChanged()

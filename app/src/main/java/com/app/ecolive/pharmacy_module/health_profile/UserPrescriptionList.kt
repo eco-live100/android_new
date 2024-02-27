@@ -8,7 +8,7 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.UserPrescriptionListBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.UserPrescriptionListAdapter
-import com.app.ecolive.pharmacy_module.model.UserPrescriptionData
+import com.app.ecolive.pharmacy_module.model.PrescriptionRequestData
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
@@ -17,7 +17,7 @@ import com.app.ecolive.utils.Utils
 class UserPrescriptionList : AppCompatActivity() {
     lateinit var binding: UserPrescriptionListBinding
     private lateinit var userPrescriptionListAdapter: UserPrescriptionListAdapter
-    private var userPrescriptionList: ArrayList<UserPrescriptionData> = ArrayList()
+    private var userPrescriptionList: ArrayList<PrescriptionRequestData> = ArrayList()
     private val progressDialog = CustomProgressDialog()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class UserPrescriptionList : AppCompatActivity() {
         userPrescriptionListAdapter = UserPrescriptionListAdapter(this, userPrescriptionList)
         binding.recycleView.adapter = userPrescriptionListAdapter
 
-        getDoctorListApi()
+        userPrescriptionListApi()
 
     /*    binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -45,7 +45,7 @@ class UserPrescriptionList : AppCompatActivity() {
         })*/
     }
 
-    private fun getDoctorListApi() {
+    private fun userPrescriptionListApi() {
         progressDialog.show(this)
         val viewModel = PharmacyViewModel(this)
 

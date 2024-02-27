@@ -127,6 +127,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:singleLine="true"
+                    android:maxLength="4"
                     android:inputType="numberDecimal"
                     android:background="@drawable/bg_edittext"
                     android:fontFamily="@font/roboto_medium"

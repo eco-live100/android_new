@@ -26,8 +26,10 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
-import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+
 
 class PrescriptionRequestActivity : AppCompatActivity() {
     lateinit var binding: ActivityPrescriptionRequestBinding
@@ -41,13 +43,12 @@ class PrescriptionRequestActivity : AppCompatActivity() {
     private val progressDialog = CustomProgressDialog()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=DataBindingUtil.setContentView(this,R.layout.activity_prescription_request)
-        Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
-        binding.toolbar.toolbarTitle.text ="Prescription request form to"
+        Utils.changeStatusColor(this, R.color.darkblue)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_prescription_request)
+
+        binding.toolbar.toolbarTitle.text = "Prescription request form to"
         binding.toolbar.help.visibility = View.VISIBLE
         binding.toolbar.ivBack.setOnClickListener {
             finish()
@@ -83,9 +84,9 @@ class PrescriptionRequestActivity : AppCompatActivity() {
                 Toast.makeText(this, "Enter taking medications", Toast.LENGTH_SHORT).show()
             } else if (binding.recentHistoryEt.text?.isEmpty() == true) {
                 Toast.makeText(this, "Please enter recent history", Toast.LENGTH_SHORT).show()
-            }else if (binding.allergiesEt.text?.isEmpty() == true) {
+            } else if (binding.allergiesEt.text?.isEmpty() == true) {
                 Toast.makeText(this, "Please enter allergies", Toast.LENGTH_SHORT).show()
-            }else if (binding.smokingEt.text?.isEmpty() == true) {
+            } else if (binding.smokingEt.text?.isEmpty() == true) {
                 Toast.makeText(this, "Please enter smoking and any drug", Toast.LENGTH_SHORT).show()
             } else if (binding.otherInfoEt.text?.isEmpty() == true) {
                 Toast.makeText(this, "Enter enter other info", Toast.LENGTH_SHORT).show()
@@ -104,6 +105,7 @@ class PrescriptionRequestActivity : AppCompatActivity() {
 
         }
     }
+
     private fun imagePopup() {
         try {
             val dialog = Dialog(this)
@@ -189,18 +191,22 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
     private fun selectCameraImage() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
             startActivityForResult(takePictureIntent, 200)
         }
     }
+
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
@@ -235,9 +241,11 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             MyApp.hideSoftKeyboard(this)
         } catch (e: Exception) {
         }
+
+
         var pharmacyViewModel = PharmacyViewModel(this)
         progressDialog.show(this)
-        val builder = MultipartBody.Builder()
+       /* val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
         builder.addFormDataPart("doctorId", doctorId)
         builder.addFormDataPart("symptomDescription", binding.symptomsEt.text.toString())
@@ -245,10 +253,17 @@ class PrescriptionRequestActivity : AppCompatActivity() {
         builder.addFormDataPart("alreadyMedication", binding.alreadyTakingMedEt.text.toString())
         builder.addFormDataPart("recentMedicalHistory", binding.recentHistoryEt.text.toString())
         builder.addFormDataPart("allergies", binding.allergiesEt.text.toString())
-        builder.addFormDataPart("sendPrescriptionToPharmacy", binding.aboveStatementsCheckBox.isChecked.toString())
+        builder.addFormDataPart(
+            "sendPrescriptionToPharmacy",
+            binding.aboveStatementsCheckBox.isChecked.toString()
+        )
         builder.addFormDataPart("habits", binding.smokingEt.text.toString())
         builder.addFormDataPart("otherRelaventINfotmation", binding.otherInfoEt.text.toString())
-
+        builder.addFormDataPart(
+            "Medication",
+            SearchMedicinesActivity.selectedMedicineList.toString()
+        )
+        //builder.addFormDataPart("Medication", parameter.toString())
 
 
         if (fileImg != null) {
@@ -260,14 +275,41 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             builder.addPart(Utils.multipartBodyFile(this, pictureImage!!, "picture"))
         } else {
             builder.addFormDataPart("picture", "")
-        }
+        }*/
 
-        pharmacyViewModel.requestPrescriptionApi(builder.build()).observe(this) {
+     /*   val jArray = JSONArray()
+        for (i in 0 until jArray.length()) {
+            listdata.add(jArray.getString(i))
+        }*/
+
+       // val jsonArray = JSONArray(SearchMedicinesActivity.selectedMedicineList)
+        pharmacyViewModel.requestPrescriptionApi(
+            /*builder.build()*/
+            doctorId = doctorId.toRequestBody(("text/plain").toMediaType()),
+            symptomDescription = binding.symptomsEt.text.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            symptomDuration = binding.symptomsDurationEt.text.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            alreadyMedication = binding.alreadyTakingMedEt.text.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            recentMedicalHistory = binding.recentHistoryEt.text.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            allergies = binding.allergiesEt.text.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            sendPrescriptionToPharmacy = binding.aboveStatementsCheckBox.isChecked.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            habits = binding.smokingEt.text.toString().toRequestBody(("text/plain").toMediaType()),
+            otherRelaventINfotmation = binding.otherInfoEt.text.toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            medication = SearchMedicinesActivity.selectedMedicineList,
+            attachment = Utils.multipartBodyFile(this, fileImg!!, "attachment"),
+            picture = Utils.multipartBodyFile(this, pictureImage!!, "picture"),
+        ).observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
-                    it.data?.let {itm->
-                        Toast.makeText(this,itm.message,Toast.LENGTH_SHORT).show()
+                    it.data?.let { itm ->
+                        Toast.makeText(this, itm.message, Toast.LENGTH_SHORT).show()
                         finish()
                     }
                 }
@@ -285,5 +327,67 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             }
         }
     }
+    /*
+
+        private fun requestPrescription(doctorId: String) {
+            try {
+                MyApp.hideSoftKeyboard(this)
+            } catch (e: Exception) {
+            }
+
+            val parameter = JSONArray(SearchMedicinesActivity.selectedMedicineList)
+
+            var pharmacyViewModel = PharmacyViewModel(this)
+            progressDialog.show(this)
+            val builder = MultipartBody.Builder()
+            builder.setType(MultipartBody.FORM)
+            builder.addFormDataPart("doctorId", doctorId)
+            builder.addFormDataPart("symptomDescription", binding.symptomsEt.text.toString())
+            builder.addFormDataPart("symptomDuration", binding.symptomsDurationEt.text.toString())
+            builder.addFormDataPart("alreadyMedication", binding.alreadyTakingMedEt.text.toString())
+            builder.addFormDataPart("recentMedicalHistory", binding.recentHistoryEt.text.toString())
+            builder.addFormDataPart("allergies", binding.allergiesEt.text.toString())
+            builder.addFormDataPart("sendPrescriptionToPharmacy", binding.aboveStatementsCheckBox.isChecked.toString())
+            builder.addFormDataPart("habits", binding.smokingEt.text.toString())
+            builder.addFormDataPart("otherRelaventINfotmation", binding.otherInfoEt.text.toString())
+           // builder.addFormDataPart("Medication[]", SearchMedicinesActivity.selectedMedicineList)
+            builder.addFormDataPart("Medication", parameter.toString())
+
+
+            if (fileImg != null) {
+                builder.addPart(Utils.multipartBodyFile(this, fileImg!!, "attachment"))
+            } else {
+                builder.addFormDataPart("attachment", "")
+            }
+            if (pictureImage != null) {
+                builder.addPart(Utils.multipartBodyFile(this, pictureImage!!, "picture"))
+            } else {
+                builder.addFormDataPart("picture", "")
+            }
+
+            pharmacyViewModel.requestPrescriptionApi(builder.build()).observe(this) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        progressDialog.dialog.dismiss()
+                        it.data?.let {itm->
+                            Toast.makeText(this,itm.message,Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
+
+                    Status.LOADING -> {
+                        Log.d("ok", "LOADING: ")
+                    }
+
+                    Status.ERROR -> {
+                        progressDialog.dialog.dismiss()
+                        Log.d("ok", "ERROR: ")
+                        MyApp.popErrorMsg("", it.message!!, this)
+
+                    }
+                }
+            }
+        }
+    */
 
 }

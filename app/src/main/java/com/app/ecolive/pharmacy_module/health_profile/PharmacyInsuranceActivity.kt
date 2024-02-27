@@ -33,9 +33,8 @@ class PharmacyInsuranceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Utils.changeStatusColor(this, R.color.darkblue)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_pharmacy_insurance)
-        Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
         binding.toolbar.toolbarTitle.text = getString(R.string.eco_live_health_profile)
         binding.toolbar.help.visibility = View.VISIBLE
         if(intent.extras!=null){
@@ -48,21 +47,22 @@ class PharmacyInsuranceActivity : AppCompatActivity() {
         }
 
         binding.btnContinue.setOnClickListener {
-            if (binding.isinsuranceSelected.isSelected){
+            if (binding.isinsuranceSelected.isChecked){
                 startActivity(Intent(this, SearchMedicinesActivity::class.java)
                     .putExtra("name",name)
                     .putExtra("address",address)
                     .putExtra("ssn",ssn)
-                    .putExtra("imagePath",filePath)
+                    //.putExtra("imagePath",filePath)
                 )
+                finish()
             }else{
                 startActivity(Intent(this, SearchMedicinesActivity::class.java)
                     .putExtra("name",name)
                     .putExtra("address",address)
                     .putExtra("ssn",ssn)
                     .putExtra("imagePath",filePath)
-
                 )
+                finish()
             }
         }
         binding.storeLogoConstrentInner.setOnClickListener {

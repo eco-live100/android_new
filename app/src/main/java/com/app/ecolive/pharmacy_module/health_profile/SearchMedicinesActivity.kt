@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
@@ -12,6 +13,7 @@ import com.app.ecolive.pharmacy_module.PharmacyStepActivity
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.SearchMedicineListAdapter
 import com.app.ecolive.pharmacy_module.model.CommonMedicationModel
+import com.app.ecolive.pharmacy_module.model.SearchMedicineListData
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
@@ -30,17 +32,31 @@ import java.io.File
 class SearchMedicinesActivity : BaseActivity() {
     lateinit var binding: ActivitySearchMedicinesBinding
     private val progressDialog = CustomProgressDialog()
-    var name : String? = null
-    var address : String? = null
-    var ssn : String? = null
-    private var imagePath : String? = null
+    var name: String? = null
+    var address: String? = null
+    var ssn: String? = null
+    private var imagePath: String? = null
     private var insurancebody: MultipartBody.Part? = null
+
+    lateinit var medicineListAdapter: SearchMedicineListAdapter
+    private var medicineList: ArrayList<CommonMedicationModel.Data> = ArrayList()
+
     lateinit var searchMedicineListAdapter: SearchMedicineListAdapter
-    private var searchMedicineList: ArrayList<CommonMedicationModel.Data> = ArrayList()
+    private var searchMedicineList: ArrayList<SearchMedicineListData> = ArrayList()
+
+    val flexboxSearchLayoutManager = FlexboxLayoutManager(this)
+    val flexboxLayoutManager = FlexboxLayoutManager(this)
+
+    companion object {
+        var mInstance: SearchMedicinesActivity? = null
+        var selectedMedicineList: ArrayList<SearchMedicineListData> = ArrayList()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Utils.changeStatusColor(this, R.color.darkblue)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_medicines)
+        mInstance = this
         getCommonMedication()
         binding.toolbar.toolbarTitle.text = "Search Medicines"
         binding.toolbar.help.visibility = View.VISIBLE
@@ -50,138 +66,100 @@ class SearchMedicinesActivity : BaseActivity() {
             ssn = intent.getStringExtra("ssn")!!
             imagePath = intent.getStringExtra("imagePath")
         }
+        Log.d("TAG", "images_path:-$imagePath")
         binding.toolbar.ivBack.setOnClickListener {
             finish()
         }
-        binding.btnContinue.setOnClickListener {
-            if (PreferenceKeeper.instance.isHealthProfileCreate && !PharmacyProcessActivity.isUpdateProfile) {
-                startActivity(Intent(this, PharmacyStepActivity::class.java)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP )
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            } else {
-                createHealthApi()
-            }
-
-        }
-
-        val flexboxLayoutManager = FlexboxLayoutManager(this)
         flexboxLayoutManager.apply {
             flexDirection = FlexDirection.ROW
             justifyContent = JustifyContent.CENTER
         }
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "Android", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "Jetpack compose", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "Material Design", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "Firebase", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "AWS", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "AWS", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "AWS", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "AWS", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "AWS", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "AWS", updatedAt= "afd"))
-        searchMedicineList.add(CommonMedicationModel.Data(__v = 1, _id= "afd", createdAt= "afd", name= "Retrofit", updatedAt= "afd"))
-        searchMedicineListAdapter = SearchMedicineListAdapter(this, searchMedicineList)
+        medicineListAdapter =
+            SearchMedicineListAdapter(this, selectedMedicineList)
         binding.medicineRecyclerView.apply {
             layoutManager = flexboxLayoutManager
-            adapter = searchMedicineListAdapter
+            adapter = medicineListAdapter
         }
 
-        val flexboxSearchLayoutManager = FlexboxLayoutManager(this)
         flexboxSearchLayoutManager.apply {
             flexDirection = FlexDirection.ROW
             justifyContent = JustifyContent.CENTER
         }
+        searchMedicineListAdapter =
+            SearchMedicineListAdapter(this, searchMedicineList)
         binding.searchMedicineRecyclerView.apply {
             layoutManager = flexboxSearchLayoutManager
             adapter = searchMedicineListAdapter
         }
+        binding.btnContinue.setOnClickListener {
+         /*   if (PreferenceKeeper.instance.isHealthProfileCreate && !PharmacyProcessActivity.isUpdateProfile) {
+                startActivity(
+                    Intent(this, PharmacyStepActivity::class.java)
+                    //.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                )
+                finish()
+            } else {*/
+                createHealthApi()
+           // }
+        }
         binding.clearIv.visibility = View.GONE
         binding.clearIv.setOnClickListener { binding.searchEt.text.clear() }
         binding.searchEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val searchedKey = binding.searchEt.text.toString()
-                searchMedicineListAdapter.filter.filter(searchedKey)
-            }
-            override fun afterTextChanged(s: Editable) {}
-        })
-       /* binding.searchEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 if (binding.searchEt.text.isEmpty()) {
                     binding.clearIv.visibility = View.GONE
                     binding.progressBar.visibility = View.GONE
-                  */
-        /*  arrayListProductList.clear()
-
-                    if (adapterProductList != null)
-                        adapterProductList!!.notifyDataSetChanged()*/
-        /*
-
+                    searchMedicineList.clear()
+                    searchMedicineListAdapter.notifyDataSetChanged()
                 } else {
-
                     binding.clearIv.visibility = View.VISIBLE
-
                 }
-                */
-        /*if (subCategoryId != null)
-                    viewModel.productListSub(
-                        sub_category_id = subCategoryId!!,
-                        store_type = "1",
-                        rating = rating,
-                        brand_id = " ",
-                        product_for = " ",
-                        title = s.toString(),
-                        min_price = " ",
-                        max_price = " ",
-                        sort_by = sort_by
-                    )*/
-        /*
+                if (binding.searchEt.text.isNotEmpty() && binding.searchEt.text.length >= 3)
+                    searchMedication(binding.searchEt.text.toString())
             }
-        })*/
+        })
     }
-
 
     private fun createHealthApi() {
         try {
             MyApp.hideSoftKeyboard(this)
         } catch (_: Exception) {
         }
-        var pharmacyViewModel = PharmacyViewModel(this)
+        val pharmacyViewModel = PharmacyViewModel(this)
         progressDialog.show(this)
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
-        builder.addFormDataPart("name", name?:"")
-        builder.addFormDataPart("address", address?:"")
-        builder.addFormDataPart("ssn", ssn?:"")
-        builder.addFormDataPart("medications", arrayListOf("test","test").toString())
+        builder.addFormDataPart("name", name ?: "")
+        builder.addFormDataPart("address", address ?: "")
+        builder.addFormDataPart("ssn", ssn ?: "")
+        builder.addFormDataPart("medications", selectedMedicineList.toString())
 
-        if (insurancebody != null) {
+        if (imagePath != null)
             setBodyInsurance()
+        if (insurancebody != null) {
             builder.addPart(insurancebody!!)
         }
-
         pharmacyViewModel.createHealthProfile(builder.build()).observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
                         PreferenceKeeper.instance.isHealthProfileCreate = true
-                        startActivity(Intent(this, PharmacyStepActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP )
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        PharmacyProcessActivity.isUpdateProfile = false
+                        startActivity(
+                            Intent(this, PharmacyStepActivity::class.java)
+                            //.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        )
+                        finish()
                     }
                 }
+
                 Status.LOADING -> {
                     Timber.d("LOADING: ")
                 }
+
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     Timber.d("ERROR: ")
@@ -209,15 +187,18 @@ class SearchMedicinesActivity : BaseActivity() {
         pharmacyViewModel.getCommonMedicationApi().observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
-                   // progressDialog.dialog.dismiss()
-                    it.data?.let {
-                       // startActivity(Intent(this, PharmacyStepActivity::class.java))
-                        //     finish()
+                    // progressDialog.dialog.dismiss()
+                    it.data?.let { data ->
+                        medicineList.clear()
+                        // medicineList.addAll(data)
+                        searchMedicineListAdapter.notifyDataSetChanged()
                     }
                 }
+
                 Status.LOADING -> {
-                    Timber.d( "LOADING: ")
+                    Timber.d("LOADING: ")
                 }
+
                 Status.ERROR -> {
                     //progressDialog.dialog.dismiss()
                     Timber.d("ERROR: ")
@@ -226,5 +207,46 @@ class SearchMedicinesActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun searchMedication(searchText: String) {
+        val pharmacyViewModel = PharmacyViewModel(this)
+        //progressDialog.show(this)
+        pharmacyViewModel.searchMedicineApi(search = searchText).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { data ->
+                        searchMedicineList.clear()
+                        searchMedicineList.addAll(data.data)
+                        searchMedicineListAdapter.notifyDataSetChanged()
+                    }
+                }
+
+                Status.LOADING -> {
+                    Timber.d("LOADING: ")
+                }
+
+                Status.ERROR -> {
+                    //progressDialog.dialog.dismiss()
+                    Timber.d("ERROR: ")
+                    MyApp.popErrorMsg("", it.message!!, this)
+
+                }
+            }
+        }
+    }
+
+
+
+    fun getInstance(): SearchMedicinesActivity? {
+        return mInstance
+    }
+    fun selectMedicine(item: SearchMedicineListData) {
+        if (selectedMedicineList.contains(item))
+            selectedMedicineList.remove(item)
+        else
+            selectedMedicineList.add(item)
+
+        medicineListAdapter.notifyDataSetChanged()
     }
 }

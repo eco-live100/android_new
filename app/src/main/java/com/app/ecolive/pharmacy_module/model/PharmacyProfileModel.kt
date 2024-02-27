@@ -23,6 +23,10 @@ data class PharmacyProfileModel(
         val userId: String,
         val licenceImage: String,
         val pharmacyImage: String,
-        val todaysOrder: Int
+        val todaysOrder: Int,
+
+        val distance: Int,
+        val latitude: Double,
+        val longitude: Double,
     ):Serializable
 }

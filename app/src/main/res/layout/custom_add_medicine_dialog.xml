@@ -12,7 +12,6 @@
         android:fillViewport="true"
         android:scrollbars="none">
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,7 +79,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
-
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/doseEt"
                 android:layout_width="match_parent"
@@ -96,7 +94,6 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +103,6 @@
                 android:text="Route: Select appropriate option below"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
-
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/routeEt"
@@ -123,7 +119,6 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +128,6 @@
                 android:text="Frequency: Select option or write a number below"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
-
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/frequencyEt"
@@ -159,7 +153,6 @@
                 android:text="Refills: Select option or write a number below"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
-
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/refillsEt"
@@ -193,7 +186,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
-
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/indicationEt"
                 android:layout_width="match_parent"
@@ -204,8 +196,8 @@
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="start"
                 android:hint="Start typing here"
-                android:minLines="3"
                 android:maxLines="3"
+                android:minLines="3"
                 android:padding="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_10sdp" />
@@ -220,7 +212,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
-
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/additionalDirectionEt"
                 android:layout_width="match_parent"
@@ -231,12 +222,11 @@
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="start"
                 android:hint="Start typing here"
-                android:minLines="3"
                 android:maxLines="3"
+                android:minLines="3"
                 android:padding="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_10sdp" />
-
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -275,5 +265,6 @@
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
     </ScrollView>
 </layout>
