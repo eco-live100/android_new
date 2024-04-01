@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -39,7 +40,9 @@ import com.app.ecolive.notification.NotificationModel
 import com.app.ecolive.payment_module.AddMoneyMainActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.payment_module.UserVerificationAddMoneyActivity
+import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.rider_module.adapter.RiderOrderListAdapter
+import com.app.ecolive.rider_module.model.RiderOrderData
 import com.app.ecolive.service.Status
 import com.app.ecolive.services.LocationService
 import com.app.ecolive.shop_owner.ShopOwnerHomePageNavigationActivity
@@ -93,9 +96,13 @@ class HomeRiderActivity : BaseActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var notificationModel: NotificationModel? = null
     private var driverAddress = ""
+
+    // lateinit var pharmacyListAdapter: PharmacyListAdapter
+    private var ruderPendingJobs: ArrayList<RiderOrderData> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.homerider_activity)
+        binding.include.contentHome.riderConstraintLayout.visibility = View.GONE
         initView()
 
         dialog = Dialog(this)
@@ -105,6 +112,12 @@ class HomeRiderActivity : BaseActivity() {
             binding.includeLeftDrawer.sideMenuUserName.text =
                 "Hello, " + PreferenceKeeper.instance.loginResponse?.firstName
         }
+
+        /*        val layoutManager = LinearLayoutManager(this)
+                binding.include.contentHome.orderRequestList.layoutManager = layoutManager
+                riderOrderListAdapter = PharmacyListAdapter(this, pharmacyList)
+                binding.include.contentHome.orderRequestList.adapter = riderOrderListAdapter*/
+
         val user = PreferenceKeeper.instance.loginResponse
         if (user != null) {
             binding.include.contentHome.riderUserName.text =
@@ -124,110 +137,31 @@ class HomeRiderActivity : BaseActivity() {
         }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create()
-        locationRequest?.interval = 4000
-        locationRequest?.fastestInterval = 2000
+        locationRequest?.interval = 30000
+        locationRequest?.fastestInterval = 30000
         locationRequest?.priority = Priority.PRIORITY_HIGH_ACCURACY
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult
                 for (location in locationResult.locations) {
                     MyApp.driverlocation = location
-                    Log.d(
-                        "TAG",
-                        "HomeRiderActivity onLocationResult: " + location.latitude + "\n" + location.longitude
-                    )
+                    getPharmacyListApi(location)
                 }
             }
         }
         riderSwitchButton()
         binding.include.contentHome.riderRecycle.layoutManager = LinearLayoutManager(this)
+        binding.include.contentHome.orderRequestList.layoutManager = LinearLayoutManager(this)
         getProfileAPI()
     }
 
-    /*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
-            Log.d("TAG", "onActivityResult: $requestCode---$resultCode")
-            if (requestCode == 1 && resultCode == RESULT_OK) {
-                Log.d("TAG", "onActivityResult: ${data?.getIntExtra("refresh", 0)}")
-                if (data?.getIntExtra("refresh", 0) == 1) {
-                    notificationModel = null
-                    getProfileAPI()
-                }
-            }
-        }*/
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("TAG", "onActivityResult: $requestCode---$resultCode")
-        if (requestCode==1 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             notificationModel = null
             getProfileAPI()
         }
     }
-    /*    private fun checkPermissions(): Boolean {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                return true
-            }
-            return false
-        }
-
-        private fun requestPermissions() {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ),
-                123
-            )
-        }
-
-        @SuppressLint("MissingSuperCall")
-        override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
-        ) {
-            if (requestCode == 123) {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                   // getLocation()
-                }
-            }
-        }
-        private fun isLocationEnabled(): Boolean {
-            val locationManager: LocationManager =
-                getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER
-            )
-        }*//*    @SuppressLint("MissingPermission", "SetTextI18n")
-        private fun getLocation() {
-            if (checkPermissions()) {
-                if (isLocationEnabled()) {
-                    mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
-                        val location: Location? = task.result
-                        if (location != null) {
-                            MyApp.driverlocation = location
-                            //getAddress(location.latitude,location.longitude)
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
-                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    startActivity(intent)
-                }
-            } else {
-                requestPermissions()
-            }
-        }*/
 
     private fun riderRequestPopUp(
         riderId: String, notificationModel: NotificationModel
@@ -312,6 +246,93 @@ class HomeRiderActivity : BaseActivity() {
         locationServiceForRiderDuty()
     }
 
+    private fun getPharmacyListApi(location: Location) {
+        progressDialog.show(this)
+        val viewModel = PharmacyViewModel(this)
+
+        val lat = location.latitude
+        val long = location.longitude
+        var distance = 30000
+        var page = 1
+        var limit = 100
+
+        ruderPendingJobs.clear()
+        viewModel.getAllReadyOrdersForDriver(
+            lat = lat,
+            long = long,
+            distance = distance,
+            page = page,
+            limit = limit
+        ).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        //pharmacyList.addAll(it.data.items)
+                       /* it.data.items.map { item ->
+                            ruderPendingJobs.add(
+                                RiderOrderData(
+                                    __v = item.__v,
+                                    _id = item._id,
+                                    amount = item._id,
+                                    bookingNumber = item._id,
+                                    bookingStatus = item._id,
+                                    bookingType = item._id,
+                                    createdAt = item._id,
+                                    distanceInKm = item._id,
+                                    driverAddress = item._id,
+                                    driverId = item._id,
+                                    driverLatitude = item._id,
+                                    driverLongitude = item._id,
+                                    fromAddress = item._id,
+                                    fromDate = item._id,
+                                    fromLatitude = item._id,
+                                    fromLongitude = item._id,
+                                    paymentType = item._id,
+                                    pickUpTimeFrom = item._id,
+                                    pickUpTimeTo = item._id,
+                                    taxiId = item._id,
+                                    toAddress = item._id,
+                                    toDate = item._id,
+                                    toLatitude = item._id,
+                                    toLongitude = item._id,
+                                    updatedAt = item._id,
+                                    userId = item._id,
+                                    userName = item._id,
+                                    userPhone = item._id,
+                                    userProfilePicture = item._id
+
+                                )
+                            )
+                        }*/
+                        /*riderOrderListAdapter = RiderOrderListAdapter(this@HomeRiderActivity,
+                            ruderPendingJobs,
+                            object : RiderOrderListAdapter.ClickListener {
+                                override fun onClick(pos: Int) {
+                                    val insertIntent =
+                                        Intent(applicationContext, RideDetailActivity::class.java)
+                                    val b = Bundle()
+                                    b.putSerializable(AppConstant.trackOrderDetail, ruderPendingJobs[pos])
+                                    insertIntent.putExtras(b)
+                                    this@HomeRiderActivity.startActivityForResult(insertIntent, 1)
+                                }
+                            })
+                        binding.include.contentHome.riderRecycle.adapter = riderOrderListAdapter*/
+                    }
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    //var msg = JSONObject(it.message)
+                    MyApp.popErrorMsg("", "" + vv, this)
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
+        }
+    }
+
     private fun onMapReady(mMap: GoogleMap) {
         val builder = LatLngBounds.Builder()
 
@@ -387,20 +408,15 @@ class HomeRiderActivity : BaseActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
-                    it.data?.let {
+                    it.data?.let { list ->
                         riderOrderListAdapter = RiderOrderListAdapter(this@HomeRiderActivity,
-                            it.data,
+                            list.data,
                             object : RiderOrderListAdapter.ClickListener {
                                 override fun onClick(pos: Int) {
-                                    /*startActivity(
-                                        Intent(
-                                            this@HomeRiderActivity, RideDetailActivity::class.java
-                                        ).putExtra(AppConstant.trackOrderDetail, it.data[pos])
-                                    )*/
-
-                                    val insertIntent = Intent(applicationContext, RideDetailActivity::class.java)
+                                    val insertIntent =
+                                        Intent(applicationContext, RideDetailActivity::class.java)
                                     val b = Bundle()
-                                    b.putSerializable(AppConstant.trackOrderDetail, it.data[pos])
+                                    b.putSerializable(AppConstant.trackOrderDetail, list.data[pos])
                                     insertIntent.putExtras(b)
                                     this@HomeRiderActivity.startActivityForResult(insertIntent, 1)
                                 }
@@ -565,9 +581,9 @@ class HomeRiderActivity : BaseActivity() {
             } else {
                 startActivity(
                     Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java).putExtra(
-                            AppConstant.INTENT_EXTRAS.IsFromHOME,
-                            true
-                        )
+                        AppConstant.INTENT_EXTRAS.IsFromHOME,
+                        true
+                    )
                 )
             }
 
@@ -581,9 +597,9 @@ class HomeRiderActivity : BaseActivity() {
             } else {
                 startActivity(
                     Intent(this@HomeRiderActivity, ContactListActivity::class.java).putExtra(
-                            AppConstant.INTENT_EXTRAS.IsFromHOME,
-                            true
-                        )
+                        AppConstant.INTENT_EXTRAS.IsFromHOME,
+                        true
+                    )
                 )
             }
 
@@ -594,9 +610,9 @@ class HomeRiderActivity : BaseActivity() {
             } else {
                 startActivity(
                     Intent(this@HomeRiderActivity, ChatListActivity::class.java).putExtra(
-                            AppConstant.INTENT_EXTRAS.IsFromHOME,
-                            true
-                        )
+                        AppConstant.INTENT_EXTRAS.IsFromHOME,
+                        true
+                    )
                 )
             }
 
@@ -785,6 +801,8 @@ class HomeRiderActivity : BaseActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
+                    binding.include.contentHome.riderConstraintLayout.visibility = View.VISIBLE
+
                     it.data?.data?.let { data ->
                         binding.include.contentHome.riderUserName.text =
                             "${data.firstName.capitalize()} ${data.lastName.capitalize()}"
@@ -971,12 +989,6 @@ class HomeRiderActivity : BaseActivity() {
                 Log.d("TAG", "onCreate: Location_Service_Started:true")
 
             } else {
-//                stopService(
-//                    Intent(
-//                        this,
-//                        LocationService::class.java
-//                    )
-//                )
                 Log.d("TAG", "onCreate: Location_Service_Started:Online_False")
             }
         } else {

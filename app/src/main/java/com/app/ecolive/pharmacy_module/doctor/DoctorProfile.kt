@@ -57,10 +57,7 @@ class DoctorProfile : AppCompatActivity() {
     private fun getProfile() {
         progressDialog.show(this)
         val pharmacyViewModel = PharmacyViewModel(this)
-        /*        val userId = PreferenceKeeper.instance.loginResponse!!._id
-                val professionType = "doctor"*/
-
-        pharmacyViewModel.getProfile(/*userId = userId, professionType = professionType*/)
+        pharmacyViewModel.getProfile()
             .observe(this) { it ->
                 when (it.status) {
                     Status.SUCCESS -> {
@@ -77,6 +74,10 @@ class DoctorProfile : AppCompatActivity() {
                                     Glide.with(this@DoctorProfile).load("${AppConstant.BASE_URL_Image}${data.logo}")
                                         .placeholder(R.drawable.ic_user_blue).centerCrop()
                                         .into(binding.doctorProfile)
+                                    Glide.with(this@DoctorProfile).load("${AppConstant.BASE_URL_Image}${data.backgroungPicture}")
+                                        .placeholder(R.drawable.ic_user_blue).centerCrop()
+                                        .into(binding.appCompatImageView2)
+
                                     if (data.services.isNotEmpty()) {
                                         serviceList.addAll(data.services.split(","))
                                         serviceListAdapter.notifyDataSetChanged()

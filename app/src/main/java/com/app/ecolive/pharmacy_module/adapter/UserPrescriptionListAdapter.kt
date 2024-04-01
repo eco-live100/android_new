@@ -14,6 +14,7 @@ import com.app.ecolive.pharmacy_module.health_profile.PrescribedMedicationsActiv
 import com.app.ecolive.pharmacy_module.model.PrescriptionRequestData
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import java.util.Locale
 
 
@@ -45,9 +46,13 @@ class UserPrescriptionListAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = userPrescriptionList[position]
-        //viewHolder.binding.nameTv.text = item.fullName
+        val doctor = item.doctorDetails
+        viewHolder.binding.nameTv.text = doctor?.fullName
+        Glide.with(context).load("${AppConstant.BASE_URL_Image}${doctor?.logo}")
+            .placeholder(R.drawable.ic_user_blue).centerCrop()
+            .into(viewHolder.binding.profileImage)
         viewHolder.binding.symptomsTv.text = "Symptoms:- ${item.symptomDescription}"
-        viewHolder.binding.symptomsDurationTv.text = "Sypmtoms Duration:-${item.symptomDuration}"
+        viewHolder.binding.symptomsDurationTv.text = "Symptoms Duration:-${item.symptomDuration}"
         viewHolder.binding.dateTimeTv.text = Utils.formatDateFromDateString(
             "yyyy-MM-dd'T'HH:mm:ss.SSS",
             "hh:mm a, yyyy-MMM-dd",

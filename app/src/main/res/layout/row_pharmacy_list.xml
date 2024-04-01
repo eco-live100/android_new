@@ -50,23 +50,37 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chatTitle"
             app:layout_constraintStart_toEndOf="@+id/chatImage" />
-
+        <CheckBox
+            android:visibility="gone"
+            android:id="@+id/checkBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/chatImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/locationPin"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:src="@drawable/destination_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/locationTv"
+            app:layout_constraintTop_toBottomOf="@id/chatImage" />
         <TextView
             android:id="@+id/locationTv"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10ssp"
             android:layout_marginTop="@dimen/_5sdp"
-            tools:text="Arlene ghgjkgjkgjhgjkgjhgjhgjhgjhgjhgjhgjhjhgjhjhjghjgjhjhgjhgjhghjgk"
-            android:drawablePadding="2dp"
+            tools:text="Arlene "
             android:layout_marginBottom="10dp"
-            android:drawableStart="@drawable/ic_map_blank"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chatImage"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/locationPin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

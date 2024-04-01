@@ -32,6 +32,7 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -76,7 +77,6 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_doctor)
         binding.toolbar.toolbarTitle.text = getString(R.string.create_profile)
         binding.toolbar.ivBack.setOnClickListener { finish() }
-
         selectedProfession = ""
         binding.professionRG.setOnCheckedChangeListener { group, _ ->
             when (group.checkedRadioButtonId) {
@@ -206,15 +206,17 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
             timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
                 .setTextColor(resources.getColor(R.color.black))
         }
-        intent.extras?.let {
+
+        if(intent.extras!=null) {
+            binding.linearLayoutCompat13.visibility = View.VISIBLE
             doctorProfile =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.getSerializable(
+                    intent.extras!!.getSerializable(
                         AppConstant.doctorProfile,
                         DoctorDetailModel::class.java
                     )
                 } else {
-                    it.getSerializable(AppConstant.doctorProfile) as DoctorDetailModel
+                    intent.extras!!.getSerializable(AppConstant.doctorProfile) as DoctorDetailModel
                 }
             binding.doctorName.setText(doctorProfile?.fullName)
             binding.mobileNumber.setText(doctorProfile?.mobileNumber)
@@ -252,15 +254,28 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
                 }
             }
             binding.consultFee.setText(doctorProfile?.consultFees.toString())
-            binding.fromVisitingTimeTv.text = "10:00 am"
-            binding.toVisitingTimeTv.text = "05:00 pm"
-            binding.fromAnotherVisitingTimeTv.text = "10:00 am"
-            binding.toAnotherVisitingTimeTv.text = "06:00 pm"
+
+            val primaryVisitingHour = doctorProfile?.primaryVisitingHour?.split("-")
+            val secondryVisitingHour = doctorProfile?.secondryVisitingHour?.split("-")
+            binding.fromVisitingTimeTv.text = "${primaryVisitingHour?.get(0)}"
+            binding.toVisitingTimeTv.text = "${primaryVisitingHour?.get(1)}"
+            binding.fromAnotherVisitingTimeTv.text = "${secondryVisitingHour?.get(0)}"
+            binding.toAnotherVisitingTimeTv.text = "${secondryVisitingHour?.get(1)}"
             binding.saveAndRepeat.isChecked = doctorProfile?.isRepeated ?: false
             binding.hospitalLocation.text = doctorProfile?.location
             address = doctorProfile?.location.toString()
             latitude = doctorProfile?.latitude.toString()
             longitude = doctorProfile?.longitude.toString()
+
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${doctorProfile?.backgroungPicture}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.backgroundImg)
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${doctorProfile?.logo}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.logoImage)
+
+        }else{
+            getProfile()
         }
 
         binding.createBtn.setOnClickListener {
@@ -467,7 +482,29 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
             Log.d("TAG", "iamgedsfas:: $imageUri")
         }
     }
+    private fun getProfile() {
+        progressDialog.show(this)
+        val pharmacyViewModel = PharmacyViewModel(this)
+        pharmacyViewModel.getProfile()
+            .observe(this) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        progressDialog.dialog.dismiss()
+                        startActivity(Intent(this, DoctorProfile::class.java))
+                        finish()
+                    }
 
+                    Status.LOADING -> {}
+                    Status.ERROR -> {
+                        progressDialog.dialog.dismiss()
+                        binding.linearLayoutCompat13.visibility = View.VISIBLE
+                        val vv = it.message
+                        MyApp.popErrorMsg("", "" + vv, this)
+                    }
+                }
+
+            }
+    }
     private val receiveData =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -505,7 +542,7 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
         builder.addFormDataPart("fullName", binding.doctorName.text.toString())
         builder.addFormDataPart("idNumber", binding.idNumberTv.text.toString())
         builder.addFormDataPart("primaryVisitingHour", "${binding.fromVisitingTimeTv.text}-${binding.toVisitingTimeTv.text}")
-        builder.addFormDataPart("secondaryVisitingHour", "${binding.fromAnotherVisitingTimeTv.text}-${binding.toAnotherVisitingTimeTv.text}")
+        builder.addFormDataPart("secondryVisitingHour", "${binding.fromAnotherVisitingTimeTv.text}-${binding.toAnotherVisitingTimeTv.text}")
         builder.addFormDataPart("professionType", selectedProfession)
         builder.addFormDataPart("mobileNumber", binding.mobileNumber.text.toString())
         builder.addFormDataPart("services", binding.services.text.toString())

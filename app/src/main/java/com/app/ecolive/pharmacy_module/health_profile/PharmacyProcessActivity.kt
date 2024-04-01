@@ -15,8 +15,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityPharmacyProcessBinding
+import com.app.ecolive.pharmacy_module.PharmacyStepActivity
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.ServiceListAdapter
+import com.app.ecolive.pharmacy_module.model.HealthProfileData
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
@@ -34,9 +36,12 @@ class PharmacyProcessActivity : AppCompatActivity() {
     lateinit var listAdapter: ServiceListAdapter
     private var list: ArrayList<String> = ArrayList()
     val flexboxLayoutManager = FlexboxLayoutManager(this)
-    companion object{
+    var healthProfileData: HealthProfileData? = null
+
+    companion object {
         var isUpdateProfile = false
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Utils.changeStatusColor(this, R.color.darkblue)
@@ -55,7 +60,7 @@ class PharmacyProcessActivity : AppCompatActivity() {
                 Intent(
                     this,
                     CreateHealthActivity::class.java
-                )
+                ).putExtra(AppConstant.data, healthProfileData)
             )
         }
         if (PreferenceKeeper.instance.isHealthProfileCreate) {
@@ -69,7 +74,7 @@ class PharmacyProcessActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this,
-                        SearchMedicinesActivity::class.java
+                        PharmacyStepActivity::class.java
                     )
                 )
             } else {
@@ -113,10 +118,7 @@ class PharmacyProcessActivity : AppCompatActivity() {
         ok.setOnClickListener {
             dialog.dismiss()
             startActivity(
-                Intent(
-                    this,
-                    CreateHealthActivity::class.java
-                )
+                Intent(this, CreateHealthActivity::class.java)
             )
         }
 
@@ -136,24 +138,38 @@ class PharmacyProcessActivity : AppCompatActivity() {
                 when (it.status) {
                     Status.SUCCESS -> {
                         progressDialog.dialog.dismiss()
-                        it.data?.data.let { doctorData ->
+                        if (it.data?.data == null) {
+                            binding.cardView8.visibility = View.GONE
+                            binding.nextButton.text = "Create"
+                            PreferenceKeeper.instance.isHealthProfileCreate = false
+                        } else {
+                            binding.cardView8.visibility = View.VISIBLE
+                            binding.nextButton.text = "Next"
+                            PreferenceKeeper.instance.isHealthProfileCreate = true
+                            healthProfileData = it.data.data
+
                             binding.apply {
-                                doctorData?.let { data ->
-                                    nameTv.text = data.name.replaceFirstChar { it.uppercase() }
-                                    addressTv.text = data.address
-                                    list.addAll(data.medications.toList())
-                                    listAdapter = ServiceListAdapter(this@PharmacyProcessActivity, list)
-                                    binding.recyclerView.apply {
-                                        layoutManager = flexboxLayoutManager
-                                        adapter = listAdapter
-                                    }
-                                    "Last 4 digits of SSN:- ${data.ssn}".also { ssnTv.text = it }
-                                    Glide.with(this@PharmacyProcessActivity).load("${AppConstant.BASE_URL_Image}${data.insurance}")
-                                          .placeholder(R.drawable.bg_dash).centerCrop()
-                                          .into(binding.insuranceImage)
+                                nameTv.text =
+                                    healthProfileData?.name?.replaceFirstChar { it.uppercase() }
+                                addressTv.text = healthProfileData?.address
+                                list.clear()
+                                healthProfileData?.medications?.toList()
+                                    ?.let { it1 -> list.addAll(it1) }
+                                listAdapter = ServiceListAdapter(this@PharmacyProcessActivity, list)
+                                binding.recyclerView.apply {
+                                    layoutManager = flexboxLayoutManager
+                                    adapter = listAdapter
                                 }
+                                "Last 4 digits of SSN:- ${healthProfileData?.ssn}".also {
+                                    ssnTv.text = it
+                                }
+                                Glide.with(this@PharmacyProcessActivity)
+                                    .load("${AppConstant.BASE_URL_Image}${healthProfileData?.insurance}")
+                                    .placeholder(R.drawable.bg_dash).centerCrop()
+                                    .into(binding.insuranceImage)
                             }
                         }
+
                     }
 
                     Status.LOADING -> {}
@@ -161,7 +177,6 @@ class PharmacyProcessActivity : AppCompatActivity() {
                         progressDialog.dialog.dismiss()
                         val vv = it.message
                         MyApp.popErrorMsg("", "" + vv, this)
-                        // MyApp.popErrorMsg("", "" + vv, THIS!!)
                     }
                 }
 

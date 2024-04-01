@@ -82,4 +82,5 @@ class TaxiViewModel(activity: Activity) : BaseObservable() {
         completeBookingRequestData = webServiceRepository.completeBookingRequestRideApi(json)
         return completeBookingRequestData
     }
+
 }

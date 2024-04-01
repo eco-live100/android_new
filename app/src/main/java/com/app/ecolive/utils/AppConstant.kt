@@ -59,26 +59,31 @@ object AppConstant {
     var driverId = "DriverId"
     var IsDriverOnline = "isDriverOnline"
     var notificationModel = "NotificationModel"
-
-
-    var doctorId = "DoctorId"
-    var prescriptionId = "prescriptionId"
-    var doctorProfile = "DoctorProfile"
     var profile = "Profile"
-    var pharmacyId = "PharmacyId"
     var data = "Data"
+    var fromScreen = "FromScreen"
+    var doctorProfile = "DoctorProfile"
 
 
+    ///Key for request
+    var doctorId = "doctorId"
+    var orderId = "orderId"
+    var prescriptionId = "prescriptionId"
+    var pharmacyId = "pharmacyId"
+    var orderStatus = "orderStatus"
+    var name = "Name"
+    var address = "Address"
+    var image = "Image"
 
 
-
-
-
-
-
-
-
-
+    ///Strings
+    var normalmedicine  = "normalmedicine"
+    var prescribemedicine  = "prescribemedicine"
+    var placed  = "placed"
+    var completed  = "completed"
+    var acceptOrder  = "Accept Order"
+    var readyToDispatched  = "Ready to dispatched"
+    var orderPlaced  = "Order placed"
 
 
 

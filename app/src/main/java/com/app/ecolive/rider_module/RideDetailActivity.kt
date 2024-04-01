@@ -18,7 +18,7 @@ import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
 import com.app.ecolive.R
 import com.app.ecolive.databinding.RidedetailActivityBinding
-import com.app.ecolive.rider_module.model.RiderOrderModel
+import com.app.ecolive.rider_module.model.RiderOrderData
 import com.app.ecolive.service.Status
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
 import com.app.ecolive.utils.AppConstant
@@ -46,7 +46,7 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
     private lateinit var endLatLng: LatLng
     var totalDistance: Double = 0.0
     var totalDuration: Double = 0.0
-    private var trackOrderDetail : RiderOrderModel.Data? = null
+    private var trackOrderDetail : RiderOrderData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,10 +61,10 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.extras?.getSerializable(
                     AppConstant.trackOrderDetail,
-                    RiderOrderModel.Data::class.java
+                    RiderOrderData::class.java
                 )
             } else {
-                intent.extras?.getSerializable(AppConstant.trackOrderDetail) as RiderOrderModel.Data
+                intent.extras?.getSerializable(AppConstant.trackOrderDetail) as RiderOrderData
             }
         binding.startRideButton.visibility = View.GONE
         binding.pDetailComplete.visibility = View.GONE

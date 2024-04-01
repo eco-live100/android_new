@@ -126,6 +126,7 @@
                         app:layout_constraintBottom_toBottomOf="@id/doctorProfile"/>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:visibility="gone"
                         android:id="@+id/linearLayoutCompat7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -271,7 +272,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:fontFamily="@font/roboto_bold"
-                            android:text="2-Request"
+                            android:text="Requests"
                             android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp" />

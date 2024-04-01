@@ -28,6 +28,7 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.toast
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
@@ -275,6 +276,7 @@ class AddMedicine : AppCompatActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
+                    it.message?.let { it1 -> toast(it1) }
                     it.data?.let {
                         finish()
                     }

@@ -7,10 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
 import com.app.ecolive.databinding.RiderOrderListItemBinding
-import com.app.ecolive.rider_module.model.RiderOrderModel
+import com.app.ecolive.rider_module.model.RiderOrderData
 
 
-class RiderOrderListAdapter(var context: Context, var dataList: List<RiderOrderModel.Data>, var onClickListener: ClickListener) :
+class RiderOrderListAdapter(var context: Context, var dataList: List<RiderOrderData>, var onClickListener: ClickListener) :
     RecyclerView.Adapter<RiderOrderListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView : RiderOrderListItemBinding)

@@ -136,7 +136,15 @@ interface APIInterface {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Call<ResponseBody>
-
+    @GET("get-all-readyorders-for-driver/")
+    fun getAllReadyOrdersForDriver(
+        @Query("lat") lat: Double,
+        @Query("long") long: Double,
+        @Query("distance") distance: Int,
+       // @Query("keyword") long: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Call<ResponseBody>
 
     @GET("get-all-order")
     fun getAllOrderApi(): Call<ResponseBody>
@@ -197,7 +205,6 @@ interface APIInterface {
     @POST("get-prescription-request-for-doctor")
     fun getPrescriptionRequestForDoctor(@Body requestBody: RequestBody): Call<ResponseBody>
 
-
     @Multipart
     @POST("request-prescription")
     fun requestPrescriptionApi(
@@ -215,5 +222,10 @@ interface APIInterface {
         @Part picture: MultipartBody.Part,
     ): Call<ResponseBody>
 
+    @POST("accept-order")
+    fun acceptOrder(@Body requestBody: RequestBody): Call<ResponseBody>
+
+    @PUT("Update-medical-order-by-pharmacy")
+    fun updateMedicalOrderByPharmacy(@Body requestBody: RequestBody): Call<ResponseBody>
 
 }

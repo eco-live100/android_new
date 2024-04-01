@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_F5F5F5"
-        android:fillViewport="true"
         android:scrollbars="none">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -38,7 +37,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical"
                 android:hint="Medication name"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
@@ -64,7 +63,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical"
                 android:hint="Enter strength here"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
@@ -89,7 +88,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical"
                 android:hint="Enter dose detail here"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
@@ -114,7 +113,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical"
                 android:hint="Route detail here"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
@@ -139,7 +138,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical"
                 android:hint="Frequency detail here"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />
@@ -164,7 +163,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical"
                 android:hint="Refills detail here"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_11sdp" />

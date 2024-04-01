@@ -31,6 +31,7 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -69,7 +70,6 @@ class CreateAndUpdatePharmacyProfile : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_pharmacy)
         binding.toolbar.toolbarTitle.text = getString(R.string.create_pharmacy)
         binding.toolbar.ivBack.setOnClickListener { finish() }
-
         val myTimeListener =
             TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                 if (view.isShown) {
@@ -124,15 +124,16 @@ class CreateAndUpdatePharmacyProfile : AppCompatActivity() {
             timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE)
                 .setTextColor(resources.getColor(R.color.black))
         }
-        intent.extras?.let {
+        if (intent.extras != null) {
+            binding.linearLayoutCompat13.visibility = View.VISIBLE
             profile =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.getSerializable(
+                    intent.extras!!.getSerializable(
                         AppConstant.profile,
                         PharmacyProfileModel.Data::class.java
                     )
                 } else {
-                    it.getSerializable(AppConstant.profile) as PharmacyProfileModel.Data
+                    intent.extras!!.getSerializable(AppConstant.profile) as PharmacyProfileModel.Data
                 }
 
             binding.pharmacyName.setText(profile?.pharmacyName)
@@ -143,8 +144,18 @@ class CreateAndUpdatePharmacyProfile : AppCompatActivity() {
             binding.repeatForWeekCheckBox.isChecked = profile?.repeatForWeek ?: false
             binding.pharmacyLocation.text = profile?.location
             address = profile?.location.toString()
-/*            latitude = doctorProfile?.latitude.toString()
-            longitude = doctorProfile?.longitude.toString()*/
+            latitude = profile?.latitude.toString()
+            longitude = profile?.longitude.toString()
+
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${profile?.licenceImage}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.licenceImg)
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${profile?.pharmacyImage}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.logoImage)
+
+        } else {
+            getProfile()
         }
 
         binding.createBtn.setOnClickListener {
@@ -157,7 +168,7 @@ class CreateAndUpdatePharmacyProfile : AppCompatActivity() {
             } else if (binding.pharmacyLocation.text.toString() == "") {
                 Toast.makeText(this, "Enter hospitalLocation", Toast.LENGTH_SHORT).show()
             } else {
-               createAndUpdateProfile()
+                createAndUpdateProfile()
             }
         }
         binding.licenceImg.setOnClickListener {
@@ -181,6 +192,30 @@ class CreateAndUpdatePharmacyProfile : AppCompatActivity() {
             ).build(this)
             receiveData.launch(intent)
         }
+    }
+
+    private fun getProfile() {
+        progressDialog.show(this)
+        val pharmacyViewModel = PharmacyViewModel(this)
+
+        pharmacyViewModel.getPharmacyProfile()
+            .observe(this) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        progressDialog.dialog.dismiss()
+                        startActivity(Intent(this, PharmacyProfile::class.java))
+                        finish()
+                    }
+
+                    Status.LOADING -> {}
+                    Status.ERROR -> {
+                        progressDialog.dialog.dismiss()
+                        binding.linearLayoutCompat13.visibility = View.VISIBLE
+                        val vv = it.message
+                        MyApp.popErrorMsg("", "" + vv, this)
+                    }
+                }
+            }
     }
 
     private fun imagePopup() {

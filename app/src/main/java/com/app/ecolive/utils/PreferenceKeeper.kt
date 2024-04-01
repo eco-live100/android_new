@@ -3,8 +3,7 @@ package com.app.ecolive.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.app.ecolive.login_module.model.LoginModel
-
+import com.app.ecolive.login_module.model.UserModel
 import com.google.gson.Gson
 
 /**
@@ -73,8 +72,8 @@ class PreferenceKeeper private constructor(context: Context?) {
                 .apply()
         }
 
-    var loginResponse: LoginModel.Data?
-        get() = Gson().fromJson(prefs!!.getString(AppConstant.LOGIN_POJO, ""), LoginModel.Data::class.java)
+    var loginResponse: UserModel?
+        get() = Gson().fromJson(prefs!!.getString(AppConstant.LOGIN_POJO, ""), UserModel::class.java)
         set(type) {
             val json = Gson().toJson(type)
             prefs!!.edit().putString(AppConstant.LOGIN_POJO, json.toString()).apply()

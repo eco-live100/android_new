@@ -49,7 +49,7 @@ class PharmacyMedicineList : AppCompatActivity() {
         pharmacyMedicineListAdapter = PharmacyMedicineListAdapter(this, medicineList)
         binding.recycleView.adapter = pharmacyMedicineListAdapter
 
-        getMedicineListApi()
+
 
         /*    binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -59,6 +59,11 @@ class PharmacyMedicineList : AppCompatActivity() {
                 }
                 override fun afterTextChanged(s: Editable) {}
             })*/
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getMedicineListApi()
     }
 
     private fun getMedicineListApi() {

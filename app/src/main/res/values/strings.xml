@@ -222,6 +222,7 @@
     <string name="you_can_only_send_this_form_to_qualified_medical_professionals_you_selected">You can only send this form to qualified medical professionals you selected</string>
     <string name="note">Note:</string>
     <string name="doctor_list_eco_live">Doctor list(Eco-Live)</string>
+    <string name="pharmacy_list_eco_live">Pharmacy list(Eco-Live)</string>
     <string name="services">Services</string>
     <string name="enter_licence_number">Enter licence number</string>
     <string name="enter_pharmacy_name">Enter pharmacy name</string>
@@ -253,5 +254,7 @@
     <string name="place_order_now">Place Order Now</string>
     <string name="ordering_form">Ordering form</string>
     <string name="add_medication">Add medication</string>
+    <string name="medication_vitamin_name">Medication/Vitamin Name</string>
+    <string name="continueA">Continue</string>
 
 </resources>

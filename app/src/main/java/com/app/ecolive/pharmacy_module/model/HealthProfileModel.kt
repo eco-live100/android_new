@@ -1,20 +1,9 @@
 package com.app.ecolive.pharmacy_module.model
 
+import java.io.Serializable
+
 data class HealthProfileModel(
-    val data: Data,
+    val data: HealthProfileData,
     val message: String,
     val statusCode: Int
-) {
-    data class Data(
-        val __v: Int,
-        val _id: String,
-        val address: String,
-        val createdAt: String,
-        val insurance: String,
-        val medications: List<String>,
-        val name: String,
-        val ssn: String,
-        val updatedAt: String,
-        val userId: String
-    )
-}
+): Serializable

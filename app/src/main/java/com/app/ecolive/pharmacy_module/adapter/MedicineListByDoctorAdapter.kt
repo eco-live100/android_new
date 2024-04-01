@@ -32,13 +32,12 @@ class MedicineListByDoctorAdapter(var context: Context, var list: ArrayList<Pres
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        /*if (list!=null && list.isNotEmpty()) {
+        if (list.isNotEmpty()) {
             val data = list[position]
-            Log.d("TAG", "onBindViewHolderdgd: ${data}")
-            data?.let { item->
+            data.let { item->
                 viewHolder.binding.apply {
-                    if ((position + 1) / 2 == 0) {
-                        itemLL.setBackgroundColor(context.resources.getColor(com.adevinta.leku.R.color.quantum_bluegrey100))
+                    if ((position) % 2 == 0) {
+                        itemLL.setBackgroundColor(context.resources.getColor(R.color.quantum_bluegrey100))
                     } else {
                         itemLL.setBackgroundColor(context.resources.getColor(`in`.aabhasjindal.otptextview.R.color.transparent))
                     }
@@ -53,7 +52,7 @@ class MedicineListByDoctorAdapter(var context: Context, var list: ArrayList<Pres
                 }
             }
 
-        }*/
+        }
     }
 
     override fun getItemCount(): Int {

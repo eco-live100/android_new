@@ -1,11 +1,13 @@
 package com.app.ecolive.pharmacy_module.doctor
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -21,6 +23,7 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
@@ -32,7 +35,7 @@ class StartPrescribingActivity : AppCompatActivity() {
     lateinit var dialog: Dialog
     private lateinit var medicineListByDoctorAdapter: MedicineListByDoctorAdapter
     private var list: ArrayList<PrescriptionMedicationData> = ArrayList()
-    private lateinit var prescriptionId : String
+    private lateinit var prescriptionId: String
 
     companion object {
         private var mInstance: StartPrescribingActivity? = null
@@ -56,7 +59,16 @@ class StartPrescribingActivity : AppCompatActivity() {
         binding.addMedicineBtn.setOnClickListener {
             addPrescriptionMedicine()
         }
-        prescriptionId = intent.extras?.getString(AppConstant.prescriptionId).toString()
+        intent.extras?.let {
+            prescriptionId = it.getString(AppConstant.prescriptionId).toString()
+            binding.patientName.text = it.getString(AppConstant.name).toString().capitalize()
+            binding.patientAddress.text = it.getString(AppConstant.address).toString().capitalize()
+            val image = it.getString(AppConstant.image).toString()
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${image}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.userImage)
+        }
+
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         medicineListByDoctorAdapter = MedicineListByDoctorAdapter(this, list)
@@ -65,7 +77,6 @@ class StartPrescribingActivity : AppCompatActivity() {
         binding.sendPrescriptionToPatient.setOnClickListener {
             startPrescriptionApi()
         }
-
     }
 
     private fun startPrescriptionApi() {
@@ -86,6 +97,11 @@ class StartPrescribingActivity : AppCompatActivity() {
                     progressDialog.dialog.dismiss()
                     it.data?.let { item ->
                         Toast.makeText(this, item.message, Toast.LENGTH_SHORT).show()
+                        startActivity(
+                            Intent(this, DoctorProfile::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        )
+                        finish()
                     }
                 }
 
@@ -103,13 +119,14 @@ class StartPrescribingActivity : AppCompatActivity() {
     }
 
     private fun addPrescriptionMedicine() {
-        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         val customAddMedicineDialogBinding: CustomAddMedicineDialogBinding =
             DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.custom_add_medicine_dialog, null, false
             )
-        dialog.setContentView(customAddMedicineDialogBinding.root);
+        dialog.setContentView(customAddMedicineDialogBinding.root)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         customAddMedicineDialogBinding.apply {
             closeBtn.setOnClickListener {
                 dialog.dismiss()

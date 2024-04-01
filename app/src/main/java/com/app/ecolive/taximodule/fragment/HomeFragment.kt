@@ -100,7 +100,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     .putExtra("scheduleRideTime",time.text))
             }
             date1.setOnClickListener {
-                var dialog = DatePickerDialog(
+                val dialog = DatePickerDialog(
                     requireContext(),
                     R.style.my_dialog_theme,
                     date,

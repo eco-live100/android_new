@@ -32,6 +32,7 @@
             android:layout_marginHorizontal="@dimen/_10ssp"
             android:fontFamily="@font/roboto_bold"
             tools:text="Arlene McCoy"
+            android:maxLines="1"
             android:textColor="@color/color_050D4C"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"

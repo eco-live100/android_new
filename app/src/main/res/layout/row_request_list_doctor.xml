@@ -66,6 +66,7 @@
         <ImageView
             android:id="@+id/locationPin"
             android:layout_width="@dimen/_15sdp"
+            android:visibility="gone"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:src="@drawable/destination_location"
@@ -77,8 +78,8 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10ssp"
-            android:text="Arlene ghgjkgjkgjhgjkgjhgjhgjhgjhgjhgjhgjhjhgjhjhjghjgjhjhgjhgjhghjgk"
+            android:layout_margin="@dimen/_10ssp"
+            android:hint="11-bal vihar conlony "
             android:layout_marginBottom="10dp"
             android:textColor="@color/black"
             android:textSize="@dimen/_10ssp"

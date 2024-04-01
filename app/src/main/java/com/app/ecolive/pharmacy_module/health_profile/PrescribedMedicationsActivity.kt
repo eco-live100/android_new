@@ -20,6 +20,7 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import org.json.JSONObject
 import timber.log.Timber
 
@@ -50,7 +51,7 @@ class PrescribedMedicationsActivity : AppCompatActivity() {
                     it.getSerializable(AppConstant.data) as PrescriptionRequestData
                 }
         }
-        var user = PreferenceKeeper.instance.loginResponse
+        val user = PreferenceKeeper.instance.loginResponse
         binding.apply {
             symptomsTv.text = "${requestData?.symptomDescription}"
             symptomsDurationTv.text = "${requestData?.symptomDuration}"
@@ -59,8 +60,15 @@ class PrescribedMedicationsActivity : AppCompatActivity() {
             allergiesTv.text = "${requestData?.allergies}"
             smokingAlcoholTv.text = "${requestData?.habits}"
             otherTv.text = "${requestData?.additionalDirections}"
-            doctorNameTv.text = "${requestData?.doctorDetails?.fullName}"
-            patientNameTv.text = "${user?.firstName} + ${user?.lastName}"
+            doctorNameTv.text = "${requestData?.doctorDetails?.fullName}".capitalize()
+            patientNameTv.text = "${user?.firstName} ${user?.lastName}".capitalize()
+            Glide.with(this@PrescribedMedicationsActivity).load("${AppConstant.BASE_URL_Image}${requestData?.doctorDetails?.logo}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(doctorImage)
+            Glide.with(this@PrescribedMedicationsActivity).load("${AppConstant.BASE_URL_Image}${requestData?.patientDetails?.profilePicture}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(patientImage)
+
         }
        // requestData?.let { it.Medication?.let { it1 -> list.addAll(it1) } }
 
@@ -72,8 +80,8 @@ class PrescribedMedicationsActivity : AppCompatActivity() {
             cancelPrescriptionApi()
         }
         binding.placeOrderButton.setOnClickListener {
-            startActivity(
-                Intent(this, PharmacyListActivity::class.java))
+            startActivity(Intent(this, PharmacyListActivity::class.java)
+                .putExtra(AppConstant.prescriptionId, requestData?._id))
         }
     }
 
@@ -111,38 +119,5 @@ class PrescribedMedicationsActivity : AppCompatActivity() {
             }
         }
     }
-   /* private fun placeOrderApi() {
-        try {
-            MyApp.hideSoftKeyboard(this)
-        } catch (_: Exception) {
-        }
-        val pharmacyViewModel = PharmacyViewModel(this)
-        progressDialog.show(this)
-        val jsonObject = JSONObject()
-        jsonObject.put("precriptionId", requestData?._id ?: "")
 
-        pharmacyViewModel.placeOrderApi(jsonObject).observe(this) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    progressDialog.dialog.dismiss()
-                    it.data?.let {
-                        PreferenceKeeper.instance.isHealthProfileCreate = true
-                        startActivity(
-                            Intent(this, PharmacyStepActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP )
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    }
-                }
-                Status.LOADING -> {
-                    Timber.d("LOADING: ")
-                }
-                Status.ERROR -> {
-                    progressDialog.dialog.dismiss()
-                    Timber.d("ERROR: ")
-                    MyApp.popErrorMsg("", it.message!!, this)
-
-                }
-            }
-        }
-    }*/
 }

@@ -20,112 +20,106 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/color_050D4C"
-            android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerHome">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/riderConstrentTop"
+                android:id="@+id/riderConstraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/riderUserPic"
-                    android:layout_width="@dimen/_55sdp"
-                    android:layout_height="@dimen/_55sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:src="@drawable/ic_user_blue"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:civ_border_width="@dimen/_1ssp"
-                    app:civ_border_color="@color/white"
-                     />
-
-
-                <TextView
-                    android:id="@+id/riderUserName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:fontFamily="@font/roboto_bold"
-                    tools:text="John Doe"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16ssp"
-                    app:layout_constraintStart_toEndOf="@+id/riderUserPic"
-                    app:layout_constraintTop_toTopOf="@+id/riderUserPic" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:drawableStart="@drawable/ic_fill_stare"
-                    android:drawablePadding="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_regular"
-                    tools:text="4.5"
-                    android:textColor="@color/color_D4D4D4"
-                    android:textSize="@dimen/_14ssp"
-                    app:layout_constraintStart_toEndOf="@+id/riderUserPic"
-                    app:layout_constraintTop_toBottomOf="@+id/riderUserName" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/riderDutyStatusSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    tools:text="@string/offline"
-                    app:switchPadding="5dp"
-                    android:layout_marginEnd="@dimen/_20ssp"
-                    android:textColor="@color/white"
-                   style="@style/SwitchButtonStyle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/riderUserPic" />
-
-
-                <TextView
-                    android:id="@+id/starttrip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_20ssp"
-                    android:background="@drawable/bg_blank_round"
-                    android:padding="@dimen/_5sdp"
-                    android:backgroundTint="@color/white"
-                    android:text="Start trip now"
-                    android:visibility="invisible"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/riderUserPic"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/riderDutyStatusSwitch" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_100sdp"
-                    android:background="@drawable/bg_white_round45"
-                    app:layout_constraintTop_toBottomOf="@+id/riderUserPic" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/riderHeaderDetail"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:background="@drawable/bg_round_white_round_5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/riderUserPic">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/riderUserPic"
+                        android:layout_width="@dimen/_55sdp"
+                        android:layout_height="@dimen/_55sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/ic_user_blue"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="@dimen/_1ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+
+                    <TextView
+                        android:id="@+id/riderUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16ssp"
+                        app:layout_constraintStart_toEndOf="@+id/riderUserPic"
+                        app:layout_constraintTop_toTopOf="@+id/riderUserPic"
+                        tools:text="John Doe" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_fill_stare"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/color_D4D4D4"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintStart_toEndOf="@+id/riderUserPic"
+                        app:layout_constraintTop_toBottomOf="@+id/riderUserName"
+                        tools:text="4.5" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/riderDutyStatusSwitch"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20ssp"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/riderUserPic"
+                        app:switchPadding="5dp"
+                        tools:text="@string/offline" />
+
+                    <TextView
+                        android:id="@+id/starttrip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20ssp"
+                        android:background="@drawable/bg_blank_round"
+                        android:backgroundTint="@color/white"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Start trip now"
+                        android:textColor="@color/black"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/riderUserPic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/riderDutyStatusSwitch" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/riderHeaderDetail">
 
                     <androidx.cardview.widget.CardView
+                        android:layout_marginHorizontal="@dimen/_15sdp"
                         android:id="@+id/riderCardEarnedToday"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_5sdp"
                         app:cardUseCompatPadding="true"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
-
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -137,9 +131,9 @@
                             <TextView
                                 android:id="@+id/riderEarnToday"
                                 android:layout_width="wrap_content"
-                                android:layout_marginTop="@dimen/_10ssp"
-                                android:layout_marginStart="@dimen/_10ssp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10ssp"
+                                android:layout_marginTop="@dimen/_10ssp"
                                 android:fontFamily="@font/roboto_regular"
                                 android:text="@string/Earned_Today"
                                 android:textColor="@color/color_9F9F9F"
@@ -157,6 +151,7 @@
                                 android:textSize="@dimen/_20ssp"
                                 app:layout_constraintStart_toStartOf="@+id/riderEarnToday"
                                 app:layout_constraintTop_toBottomOf="@+id/riderEarnToday" />
+
                             <View
                                 android:id="@+id/riderView1"
                                 android:layout_width="match_parent"
@@ -168,8 +163,8 @@
                             <LinearLayout
                                 android:id="@+id/riderLinTotTrips"
                                 android:layout_width="match_parent"
-                                android:layout_marginTop="@dimen/_7ssp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_7ssp"
                                 app:layout_constraintTop_toBottomOf="@+id/riderView1">
 
                                 <TextView
@@ -182,10 +177,12 @@
                                     android:text="@string/total_earning"
                                     android:textColor="@color/color_9F9F9F"
                                     android:textSize="@dimen/_12ssp" />
+
                                 <View
                                     android:layout_width="1dp"
                                     android:layout_height="match_parent"
                                     android:background="@color/color_F5F5F5" />
+
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -216,9 +213,10 @@
                             <LinearLayout
                                 android:id="@+id/riderLinTotTripsVal"
                                 android:layout_width="match_parent"
-                                android:paddingBottom="@dimen/_10ssp"
                                 android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/_10ssp"
                                 app:layout_constraintTop_toBottomOf="@+id/riderLinTotTrips">
+
                                 <TextView
                                     android:id="@+id/riderTotalTripToday"
                                     android:layout_width="0dp"
@@ -229,10 +227,12 @@
                                     android:text=""
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_16ssp" />
+
                                 <View
                                     android:layout_width="1dp"
                                     android:layout_height="match_parent"
                                     android:background="@color/color_F5F5F5" />
+
                                 <TextView
                                     android:id="@+id/riderTotalAmount"
                                     android:layout_width="0dp"
@@ -264,46 +264,67 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
-
-                    <TextView
-                        android:visibility="gone"
-                        android:id="@+id/riderPendinJobs"
+                    <LinearLayout
+                        android:layout_marginTop="-30dp"
                         app:layout_constraintTop_toBottomOf="@+id/riderCardEarnedToday"
-                        android:layout_width="wrap_content"
-                        android:text="Pending Jobs(4)"
-                        android:background="@color/color_51E555"
-                        android:layout_marginTop="@dimen/_10ssp"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_11ssp"
-                        android:padding="5dp"
-                        android:fontFamily="@font/roboto_regular"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_height="wrap_content"/>
-
-
-                        <ImageView
-                            android:visibility="gone"
-                            android:layout_width="wrap_content"
-                            android:padding="@dimen/_2sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:background="@drawable/bg_blank_darkgray"
-                            app:layout_constraintBottom_toBottomOf="@+id/riderPendinJobs"
-                            app:layout_constraintTop_toTopOf="@+id/riderPendinJobs"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:src="@drawable/ic_setting_blue"
-                            android:layout_height="wrap_content"/>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:id="@+id/riderRecycle"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/riderPendinJobs"
-                        android:layout_height="0dp"/>
+                        android:layout_height="wrap_content"
+                        android:minHeight="500dp"
+                        android:background="@drawable/bg_white_round45"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_marginTop="@dimen/_30sdp"
+                            android:id="@+id/riderPendinJobs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_51E555"
+                            android:fontFamily="@font/roboto_regular"
+                            android:paddingHorizontal="15dp"
+                            android:paddingVertical="5dp"
+                            android:text="Pending Jobs(4)"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/riderCardEarnedToday" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/orderRequestList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/rider_order_list_item" />
+                        <TextView
+                            android:layout_marginTop="@dimen/_30sdp"
+                            android:id="@+id/myBookings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorPrimary"
+                            android:fontFamily="@font/roboto_regular"
+                            android:paddingHorizontal="15dp"
+                            android:paddingVertical="5dp"
+                            android:text="My Bookings"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/riderCardEarnedToday" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/riderRecycle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/orderRequestList"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/rider_order_list_item" />
 
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

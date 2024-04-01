@@ -1,4 +1,5 @@
 package com.app.ecolive.pharmacy_module.adapter
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.app.ecolive.databinding.RowRequestListDoctorBinding
 import com.app.ecolive.pharmacy_module.doctor.PrescriptionRequestSendByActivity
 import com.app.ecolive.pharmacy_module.model.PrescriptionDataModel
 import com.app.ecolive.utils.AppConstant
+import com.bumptech.glide.Glide
 import java.util.Locale
 
 
@@ -20,30 +22,41 @@ class RequestListDoctorAdapter(var context: Context, var list: ArrayList<Prescri
 
 
     private var originalTagListData: ArrayList<PrescriptionDataModel> = ArrayList()
+
     init {
         originalTagListData = list
     }
-    inner class ViewHolder(itemView : RowRequestListDoctorBinding)
-        : RecyclerView.ViewHolder(itemView.root){
-        var  binding : RowRequestListDoctorBinding = itemView
+
+    inner class ViewHolder(itemView: RowRequestListDoctorBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
+        var binding: RowRequestListDoctorBinding = itemView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: RowRequestListDoctorBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.row_request_list_doctor, parent, false)
+            R.layout.row_request_list_doctor, parent, false
+        )
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = list[position]
-        viewHolder.binding.symptomsTv.text = item.symptomDescription
-        viewHolder.binding.symptomsDurationTv.text = item.symptomDuration
-        //viewHolder.binding.userLocationTv.text = item.location
+        viewHolder.binding.symptomsTv.text = "Symptoms : "+item.symptomDescription?.capitalize()
+        viewHolder.binding.symptomsDurationTv.text = "Symptoms Duration : " + item.symptomDuration
+        viewHolder.binding.userLocationTv.text = "Allergies : " + item.allergies?.capitalize()
+        if(item.patientDetails!=null) {
+            val user = item.patientDetails
+            viewHolder.binding.nameTv.text = "${user.firstName} ${user.lastName}".capitalize()
+            Glide.with(context).load("${AppConstant.BASE_URL_Image}${user.profilePicture}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(viewHolder.binding.profileImage)
+        }
         viewHolder.itemView.setOnClickListener {
             context.startActivity(
                 Intent(context, PrescriptionRequestSendByActivity::class.java)
-                    .putExtra(AppConstant.data,item)
+                    .putExtra(AppConstant.data, item)
+                    .putExtra(AppConstant.fromScreen, "doctor")
             )
         }
     }
@@ -67,7 +80,9 @@ class RequestListDoctorAdapter(var context: Context, var list: ArrayList<Prescri
                         //In this loop, you'll filter through originalData and compare each item to charSequence.
                         //If you find a match, add it to your new ArrayList
                         //I'm not sure how you're going to do comparison, so you'll need to fill out this conditional
-                        if (data.symptomDuration.lowercase(Locale.ROOT).contains(charSequence.toString().lowercase(Locale.ROOT))) {
+                        if (data.symptomDuration?.lowercase(Locale.ROOT)
+                                ?.contains(charSequence.toString().lowercase(Locale.ROOT)) == true
+                        ) {
                             filterResultsData.add(data)
                         }
                     }

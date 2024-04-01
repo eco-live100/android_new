@@ -8,20 +8,19 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.RequestListPharmacyBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.RequestListPharmacyAdapter
-import com.app.ecolive.pharmacy_module.model.PrescriptionDataModel
+import com.app.ecolive.pharmacy_module.model.PharmacyOrderListModel
 import com.app.ecolive.service.Status
-import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
-import org.json.JSONObject
 
 class RequestListPharmacy : AppCompatActivity() {
     lateinit var binding: RequestListPharmacyBinding
     private lateinit var requestListDoctorAdapter: RequestListPharmacyAdapter
-    private var requestList: ArrayList<PrescriptionDataModel> = ArrayList()
+    private var requestList: ArrayList<PharmacyOrderListModel> = ArrayList()
     private val progressDialog = CustomProgressDialog()
     var pharmacyId = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Utils.changeStatusColor(this, R.color.darkblue)
@@ -31,10 +30,11 @@ class RequestListPharmacy : AppCompatActivity() {
             finish()
         }
 
-        intent.extras?.let {
+        /*intent.extras?.let {
             pharmacyId = it.getString(AppConstant.pharmacyId).toString()
             getPrescriptionRequestForDoctorApi(pharmacyId)
         }
+*/
 
         val layoutManager = LinearLayoutManager(this)
         binding.recycleFriends.layoutManager = layoutManager
@@ -43,24 +43,29 @@ class RequestListPharmacy : AppCompatActivity() {
 
         //getDoctorListApi()
 
-    /*    binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val searchedKey = binding.searchUserEditText.text.toString()
-                doctorListAdapter.filter.filter(searchedKey)
-            }
-            override fun afterTextChanged(s: Editable) {}
-        })*/
+        /*    binding.searchUserEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    val searchedKey = binding.searchUserEditText.text.toString()
+                    doctorListAdapter.filter.filter(searchedKey)
+                }
+                override fun afterTextChanged(s: Editable) {}
+            })*/
     }
 
-    private fun getPrescriptionRequestForDoctorApi(doctorId: String) {
+    override fun onResume() {
+        super.onResume()
+        getAllOrderApi()
+    }
+
+    private fun getAllOrderApi() {
         progressDialog.show(this)
         val viewModel = PharmacyViewModel(this)
-        val jsonObject = JSONObject()
-        jsonObject.put("doctorId",doctorId)
+        /*   val jsonObject = JSONObject()
+           jsonObject.put("doctorId",doctorId)*/
 
         requestList.clear()
-        viewModel.getPrescriptionRequestForDoctorApi(jsonObject).observe(this) { it ->
+        viewModel.getAllOrderApi().observe(this) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
@@ -80,4 +85,6 @@ class RequestListPharmacy : AppCompatActivity() {
             }
         }
     }
+
+
 }
