@@ -347,6 +347,7 @@
                     android:background="@drawable/bg_blue_round_button"
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:text="@string/AddAnotherVehicle"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12"

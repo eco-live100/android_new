@@ -1,5 +1,6 @@
 package com.app.ecolive.pharmacy_module.model
 
+import com.app.ecolive.login_module.model.UserModel
 import java.io.Serializable
 
 data class PharmacyOrderListModel(
@@ -12,4 +13,6 @@ data class PharmacyOrderListModel(
     val updatedAt: String?,
     val userId: String?,
     val precriptionDetails: PrescriptionDataModel?,
+    val user: UserModel?,
+    val healthProfile: HealthProfileData?,
 ):Serializable

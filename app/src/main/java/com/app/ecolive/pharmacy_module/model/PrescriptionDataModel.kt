@@ -32,4 +32,7 @@ data class PrescriptionDataModel(
     val patientDetails: UserModel?,
     val user: UserModel?,
     val doctorDetails: DoctorDetailModel?,
+    val healthProfile: HealthProfileData?,
+    val Medication: List<PrescriptionMedicationData>?,
+    val commonMedication: List<PrescriptionMedicationData>?,
 ):Serializable

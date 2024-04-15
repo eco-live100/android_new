@@ -153,8 +153,8 @@ class PharmacyProcessActivity : AppCompatActivity() {
                                     healthProfileData?.name?.replaceFirstChar { it.uppercase() }
                                 addressTv.text = healthProfileData?.address
                                 list.clear()
-                                healthProfileData?.medications?.toList()
-                                    ?.let { it1 -> list.addAll(it1) }
+                                healthProfileData?.commonMedication?.toList()
+                                    ?.let { it1 -> list.addAll(it1.map { item -> item.medicineName}) }
                                 listAdapter = ServiceListAdapter(this@PharmacyProcessActivity, list)
                                 binding.recyclerView.apply {
                                     layoutManager = flexboxLayoutManager
@@ -163,10 +163,11 @@ class PharmacyProcessActivity : AppCompatActivity() {
                                 "Last 4 digits of SSN:- ${healthProfileData?.ssn}".also {
                                     ssnTv.text = it
                                 }
-                                Glide.with(this@PharmacyProcessActivity)
-                                    .load("${AppConstant.BASE_URL_Image}${healthProfileData?.insurance}")
-                                    .placeholder(R.drawable.bg_dash).centerCrop()
-                                    .into(binding.insuranceImage)
+                                if (healthProfileData?.insurance?.isNotEmpty() == true)
+                                    Glide.with(this@PharmacyProcessActivity)
+                                        .load("${AppConstant.BASE_URL_Image}/${healthProfileData?.insurance}")
+                                        //.placeholder(R.drawable.bg_dash).centerCrop()
+                                        .into(binding.insuranceImage)
                             }
                         }
 

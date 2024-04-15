@@ -25,6 +25,7 @@ import com.app.ecolive.databinding.ActivityCreateHealthBinding
 import com.app.ecolive.pharmacy_module.PharmacyStepActivity
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.SearchMedicineListAdapter
+import com.app.ecolive.pharmacy_module.model.CreateHealthProfilePost
 import com.app.ecolive.pharmacy_module.model.HealthProfileData
 import com.app.ecolive.pharmacy_module.model.SearchMedicineListData
 import com.app.ecolive.service.Status
@@ -37,7 +38,8 @@ import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
@@ -89,9 +91,11 @@ class CreateHealthActivity : AppCompatActivity() {
             binding.userName.setText(healthProfileData?.name)
             binding.address.setText(healthProfileData?.address)
             binding.ssnNumber.setText(healthProfileData?.ssn)
-            Glide.with(this).load("${AppConstant.BASE_URL_Image}${healthProfileData?.insurance}")
-                .placeholder(R.drawable.bg_dash).centerCrop()
-                .into(binding.insuranceImg)
+            if (healthProfileData?.insurance?.isNotEmpty() == true)
+                Glide.with(this)
+                    .load("${AppConstant.BASE_URL_Image}/${healthProfileData?.insurance}")
+                    //.placeholder(R.drawable.bg_dash).centerCrop()
+                    .into(binding.insuranceImg)
 
         }
         binding.storeLogoConstrentInner.setOnClickListener {
@@ -240,6 +244,7 @@ class CreateHealthActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
     private fun selectCameraImage() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
@@ -258,12 +263,12 @@ class CreateHealthActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-            val imageUri = data.data
+            imageUri = data.data
             binding.insuranceImg.setImageURI(imageUri)
         } else if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
             val extras: Bundle = data.extras!!
             val imageBitmap = extras["data"] as Bitmap?
-            val imageUri = getImageUri(this, imageBitmap!!)
+            imageUri = getImageUri(this, imageBitmap!!)
             binding.insuranceImg.setImageURI(imageUri)
         }
     }
@@ -317,20 +322,24 @@ class CreateHealthActivity : AppCompatActivity() {
         }
         val pharmacyViewModel = PharmacyViewModel(this)
         progressDialog.show(this)
-        val builder = MultipartBody.Builder()
-        builder.setType(MultipartBody.FORM)
-        builder.addFormDataPart("name", (binding.userName.text ?: "").toString())
-        builder.addFormDataPart("address", (binding.address.text ?: "").toString())
-        builder.addFormDataPart("ssn", (binding.ssnNumber.text ?: "").toString())
-        builder.addFormDataPart(
-            "medications", selectedMedicineList.toString()
+        val createHealthProfilePost = CreateHealthProfilePost(
+            name = "mukesh verma",
+            address = "jaipur",
+            ssn = "7895",
+            commonMedication = selectedMedicineList.toList()
         )
-        if (imageUri != null) {
-            builder.addPart(Utils.multipartBodyFile(this, imageUri!!, "images"))
-        } else {
-            builder.addFormDataPart("images", "")
-        }
-        pharmacyViewModel.createHealthProfile(builder.build()).observe(this) {
+
+        pharmacyViewModel.createHealthProfile(
+            name = (binding.userName.text ?: "").toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            ssn = (binding.ssnNumber.text ?: "").toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            address = (binding.address.text ?: "").toString()
+                .toRequestBody(("text/plain").toMediaType()),
+            commonMedication = createHealthProfilePost.commonMedication,
+            images = imageUri?.let { Utils.multipartBodyFile(this, it, "images") },
+
+        ).observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()

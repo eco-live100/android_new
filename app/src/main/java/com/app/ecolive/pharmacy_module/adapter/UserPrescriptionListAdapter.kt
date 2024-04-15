@@ -13,7 +13,6 @@ import com.app.ecolive.databinding.RowPrescriptionListBinding
 import com.app.ecolive.pharmacy_module.health_profile.PrescribedMedicationsActivity
 import com.app.ecolive.pharmacy_module.model.PrescriptionRequestData
 import com.app.ecolive.utils.AppConstant
-import com.app.ecolive.utils.Utils
 import com.bumptech.glide.Glide
 import java.util.Locale
 
@@ -53,11 +52,28 @@ class UserPrescriptionListAdapter(
             .into(viewHolder.binding.profileImage)
         viewHolder.binding.symptomsTv.text = "Symptoms:- ${item.symptomDescription}"
         viewHolder.binding.symptomsDurationTv.text = "Symptoms Duration:-${item.symptomDuration}"
-        viewHolder.binding.dateTimeTv.text = Utils.formatDateFromDateString(
+        /*viewHolder.binding.dateTimeTv.text = Utils.formatDateFromDateString(
             "yyyy-MM-dd'T'HH:mm:ss.SSS",
             "hh:mm a, yyyy-MMM-dd",
             item.createdAt
-        )
+        )*/
+        when (item.status) {
+            0 -> {
+                viewHolder.binding.statusTv.text = "Requested"
+            }
+            1 -> {
+                viewHolder.binding.statusTv.text = "Accepted"
+                viewHolder.binding.statusTv.setTextColor(context.resources.getColor(R.color.color_FCB40A))
+            }
+            2 -> {
+                viewHolder.binding.statusTv.text = "Cancelled"
+                viewHolder.binding.statusTv.setTextColor(context.resources.getColor(R.color.color_red))
+            }
+            else -> {
+                viewHolder.binding.statusTv.text = "Placed"
+                viewHolder.binding.statusTv.setTextColor(context.resources.getColor(R.color.color_006400))
+            }
+        }
         viewHolder.itemView.setOnClickListener {
             context.startActivity(
                 Intent(
@@ -83,11 +99,8 @@ class UserPrescriptionListAdapter(
                     results.count = originalTagListData.size
                 } else {
                     val filterResultsData: ArrayList<PrescriptionRequestData> =
-                        ArrayList<PrescriptionRequestData>()
+                        ArrayList()
                     for (data in userPrescriptionList) {
-                        //In this loop, you'll filter through originalData and compare each item to charSequence.
-                        //If you find a match, add it to your new ArrayList
-                        //I'm not sure how you're going to do comparison, so you'll need to fill out this conditional
                         if (data.symptomDescription?.lowercase(Locale.ROOT)
                                 ?.contains(charSequence.toString().lowercase(Locale.ROOT))!!
                         ) {

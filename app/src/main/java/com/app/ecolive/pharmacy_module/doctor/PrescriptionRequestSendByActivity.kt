@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityPrescriptionRequestSendByBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
+import com.app.ecolive.pharmacy_module.adapter.MedicineListByDoctorAdapter
 import com.app.ecolive.pharmacy_module.adapter.ServiceListAdapter
 import com.app.ecolive.pharmacy_module.model.PharmacyOrderListModel
 import com.app.ecolive.pharmacy_module.model.PrescriptionDataModel
+import com.app.ecolive.pharmacy_module.model.PrescriptionMedicationData
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
@@ -25,6 +27,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import org.json.JSONObject
 import timber.log.Timber
+import java.util.Locale
 
 class PrescriptionRequestSendByActivity : AppCompatActivity() {
     lateinit var binding: ActivityPrescriptionRequestSendByBinding
@@ -34,6 +37,9 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
     private var medicineList: ArrayList<String> = ArrayList()
     private var requestData: PrescriptionDataModel? = null
     private var pharmacyOrderListModel: PharmacyOrderListModel? = null
+
+    private lateinit var medicineListByDoctorAdapter: MedicineListByDoctorAdapter
+    private var list: ArrayList<PrescriptionMedicationData> = ArrayList()
 
     var orderStatus: Int? = null
 
@@ -85,8 +91,45 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
                     binding.readyToDispatchedButton.visibility = View.GONE
                     orderStatus = 0
                 }
+
+                val user = pharmacyOrderListModel?.user
+                if (user != null) {
+                    binding.patientNameTv.text =
+                        "${user.firstName} ${user.lastName}"?.capitalize(Locale.ROOT)
+                    Glide.with(this).load("${AppConstant.BASE_URL_Image}${user.profilePicture}")
+                        .placeholder(R.drawable.ic_user_blue).centerCrop()
+                        .into(binding.patientImage)
+                }
+                pharmacyOrderListModel?.healthProfile?.commonMedication?.toList()
+                    ?.let { it1 -> medicineList.addAll(it1.map { item -> item.medicineName }) }
+
+                binding.recyclerView.layoutManager = LinearLayoutManager(this)
+                serviceListAdapter = ServiceListAdapter(this, medicineList)
+                binding.recyclerView.apply {
+                    layoutManager = flexboxLayoutManager
+                    adapter = serviceListAdapter
+                }
+
+                if (pharmacyOrderListModel?.healthProfile?.insurance?.isNotEmpty() == true)
+                    Glide.with(this)
+                        .load("${AppConstant.BASE_URL_Image}/${pharmacyOrderListModel?.healthProfile?.insurance}")
+                        //.placeholder(R.drawable.bg_dash).centerCrop()
+                        .into(binding.insuranceIv)
+
                 requestData = pharmacyOrderListModel?.precriptionDetails
+                requestData?.let { it.Medication?.let { it1 -> list.addAll(it1) } }
+
+               // binding.doctorPrescriptionLL.visibility = View.GONE
+
+                binding.doctorPrescriptionLL.visibility = View.VISIBLE
+
+                val layoutManager = LinearLayoutManager(this)
+                binding.recyclerViewMedication.layoutManager = layoutManager
+                medicineListByDoctorAdapter = MedicineListByDoctorAdapter(this, list)
+                binding.recyclerViewMedication.adapter = medicineListByDoctorAdapter
+
             } else {
+                binding.doctorPrescriptionLL.visibility = View.GONE
                 binding.readyToDispatchedButton.visibility = View.GONE
                 binding.prescribeBtn.visibility = View.VISIBLE
                 binding.declineRequestBtn.visibility = View.VISIBLE
@@ -99,6 +142,16 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
                     } else {
                         it.getSerializable(AppConstant.data) as PrescriptionDataModel
                     }
+
+                requestData?.healthProfile?.commonMedication?.toList()
+                    ?.let { it1 -> medicineList.addAll(it1.map { item -> item.medicineName }) }
+
+                binding.recyclerView.layoutManager = LinearLayoutManager(this)
+                serviceListAdapter = ServiceListAdapter(this, medicineList)
+                binding.recyclerView.apply {
+                    layoutManager = flexboxLayoutManager
+                    adapter = serviceListAdapter
+                }
 
                 if (requestData?.status == 1) {//0-placed
                     binding.prescribeBtn.visibility = View.GONE
@@ -113,17 +166,10 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
                     binding.declineRequestBtn.visibility = View.VISIBLE
                 }
             }
-            val user = requestData?.patientDetails
-            if (user != null) {
-                binding.userNameTv.text = "${user.firstName} ${user.lastName}"?.capitalize()
-                Glide.with(this).load("${AppConstant.BASE_URL_Image}${user.profilePicture}")
-                    .placeholder(R.drawable.ic_user_blue).centerCrop()
-                    .into(binding.profilePic)
-            }
 
             binding.symptomsTv.text = requestData?.symptomDescription
-            binding.symptomDurationTv.text = requestData?.symptomDuration
-            binding.prescriptionTv.text = requestData?.alreadyMedication
+            binding.symptomsDurationTv.text = requestData?.symptomDuration
+            binding.prescriptionMedicationTv.text = requestData?.alreadyMedication
             binding.medicalHistoryTv.text = requestData?.recentMedicalHistory
             binding.allergiesTv.text = requestData?.allergies
             binding.smokingTv.text = requestData?.habits
@@ -151,18 +197,32 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
             }
 
         }
-        medicineList.add("Nice")
-        medicineList.add("Esprin")
-        medicineList.add("Bufen")
-        medicineList.add("Dolo")
-        medicineList.add("Paracitamol")
-        medicineList.add("Elaresy")
+        val user = requestData?.patientDetails
+        if (user != null) {
+            binding.patientNameTv.text =
+                "${user.firstName} ${user.lastName}"?.capitalize(Locale.ROOT)
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${user.profilePicture}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.patientImage)
+        }
+
+        requestData?.healthProfile?.commonMedication?.toList()
+            ?.let { it1 -> medicineList.addAll(it1.map { item -> item.medicineName }) }
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         serviceListAdapter = ServiceListAdapter(this, medicineList)
         binding.recyclerView.apply {
             layoutManager = flexboxLayoutManager
             adapter = serviceListAdapter
         }
+
+        if (requestData?.healthProfile?.insurance?.isNotEmpty() == true)
+            Glide.with(this)
+                .load("${AppConstant.BASE_URL_Image}/${requestData?.healthProfile?.insurance}")
+                //.placeholder(R.drawable.bg_dash).centerCrop()
+                .into(binding.insuranceIv)
+
+
     }
 
     private fun updateStatus(status: Int?) {
@@ -201,36 +261,4 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
         }
     }
 
-    /*    private fun prescriptionDetailApi() {
-            try {
-                MyApp.hideSoftKeyboard(this)
-            } catch (_: Exception) {
-            }
-            val pharmacyViewModel = PharmacyViewModel(this)
-            progressDialog.show(this)
-            val jsonObject = JSONObject()
-            jsonObject.put("prescriptionId", "precriptionId")
-
-            pharmacyViewModel.prescriptionDetailApi(jsonObject).observe(this) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        progressDialog.dialog.dismiss()
-                        it.data?.let { item ->
-                            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    Status.LOADING -> {
-                        Timber.d("LOADING: ")
-                    }
-
-                    Status.ERROR -> {
-                        progressDialog.dialog.dismiss()
-                        Timber.d("ERROR: ")
-                        MyApp.popErrorMsg("", it.message!!, this)
-
-                    }
-                }
-            }
-        }*/
 }

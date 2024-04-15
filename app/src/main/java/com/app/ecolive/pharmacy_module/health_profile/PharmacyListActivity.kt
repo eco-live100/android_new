@@ -23,6 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityPharmacyListBinding
+import com.app.ecolive.pharmacy_module.PharmacyStepActivity
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
 import com.app.ecolive.pharmacy_module.adapter.PharmacyListAdapter
 import com.app.ecolive.pharmacy_module.model.PharmacyData
@@ -171,6 +172,10 @@ class PharmacyListActivity : AppCompatActivity()  {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
                         Utils.showMessage(this, "Order placed successfully")
+                        startActivity(
+                            Intent(this, PharmacyStepActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                         finish()
                     }
                 }

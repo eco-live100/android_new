@@ -8,7 +8,7 @@ data class HealthProfileData(
     val address: String?,
     val createdAt: String?,
     val insurance: String?,
-    val medications: List<String>?,
+    val commonMedication: List<MedicineDataModel>?,
     val name: String?,
     val ssn: String?,
     val updatedAt: String?,

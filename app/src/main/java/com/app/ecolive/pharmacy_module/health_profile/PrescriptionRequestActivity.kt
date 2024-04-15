@@ -26,6 +26,7 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.bumptech.glide.Glide
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
@@ -63,7 +64,9 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             val doctorProfile = it.getString("doctorProfile").toString()
             val doctorId = it.getString(AppConstant.doctorId).toString()
             binding.doctorName.text = doctorName
-
+            Glide.with(this).load("${AppConstant.BASE_URL_Image}${doctorProfile}")
+                .placeholder(R.drawable.ic_user_blue).centerCrop()
+                .into(binding.doctorProfile)
         }
 
         binding.fileUploadLL.setOnClickListener {
@@ -213,11 +216,13 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             imageUri = data.data
             if (option == file) {
                 fileImg = imageUri
-                //binding.logoImage.setImageURI(imageUri)
+                binding.fileIv.setImageURI(imageUri)
+                binding.fileTv.text = "1 file selected"
             }
             if (option == picture) {
                 pictureImage = imageUri
-                //binding.backgroundImg.setImageURI(imageUri)
+                binding.pictureIv.setImageURI(imageUri)
+                binding.pictureTv.text = "1 picture selected"
             }
         } else if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
             val extras: Bundle = data.extras!!
@@ -225,13 +230,15 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             imageUri = getImageUri(this, imageBitmap!!)
             if (option == file) {
                 fileImg = imageUri
-                //binding.logoImage.setImageURI(imageUri)
+                binding.fileIv.setImageURI(imageUri)
+                binding.fileTv.text = "1 file selected"
             }
             if (option == picture) {
                 pictureImage = imageUri
-                //binding.backgroundImg.setImageURI(imageUri)
+                binding.pictureIv.setImageURI(imageUri)
+                binding.pictureTv.text = "1 picture selected"
             }
-            //binding.backgroundImg.setImageBitmap(imageBitmap)
+           // binding.backgroundImg.setImageBitmap(imageBitmap)
             Log.d("TAG", "iamgedsfas:: $imageUri")
         }
     }
@@ -245,7 +252,7 @@ class PrescriptionRequestActivity : AppCompatActivity() {
 
         var pharmacyViewModel = PharmacyViewModel(this)
         progressDialog.show(this)
-       /* val builder = MultipartBody.Builder()
+    /*   val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
         builder.addFormDataPart("doctorId", doctorId)
         builder.addFormDataPart("symptomDescription", binding.symptomsEt.text.toString())
@@ -259,11 +266,8 @@ class PrescriptionRequestActivity : AppCompatActivity() {
         )
         builder.addFormDataPart("habits", binding.smokingEt.text.toString())
         builder.addFormDataPart("otherRelaventINfotmation", binding.otherInfoEt.text.toString())
-        builder.addFormDataPart(
-            "Medication",
-            SearchMedicinesActivity.selectedMedicineList.toString()
-        )
-        //builder.addFormDataPart("Medication", parameter.toString())
+        val toJson = Gson().toJsonTree(SearchMedicinesActivity.selectedMedicineList)
+        builder.addFormDataPart("commonMedication", toJson.toString())
 
 
         if (fileImg != null) {
@@ -284,7 +288,6 @@ class PrescriptionRequestActivity : AppCompatActivity() {
 
        // val jsonArray = JSONArray(SearchMedicinesActivity.selectedMedicineList)
         pharmacyViewModel.requestPrescriptionApi(
-            /*builder.build()*/
             doctorId = doctorId.toRequestBody(("text/plain").toMediaType()),
             symptomDescription = binding.symptomsEt.text.toString()
                 .toRequestBody(("text/plain").toMediaType()),
@@ -301,9 +304,9 @@ class PrescriptionRequestActivity : AppCompatActivity() {
             habits = binding.smokingEt.text.toString().toRequestBody(("text/plain").toMediaType()),
             otherRelaventINfotmation = binding.otherInfoEt.text.toString()
                 .toRequestBody(("text/plain").toMediaType()),
-            medication = SearchMedicinesActivity.selectedMedicineList,
-            attachment = Utils.multipartBodyFile(this, fileImg!!, "attachment"),
-            picture = Utils.multipartBodyFile(this, pictureImage!!, "picture"),
+            commonMedication = CreateHealthActivity.selectedMedicineList.toList(),
+            attachment = fileImg?.let { Utils.multipartBodyFile(this, it, "attachment") },
+            picture = pictureImage?.let { Utils.multipartBodyFile(this, it, "picture") },
         ).observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {

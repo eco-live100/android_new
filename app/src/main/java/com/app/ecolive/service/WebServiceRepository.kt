@@ -13,6 +13,7 @@ import com.app.ecolive.pharmacy_module.model.CommonMedicationModel
 import com.app.ecolive.pharmacy_module.model.CreateHealthProfileModel
 import com.app.ecolive.pharmacy_module.model.DoctorListModel
 import com.app.ecolive.pharmacy_module.model.DoctorProfileModel
+import com.app.ecolive.pharmacy_module.model.GetAllReadyOrdersForDriver
 import com.app.ecolive.pharmacy_module.model.HealthProfileModel
 import com.app.ecolive.pharmacy_module.model.MedicineListModel
 import com.app.ecolive.pharmacy_module.model.PharmacyListModel
@@ -41,6 +42,7 @@ import com.app.ecolive.utils.AppConstant.INTERNAL_ERROR
 import com.app.ecolive.utils.AppConstant.NO_INTERNET
 import com.app.ecolive.utils.AppConstant.PARSING_ERROR
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -2249,7 +2251,118 @@ class WebServiceRepository(application: Activity) {
     }
 
 
-    ///pharmacy
+    fun createHealthProfileApi(
+        name: RequestBody,
+        ssn: RequestBody,
+        address: RequestBody,
+        images: MultipartBody.Part?,
+        commonMedication: List<SearchMedicineListData?>
+    ): LiveData<ApiSampleResource<CreateHealthProfileModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<CreateHealthProfileModel>>()
+        if (networkHelper.isNetworkConnected()) {
+
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.createHealthProfileApi(
+                name = name,
+                ssn = ssn,
+                address = address,
+                images = images,
+                commonMedication = commonMedication,
+            )
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        201 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<CreateHealthProfileModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        205, 400, 404, 401, 408, 409 -> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv = jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    jsonObj.getString("message"),
+                                    null
+                                )
+                            )
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
     fun createHealthProfileApi(body: MultipartBody): LiveData<ApiSampleResource<CreateHealthProfileModel>> {
         val venueListResponseModel = MutableLiveData<ApiSampleResource<CreateHealthProfileModel>>()
         if (networkHelper.isNetworkConnected()) {
@@ -2552,7 +2665,8 @@ class WebServiceRepository(application: Activity) {
         return venueListResponseModel
     }
 
-    /*    fun requestPrescriptionApi(body: MultipartBody): LiveData<ApiSampleResource<RequestPrescriptionModel>> {
+/*
+    fun requestPrescriptionApi(body: MultipartBody): LiveData<ApiSampleResource<RequestPrescriptionModel>> {
             val responseModel = MutableLiveData<ApiSampleResource<RequestPrescriptionModel>>()
             if (networkHelper.isNetworkConnected()) {
     //            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json.toString())
@@ -2650,7 +2764,8 @@ class WebServiceRepository(application: Activity) {
                 )
             )
             return responseModel
-        }*/
+        }
+*/
 
 
     fun requestPrescriptionApi(
@@ -2663,9 +2778,9 @@ class WebServiceRepository(application: Activity) {
         sendPrescriptionToPharmacy: RequestBody,
         habits: RequestBody,
         otherRelaventINfotmation: RequestBody,
-        medication: ArrayList<SearchMedicineListData>,
-        attachment: MultipartBody.Part,
-        picture: MultipartBody.Part,
+        commonMedication: List<SearchMedicineListData?>,
+        attachment: MultipartBody.Part?,
+        picture: MultipartBody.Part?,
     ): LiveData<ApiSampleResource<RequestPrescriptionModel>> {
         val responseModel = MutableLiveData<ApiSampleResource<RequestPrescriptionModel>>()
         if (networkHelper.isNetworkConnected()) {
@@ -2680,7 +2795,7 @@ class WebServiceRepository(application: Activity) {
                 sendPrescriptionToPharmacy = sendPrescriptionToPharmacy,
                 habits = habits,
                 otherRelaventINfotmation = otherRelaventINfotmation,
-                medication = medication,
+                commonMedication = commonMedication,
                 attachment = attachment,
                 picture = picture
             )
@@ -3891,8 +4006,8 @@ class WebServiceRepository(application: Activity) {
         //keyword: String,
         page: Int,
         limit: Int,
-    ): LiveData<ApiSampleResource<PharmacyListModel>> {
-        val responseData = MutableLiveData<ApiSampleResource<PharmacyListModel>>()
+    ): LiveData<ApiSampleResource<GetAllReadyOrdersForDriver>> {
+        val responseData = MutableLiveData<ApiSampleResource<GetAllReadyOrdersForDriver>>()
         if (networkHelper.isNetworkConnected()) {
             val responseBody: Call<ResponseBody> =
                 apiInterfaceHeader.getAllReadyOrdersForDriver(lat = lat, long = long, distance = distance, page = page, limit = limit)
@@ -3905,7 +4020,7 @@ class WebServiceRepository(application: Activity) {
                         201, 200 -> {
                             val data = response.body()?.string()!!
                             try {
-                                val dataResponse = fromJson<PharmacyListModel>(data)
+                                val dataResponse = fromJson<GetAllReadyOrdersForDriver>(data)
                                 responseData.postValue(
                                     ApiSampleResource.success(
                                         response.code(),
@@ -5102,14 +5217,15 @@ class WebServiceRepository(application: Activity) {
         return venueListResponseModel
     }
 
-    fun startPrescriptionApi(json: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
+    fun startPrescriptionApi(json: JsonObject): LiveData<ApiSampleResource<CommonModel>> {
         val venueListResponseModel = MutableLiveData<ApiSampleResource<CommonModel>>()
         if (networkHelper.isNetworkConnected()) {
-            val body = RequestBody.create(
+            /*val body = RequestBody.create(
                 "application/json; charset=utf-8".toMediaTypeOrNull(),
                 json.toString()
-            )
-            val responseBody: Call<ResponseBody> = apiInterfaceHeader.startPrescriptionApi(body)
+            )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.startPrescriptionApi(json)
+
             responseBody.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,

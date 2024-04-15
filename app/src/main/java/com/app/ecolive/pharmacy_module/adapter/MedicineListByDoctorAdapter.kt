@@ -41,7 +41,8 @@ class MedicineListByDoctorAdapter(var context: Context, var list: ArrayList<Pres
                     } else {
                         itemLL.setBackgroundColor(context.resources.getColor(`in`.aabhasjindal.otptextview.R.color.transparent))
                     }
-                    "Medication #${position + 1} ${item.medicineName}".also { nameTv.text = it }
+                    "Medication #${position + 1}".also { nameTv.text = it }
+                    medicationNameTv.text = item.medicineName
                     strengthTv.text = item.strength
                     doseTv.text = item.dose
                     routeTv.text = item.route

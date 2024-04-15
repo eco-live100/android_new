@@ -9,6 +9,7 @@ import com.app.ecolive.pharmacy_module.model.CommonMedicationModel
 import com.app.ecolive.pharmacy_module.model.CreateHealthProfileModel
 import com.app.ecolive.pharmacy_module.model.DoctorListModel
 import com.app.ecolive.pharmacy_module.model.DoctorProfileModel
+import com.app.ecolive.pharmacy_module.model.GetAllReadyOrdersForDriver
 import com.app.ecolive.pharmacy_module.model.HealthProfileModel
 import com.app.ecolive.pharmacy_module.model.MedicineListModel
 import com.app.ecolive.pharmacy_module.model.PharmacyListModel
@@ -22,6 +23,7 @@ import com.app.ecolive.pharmacy_module.model.UserPrescriptionModel
 import com.app.ecolive.service.ApiSampleResource
 import com.app.ecolive.service.WebServiceRepository
 import com.app.ecolive.taximodule.model.CommonModel
+import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -38,6 +40,7 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
     private lateinit var getDoctorProfileViewModel: LiveData<ApiSampleResource<DoctorProfileModel>>
     private lateinit var getDoctorListModel: LiveData<ApiSampleResource<DoctorListModel>>
     private lateinit var getPharmacyListModel: LiveData<ApiSampleResource<PharmacyListModel>>
+    private lateinit var GetAllReadyOrdersForDriverModel: LiveData<ApiSampleResource<GetAllReadyOrdersForDriver>>
     private lateinit var searchMedicationListModel: LiveData<ApiSampleResource<SearchMedicineList>>
     private lateinit var requestPrescriptionModel: LiveData<ApiSampleResource<RequestPrescriptionModel>>
     private lateinit var userPrescriptionListModel: LiveData<ApiSampleResource<UserPrescriptionModel>>
@@ -56,6 +59,23 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
 
     fun createHealthProfile(json: MultipartBody): LiveData<ApiSampleResource<CreateHealthProfileModel>> {
         createHealthModel = webServiceRepository.createHealthProfileApi(json)
+        return createHealthModel
+    }
+
+    fun createHealthProfile(
+        name: RequestBody,
+        ssn: RequestBody,
+        address: RequestBody,
+        commonMedication: List<SearchMedicineListData?>,
+        images: MultipartBody.Part?,
+    ): LiveData<ApiSampleResource<CreateHealthProfileModel>> {
+        createHealthModel = webServiceRepository.createHealthProfileApi(
+            name = name,
+            ssn = ssn,
+            address = address,
+            images = images,
+            commonMedication = commonMedication,
+        )
         return createHealthModel
     }
 
@@ -87,7 +107,7 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
         return placeOrderModel
     }
 
-    /*   fun requestPrescriptionApi(json: MultipartBody): LiveData<ApiSampleResource<RequestPrescriptionModel>> {
+     /*  fun requestPrescriptionApi(json: MultipartBody): LiveData<ApiSampleResource<RequestPrescriptionModel>> {
            requestPrescriptionModel = webServiceRepository.requestPrescriptionApi(json)
            return requestPrescriptionModel
        }*/
@@ -101,9 +121,9 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
         sendPrescriptionToPharmacy: RequestBody,
         habits: RequestBody,
         otherRelaventINfotmation: RequestBody,
-        medication: ArrayList<SearchMedicineListData>,
-        attachment: MultipartBody.Part,
-        picture: MultipartBody.Part,
+        commonMedication: List<SearchMedicineListData?>,
+        attachment: MultipartBody.Part?,
+        picture: MultipartBody.Part?,
     ): LiveData<ApiSampleResource<RequestPrescriptionModel>> {
         requestPrescriptionModel = webServiceRepository.requestPrescriptionApi(
             doctorId = doctorId,
@@ -115,7 +135,7 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
             sendPrescriptionToPharmacy = sendPrescriptionToPharmacy,
             habits = habits,
             otherRelaventINfotmation = otherRelaventINfotmation,
-            medication = medication,
+            commonMedication = commonMedication,
             attachment = attachment,
             picture = picture
         )
@@ -156,9 +176,9 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
         //keyword: String,
         page: Int,
         limit: Int,
-    ): LiveData<ApiSampleResource<PharmacyListModel>> {
-        getPharmacyListModel = webServiceRepository.getAllReadyOrdersForDriver(lat = lat, long = long, distance = distance, page = page, limit = limit)
-        return getPharmacyListModel
+    ): LiveData<ApiSampleResource<GetAllReadyOrdersForDriver>> {
+        GetAllReadyOrdersForDriverModel = webServiceRepository.getAllReadyOrdersForDriver(lat = lat, long = long, distance = distance, page = page, limit = limit)
+        return GetAllReadyOrdersForDriverModel
     }
     fun getAllOrderApi(): LiveData<ApiSampleResource<AllOrderModel>> {
         getAllOrderListModel = webServiceRepository.getAllOrderApi()
@@ -175,7 +195,7 @@ class PharmacyViewModel(activity: Activity) : BaseObservable() {
         return prescriptionDetailData
     }
 
-    fun startPrescriptionApi(json: JSONObject): LiveData<ApiSampleResource<CommonModel>> {
+    fun startPrescriptionApi(json: JsonObject): LiveData<ApiSampleResource<CommonModel>> {
         startPrescriptionModel = webServiceRepository.startPrescriptionApi(json)
         return startPrescriptionModel
     }

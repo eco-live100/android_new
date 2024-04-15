@@ -1,5 +1,7 @@
 package com.app.ecolive.pharmacy_module.model
 
+import java.io.Serializable
+
 data class MedicineDataModel(
     val __v: Int,
     val _id: String,
@@ -13,4 +15,4 @@ data class MedicineDataModel(
     val updatedAt: String,
     val price: String,
     val image: String,
-)
+): Serializable

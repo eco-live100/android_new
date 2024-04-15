@@ -307,7 +307,9 @@
                                 android:layout_height="@dimen/_35sdp"
                                 android:id="@+id/doctorImage"
                                 android:src="@drawable/ic_user_blue"
-                                app:shapeAppearance="@style/roundedImageViewRounded" />
+                                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                                app:strokeColor="@color/color_b3b3b3"
+                                app:strokeWidth="@dimen/_1ssp"/>
 
                             <TextView
                                 android:id="@+id/doctorNameTv"
@@ -341,15 +343,18 @@
                             android:background="@color/color_blue" />
 
                         <TextView
+                            android:id="@+id/statusTv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/_15sdp"
+                            android:paddingVertical="10dp"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:fontFamily="@font/roboto_medium"
-                            android:text="That's the whole list"
+                            android:text="Order Placed"
+                            android:background="@drawable/grey_dark_round_border"
                             android:textAlignment="center"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textSize="@dimen/_12sdp" />
 
 
                         <androidx.appcompat.widget.LinearLayoutCompat

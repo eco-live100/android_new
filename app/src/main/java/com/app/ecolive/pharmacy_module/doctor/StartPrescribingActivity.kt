@@ -24,8 +24,8 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
 import com.bumptech.glide.Glide
-import org.json.JSONArray
-import org.json.JSONObject
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import timber.log.Timber
 
 
@@ -86,10 +86,11 @@ class StartPrescribingActivity : AppCompatActivity() {
         }
         val pharmacyViewModel = PharmacyViewModel(this)
         progressDialog.show(this)
-        val jsArray = JSONArray(list)
-        val jsonObject = JSONObject()
-        jsonObject.put("prescriptionId", prescriptionId)
-        jsonObject.put("Medication", jsArray)
+        val jsonObject = JsonObject()
+        val toJson = Gson().toJsonTree(list) //Only one line to covert array JsonElement
+
+        jsonObject.add("Medication", toJson) //Add Json Element in JsonObject
+        jsonObject.addProperty("prescriptionId", prescriptionId)
 
         pharmacyViewModel.startPrescriptionApi(jsonObject).observe(this) {
             when (it.status) {

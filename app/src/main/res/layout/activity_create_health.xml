@@ -242,7 +242,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <CheckBox
+                   <!-- <CheckBox
                         android:id="@+id/isinsuranceSelected"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
                         android:layout_marginTop="@dimen/_15sdp"
                         android:buttonTint="@color/color_blue"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="Continue without insurance" />
+                        android:text="Continue without insurance" />-->
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

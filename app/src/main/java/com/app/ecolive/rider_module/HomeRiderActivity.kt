@@ -41,15 +41,18 @@ import com.app.ecolive.payment_module.AddMoneyMainActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.payment_module.UserVerificationAddMoneyActivity
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
+import com.app.ecolive.pharmacy_module.model.GetAllReadyOrdersForDriverData
+import com.app.ecolive.rider_module.adapter.RiderAllOrderListAdapter
 import com.app.ecolive.rider_module.adapter.RiderOrderListAdapter
-import com.app.ecolive.rider_module.model.RiderOrderData
 import com.app.ecolive.service.Status
 import com.app.ecolive.services.LocationService
 import com.app.ecolive.shop_owner.ShopOwnerHomePageNavigationActivity
 import com.app.ecolive.shop_owner.ShopUserSignupActivityNew
 import com.app.ecolive.taximodule.AboutStartTripActivity
 import com.app.ecolive.taximodule.taxiViewModel.TaxiViewModel
-import com.app.ecolive.user_module.*
+import com.app.ecolive.user_module.ContactListActivity
+import com.app.ecolive.user_module.MyAccountActivity
+import com.app.ecolive.user_module.MyOrderActivity2
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
@@ -90,6 +93,7 @@ class HomeRiderActivity : BaseActivity() {
     var totalDistance: Double = 0.0
     var totalDuration: Double = 0.0
     private lateinit var riderOrderListAdapter: RiderOrderListAdapter
+    private lateinit var riderAllOrderListAdapter: RiderAllOrderListAdapter
 
     private var locationRequest: LocationRequest? = null
     private lateinit var locationCallback: LocationCallback
@@ -98,7 +102,7 @@ class HomeRiderActivity : BaseActivity() {
     private var driverAddress = ""
 
     // lateinit var pharmacyListAdapter: PharmacyListAdapter
-    private var ruderPendingJobs: ArrayList<RiderOrderData> = ArrayList()
+    private var orderPendingJobs: ArrayList<GetAllReadyOrdersForDriverData> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.homerider_activity)
@@ -256,7 +260,7 @@ class HomeRiderActivity : BaseActivity() {
         var page = 1
         var limit = 100
 
-        ruderPendingJobs.clear()
+        orderPendingJobs.clear()
         viewModel.getAllReadyOrdersForDriver(
             lat = lat,
             long = long,
@@ -268,7 +272,8 @@ class HomeRiderActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        //pharmacyList.addAll(it.data.items)
+                        orderPendingJobs.addAll(it.items)
+                        binding.include.contentHome.riderPendinJobs.text = "Pending Jobs(${orderPendingJobs.size})"
                        /* it.data.items.map { item ->
                             ruderPendingJobs.add(
                                 RiderOrderData(
@@ -305,29 +310,30 @@ class HomeRiderActivity : BaseActivity() {
                                 )
                             )
                         }*/
-                        /*riderOrderListAdapter = RiderOrderListAdapter(this@HomeRiderActivity,
-                            ruderPendingJobs,
-                            object : RiderOrderListAdapter.ClickListener {
+                        riderAllOrderListAdapter = RiderAllOrderListAdapter(this@HomeRiderActivity,
+                            orderPendingJobs,
+                            object : RiderAllOrderListAdapter.ClickListener {
                                 override fun onClick(pos: Int) {
                                     val insertIntent =
                                         Intent(applicationContext, RideDetailActivity::class.java)
                                     val b = Bundle()
-                                    b.putSerializable(AppConstant.trackOrderDetail, ruderPendingJobs[pos])
+                                    b.putSerializable(AppConstant.trackOrderDetail, orderPendingJobs[pos])
                                     insertIntent.putExtras(b)
                                     this@HomeRiderActivity.startActivityForResult(insertIntent, 1)
                                 }
                             })
-                        binding.include.contentHome.riderRecycle.adapter = riderOrderListAdapter*/
+                        if(progressDialog.dialog.isShowing){
+                            progressDialog.dialog.dismiss()
+                        }
+                        binding.include.contentHome.orderRequestList.adapter = riderAllOrderListAdapter
                     }
                 }
 
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
-                    var vv = it.message
-                    //var msg = JSONObject(it.message)
+                    val vv = it.message
                     MyApp.popErrorMsg("", "" + vv, this)
-                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }
         }
@@ -430,9 +436,7 @@ class HomeRiderActivity : BaseActivity() {
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                    //var msg = JSONObject(it.message)
                     MyApp.popErrorMsg("", "" + vv, this)
-                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }
         }
@@ -775,6 +779,7 @@ class HomeRiderActivity : BaseActivity() {
                 }
 
                 Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
                     binding.include.contentHome.riderDutyStatusSwitch.isChecked = false
                     binding.include.contentHome.riderDutyStatusSwitch.text =
                         getString(R.string.offline)
@@ -784,7 +789,7 @@ class HomeRiderActivity : BaseActivity() {
                         )
                     )
 
-                    progressDialog.dialog.dismiss()
+
                     Log.d("ok", "ERROR: ")
                     MyApp.popErrorMsg("", it.message!!, this)
 

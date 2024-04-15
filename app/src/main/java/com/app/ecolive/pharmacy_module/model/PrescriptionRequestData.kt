@@ -4,7 +4,9 @@ import com.app.ecolive.login_module.model.UserModel
 import java.io.Serializable
 
 data class PrescriptionRequestData(
-    //val Medication: List<PrescriptionMedicationData>?,
+    val Medication: List<PrescriptionMedicationData>?,
+    val commonMedication: List<PrescriptionMedicationData>?,
+    val healthProfile: HealthProfileData?,
     val __v: Int?,
     val _id: String?,
     val additionalDirections: String?,

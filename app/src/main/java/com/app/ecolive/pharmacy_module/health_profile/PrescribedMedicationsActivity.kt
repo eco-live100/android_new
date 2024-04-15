@@ -68,9 +68,40 @@ class PrescribedMedicationsActivity : AppCompatActivity() {
             Glide.with(this@PrescribedMedicationsActivity).load("${AppConstant.BASE_URL_Image}${requestData?.patientDetails?.profilePicture}")
                 .placeholder(R.drawable.ic_user_blue).centerCrop()
                 .into(patientImage)
+            binding.statusTv.visibility = View.GONE
+            if(requestData?.status == 0){
+                placeOrderButton.visibility = View.GONE
+                declineRequestButton.visibility = View.VISIBLE
+            }else if(requestData?.status == 1){
+                placeOrderButton.visibility = View.VISIBLE
+                declineRequestButton.visibility = View.GONE
 
+                placeOrderButton.visibility = View.VISIBLE
+                binding.statusTv.text = "Accepted"
+                binding.statusTv.setTextColor(resources.getColor(R.color.color_FCB40A))
+            }else if(requestData?.status == 2){
+                placeOrderButton.visibility = View.GONE
+                declineRequestButton.visibility = View.GONE
+
+                binding.statusTv.visibility = View.VISIBLE
+                binding.statusTv.text = "Cancelled"
+                binding.statusTv.setTextColor(resources.getColor(R.color.color_red))
+            } else {
+                binding.statusTv.visibility = View.VISIBLE
+                binding.statusTv.text = "Order Placed"
+                binding.statusTv.setTextColor(resources.getColor(R.color.color_006400))
+
+                placeOrderButton.visibility = View.GONE
+                declineRequestButton.visibility = View.GONE
+            }
+            requestData?.let { it.Medication?.let { it1 -> list.addAll(it1) } }
+            if (list.isEmpty()){
+                doctorPrescriptionLL.visibility = View.GONE
+            }else{
+                doctorPrescriptionLL.visibility = View.VISIBLE
+            }
         }
-       // requestData?.let { it.Medication?.let { it1 -> list.addAll(it1) } }
+
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
@@ -103,8 +134,9 @@ class PrescribedMedicationsActivity : AppCompatActivity() {
                         PreferenceKeeper.instance.isHealthProfileCreate = true
                         startActivity(
                             Intent(this, PharmacyStepActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP )
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK )
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        finish()
                     }
                 }
                 Status.LOADING -> {

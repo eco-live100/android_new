@@ -1,6 +1,7 @@
 package com.app.ecolive.service
 
 import com.app.ecolive.pharmacy_module.model.SearchMedicineListData
+import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -13,6 +14,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+
 
 interface APIInterface {
 
@@ -79,7 +81,15 @@ interface APIInterface {
 
 
     ///pharmacy
-
+    @Multipart
+    @POST("create-health-profile")
+    fun createHealthProfileApi(
+        @Part("name") name: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("ssn") ssn: RequestBody,
+        @Part("commonMedication") commonMedication: List<SearchMedicineListData?>,
+        @Part images: MultipartBody.Part?,
+    ): Call<ResponseBody>
 
     @POST("create-health-profile")
     fun createHealthProfileApi(@Body requestBody: MultipartBody): Call<ResponseBody>
@@ -93,8 +103,6 @@ interface APIInterface {
     @POST("register-hospital-employee")
     fun registerHospitalEmployeeApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
-/*    @POST("request-prescription")
-    fun requestPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>*/
 
     @POST("create-order")
     fun placeOrderApi(@Body requestBody: RequestBody): Call<ResponseBody>
@@ -126,22 +134,24 @@ interface APIInterface {
 
     @GET("doctor-list")
     fun getDoctorListApi(): Call<ResponseBody>
-   // @GET("pharmacy-list/?{lat}&{long}&distance=3000&keyword=&page=1&limit=100")
+
+    // @GET("pharmacy-list/?{lat}&{long}&distance=3000&keyword=&page=1&limit=100")
     @GET("pharmacy-list/")
     fun getPharmacyListApi(
         @Query("lat") lat: Double,
         @Query("long") long: Double,
         @Query("distance") distance: Int,
-       // @Query("keyword") long: String,
+        // @Query("keyword") long: String,
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Call<ResponseBody>
+
     @GET("get-all-readyorders-for-driver/")
     fun getAllReadyOrdersForDriver(
         @Query("lat") lat: Double,
         @Query("long") long: Double,
         @Query("distance") distance: Int,
-       // @Query("keyword") long: String,
+        // @Query("keyword") long: String,
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Call<ResponseBody>
@@ -178,8 +188,15 @@ interface APIInterface {
     @POST("get-prescription-details")
     fun prescriptionDetailApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
+    /* @POST("start-prescription")
+     fun startPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>*/
+
+
     @POST("start-prescription")
-    fun startPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>
+    fun startPrescriptionApi(
+        @Body jsonObject: JsonObject
+    ): Call<ResponseBody>
+
     @POST("cancle-precription")
     fun cancelPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>
 
@@ -205,6 +222,9 @@ interface APIInterface {
     @POST("get-prescription-request-for-doctor")
     fun getPrescriptionRequestForDoctor(@Body requestBody: RequestBody): Call<ResponseBody>
 
+    @POST("request-prescription")
+    fun requestPrescriptionApi(@Body requestBody: RequestBody): Call<ResponseBody>
+
     @Multipart
     @POST("request-prescription")
     fun requestPrescriptionApi(
@@ -217,9 +237,9 @@ interface APIInterface {
         @Part("sendPrescriptionToPharmacy") sendPrescriptionToPharmacy: RequestBody,
         @Part("habits") habits: RequestBody,
         @Part("otherRelaventINfotmation") otherRelaventINfotmation: RequestBody,
-        @Part("Medication") medication:  ArrayList<SearchMedicineListData>,
-        @Part attachment: MultipartBody.Part,
-        @Part picture: MultipartBody.Part,
+        @Part("commonMedication") commonMedication: List<SearchMedicineListData?>,
+        @Part attachment: MultipartBody.Part?,
+        @Part picture: MultipartBody.Part?,
     ): Call<ResponseBody>
 
     @POST("accept-order")

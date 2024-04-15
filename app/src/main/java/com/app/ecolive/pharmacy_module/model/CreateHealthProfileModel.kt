@@ -10,7 +10,7 @@ data class CreateHealthProfileModel(
         val _id: String,
         val address: String,
         val createdAt: String,
-        val insurance: List<Any>,
+        val insurance: String,
         val medications: List<String>,
         val name: String,
         val ssn: String,
