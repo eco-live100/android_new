@@ -249,9 +249,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         setTouchNClick(binding.include.contentHome.headerHome.homepageToolbarSwitchToRider)
         setTouchNClick(binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor)
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.homeMap) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+
         drawerLayout = binding.drawerLayout
 
         binding.include.contentHome.headerHome.ivMenu.setOnClickListener {
@@ -329,7 +327,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
-        binding.include.constraintSendMoney.setOnClickListener {
+       /* binding.include.constraintSendMoney.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
             } else {
@@ -340,7 +338,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                     )
                 )
             }
-        }
+        }*/
 
         binding.include.constraintTaxi.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
@@ -356,22 +354,24 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         }
 
+
         binding.include.constraintMakePayment.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
             } else {
-               /* startActivity(
-                    Intent(this@UserHomePageNavigationActivity, AddMoneyMainActivity::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
-                )*/
+                /* startActivity(
+                     Intent(this@UserHomePageNavigationActivity, AddMoneyMainActivity::class.java)
+                         .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                 )*/
                 startActivity(
-                    Intent(this@UserHomePageNavigationActivity, SelectPaymentAction::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(
+                        this@UserHomePageNavigationActivity,
+                        SendMoneyHomePageActivity::class.java
+                    )
                 )
             }
 
         }
-
 
 
         binding.include.constraintCallFriends.setOnClickListener {
@@ -417,13 +417,13 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             )
         }
 
-        binding.include.contentHome.mapInformation.setOnClickListener {
+      /*  binding.include.contentHome.mapInformation.setOnClickListener {
             showDialog()
         }
 
         binding.include.contentHome.DeliveryJobMap.setOnClickListener {
             showPOPUP()
-        }
+        }*/
 
         binding.include.contentHome.headerHome.qrCodeScannerImg.setOnClickListener {
             scanCustomCode.launch(
@@ -653,11 +653,11 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.include.contentHome.productRecyclerview2.adapter = adapterProduct2
 
-        binding.include.contentHome.crossofmap.setOnClickListener {
+       /* binding.include.contentHome.crossofmap.setOnClickListener {
             binding.include.contentHome.textView16.visibility =View.GONE
             binding.include.contentHome.mapCard.visibility =View.GONE
             binding.include.contentHome.productRecyclerview2.visibility =View.VISIBLE
-        }
+        }*/
 
     }
 
