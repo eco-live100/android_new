@@ -21,6 +21,7 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.toast
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -58,7 +59,14 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
             updateStatus(2) ///2-Cancelled or , 2-DriverAccept
         }
         binding.readyToDispatchedButton.setOnClickListener {
-            updateStatus(orderStatus) ///0-acceptedByPharmacy or 0-placed
+            if (orderStatus==1 && binding.totalAmountEt.text?.isEmpty() == true) {
+               binding.totalAmountEt.error = "Please enter amount"
+                binding.totalAmountEt.requestFocus()
+            } else if (orderStatus==1 && binding.totalAmountEt.text.toString().toDouble() <= 0) {
+                toast("Please enter valid amount")
+            }else {
+                updateStatus(orderStatus)
+            }///0-acceptedByPharmacy or 0-placed
         }
         val flexboxLayoutManager = FlexboxLayoutManager(this)
         flexboxLayoutManager.apply {
@@ -128,7 +136,9 @@ class PrescriptionRequestSendByActivity : AppCompatActivity() {
                 medicineListByDoctorAdapter = MedicineListByDoctorAdapter(this, list)
                 binding.recyclerViewMedication.adapter = medicineListByDoctorAdapter
 
+                binding.totalAmountLL.visibility = View.VISIBLE
             } else {
+                binding.totalAmountLL.visibility = View.GONE
                 binding.doctorPrescriptionLL.visibility = View.GONE
                 binding.readyToDispatchedButton.visibility = View.GONE
                 binding.prescribeBtn.visibility = View.VISIBLE

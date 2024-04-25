@@ -329,6 +329,7 @@ class CreateHealthActivity : AppCompatActivity() {
             commonMedication = selectedMedicineList.toList()
         )
 
+        Log.d("TAG", "createHealthApi: ${createHealthProfilePost.commonMedication}")
         pharmacyViewModel.createHealthProfile(
             name = (binding.userName.text ?: "").toString()
                 .toRequestBody(("text/plain").toMediaType()),
