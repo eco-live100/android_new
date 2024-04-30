@@ -23,6 +23,7 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -75,7 +76,11 @@ class StartPrescribingActivity : AppCompatActivity() {
         binding.recyclerView.adapter = medicineListByDoctorAdapter
 
         binding.sendPrescriptionToPatient.setOnClickListener {
-            startPrescriptionApi()
+            if (list.isEmpty()) {
+                toast("please add medicine's")
+            } else {
+                startPrescriptionApi()
+            }
         }
     }
 
@@ -133,20 +138,38 @@ class StartPrescribingActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             addButton.setOnClickListener {
-                list.add(
-                    PrescriptionMedicationData(
-                        medicineName = nameEt.text.toString(),
-                        strength = strengthEt.text.toString(),
-                        dose = doseEt.text.toString(),
-                        route = routeEt.text.toString(),
-                        frequency = frequencyEt.text.toString(),
-                        refills = refillsEt.text.toString(),
-                        indication = indicationEt.text.toString(),
-                        additionalDirections = additionalDirectionEt.text.toString(),
+                if (customAddMedicineDialogBinding.nameEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter Medication name", Toast.LENGTH_SHORT).show()
+                } else if (customAddMedicineDialogBinding.strengthEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter strength here", Toast.LENGTH_SHORT).show()
+                } else if (customAddMedicineDialogBinding.doseEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter dose detail here", Toast.LENGTH_SHORT).show()
+                } else if (customAddMedicineDialogBinding.routeEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter Route detail here", Toast.LENGTH_SHORT).show()
+                } else if (customAddMedicineDialogBinding.frequencyEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter Frequency detail here", Toast.LENGTH_SHORT).show()
+                } else if (customAddMedicineDialogBinding.refillsEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter Refills detail here", Toast.LENGTH_SHORT).show()
+                } else if (customAddMedicineDialogBinding.indicationEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter indication", Toast.LENGTH_SHORT).show()
+                }else if (customAddMedicineDialogBinding.additionalDirectionEt.text?.isEmpty() == true) {
+                    Toast.makeText(this@StartPrescribingActivity, "Enter additional direction", Toast.LENGTH_SHORT).show()
+                }else {
+                    list.add(
+                        PrescriptionMedicationData(
+                            medicineName = nameEt.text.toString(),
+                            strength = strengthEt.text.toString(),
+                            dose = doseEt.text.toString(),
+                            route = routeEt.text.toString(),
+                            frequency = frequencyEt.text.toString(),
+                            refills = refillsEt.text.toString(),
+                            indication = indicationEt.text.toString(),
+                            additionalDirections = additionalDirectionEt.text.toString(),
+                        )
                     )
-                )
-                medicineListByDoctorAdapter.notifyDataSetChanged()
-                dialog.dismiss()
+                    medicineListByDoctorAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
             }
         }
         dialog.show()
