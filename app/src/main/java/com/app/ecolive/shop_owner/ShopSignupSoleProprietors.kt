@@ -1,46 +1,46 @@
 package com.app.ecolive.shop_owner
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ShopsignupSoleproprietorsActivityBinding
-import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.service.Status
 import com.app.ecolive.shop_owner.model.ShopCategryListModel
-import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.lassi.common.utils.KeyUtils
-import com.lassi.data.media.MiMedia
-import com.lassi.domain.media.LassiOption
-import com.lassi.domain.media.MediaType
-import com.lassi.presentation.builder.Lassi
 import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
 import com.offercity.base.BaseActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 
 
-class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
+class ShopSignupSoleProprietors : BaseActivity() {
     lateinit var binding: ShopsignupSoleproprietorsActivityBinding
     private val progressDialog = CustomProgressDialog()
     var cagrySubIdList = ArrayList<String>()
@@ -59,6 +59,15 @@ class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
     private var filePath: File? = null
     var isVehicalDocImageBtnClick = false
     var isstoreLogoImageBtnClick = false
+    private val REQUEST_CAMERA_PERMISSION = 1
+    private var imageUri: Uri? = null
+    private var bgimg = 1
+    private var doc1 = 2
+    private var doc2 = 3
+    var option = 1
+    private var backgroundImg: Uri? = null
+    private var docImg: Uri? = null
+    private var docImg2: Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,7 +114,8 @@ class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
         else if(v==binding.storeDocImage){
             isstoreLogoImageBtnClick=false
             isVehicalDocImageBtnClick = true
-            onSelectImage()
+            option =doc1
+            imagePopup()
         }
         else if(v==binding.storeDocImage2){
             if(binding.storeDocImage.getDrawable() == null){
@@ -115,12 +125,14 @@ class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
             }else {
                 isstoreLogoImageBtnClick = false
                 isVehicalDocImageBtnClick = false
-                onSelectImage()
+                option =doc2
+                imagePopup()
             }
         }
         else if(v==binding.storeLogoImage){
             isstoreLogoImageBtnClick=true
-            onSelectImage()
+            option=bgimg
+            imagePopup()
         }
     }
 
@@ -189,18 +201,149 @@ class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
         }
     }
 
+    private fun imagePopup() {
+        try {
+            val dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.pop_profile)
+            dialog.show()
+            val txtGallery = dialog.findViewById<View>(R.id.layoutGallery) as LinearLayout
+            val txtCamera = dialog.findViewById<View>(R.id.layoutCamera) as LinearLayout
+            txtCamera.setOnClickListener {
+                val currentAPIVersion = Build.VERSION.SDK_INT
+                if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.CAMERA
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ),
+                            REQUEST_CAMERA_PERMISSION
+                        )
+                    } else {
+                        selectCameraImage()
+                        dialog.dismiss()
+                    }
+                } else {
+                    selectCameraImage()
+                    dialog.dismiss()
+                }
+            }
+            txtGallery.setOnClickListener {
+                val currentAPIVersion = Build.VERSION.SDK_INT
+                if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                    arrayOf(
+                        if (ActivityCompat.checkSelfPermission(
+                                this,
+                                Manifest.permission.CAMERA
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(
+                                    Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                                ),
+                                2
+                            )
+                        } else {
+                            dialog.dismiss()
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                            intent.type = "image/*"
+//                            intent.type = "*/*";
+                            intent.action = Intent.ACTION_PICK
+                            startActivityForResult(
+                                Intent.createChooser(intent, "Select Image"),
+                                100
+                            )
+                        }
+                    )
 
-    private fun onSelectImage() {
-        if (!Utils.checkingPermissionIsEnabledOrNot(THIS!!)) {
-            Utils.requestMultiplePermission(THIS!!, VehicleInfoActivity.requestPermissionCode)
-        } else {
-            selectSourceBottomSheetFragment = SelectSourceBottomSheetFragment(this, "")
-            selectSourceBottomSheetFragment.show(
-                THIS!!.supportFragmentManager,
-                "selectSourceBottomSheetFragment"
-            )
+                } else {
+                    dialog.dismiss()
+                    val intent =
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    intent.type = "image/*"
+                    intent.action = Intent.ACTION_PICK
+                    startActivityForResult(Intent.createChooser(intent, "Select Image"), 100)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
+
+    private fun selectCameraImage() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(takePictureIntent, 200)
+        }
+    }
+
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+
+
+            imageUri = data.data
+            imageCreaterForApi(imageUri,data)
+            if (option == doc1) {
+                docImg = imageUri
+                binding.storeDocImage.setImageURI(imageUri)
+            }
+            if (option == doc2) {
+                docImg2 = imageUri
+                binding.storeDocImage2.setImageURI(imageUri)
+            }
+            if (option == bgimg) {
+                backgroundImg = imageUri
+                binding.storeLogoImage.setImageURI(imageUri)
+            }
+        } else if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
+            val extras: Bundle = data.extras!!
+            val imageBitmap = extras["data"] as Bitmap?
+
+
+            imageUri = getImageUri(this, imageBitmap!!)
+            imageCreaterForApi(imageUri, data)
+            if (option == doc1) {
+                docImg = imageUri
+                binding.storeDocImage.setImageURI(imageUri)
+            }
+            if (option == doc2) {
+                docImg2 = imageUri
+                binding.storeDocImage2.setImageURI(imageUri)
+            }
+            if (option == bgimg) {
+                backgroundImg = imageUri
+                binding.storeLogoImage.setImageURI(imageUri)
+            }
+            //binding.backgroundImg.setImageBitmap(imageBitmap)
+            Log.d("TAG", "iamgedsfas:: $imageUri")
+        }
+    }
+
 
     private fun setSpinNoOfLoc() {
         var list = ArrayList<String>()
@@ -409,85 +552,13 @@ class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
             }
     }
 
-    override fun onOptionSelect(option: String) {
-        if (option == AppConstant.CAMERA_KEY) {
-            selectSourceBottomSheetFragment.dismiss()
-            //  ImagePicker.onCaptureImage(this)
-            val intent = Lassi(this)
-                .with(LassiOption.CAMERA)
-                .setMaxCount(1)
-                .setGridSize(3)
-                .setMediaType(MediaType.IMAGE)
-                .setCompressionRation(10)
-                .build()
-            receiveData.launch(intent)
-
-        } else if (option == AppConstant.GALLERY_KEY) {
-            selectSourceBottomSheetFragment.dismiss()
-            val intent = Lassi(this)
-                .with(LassiOption.GALLERY)
-                .setMaxCount(1)
-                .setGridSize(3)
-                .setMediaType(MediaType.IMAGE)
-                .setCompressionRation(10)
-                .build()
-            receiveData.launch(intent)
-        }
-    }
-
-    private val receiveData =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val selectedMedia =
-                    it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
-                if (!selectedMedia.isNullOrEmpty()) {
-                    val bitmap: Bitmap?
-                    bitmap = BitmapFactory.decodeFile(selectedMedia[0].path)
-                    //imageUrl = Uri.parse(selectedMedia[0].path)
-                    if(isstoreLogoImageBtnClick){
-                        try {
-                            binding.storeLogoImage.setImageBitmap(null)
-                            binding.storeLogoImage.setImageBitmap(bitmap)
-                            binding.storeLogoConstrentInner.visibility=GONE
-                        } catch (e: Exception) {
-                            Log.d("crashImage", "onActivityResult: $e")
-                        }
-
-                        setBodyStorLogo(bitmap!!, "storeLogo")
-                    }
-                    else{
-
-                        if (isVehicalDocImageBtnClick) {
-                            try {
-                                binding.storeDocImage.setImageBitmap(null)
-                                binding.storeDocImage.setImageBitmap(bitmap)
-                                binding.vehicalDocConstrent.visibility=GONE
-                            } catch (e: Exception) {
-                                Log.d("crashImage", "onActivityResult: $e")
-                            }
-
-                            setBody(bitmap!!, "storeDocument")
-                        } else {
-                            try {
-                                binding.storeDocImage2.setImageBitmap(null)
-                                binding.storeDocImage2.setImageBitmap(bitmap)
-                                binding.vehicalDocConstrent2.visibility=GONE
-                            } catch (e: Exception) {
-                                Log.d("crashImage", "onActivityResult: $e")
-                            }
-                            setBody(bitmap!!, "storeDocument")
-
-                        }
-                    }
 
 
-                }
-            }
-        }
 
-    private fun setBody(bitmap: Bitmap, flag: String) {
-        val filePath = Utils.saveImage(THIS!!, bitmap)
-        this.filePath = File(filePath)
+    private fun setBody(imageUri: Uri, flag: String) {
+
+        val filePath = getFilePath(this, imageUri)
+        this.filePath = File(filePath!!)
 
         reqFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), this.filePath!!)
         if (isVehicalDocImageBtnClick) {
@@ -511,12 +582,55 @@ class ShopSignupSoleProprietors : BaseActivity(), OnSelectOptionListener {
 
     }
 
-    private fun setBodyStorLogo(bitmap: Bitmap, flag: String) {
-        val filePath = Utils.saveImage(THIS!!, bitmap)
+    private fun setBodyStorLogo(imageUri: Uri, flag: String) {
+        val filePath = getFilePath(this, imageUri!!)
         this.filePath = File(filePath)
 
         reqFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), this.filePath!!)
         bodyStoreLogo = MultipartBody.Part.createFormData(flag, this.filePath!!.name, reqFile)
+
+    }
+
+    fun imageCreaterForApi(imageUri: Uri?, data: Intent) {
+
+
+        //imageUrl = Uri.parse(selectedMedia[0].path)
+        if(isstoreLogoImageBtnClick){
+            try {
+                binding.storeLogoImage.setImageBitmap(null)
+                binding.storeLogoImage.setImageURI(imageUri)
+                binding.storeLogoConstrentInner.visibility=GONE
+            } catch (e: Exception) {
+                Log.d("crashImage", "onActivityResult: $e")
+            }
+
+            setBodyStorLogo(imageUri!!, "storeLogo")
+        }
+        else{
+
+            if (isVehicalDocImageBtnClick) {
+                try {
+                    binding.storeDocImage.setImageBitmap(null)
+                    binding.storeLogoImage.setImageURI(imageUri)
+                    binding.vehicalDocConstrent.visibility=GONE
+                } catch (e: Exception) {
+                    Log.d("crashImage", "onActivityResult: $e")
+                }
+
+                setBody(imageUri!!, "storeDocument")
+            } else {
+                try {
+                    binding.storeDocImage2.setImageBitmap(null)
+                    binding.storeLogoImage.setImageURI(imageUri)
+                    binding.vehicalDocConstrent2.visibility=GONE
+                } catch (e: Exception) {
+                    Log.d("crashImage", "onActivityResult: $e")
+                }
+                setBody(imageUri!!, "storeDocument")
+
+            }
+        }
+
 
     }
 }

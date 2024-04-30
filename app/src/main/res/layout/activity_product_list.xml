@@ -13,9 +13,6 @@
         android:background="@color/color_F5F5F5"
         tools:context=".user_module.ProductListActivity">
 
-
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/productListTopConstrent"
             android:layout_width="match_parent"
@@ -124,6 +121,8 @@
             android:id="@+id/toolbar"
             layout="@layout/custom_toolbar" />
 
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productListRecyclerview"
             android:layout_width="0dp"
@@ -136,6 +135,19 @@
             app:layout_constraintTop_toBottomOf="@+id/productListTopConstrent"
             app:spanCount="2"
             tools:listitem="@layout/row_product_list" />
+        <TextView
+            android:id="@+id/comingSoon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Hey we are going\n live soon"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_22sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/productListTopConstrent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

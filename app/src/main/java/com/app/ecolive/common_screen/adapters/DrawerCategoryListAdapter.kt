@@ -37,7 +37,5 @@ class DrawerCategoryListAdapter(var context: Context, var dataList: ArrayList<Dr
         return dataList.size
     }
 
-    interface ClickListener {
-        fun onClick(pos: Int)
-    }
+
 }

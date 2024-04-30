@@ -30,18 +30,7 @@
 
         </com.google.android.material.navigation.NavigationView>
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navView1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:fitsSystemWindows="true">
 
-            <include
-                android:id="@+id/includeRightDrawer"
-                layout="@layout/drawer_category_layout" />
-
-        </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

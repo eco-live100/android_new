@@ -1,24 +1,15 @@
 package com.app.ecolive.user_module
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.GetStartedActivity
-import com.app.ecolive.common_screen.adapters.HomeProductListAdapter
-import com.app.ecolive.common_screen.adapters.ProductDetailSimilarProductAdapter
-import com.app.ecolive.common_screen.adapters.ProductImageSliderAdapter
 import com.app.ecolive.common_screen.adapters.ProductListAdapter
-import com.app.ecolive.databinding.ActivityProductDetailBinding
 import com.app.ecolive.databinding.ActivityProductListBinding
-import com.app.ecolive.localmodel.HomeProductListModel
 import com.app.ecolive.localmodel.SimilarProductListModel
 import com.app.ecolive.service.Status
 import com.app.ecolive.shop_owner.RestaurantProfileActivity
@@ -45,6 +36,9 @@ class ProductListActivity : BaseActivity() {
         productList()
         statusBarColor()
         if (intent.getStringExtra(AppConstant.CATEGORY) == AppConstant.GROCERY) {
+            binding.productListTopConstrent.visibility =View.GONE
+            binding.productListRecyclerview.visibility =View.GONE
+            binding.comingSoon.visibility =View.VISIBLE
             binding.foodTopLogo.setImageResource(R.drawable.shop_detail_topimg4x)
             binding.textTop1.text = "Fresh Groceries"
             binding.textTop1.setTextColor(resources.getColor(R.color.black))
@@ -73,6 +67,10 @@ class ProductListActivity : BaseActivity() {
             binding.toolbar.toolbarTitle.text = "Retail"
         } else {
             binding.toolbar.toolbarTitle.text = "Food"
+            binding.productListTopConstrent.visibility =View.GONE
+            binding.productListRecyclerview.visibility =View.GONE
+            binding.comingSoon.visibility =View.VISIBLE
+
         }
     }
 

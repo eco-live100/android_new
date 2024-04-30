@@ -222,22 +222,7 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
             }
     }
 
-  /*  private fun filterSelection(
-        constraintTab: ConstraintLayout,
-        imageViewTab: ImageView,
-        textViewTab: TextView
-    ) {
-        binding.include.constraintTabAllProduct.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_white_round_tab_50dp))
-        binding.include.constraintTabOutOfStock.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_white_round_tab_50dp))
-        binding.include.imageViewTabAllProduct.setBackgroundDrawable(resources.getDrawable(R.drawable.circle_light_gray))
-        binding.include.imageViewTabOutOfStock.setBackgroundDrawable(resources.getDrawable(R.drawable.circle_light_gray))
-        binding.include.textViewAllProduct.setTextColor(resources.getColor(R.color.color_333333))
-        binding.include.textViewOutOfStock.setTextColor(resources.getColor(R.color.color_333333))
-        constraintTab.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_blue_round_tab_50dp))
-        imageViewTab.setBackgroundDrawable(resources.getDrawable(R.drawable.circle_white))
-        textViewTab.setTextColor(resources.getColor(R.color.white))
 
-    }*/
 
     fun openCloseNavigationDrawerStart() {
         when {
@@ -255,127 +240,7 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
 
     }
 
- /*   private fun productList() {
-        val similarProductListModel = ArrayList<SimilarProductListModel>()
-        var item = SimilarProductListModel(
-            "Apple Watch Gold With Extra Large size",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch White",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch_white)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch White With Extra Large size",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch_white)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch Gold With Extra Large size",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch White",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch_white)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch White With Extra Large size",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch_white)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch Gold With Extra Large size",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch)
-        )
-        similarProductListModel.add(item)
-        item = SimilarProductListModel(
-            "Apple Watch White With Extra Large size",
-            "Men's Watch",
-            "$520",
-            resources.getDrawable(R.drawable.apple_watch_white)
-        )
-        similarProductListModel.add(item)
-        binding.include.productListRecyclerview.layoutManager = StaggeredGridLayoutManager(
-            2,
-            LinearLayoutManager.VERTICAL
-        )
-        adapter = ShopOwnerProductListAdapter(
-            this,
-            similarProductListModel,
-            object : ShopOwnerProductListAdapter.ClickListener {
-                override fun onClick(pos: Int) {
-                    // startActivity(Intent(this@VisitShopActivity, ProductDetailActivity::class.java))
-                }
-
-                override fun onMenuClick(it: View, position: Int) {
-                    showListPopupWindow1(it)
-                }
-            })
-        binding.include.productListRecyclerview.adapter = adapter
-
-    }
-
-    private fun showListPopupWindow1(anchor: View, ) {
-        val listPopupItems: MutableList<ListPopupMenu> = java.util.ArrayList()
-        listPopupItems.add(ListPopupMenu("Edit"))
-        listPopupItems.add(ListPopupMenu("Change"))
-        listPopupItems.add(ListPopupMenu("Delete"))
-
-        val listPopupWindow: ListPopupWindow = createListPopupWindow(anchor, 370, listPopupItems)
-        listPopupWindow.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, pos, id ->
-            var id: String = listPopupItems[pos].title
-            listPopupWindow.dismiss()
-
-        })
-        listPopupWindow.show()
-    }
-
-    private fun showListPopupWindow(anchor: View, ) {
-        val listPopupItems: MutableList<ListPopupMenu> = java.util.ArrayList()
-        listPopupItems.add(ListPopupMenu("Message"))
-        listPopupItems.add(ListPopupMenu("Call"))
-        listPopupItems.add(ListPopupMenu("Money Transfer"))
-
-        val listPopupWindow: ListPopupWindow = createListPopupWindow(anchor, 370, listPopupItems)
-        listPopupWindow.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, pos, id ->
-            var id: String = listPopupItems[pos].title
-            listPopupWindow.dismiss()
-
-        })
-        listPopupWindow.show()
-    }
-
-    private fun createListPopupWindow(
-        anchor: View, width: Int,
-        items: List<ListPopupMenu>,
-    ): ListPopupWindow {
-        val popup = ListPopupWindow(this)
-        val adapter: ListAdapter = ListPopupWindowAdapter(items)
-        popup.anchorView = anchor
-        popup.width = width
-        popup.setAdapter(adapter)
-        return popup
-    }
-*/
-    private var back_pressed_time: Long = 0
+     private var back_pressed_time: Long = 0
     private val PERIOD: Long = 2000
 
     @SuppressLint("WrongConstant")
