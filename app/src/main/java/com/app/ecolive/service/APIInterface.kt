@@ -248,4 +248,8 @@ interface APIInterface {
     @PUT("Update-medical-order-by-pharmacy")
     fun updateMedicalOrderByPharmacy(@Body requestBody: RequestBody): Call<ResponseBody>
 
+    //Payment
+    @GET("user-list")
+    fun getUserList( ): Call<ResponseBody>
+
 }

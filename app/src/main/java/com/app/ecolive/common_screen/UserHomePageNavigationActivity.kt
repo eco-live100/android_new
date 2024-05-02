@@ -75,14 +75,11 @@ import org.json.JSONObject
 import java.util.*
 
 
-class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, CometChatInterface,
+class UserHomePageNavigationActivity : BaseActivity(),
     OnSelectOptionListener {
 
     lateinit var binding: ActivityUserHomePageNavigationBinding
     var adapter: HomeCategoryListAdapter? = null
-    var adapterCategory: DrawerCategoryListAdapter? = null
-    private var mMap: GoogleMap? = null
-    private val drawerCategoryListModel = ArrayList<DrawerCategoryListModel>()
     var adapterProduct: HomeProductListAdapter? = null
     private var drawerLayout: DrawerLayout? = null
     private val progressDialog = CustomProgressDialog()
@@ -108,8 +105,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         }
         val uid = ""+PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
 
-        cometchat.login(uid)
-        cometchat.recivedCall(this)
+
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -133,9 +129,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
     }
 
-    override fun onGotoCall() {
-        startActivity(Intent(this, CallActivity::class.java) )
-    }
+
 
     override fun onClick(v: View?) {
         super.onClick(v)
@@ -249,9 +243,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         setTouchNClick(binding.include.contentHome.headerHome.homepageToolbarSwitchToRider)
         setTouchNClick(binding.include.contentHome.headerHome.homepageToolbarSwitchToVendor)
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.homeMap) as SupportMapFragment?
-        mapFragment!!.getMapAsync(this)
+
         drawerLayout = binding.drawerLayout
 
         binding.include.contentHome.headerHome.ivMenu.setOnClickListener {
@@ -275,7 +267,6 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         }
 
         binding.include.contentHome.tvSelectCategory.setOnClickListener { openCloseNavigationDrawerEnd() }
-        sideMenuCategoryList()
 
         setSpinnerSideMenu()
 
@@ -329,7 +320,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
 
         binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
-        binding.include.constraintSendMoney.setOnClickListener {
+      /*  binding.include.constraintSendMoney.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
             } else {
@@ -340,7 +331,7 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                     )
                 )
             }
-        }
+        }*/
 
         binding.include.constraintTaxi.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
@@ -365,8 +356,8 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
                         .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
                 )*/
                 startActivity(
-                    Intent(this@UserHomePageNavigationActivity, SelectPaymentAction::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(this@UserHomePageNavigationActivity, SendMoneyHomePageActivity::class.java)
+
                 )
             }
 
@@ -694,105 +685,8 @@ class UserHomePageNavigationActivity : BaseActivity(), OnMapReadyCallback, Comet
         // Utils.changeStatusTextColor(this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        try {
-            mMap = googleMap
-            // mMap!!.isMyLocationEnabled = true
-            mMap!!.uiSettings.isMapToolbarEnabled = false
-            mMap!!.uiSettings.isMyLocationButtonEnabled = false
-            //  googleMap!!.setMapStyle(MapStyleOptions(resources.getString(R.string.style_json)))//set night mode
-            /*  if (ActivityCompat.checkSelfPermission(
-                      this,
-                      Manifest.permission.ACCESS_FINE_LOCATION
-                  ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                      this,
-                      Manifest.permission.ACCESS_COARSE_LOCATION
-                  ) != PackageManager.PERMISSION_GRANTED
-              ) {
-                  return
-              }*/
-            /* val sydney = LatLng(26.780102748020084, 75.46720735380768)
-             mMap!!.addMarker(
-                 MarkerOptions().position(sydney)
-                     .title("Marker in Sydney") // below line is use to add custom marker on our map.
-                     .icon(BitmapFromVector(applicationContext, R.drawable.marker_club))
-             )
-             mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
-
-            //setUpMarker()
-            val latLng = LatLng(28.4747789, 77.0419619)
-            zoomMapInitial(latLng)
-        } catch (e: Exception) {
-        }//28.47278,77.0393223
-    }
-
-    private fun zoomMapInitial(latLang: LatLng) {
-        try {
-            /*    val padding = 10
-                val bc = LatLngBounds.Builder()
-
-                bc.include(latLang);*/
-            val zoomLevel = 14.0f
-            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLang, zoomLevel));
-            // mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), padding))
 
 
-            val latLng1 = LatLng(28.4747789, 77.0419619)
-            val latLng2 = LatLng(28.47278, 77.0393223)
-            val latLng3 = LatLng(28.4726242, 77.0392608)
-            mMap!!.addMarker(
-                MarkerOptions().flat(true).position(latLng1)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.green1))
-            )
-
-            mMap!!.addMarker(
-                MarkerOptions().flat(true).position(latLng3)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.yellow1))
-            )
-        } catch (e: Exception) {
-            e.printStackTrace();
-        }
-    }
-
-    private fun sideMenuCategoryList() {
-        var item1 = DrawerCategoryListModel("Fashion & Beauty")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Electronics and Devices")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Home & diy")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Office & Professional")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Automotive")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Toys")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Kids & Babies")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Music")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Games & Videos")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Book & Readins pets")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Drugstore & Personal care")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Groceries & Drinks")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Sports and Outdoors")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Others")
-        drawerCategoryListModel.add(item1)
-
-
-        val recyclerView = binding.includeRightDrawer.homepageDrawerCategoryRecyclerview
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapterCategory = DrawerCategoryListAdapter(
-            this@UserHomePageNavigationActivity,
-            drawerCategoryListModel
-        )
-        recyclerView.adapter = adapterCategory
-    }
 
     override fun onOptionSelect(option: String) {
         when (option) {

@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.GetStartedActivity
-import com.app.ecolive.databinding.ActivityAddMoneyMainBinding
 import com.app.ecolive.databinding.ActivityUserVerificationAddMoneyBinding
 import com.app.ecolive.utils.Utils
 
