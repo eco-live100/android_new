@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/userListShimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nameLogo"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:background="@drawable/circle_blue120"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="GA"
+                    android:backgroundTint="@color/grey"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/userNameTxt"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="Gerry Atric"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_16"
+                    android:background="@color/grey"
+                    android:fontFamily="@font/roboto_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo"
+                    app:layout_constraintTop_toTopOf="@+id/nameLogo" />
+
+                <TextView
+                    android:id="@+id/userPhoneTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="01234 56789"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_12"
+                    android:background="@color/grey"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo"
+                    app:layout_constraintTop_toBottomOf="@+id/userNameTxt" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nameLogo1"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:background="@drawable/circle_blue120"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="GA"
+                    android:backgroundTint="@color/grey"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/userNameTxt1"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="Gerry Atric"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_16"
+                    android:background="@color/grey"
+                    android:fontFamily="@font/roboto_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo1"
+                    app:layout_constraintTop_toTopOf="@+id/nameLogo1" />
+
+                <TextView
+                    android:id="@+id/userPhoneTxt1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="01234 56789"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_12"
+                    android:background="@color/grey"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo1"
+                    app:layout_constraintTop_toBottomOf="@+id/userNameTxt1" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nameLogo11"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:background="@drawable/circle_blue120"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="GA"
+                    android:backgroundTint="@color/grey"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/userNameTxt11"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="Gerry Atric"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_16"
+                    android:background="@color/grey"
+                    android:fontFamily="@font/roboto_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo11"
+                    app:layout_constraintTop_toTopOf="@+id/nameLogo11" />
+
+                <TextView
+                    android:id="@+id/userPhoneTxt11"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="01234 56789"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_12"
+                    android:background="@color/grey"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo11"
+                    app:layout_constraintTop_toBottomOf="@+id/userNameTxt11" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nameLogo111"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:background="@drawable/circle_blue120"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="GA"
+                    android:backgroundTint="@color/grey"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/userNameTxt111"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="Gerry Atric"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_16"
+                    android:background="@color/grey"
+                    android:fontFamily="@font/roboto_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo111"
+                    app:layout_constraintTop_toTopOf="@+id/nameLogo111" />
+
+                <TextView
+                    android:id="@+id/userPhoneTxt111"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="01234 56789"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/sp_12"
+                    android:background="@color/grey"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nameLogo111"
+                    app:layout_constraintTop_toBottomOf="@+id/userNameTxt111" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+</layout>
