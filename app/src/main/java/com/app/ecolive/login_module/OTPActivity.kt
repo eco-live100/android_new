@@ -8,8 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.OtpActivityBinding
-import com.app.ecolive.msg_module.cometchat
-import com.app.ecolive.service.Status
+ import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
@@ -148,7 +147,7 @@ class OTPActivity : BaseActivity() {
                                 "" + PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
                             val name =
                                 "" + PreferenceKeeper.instance.loginResponse?.firstName + " " + PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
-                            cometchat.register(uid, name)
+
 
                             //startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
                             startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))

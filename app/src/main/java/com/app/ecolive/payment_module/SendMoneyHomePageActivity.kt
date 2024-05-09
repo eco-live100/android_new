@@ -3,6 +3,7 @@ package com.app.ecolive.payment_module
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -35,8 +36,8 @@ class SendMoneyHomePageActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
 
         binding.toolbarSendMoney.ivBack.setOnClickListener { finish() }
-        binding.toolbarSendMoney.toolbarTitle.text="Send to Eco-live"
-        binding.toolbarSendMoney.cutmToolBarRightIcon.visibility=VISIBLE
+        binding.toolbarSendMoney.toolbarTitle.text="Payment"
+        binding.toolbarSendMoney.cutmToolBarRightIcon.visibility= GONE
         if (MyApp.isConnectingToInternet(this!!)) {
             getUserListApiCall()
         }

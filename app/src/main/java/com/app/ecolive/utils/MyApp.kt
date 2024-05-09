@@ -11,25 +11,25 @@ import android.location.Location
 import android.net.ConnectivityManager
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.app.ecolive.R
-import com.cometchat.pro.core.AppSettings
-import com.cometchat.pro.core.CometChat
-import com.cometchat.pro.exceptions.CometChatException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.zegocloud.zimkit.services.ZIMKit
+import com.zegocloud.zimkit.services.config.InputConfig
+
 
 /*@HiltAndroidApp*/
 class MyApp : Application() {
 
-    val appID:String="23292595a3bdb6aa"  // Replace with your App ID
-    val region:String="us"  // Replace with your App Region ("eu" or "us")
+
     override fun onCreate() {
         super.onCreate()
-
+        val appLifecycleObserver = AppLifecycleObserver()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(appLifecycleObserver)
         // init preference keeper
         PreferenceKeeper.setContext(applicationContext)
         application = this
@@ -39,26 +39,17 @@ class MyApp : Application() {
         StrictMode.setVmPolicy(builder.build())
         builder.detectFileUriExposure()
 
-        val appSettings = AppSettings.AppSettingsBuilder()
-            .subscribePresenceForAllUsers()
-            .setRegion(region)
-            .autoEstablishSocketConnection(true)
-            .build()
+        ZIMKit.initWith(this, KeyCenter.APP_ID2, KeyCenter.APP_SIGN2)
+        ZIMKit.initNotifications()
 
-        CometChat.init(this,appID,appSettings, object : CometChat.CallbackListener<String>() {
-            override fun onSuccess(p0: String?) {
-                    Log.d("TAG", "Initialization completed successfully")
-            }
-
-            override fun onError(p0: CometChatException?) {
-                Log.d("TAG", "Initialization failed with exception: " + p0?.message)
-            }
-
-        })
-
-
+        val inputConfig = InputConfig()
+        inputConfig.showVoiceButton = true
+        inputConfig.showEmojiButton = true
+        inputConfig.showAddButton = true
+        ZIMKit.setInputConfig(inputConfig)
 
     }
+
 
 
     companion object {
