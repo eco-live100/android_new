@@ -252,4 +252,7 @@ interface APIInterface {
     @GET("user-list")
     fun getUserList( ): Call<ResponseBody>
 
+    @GET("transaction-history")
+    fun getTransactionHistory( ): Call<ResponseBody>
+
 }

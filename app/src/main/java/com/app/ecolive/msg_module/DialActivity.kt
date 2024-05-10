@@ -22,8 +22,6 @@ class DialActivity : AppCompatActivity() {
         binding.ivBack.setOnClickListener {
             finish()
         }
-        binding.imginvite.setOnClickListener {
-            startActivity(Intent(this,InviteActivity::class.java))
-        }
+
     }
 }

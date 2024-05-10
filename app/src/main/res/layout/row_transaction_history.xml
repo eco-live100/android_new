@@ -26,7 +26,7 @@
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:src="@drawable/dummy_female_user"
+                android:src="@drawable/app_logo_bgtrans"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:fontFamily="@font/roboto_regular"
                 android:text="- $ 2,750.00"
-                android:textColor="@color/color_gas"
+                android:textColor="@color/color_light_green"
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/ivUserProfileImage" />

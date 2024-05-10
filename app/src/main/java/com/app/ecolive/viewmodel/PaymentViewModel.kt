@@ -5,6 +5,7 @@ import androidx.databinding.BaseObservable
 import androidx.lifecycle.LiveData
  import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
+import com.app.ecolive.payment_module.model.TransactionHistoryModel
 import com.app.ecolive.payment_module.model.UserListModel
 import com.app.ecolive.rider_module.model.VehicalCatgryListModel
 import com.app.ecolive.service.ApiSampleResource
@@ -23,6 +24,7 @@ class PaymentViewModel (activity: Activity) : BaseObservable() {
    // lateinit var baseModel: LiveData<ApiSampleResource<BaseModel>>
 
     private lateinit var userListModel: LiveData<ApiSampleResource<UserListModel>>
+    private lateinit var getTransacionHistoryModel: LiveData<ApiSampleResource<TransactionHistoryModel>>
 
 
     fun getUserList(map: JSONObject): LiveData<ApiSampleResource<UserListModel>> {
@@ -30,7 +32,10 @@ class PaymentViewModel (activity: Activity) : BaseObservable() {
         return userListModel
     }
 
-
+    fun getTransactionHistory(map: JSONObject): LiveData<ApiSampleResource<TransactionHistoryModel>> {
+        getTransacionHistoryModel = webServiceRepository.getTransactionHistory(map)
+        return getTransacionHistoryModel
+    }
 
 
 }

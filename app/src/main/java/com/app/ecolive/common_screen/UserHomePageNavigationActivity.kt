@@ -32,17 +32,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.adapters.DrawerCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
 import com.app.ecolive.common_screen.adapters.HomeProductListAdapter
 import com.app.ecolive.databinding.ActivityUserHomePageNavigationBinding
 import com.app.ecolive.localmodel.HomeProductListModel
 import com.app.ecolive.login_module.LoginActivity
-import com.app.ecolive.msg_module.CallActivity
-import com.app.ecolive.msg_module.ChatListActivity
-import com.app.ecolive.msg_module.CometChatInterface
-import com.app.ecolive.msg_module.cometchat
-import com.app.ecolive.payment_module.SelectPaymentAction
+import com.app.ecolive.msg_module.ZegoCallChatActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.pharmacy_module.PharmacyOptionActivity
 import com.app.ecolive.rider_module.HomeRiderActivity
@@ -57,21 +52,30 @@ import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
 import com.nightout.ui.fragment.SearchLocBottomSheet
 import com.offercity.base.BaseActivity
+import com.zegocloud.uikit.plugin.invitation.ZegoInvitationType
+import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig
+import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService
+import com.zegocloud.uikit.prebuilt.call.config.ZegoHangUpConfirmDialogInfo
+import com.zegocloud.uikit.prebuilt.call.event.CallEndListener
+import com.zegocloud.uikit.prebuilt.call.event.ErrorEventsListener
+import com.zegocloud.uikit.prebuilt.call.event.SignalPluginConnectListener
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService
+import com.zegocloud.uikit.prebuilt.call.invite.internal.ZegoCallInvitationData
+import com.zegocloud.uikit.prebuilt.call.invite.internal.ZegoUIKitPrebuiltCallConfigProvider
+import com.zegocloud.uikit.service.express.IExpressEngineEventHandler
+import com.zegocloud.zimkit.services.ZIMKit
+import im.zego.zegoexpress.constants.ZegoRoomStateChangedReason
+import im.zego.zim.entity.ZIMError
+import im.zego.zim.enums.ZIMErrorCode
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
 import org.json.JSONObject
+import timber.log.Timber
 import java.util.*
 
 
@@ -103,7 +107,8 @@ class UserHomePageNavigationActivity : BaseActivity(),
         if (PreferenceKeeper.instance.isUserLogin) {
             binding.include.contentHome.headerHome.homepageToolbarLogin.visibility = GONE
         }
-        val uid = ""+PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
+        val uid =
+            "" + PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
 
 
 
@@ -126,9 +131,22 @@ class UserHomePageNavigationActivity : BaseActivity(),
             }
         }
         getLocation()
+        var usedId = "" + PreferenceKeeper.instance.loginResponse?._id
+        var userName = PreferenceKeeper.instance.loginResponse?.firstName ?: ""
+        val avatarUrl = "https://storage.zego.im/IMKit/avatar/avatar-0.png"
+        initCallInviteService(KeyCenter.APP_ID2, KeyCenter.APP_SIGN2, usedId, userName)
+
+        ZIMKit.connectUser(usedId, userName, avatarUrl) { error: ZIMError ->
+            if (error.code != ZIMErrorCode.SUCCESS) {
+                val message = error.message + ": " + error.code.value()
+                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                return@connectUser
+            }
+
+        }
+
 
     }
-
 
 
     override fun onClick(v: View?) {
@@ -298,7 +316,8 @@ class UserHomePageNavigationActivity : BaseActivity(),
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             i.putExtra("EXIT", true)
             startActivity(i)
-            cometchat.logout()
+            ZIMKit.disconnectUser()
+            ZegoUIKitPrebuiltCallInvitationService.unInit()
             finish()
         }
 
@@ -320,18 +339,18 @@ class UserHomePageNavigationActivity : BaseActivity(),
 
         binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
-      /*  binding.include.constraintSendMoney.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(
-                        this@UserHomePageNavigationActivity,
-                        SendMoneyHomePageActivity::class.java
-                    )
-                )
-            }
-        }*/
+        /*  binding.include.constraintSendMoney.setOnClickListener {
+              if (PreferenceKeeper.instance.loginResponse == null) {
+                  goLoginScreen()
+              } else {
+                  startActivity(
+                      Intent(
+                          this@UserHomePageNavigationActivity,
+                          SendMoneyHomePageActivity::class.java
+                      )
+                  )
+              }
+          }*/
 
         binding.include.constraintTaxi.setOnClickListener {
             if (PreferenceKeeper.instance.loginResponse == null) {
@@ -351,12 +370,15 @@ class UserHomePageNavigationActivity : BaseActivity(),
             if (PreferenceKeeper.instance.loginResponse == null) {
                 goLoginScreen()
             } else {
-               /* startActivity(
-                    Intent(this@UserHomePageNavigationActivity, AddMoneyMainActivity::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
-                )*/
+                /* startActivity(
+                     Intent(this@UserHomePageNavigationActivity, AddMoneyMainActivity::class.java)
+                         .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                 )*/
                 startActivity(
-                    Intent(this@UserHomePageNavigationActivity, SendMoneyHomePageActivity::class.java)
+                    Intent(
+                        this@UserHomePageNavigationActivity,
+                        SendMoneyHomePageActivity::class.java
+                    )
 
                 )
             }
@@ -382,17 +404,17 @@ class UserHomePageNavigationActivity : BaseActivity(),
                 goLoginScreen()
             } else {
                 startActivity(
-                    Intent(this@UserHomePageNavigationActivity, ChatListActivity::class.java)
-                        .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME, true)
+                    Intent(this@UserHomePageNavigationActivity, ZegoCallChatActivity::class.java)
+
                 )
             }
 
         }
 
         binding.include.contentHome.etSearchLocation.setOnClickListener {
-            secrachLocationBtmSheet = SearchLocBottomSheet(object :OnSelectOptionListener{
+            secrachLocationBtmSheet = SearchLocBottomSheet(object : OnSelectOptionListener {
                 override fun onOptionSelect(location: String) {
-                    Toast.makeText(THIS, ""+location.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(THIS, "" + location.toString(), Toast.LENGTH_SHORT).show()
                 }
             }, "")
             secrachLocationBtmSheet.show(
@@ -457,9 +479,11 @@ class UserHomePageNavigationActivity : BaseActivity(),
                         0 -> {
 
                         }
+
                         1 -> {
                             riderLoginChk()
                         }
+
                         2 -> {
                             shopLoginChk()
                         }
@@ -477,6 +501,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
             drawerLayout!!.isDrawerOpen(GravityCompat.START) -> {
                 drawerLayout!!.closeDrawer(GravityCompat.START)
             }
+
             else -> {
                 drawerLayout!!.openDrawer(GravityCompat.START)
             }
@@ -488,6 +513,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
             drawerLayout!!.isDrawerOpen(GravityCompat.END) -> {
                 drawerLayout!!.closeDrawer(GravityCompat.END)
             }
+
             else -> {
                 drawerLayout!!.openDrawer(GravityCompat.END)
             }
@@ -538,23 +564,23 @@ class UserHomePageNavigationActivity : BaseActivity(),
                                                 .putExtra(AppConstant.CATEGORY, AppConstant.GROCERY)
                                         )
 
-                                    } else if(pos==3) {
+                                    } else if (pos == 3) {
                                         /*if(!PreferenceKeeper.instance.isHealthProfileCreate){*/
-                                            startActivity(
-                                                Intent(
-                                                    this@UserHomePageNavigationActivity,
-                                                    PharmacyOptionActivity::class.java
-                                                )
-                                                   .putExtra(
-                                                        AppConstant.CATEGORY,
-                                                        AppConstant.PHARMACY
-                                                    )
+                                        startActivity(
+                                            Intent(
+                                                this@UserHomePageNavigationActivity,
+                                                PharmacyOptionActivity::class.java
                                             )
+                                                .putExtra(
+                                                    AppConstant.CATEGORY,
+                                                    AppConstant.PHARMACY
+                                                )
+                                        )
 //                                        }else{
 //                                            startActivity(Intent(this@UserHomePageNavigationActivity, PharmacyStepActivity::class.java))
 //                                        }
 
-                                    }else{
+                                    } else {
                                         startActivity(
                                             Intent(
                                                 this@UserHomePageNavigationActivity,
@@ -573,6 +599,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -589,7 +616,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
         val productList2 = ArrayList<HomeProductListModel>()
         ///Find here
 
-        for( i in 0 until data.docs.size){
+        for (i in 0 until data.docs.size) {
             try {
                 var item = HomeProductListModel(
                     data.docs[i].productData.productName,
@@ -601,10 +628,9 @@ class UserHomePageNavigationActivity : BaseActivity(),
                 )
                 productList.add(item)
                 productList2.add(item)
-            }catch (e :Exception){
+            } catch (e: Exception) {
 
             }
-
 
 
         }
@@ -620,14 +646,14 @@ class UserHomePageNavigationActivity : BaseActivity(),
                         Intent(
                             this@UserHomePageNavigationActivity,
                             ProductDetailActivity::class.java
-                        ).putExtra("productId",productId)
+                        ).putExtra("productId", productId)
                     )
                 }
             })
         binding.include.contentHome.productRecyclerview.adapter = adapterProduct
 
 
-       val adapterProduct2 = HomeProductListAdapter(
+        val adapterProduct2 = HomeProductListAdapter(
             this,
             productList2,
             object : HomeProductListAdapter.ClickListener {
@@ -636,7 +662,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
                         Intent(
                             this@UserHomePageNavigationActivity,
                             ProductDetailActivity::class.java
-                        ).putExtra("productId",productId)
+                        ).putExtra("productId", productId)
                     )
                 }
             })
@@ -645,36 +671,37 @@ class UserHomePageNavigationActivity : BaseActivity(),
         binding.include.contentHome.productRecyclerview2.adapter = adapterProduct2
 
         binding.include.contentHome.crossofmap.setOnClickListener {
-            binding.include.contentHome.textView16.visibility =View.GONE
-            binding.include.contentHome.mapCard.visibility =View.GONE
-            binding.include.contentHome.productRecyclerview2.visibility =View.VISIBLE
+            binding.include.contentHome.textView16.visibility = View.GONE
+            binding.include.contentHome.mapCard.visibility = View.GONE
+            binding.include.contentHome.productRecyclerview2.visibility = View.VISIBLE
         }
 
     }
 
     private fun vendorShopProductListAPICAll() {
-       // progressDialog.show(THIS!!)
+        // progressDialog.show(THIS!!)
         var addProductViewModel = CommonViewModel(THIS!!)
         var json = JSONObject()
-        json.put("categoryId","6351876d9c5b36484345bda6" )
-        Log.d("ok", "addProductAPICall: "+json)
+        json.put("categoryId", "6351876d9c5b36484345bda6")
+        Log.d("ok", "addProductAPICall: " + json)
         addProductViewModel.vendorShopProductList(json).observe(THIS!!) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
                     Log.d("ok", "productListAPICall: ")
-                  //  progressDialog.dialog.dismiss()
+                    //  progressDialog.dialog.dismiss()
                     it.data?.let {
                         homeProductList(it.data)
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
-                  //  progressDialog.dialog.dismiss()
+                    //  progressDialog.dialog.dismiss()
                     var vv = it.message
                     // var msg = JSONObject(it.message)
                     // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
-                    MyApp.popErrorMsg("", "" +vv, THIS!!)
+                    MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }
         }
@@ -684,8 +711,6 @@ class UserHomePageNavigationActivity : BaseActivity(),
         Utils.changeStatusColor(this, R.color.color_050D4C)
         // Utils.changeStatusTextColor(this)
     }
-
-
 
 
     override fun onOptionSelect(option: String) {
@@ -723,11 +748,12 @@ class UserHomePageNavigationActivity : BaseActivity(),
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.custom_layout_map_info)
-        dialog.window?.setBackgroundDrawable( ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setGravity(Gravity.CENTER);
         dialog.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams.WRAP_CONTENT
+        );
         val yesBtn = dialog.findViewById(R.id.ok) as TextView
         yesBtn.setOnClickListener {
             dialog.dismiss()
@@ -741,7 +767,10 @@ class UserHomePageNavigationActivity : BaseActivity(),
         dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.custom_layout_shop_register)
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        );
 
         val yesBtn = dialog.findViewById(R.id.ok) as TextView
 
@@ -765,7 +794,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
-                        getAddress(location.latitude,location.longitude)
+                        getAddress(location.latitude, location.longitude)
                     }
                 }
             } else {
@@ -777,6 +806,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
             requestPermissions()
         }
     }
+
     private fun getAddress(latitude: Double, longitude: Double) {
         try {
             val geocoder = Geocoder(this, Locale.ENGLISH)
@@ -796,6 +826,7 @@ class UserHomePageNavigationActivity : BaseActivity(),
             e.printStackTrace()
         }
     }
+
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
             getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -876,5 +907,65 @@ class UserHomePageNavigationActivity : BaseActivity(),
         super.onPause()
         stopLocationUpdates()
     }
+
+    fun initCallInviteService(appID: Long, appSign: String?, userID: String?, userName: String?) {
+        val callInvitationConfig = ZegoUIKitPrebuiltCallInvitationConfig()
+        callInvitationConfig.provider =
+            ZegoUIKitPrebuiltCallConfigProvider { invitationData -> getConfig(invitationData) }
+        ZegoUIKitPrebuiltCallService.events.errorEventsListener =
+            ErrorEventsListener { errorCode, message -> Timber.d("onError() called with: errorCode = [$errorCode], message = [$message]") }
+        ZegoUIKitPrebuiltCallService.events.invitationEvents.pluginConnectListener =
+            SignalPluginConnectListener { state, event, extendedData ->
+                Timber.d(
+                    "onSignalPluginConnectionStateChanged() called with: state = [" + state + "], event = [" + event
+                            + "], extendedData = [" + extendedData + "]"
+                )
+            }
+        ZegoUIKitPrebuiltCallService.init(
+            application, appID, appSign, userID, userName,
+            callInvitationConfig
+        )
+        ZegoUIKitPrebuiltCallService.events.callEvents.callEndListener =
+            CallEndListener { callEndReason, jsonObject ->
+                Timber.d(
+                    "onCallEnd() called with: callEndReason = [" + callEndReason + "], jsonObject = [" + jsonObject
+                            + "]"
+                )
+            }
+        ZegoUIKitPrebuiltCallService.events.callEvents.setExpressEngineEventHandler(
+            object : IExpressEngineEventHandler() {
+                override fun onRoomStateChanged(
+                    roomID: String, reason: ZegoRoomStateChangedReason, errorCode: Int,
+                    extendedData: JSONObject
+                ) {
+                    Timber.d(
+                        "onRoomStateChanged() called with: roomID = [" + roomID + "], reason = [" + reason
+                                + "], errorCode = [" + errorCode + "], extendedData = [" + extendedData + "]"
+                    )
+                }
+            })
+        ZegoUIKitPrebuiltCallService.events.setBackPressEvent {
+            ZegoUIKitPrebuiltCallService.minimizeCall()
+            true
+        }
+    }
+
+    fun getConfig(invitationData: ZegoCallInvitationData): ZegoUIKitPrebuiltCallConfig? {
+        val isVideoCall = invitationData.type == ZegoInvitationType.VIDEO_CALL.value
+        val isGroupCall = invitationData.invitees.size > 1
+        val callConfig: ZegoUIKitPrebuiltCallConfig
+        callConfig = if (isVideoCall && isGroupCall) {
+            ZegoUIKitPrebuiltCallConfig.groupVideoCall()
+        } else if (!isVideoCall && isGroupCall) {
+            ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
+        } else if (!isVideoCall) {
+            ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()
+        } else {
+            ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+        }
+        callConfig.hangUpConfirmDialogInfo = ZegoHangUpConfirmDialogInfo()
+        return callConfig
+    }
+
 
 }

@@ -1,23 +1,21 @@
 package com.app.ecolive.payment_module
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
-import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
 import com.app.ecolive.databinding.ActivityTransactionHistoryBinding
-import com.app.ecolive.databinding.ActivityUserTypeOptionBinding
-import com.app.ecolive.localmodel.HomeCategoryListModel
-import com.app.ecolive.localmodel.TransactionHistoryListModel
-import com.app.ecolive.payment_module.adapters.TransactionHistoryListAdapter
-import com.app.ecolive.user_module.ProductListActivity
+ import com.app.ecolive.payment_module.adapters.TransactionHistoryListAdapter
+import com.app.ecolive.service.Status
+import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.viewmodel.PaymentViewModel
+import org.json.JSONObject
 
 class TransactionHistoryActivity : AppCompatActivity() {
     lateinit var binding: ActivityTransactionHistoryBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
+     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_history)
         statusBarColor()
@@ -38,25 +36,45 @@ class TransactionHistoryActivity : AppCompatActivity() {
     }
 
     private fun transactionListData() {
-        val dataList = ArrayList<TransactionHistoryListModel>()
-        var item = TransactionHistoryListModel("Angie O. Plasty","- $2,750.00","12 mar, 6:39 pm","minus",resources.getDrawable(R.drawable.dummy_female_user))
-        dataList.add(item)
-        item = TransactionHistoryListModel("Ella Vator","- $1,300.00","12 mar, 6:39 pm","minus",resources.getDrawable(R.drawable.ic_user_blue))
-        dataList.add(item)
-         item = TransactionHistoryListModel("Manuel Labor","- $4,600.00","12 mar, 6:39 pm","minus",resources.getDrawable(R.drawable.dummy_female_user))
-        dataList.add(item)
-         item = TransactionHistoryListModel("Ash Wednesday","+ $1,100.00","12 mar, 6:39 pm","plus",resources.getDrawable(R.drawable.dummy_female_user))
-        dataList.add(item)
-         item = TransactionHistoryListModel("Sharon Needles","- $2,300.00","12 mar, 6:39 pm","minus",resources.getDrawable(R.drawable.ic_user_blue))
-        dataList.add(item)
-         item = TransactionHistoryListModel("Gene Jacket","- $2,200.00","12 mar, 6:39 pm","minus",resources.getDrawable(R.drawable.dummy_female_user))
-        dataList.add(item)
 
-        binding.rvPaymentTransaction.layoutManager =
-            LinearLayoutManager(this)
-       val adapter = TransactionHistoryListAdapter(this, dataList)
-        binding.rvPaymentTransaction.adapter = adapter
 
+        getTransactionHistory()
     }
+
+    private fun getTransactionHistory() {
+        binding.isShimmerShow =true
+        var paymentViewModel = PaymentViewModel(this)
+        var json = JSONObject()
+        json.put("page",1)
+        json.put("limit",100)
+
+        paymentViewModel.getTransactionHistory(json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                    it.data?.let {
+                        var vv = it.data
+                        binding.rvPaymentTransaction.layoutManager =
+                            LinearLayoutManager(this)
+                        val adapter = TransactionHistoryListAdapter(this, it.data.docs)
+                        binding.rvPaymentTransaction.adapter = adapter
+
+                    }
+                    binding.isShimmerShow =false
+
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+
+
+                    var vv =  it.message
+//                    var msg = JSONObject(it.message)
+//                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                     MyApp.popErrorMsg("", "" + vv, this)
+                }
+            }
+        }
+    }
+
 
 }

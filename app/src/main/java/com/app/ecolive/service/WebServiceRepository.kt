@@ -7,6 +7,7 @@ import com.app.ecolive.R
 import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
 import com.app.ecolive.login_module.model.LoginModel
+import com.app.ecolive.payment_module.model.TransactionHistoryModel
 import com.app.ecolive.payment_module.model.UserListModel
 import com.app.ecolive.pharmacy_module.model.AddMedicineModel
 import com.app.ecolive.pharmacy_module.model.AllOrderModel
@@ -6042,6 +6043,61 @@ class WebServiceRepository(application: Activity) {
                             val data = response.body()?.string()!!
                             try {
                                 val dataResponse = fromJson<UserListModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun getTransactionHistory(body: JSONObject): LiveData<ApiSampleResource<TransactionHistoryModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<TransactionHistoryModel>>()
+        if (networkHelper.isNetworkConnected()) {
+//            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.getTransactionHistory()
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<TransactionHistoryModel>(data)
                                 responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
                             } catch (ex: Exception) {
                                 ex.printStackTrace()

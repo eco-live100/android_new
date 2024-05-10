@@ -16,10 +16,12 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
+        android:maxSdkVersion="32"
+        tools:replace="android:maxSdkVersion" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
+        android:maxSdkVersion="32"
+        tools:replace="android:maxSdkVersion" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
@@ -30,7 +32,17 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/appicon_144"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EcoliveApp">
+        <activity
+            android:name=".msg_module.ZegoCallChatActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".msg_module.AllUserActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.adevinta.leku.LocationPickerActivity"
             android:exported="true"
@@ -49,12 +61,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".taximodule.TaxiHomeActivity" />
         </activity>
-        <activity
-            android:name=".msg_module.CallActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
             android:name=".pharmacy_module.doctor.CreateAndUpdateDoctorProfile"
             android:exported="false"
@@ -241,42 +248,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".msg_module.PaymentMethod"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
             android:name=".payment_module.RecipentListListActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".msg_module.InvoiceRequestActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
             android:name=".msg_module.FriendsListActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".msg_module.WallpaperActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".msg_module.InviteActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
+
         <activity
             android:name=".msg_module.DialActivity"
             android:exported="false"
@@ -317,11 +304,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
-        <activity
-            android:name=".payment_module.SelectPaymentAction"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp" />
+
         <activity
             android:name=".rider_module.HomeRiderActivity"
             android:exported="true"
@@ -405,11 +388,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
-        <activity
-            android:name=".msg_module.ChatActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp" />
+
         <activity
             android:name=".user_module.ContactListActivity"
             android:exported="false"
@@ -592,46 +571,47 @@
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.app.ecolive.pharmacy_module.doctor.RequestListDoctor"
+            android:name=".pharmacy_module.doctor.RequestListDoctor"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.app.ecolive.pharmacy_module.pharmacy.PharmacyProfile"
+            android:name=".pharmacy_module.pharmacy.PharmacyProfile"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.app.ecolive.pharmacy_module.pharmacy.PharmacyMedicineList"
+            android:name=".pharmacy_module.pharmacy.PharmacyMedicineList"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.app.ecolive.pharmacy_module.pharmacy.AddMedicine"
+            android:name=".pharmacy_module.pharmacy.AddMedicine"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.app.ecolive.pharmacy_module.health_profile.UserPrescriptionList"
+            android:name=".pharmacy_module.health_profile.UserPrescriptionList"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.app.ecolive.pharmacy_module.pharmacy.RequestListPharmacy"
+            android:name=".pharmacy_module.pharmacy.RequestListPharmacy"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name="com.app.ecolive.pharmacy_module.health_profile.PharmacyListActivity"
+        <activity
+            android:name=".pharmacy_module.health_profile.PharmacyListActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -644,7 +624,7 @@
             android:name=".services.LocationService"
             android:enabled="true"
             android:exported="true" />
-        <service
+        <!--<service
             android:name=".notification.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
@@ -654,7 +634,16 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/app_name" />
+            android:value="@string/app_name" />-->
+
+        <receiver
+            android:name=".utils.FcmNotifactionReciver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.zegocloud.zegouikit.call.fcm" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

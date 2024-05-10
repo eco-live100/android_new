@@ -1,6 +1,8 @@
 package com.app.ecolive.payment_module.model
 
-  data class UserListModel(
+import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
+
+data class UserListModel(
     val code: Int,
     val `data`: ArrayList<Data>,
     val message: String
@@ -15,5 +17,6 @@ data class Data(
     val lastName: String,
     val mobileNumber: String,
     val profilePicture: String,
-    val role: String
+    val role: String,
+    var instanse: ZegoSendCallInvitationButton
 )
