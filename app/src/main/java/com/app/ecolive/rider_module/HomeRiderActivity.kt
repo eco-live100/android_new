@@ -36,6 +36,7 @@ import com.app.ecolive.databinding.CustomRequestDialogBinding
 import com.app.ecolive.databinding.HomeriderActivityBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.ChatListActivity
+import com.app.ecolive.msg_module.ZegoCallChatActivity
 import com.app.ecolive.notification.NotificationModel
 import com.app.ecolive.payment_module.AddMoneyMainActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
@@ -554,71 +555,31 @@ class HomeRiderActivity : BaseActivity() {
         binding.includeLeftDrawer.homepageDrawerMyAccount.visibility = View.VISIBLE
         binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
-        binding.include.constraintSendMoney.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(
-                        this@HomeRiderActivity, SendMoneyHomePageActivity::class.java
-                    )
-                )
-            }
-        }
 
-        binding.include.constraintAddMoney.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(
-                        this@HomeRiderActivity, UserVerificationAddMoneyActivity::class.java
-                    )
-                )
-            }
 
-        }
+
 
         binding.include.constraintMakePayment.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java).putExtra(
-                        AppConstant.INTENT_EXTRAS.IsFromHOME,
-                        true
-                    )
+            startActivity(
+                Intent(
+                    this@HomeRiderActivity, SendMoneyHomePageActivity::class.java
                 )
-            }
+            )
 
         }
 
 
 
         binding.include.constraintCallFriends.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(this@HomeRiderActivity, ContactListActivity::class.java).putExtra(
-                        AppConstant.INTENT_EXTRAS.IsFromHOME,
-                        true
-                    )
-                )
-            }
+            startActivity(
+                Intent(this@HomeRiderActivity, ContactListActivity::class.java)
+            )
 
         }
         binding.include.constraintMessage.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(this@HomeRiderActivity, ChatListActivity::class.java).putExtra(
-                        AppConstant.INTENT_EXTRAS.IsFromHOME,
-                        true
-                    )
-                )
-            }
+            startActivity(
+                Intent(this@HomeRiderActivity, ZegoCallChatActivity::class.java)
+            )
 
         }
 

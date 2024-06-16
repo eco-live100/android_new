@@ -30,6 +30,7 @@ class SplashActivity : AppCompatActivity() {
     private fun statusBarColor() {
         changeStatusColor(this, R.color.white)
         changeStatusTextColor(this)
+
     }
 
     private fun startSplash() {

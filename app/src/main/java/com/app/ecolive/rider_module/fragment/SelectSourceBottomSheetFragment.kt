@@ -1,17 +1,15 @@
-package com.nightout.ui.fragment
+package com.app.ecolive.rider_module.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 import android.widget.Button
 import android.widget.LinearLayout
 import com.app.ecolive.R
-import com.app.ecolive.shop_owner.AddResturantItemActivity
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.AppConstant
 
@@ -45,11 +43,11 @@ class SelectSourceBottomSheetFragment(private val onSelectOptionListener: OnSele
 
     private fun init() {
         cameraImageView.setOnClickListener {
-            onSelectOptionListener.onOptionSelect(AppConstant.CAMERA_KEY)
+            onSelectOptionListener.onOptionSelect(AppConstant.CAMERA_KEY, "")
         }
 
         galleryImageView.setOnClickListener {
-            onSelectOptionListener.onOptionSelect(AppConstant.GALLERY_KEY)
+            onSelectOptionListener.onOptionSelect(AppConstant.GALLERY_KEY, "")
         }
 
         closeDialog.setOnClickListener {

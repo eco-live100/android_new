@@ -1,9 +1,6 @@
 package com.app.ecolive.shop_owner
 
 
-import android.app.Activity
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
@@ -29,14 +26,9 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
-import com.lassi.common.utils.KeyUtils
-import com.lassi.data.media.MiMedia
-import com.lassi.domain.media.LassiOption
-import com.lassi.domain.media.MediaType
-import com.lassi.presentation.builder.Lassi
 import com.mrudultora.colorpicker.ColorPickerPopUp
 import com.mrudultora.colorpicker.ColorPickerPopUp.OnPickColorListener
-import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
+import com.app.ecolive.rider_module.fragment.SelectSourceBottomSheetFragment
 import com.offercity.base.BaseActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -44,7 +36,6 @@ import okhttp3.RequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -230,8 +221,8 @@ class AddProductActvity : BaseActivity(), OnSelectOptionListener,OnItemSelectedL
         }
     }
 
-    override fun onOptionSelect(option: String) {
-        if (option == AppConstant.CAMERA_KEY) {
+    override fun onOptionSelect(option: String, _id: String) {
+       /* if (option == AppConstant.CAMERA_KEY) {
             selectSourceBottomSheetFragment.dismiss()
             //  ImagePicker.onCaptureImage(this)
             val intent = Lassi(this)
@@ -253,12 +244,12 @@ class AddProductActvity : BaseActivity(), OnSelectOptionListener,OnItemSelectedL
                 .setCompressionRation(10)
                 .build()
             receiveData.launch(intent)
-        }
+        }*/
     }
 
     private val receiveData =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+          /*  if (it.resultCode == Activity.RESULT_OK) {
                 val selectedMedia =
                     it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
                 if (!selectedMedia.isNullOrEmpty()) {
@@ -281,7 +272,7 @@ class AddProductActvity : BaseActivity(), OnSelectOptionListener,OnItemSelectedL
                     //  setBody(bitmap!!, "vehicleDocument")
 
                 }
-            }
+            }*/
         }
 
     private fun addProductAPICall(jsonObject: JSONObject) {

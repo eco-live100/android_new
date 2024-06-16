@@ -18,28 +18,24 @@ import org.json.JSONObject
 class MyAddressActivity : AppCompatActivity() {
     lateinit var binding:MyaddressActivityBinding
     private val progressDialog = CustomProgressDialog()
+    lateinit var myAddressAdapter: MyAddressAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView(this@MyAddressActivity,R.layout.myaddress_activity)
         setToolBar()
-        setDuumyRecycle()
-    }
-
-    lateinit var myAddressAdapter: MyAddressAdapter
-    private fun setDuumyRecycle() {
-
 
         binding.addressAddBtn.setOnClickListener {
             startActivity(Intent(this@MyAddressActivity,AddAddressActivity::class.java))
         }
-
     }
+
+
+
 
     private fun setToolBar() {
         binding.toolbarAddress.toolbarTitle.text="Saved Address"
         binding.toolbarAddress.ivBack.setOnClickListener { finish() }
         Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
         myAddressAdapter = MyAddressAdapter(this@MyAddressActivity,object:MyAddressAdapter.ClickListener{
             override fun onClick(pos: String) {
                 deleteAddress(pos)
@@ -70,7 +66,11 @@ class MyAddressActivity : AppCompatActivity() {
                     it.data?.let {
 
                         myAddressAdapter.addData(it.data)
-
+                        if (it.data.size>0){
+                            binding.isNodata =false
+                        }else{
+                            binding.isNodata =true
+                        }
                     }
 
                 }

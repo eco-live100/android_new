@@ -15,36 +15,44 @@
         layout="@layout/custom_toolbar" />
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Nodatall"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarProductList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarProductList">
 
 
         <ImageView
             android:id="@+id/noProductImg"
             android:layout_width="match_parent"
-            android:src="@drawable/ic_noproduct"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_noproduct" />
 
         <TextView
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:textColor="@color/color_333333"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="@dimen/_14ssp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@+id/noProductImg"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
             android:text="@string/noProductFoundMsg"
-            android:layout_height="wrap_content"/>
-
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintTop_toBottomOf="@+id/noProductImg" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/productListRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/Nodatall"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarProductList" />
 
     <ImageView
         android:id="@+id/productListPluse"

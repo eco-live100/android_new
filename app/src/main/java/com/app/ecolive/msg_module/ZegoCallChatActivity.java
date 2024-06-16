@@ -9,57 +9,23 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+
 
 import com.app.ecolive.R;
 import com.app.ecolive.databinding.ActivityZegoCallChatBinding;
-import com.app.ecolive.databinding.ChatlistActivityBinding;
 import com.app.ecolive.utils.Utils;
-import com.google.android.material.textfield.TextInputLayout;
 import com.permissionx.guolindev.PermissionX;
-import com.permissionx.guolindev.callback.ExplainReasonCallback;
-import com.permissionx.guolindev.callback.RequestCallback;
-import com.permissionx.guolindev.request.ExplainScope;
-import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig;
-import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService;
-import com.zegocloud.uikit.prebuilt.call.event.CallEndListener;
-import com.zegocloud.uikit.prebuilt.call.event.ErrorEventsListener;
-import com.zegocloud.uikit.prebuilt.call.event.SignalPluginConnectListener;
-import com.zegocloud.uikit.prebuilt.call.event.ZegoCallEndReason;
-import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
-import com.zegocloud.uikit.prebuilt.call.invite.internal.ZegoCallInvitationData;
-import com.zegocloud.uikit.prebuilt.call.invite.internal.ZegoUIKitPrebuiltCallConfigProvider;
-import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton;
-import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
-import com.zegocloud.uikit.service.express.IExpressEngineEventHandler;
 import com.zegocloud.zimkit.common.ZIMKitRouter;
 import com.zegocloud.zimkit.common.enums.ZIMKitConversationType;
-import com.zegocloud.zimkit.components.message.interfaces.ZIMKitMessagesListListener;
 import com.zegocloud.zimkit.components.message.model.ZIMKitHeaderBar;
-import com.zegocloud.zimkit.components.message.ui.ZIMKitMessageFragment;
 import com.zegocloud.zimkit.services.ZIMKit;
-import com.zegocloud.zimkit.services.callback.CreateGroupCallback;
-import com.zegocloud.zimkit.services.callback.JoinGroupCallback;
-import com.zegocloud.zimkit.services.model.ZIMKitGroupInfo;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import im.zego.zegoexpress.constants.ZegoRoomStateChangedReason;
-import im.zego.zim.entity.ZIMError;
-import im.zego.zim.entity.ZIMErrorUserInfo;
-import im.zego.zim.enums.ZIMConnectionEvent;
-import im.zego.zim.enums.ZIMConnectionState;
 import im.zego.zim.enums.ZIMConversationType;
-import im.zego.zim.enums.ZIMErrorCode;
-import timber.log.Timber;
+
+
 
 public class ZegoCallChatActivity extends AppCompatActivity {
 
@@ -71,8 +37,7 @@ public class ZegoCallChatActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_zego_call_chat);
         binding.toolbar.toolbarTitle.setText("All Chats");
         Utils.Companion.changeStatusColor(this, R.color.color_050D4C);
-        Utils.Companion.changeStatusTextColor(this);
-        binding.toolbar.ivBack.setOnClickListener(view -> {
+         binding.toolbar.ivBack.setOnClickListener(view -> {
             finish();
         });
         binding.allUser.setOnClickListener(view->{
@@ -97,8 +62,11 @@ public class ZegoCallChatActivity extends AppCompatActivity {
                     return headerBar;
                 }
             }
+
             return null;
         });
+
+
 
 
       //  initVoiceButton();
@@ -126,8 +94,6 @@ public class ZegoCallChatActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
 
     private void startChat(String conversationID, ZIMKitConversationType type) {
         ZIMKitRouter.toMessageActivity(this, conversationID, type);

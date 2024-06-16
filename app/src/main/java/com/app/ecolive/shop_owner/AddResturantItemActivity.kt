@@ -1,11 +1,7 @@
 package com.app.ecolive.shop_owner
 
-import android.app.Activity
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
@@ -13,14 +9,9 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityAddResturantItemBinding
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
-import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.Utils
-import com.lassi.common.utils.KeyUtils
-import com.lassi.data.media.MiMedia
-import com.lassi.domain.media.LassiOption
-import com.lassi.domain.media.MediaType
-import com.lassi.presentation.builder.Lassi
-import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
+
+import com.app.ecolive.rider_module.fragment.SelectSourceBottomSheetFragment
 
 class AddResturantItemActivity : AppCompatActivity() ,OnSelectOptionListener{
     private lateinit var selectSourceBottomSheetFragment: SelectSourceBottomSheetFragment
@@ -57,8 +48,8 @@ class AddResturantItemActivity : AppCompatActivity() ,OnSelectOptionListener{
         }
     }
 
-    override fun onOptionSelect(option: String) {
-        if (option == AppConstant.CAMERA_KEY) {
+    override fun onOptionSelect(option: String, _id: String) {
+      /*  if (option == AppConstant.CAMERA_KEY) {
             selectSourceBottomSheetFragment.dismiss()
             //  ImagePicker.onCaptureImage(this)
             val intent = Lassi(this)
@@ -80,11 +71,11 @@ class AddResturantItemActivity : AppCompatActivity() ,OnSelectOptionListener{
                 .setCompressionRation(10)
                 .build()
             receiveData.launch(intent)
-        }
+        }*/
     }
     private val receiveData =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+          /*  if (it.resultCode == Activity.RESULT_OK) {
                 val selectedMedia =
                     it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
                 if (!selectedMedia.isNullOrEmpty()) {
@@ -107,7 +98,7 @@ class AddResturantItemActivity : AppCompatActivity() ,OnSelectOptionListener{
                     //  setBody(bitmap!!, "vehicleDocument")
 
                 }
-            }
+            }*/
         }
 
 }

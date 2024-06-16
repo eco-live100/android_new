@@ -7,6 +7,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -14,6 +15,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 
 interface APIInterface {
@@ -131,6 +133,15 @@ interface APIInterface {
     fun riderOrderListApi(
         @Path("driverID") driverID: String,
     ): Call<ResponseBody>
+
+    @POST("get-user-profile/{userID}")
+    fun getMyProfile(
+        @Path("userID") userID: String,
+    ): Call<ResponseBody>
+
+
+    @POST("update-user-profile")
+    fun upadteProfile(@Body requestBody: MultipartBody): Call<ResponseBody>
 
     @GET("doctor-list")
     fun getDoctorListApi(): Call<ResponseBody>
@@ -250,9 +261,26 @@ interface APIInterface {
 
     //Payment
     @GET("user-list")
-    fun getUserList( ): Call<ResponseBody>
+    fun getUserList(): Call<ResponseBody>
 
     @GET("transaction-history")
-    fun getTransactionHistory( ): Call<ResponseBody>
+    fun getTransactionHistory(): Call<ResponseBody>
 
+    @POST("send-money")
+    fun sendMoneyApi(@Body params: RequestBody): Call<ResponseBody>
+
+    @POST("add-money-to-wallet")
+    fun addMoneyApi(@Body params: RequestBody): Call<ResponseBody>
+
+
+    @GET("get-wallet")
+    fun getWalletApi(): Call<ResponseBody>
+
+    @DELETE("delete-shop-by-shopId/{shopId}")
+    fun deleteStore(
+        @Path("shopId") shopId: String,
+    ): Call<ResponseBody>
+
+    @GET("product-list-by-shopId")
+    fun productListByShopID(@QueryMap map: HashMap<String, String>): Call<ResponseBody>
 }

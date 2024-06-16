@@ -257,4 +257,35 @@
     <string name="medication_vitamin_name">Medication/Vitamin Name</string>
     <string name="continueA">Continue</string>
 
+
+    //telynx
+    <string name="connect">connect</string>
+    <string name="socket">Socket:</string>
+    <string name="session_id">Session ID:</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="session_pending">-</string>
+    <string name="call">call</string>
+    <string name="sip_username">SIP Username</string>
+    <string name="password">Password</string>
+    <string name="caller_id_name">Caller ID Name</string>
+    <string name="caller_id_number">Caller ID Number</string>
+    <string name="decline">Decline</string>
+    <string name="phone_number">Enter a phone number</string>
+    <string name="reject">Reject</string>
+    <string name="answer">Answer</string>
+    <string name="incoming_call">Incoming Call</string>
+    <string name="end_and_accept">And and Accept</string>
+    <string name="reject_incoming">Reject Incoming</string>
+
+    <string name="end">End</string>
+
+    <string name="connected">Connected</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="login_token">Login Token</string>
+    <string name="token_login">Token login</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="audio_settings">Audio Output Device</string>
+    <string name="call_state">Call State:</string>
+
 </resources>

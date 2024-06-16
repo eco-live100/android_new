@@ -14,6 +14,13 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MICROPHONE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
@@ -35,6 +42,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoliveApp">
         <activity
+            android:name=".payment_module.WebViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".msg_module.ZegoCallChatActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -42,7 +52,10 @@
             android:name=".msg_module.AllUserActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".msg_module.VoipActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.adevinta.leku.LocationPickerActivity"
             android:exported="true"
@@ -61,7 +74,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".taximodule.TaxiHomeActivity" />
         </activity>
-
         <activity
             android:name=".pharmacy_module.doctor.CreateAndUpdateDoctorProfile"
             android:exported="false"
@@ -248,22 +260,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".payment_module.RecipentListListActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".msg_module.FriendsListActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
-
         <activity
             android:name=".msg_module.DialActivity"
             android:exported="false"
@@ -304,7 +312,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
-
         <activity
             android:name=".rider_module.HomeRiderActivity"
             android:exported="true"
@@ -388,7 +395,6 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
-
         <activity
             android:name=".user_module.ContactListActivity"
             android:exported="false"
@@ -558,11 +564,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EcoliveApp" />
-        <activity
-            android:name=".common_screen.GetStartedActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EcoliveApp" />
         <activity android:name=".taximodule.LiveTrackActivity" />
         <activity
             android:name=".pharmacy_module.pharmacy.CreateAndUpdatePharmacyProfile"
@@ -624,7 +625,8 @@
             android:name=".services.LocationService"
             android:enabled="true"
             android:exported="true" />
-        <!--<service
+        <!--
+<service
             android:name=".notification.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
@@ -634,8 +636,8 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/app_name" />-->
-
+            android:value="@string/app_name" />
+        -->
         <receiver
             android:name=".utils.FcmNotifactionReciver"
             android:enabled="true"

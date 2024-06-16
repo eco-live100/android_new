@@ -27,13 +27,15 @@ import java.util.Arrays
 class AddAddressActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddAddressBinding
     private val progressDialog = CustomProgressDialog()
-    var addressType="Home"
+    var addressType = "Home"
+    var lat = ""
+    var long = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_address)
         statusBarColor()
-        binding.addressPlacePicker.isActivated =false
+        binding.addressPlacePicker.isActivated = false
         Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
         binding.addressPlacePicker.setOnClickListener {
             startAutocompleteIntent()
@@ -41,22 +43,22 @@ class AddAddressActivity : AppCompatActivity() {
         binding.radioButtonHome.setOnClickListener {
             binding.radioButtonHome.setImageResource(R.drawable.ic_radio_selected)
             binding.radioButtonOffice.setImageResource(R.drawable.ic_ration_unselect)
-            addressType ="Home"
+            addressType = "Home"
         }
         binding.radioButtonOffice.setOnClickListener {
             binding.radioButtonHome.setImageResource(R.drawable.ic_ration_unselect)
             binding.radioButtonOffice.setImageResource(R.drawable.ic_radio_selected)
-            addressType ="Office"
+            addressType = "Office"
         }
         binding.save.setOnClickListener {
-            if(binding.fullName.text.toString()!=""){
-                if (binding.addressPlacePicker.text.toString()!=""){
+            if (binding.fullName.text.toString() != "") {
+                if (binding.addressPlacePicker.text.toString() != "") {
                     addAddress()
-                }else{
+                } else {
                     Toast.makeText(this, "Please add address", Toast.LENGTH_SHORT).show()
                 }
 
-            }else{
+            } else {
                 Toast.makeText(this, "Enter full name ", Toast.LENGTH_SHORT).show()
             }
 
@@ -72,31 +74,36 @@ class AddAddressActivity : AppCompatActivity() {
     }
 
     private fun startAutocompleteIntent() {
-        val fields: List<Place.Field> = Arrays.asList(
-            Place.Field.ADDRESS,
-            Place.Field.LAT_LNG, Place.Field.VIEWPORT
-        )
+        val fieldList: List<Place.Field> =
+            listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
 
         // Build the autocomplete intent with field, country, and type filters applied
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-            .setTypeFilter(TypeFilter.ADDRESS)
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList)
             .build(this)
-        this.startActivityForResult(intent,1)
+        this.startActivityForResult(intent, 1)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
+            when (resultCode) {
+                RESULT_OK -> {
 
-                val place = Autocomplete.getPlaceFromIntent(data)
-                Log.i("TAG", "Place: " + place.name + ", " + place.id+" "+data)
-                binding.addressPlacePicker.setText(place.address.toString())
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                    val place = Autocomplete.getPlaceFromIntent(data)
+                    Log.i("TAG", "Place: " + place.name + ", " + place.id + " " + data)
+                    lat = place.latLng?.latitude.toString()
+                    long = place.latLng?.longitude.toString()
+                    binding.addressPlacePicker.text = place.address?.toString() ?: ""
+                }
 
-
-            } else if (resultCode == RESULT_CANCELED) {
+                AutocompleteActivity.RESULT_ERROR -> {
                 // The user canceled the operation.
+
+                }
+
+                RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
             }
         }
     }
@@ -106,12 +113,12 @@ class AddAddressActivity : AppCompatActivity() {
         var commanViewModel = CommonViewModel(this)
         var json = JSONObject()
         json.put("userId", PreferenceKeeper.instance.loginResponse!!._id)
-        json.put("lat", "22.455544")
-        json.put("long", "77.8686886")
+        json.put("lat", lat)
+        json.put("long", long)
         json.put("title", binding.addressPlacePicker.text.toString())
         json.put("fullName", binding.fullName.text.toString())
         json.put("addressType", addressType)
-        json.put("mobile",  binding.mobieNumber.text.toString())
+        json.put("mobile", binding.mobieNumber.text.toString())
         commanViewModel.addAddress(json).observe(this) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
@@ -124,12 +131,13 @@ class AddAddressActivity : AppCompatActivity() {
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
                     //var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" +vv, this)
+                    MyApp.popErrorMsg("", "" + vv, this)
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

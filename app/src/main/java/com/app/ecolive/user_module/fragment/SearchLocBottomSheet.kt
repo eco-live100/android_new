@@ -5,7 +5,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +21,6 @@ import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.SrchlocBottomSheetBinding
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
-import com.app.ecolive.utils.Utils
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
@@ -130,7 +128,7 @@ class SearchLocBottomSheet(private val onSelectOptionListener: OnSelectOptionLis
 
         else if(v==binding.confirmLocation){
             if (currelocation!=null){
-                onSelectOptionListener.onOptionSelect(currelocation.toString())
+                onSelectOptionListener.onOptionSelect(currelocation.toString(), "")
                 dismiss()
             }else{
                 Toast.makeText(requireContext(), "Please select location", Toast.LENGTH_SHORT).show()

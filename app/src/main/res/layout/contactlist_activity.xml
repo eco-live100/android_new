@@ -28,6 +28,7 @@
             android:layout_height="@dimen/_60sdp"
             android:layout_marginTop="@dimen/_10ssp"
             android:padding="@dimen/_10ssp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/toolbarContactList">
 
             <ImageView
@@ -92,9 +93,10 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintCredit">
 
             <EditText
+                android:id="@+id/contactSearctedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:maxLines="1"
                 android:background="@null"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_5sdp"

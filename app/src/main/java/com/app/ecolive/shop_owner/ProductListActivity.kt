@@ -7,7 +7,6 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ProductlistActivityBinding
-import com.app.ecolive.databinding.RowColorcodeBinding
 import com.app.ecolive.service.Status
 import com.app.ecolive.shop_owner.model.ShopListModel
 import com.app.ecolive.utils.AppConstant
@@ -16,7 +15,6 @@ import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.offercity.base.BaseActivity
-import org.json.JSONObject
 
 class ProductListActivity : BaseActivity() {
     lateinit var binding: ProductlistActivityBinding
@@ -28,22 +26,27 @@ class ProductListActivity : BaseActivity() {
         setToolBar()
         initView()
         getDataIntent()
-       // vendorShopProductListAPICAll()
+        vendorShopProductListAPICAll()
     }
 
     private fun vendorShopProductListAPICAll() {
         progressDialog.show(THIS!!)
         var addProductViewModel = CommonViewModel(THIS!!)
-        var json = JSONObject()
-        json.put("vendorShopId", storeData._id)
+        var json = HashMap<String,String>()
+        json.put("shopId", storeData._id)
+        json.put("page", "1")
+        json.put("limit", "100")
         Log.d("ok", "addProductAPICall: "+json)
-        addProductViewModel.vendorShopProductList(json).observe(THIS!!) { it ->
+        addProductViewModel.shopProductListByid(json).observe(THIS!!) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
                     Log.d("ok", "productListAPICall: ")
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-
+                    /*  binding.productListRecyclerview.apply {
+                          layoutManager =LinearLayoutManager(this@ProductListActivity)
+                          adapter =ShopProductListAdapter(this@ProductListActivity,it.data.)
+                      }*/
                     }
 
                 }

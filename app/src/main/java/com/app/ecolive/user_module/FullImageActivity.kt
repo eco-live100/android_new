@@ -29,28 +29,7 @@ class FullImageActivity : AppCompatActivity() {
             }
         }
 
-        Glide.with(this@FullImageActivity).load(R.drawable.ic_user_blue).listener(object :
-            RequestListener<Drawable> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                isFirstResource: Boolean,
-            ): Boolean {
-                binding.progressBar.visibility = View.GONE
-                return false
-            }
-            override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean,
-            ): Boolean {
-                binding.progressBar.visibility = View.GONE
-                return false
-            }
-        }).into(binding.imgZoomView)
+
 
     }
 }

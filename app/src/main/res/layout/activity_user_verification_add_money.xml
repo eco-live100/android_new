@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="isShimmerShow"
+            type="Boolean" />
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,9 +121,19 @@
                 android:text="CONTINUE"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_16"
+                android:visibility="@{isShimmerShow? View.GONE:View.VISIBLE,default=visible }"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCompat14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:visibility="@{isShimmerShow? View.VISIBLE:View.GONE,default=gone }"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progressTint="@color/color_blue"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCompat14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

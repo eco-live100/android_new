@@ -83,20 +83,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline1"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout14">
 
-            <devmike.jade.com.PageStepIndicatorImpl
-                android:id="@+id/pageStepper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:pgBackgroundColor="@color/color_D4D4D4"
-                app:pgCurrentStepColor="@color/white"
-                app:pgRadius="12dp"
-                app:pgStepColor="@color/color_blue"
-                app:pgStepCount="3"
-                app:pgStrokeAlpha="255"
-                app:pgTextColor="@color/color_9F9F9F" />
+
 
             <include
                 android:id="@+id/includeStepOne"
@@ -118,7 +105,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pageStepper" />
+                />
 
             <include
                 android:id="@+id/includeStepThree"
@@ -128,7 +115,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pageStepper" />
+                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -141,21 +128,6 @@
             app:layout_constraintStart_toStartOf="@+id/guideline1"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout14">
 
-            <devmike.jade.com.PageStepIndicatorImpl
-                android:id="@+id/pageStepperProduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:pgBackgroundColor="@color/color_D4D4D4"
-                app:pgCurrentStepColor="@color/white"
-                app:pgRadius="12dp"
-                app:pgStepColor="@color/color_blue"
-                app:pgStepCount="3"
-                app:pgStrokeAlpha="255"
-                app:pgTextColor="@color/color_9F9F9F" />
 
             <include
                 android:id="@+id/includeProductList"
@@ -195,7 +167,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pageStepperProduct" />
+                  />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

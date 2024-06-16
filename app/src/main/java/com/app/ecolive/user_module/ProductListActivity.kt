@@ -241,12 +241,12 @@ class ProductListActivity : BaseActivity() {
             try {
                 var item = SimilarProductListModel(
 
-                    data.docs[i].productData.productName,
-                    data.docs[i].productData.price,
-                    data.docs[i].productData.priceLive,
+                    data.docs[i].productData.name,
+                    data.docs[i].productData.price.toString(),
+                    data.docs[i].productData.price.toString(),
                     resources.getDrawable(R.drawable.product_image3),
                     data.docs[i].file[0].name,
-                    data.docs[i].productData.subCatogary,
+                    data.docs[i].productData.model,
                 )
                 similarProductListModel.add(item)
 

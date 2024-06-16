@@ -12,8 +12,6 @@ import com.app.ecolive.databinding.*
 import com.app.ecolive.localmodel.MyOrderListModel
 import com.app.ecolive.localmodel.SimilarProductListModel
 import com.app.ecolive.user_module.model.AddressModel
- import com.app.ecolive.user_module.model.UserModel
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
 
 
 class MyAddressAdapter(var context: Context,  var onClickListener: ClickListener) :

@@ -245,9 +245,9 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
     private fun homeProductList(data: ProductModel.Data) {
-        binding.productName.text =data.docs[0].productData.productName
-        binding.productPrice.text =data.docs[0].productData.price
-        binding.productLivePrice.text =data.docs[0].productData.priceLive
+        binding.productName.text =data.docs[0].productData.name
+        binding.productPrice.text =data.docs[0].productData.price.toString()
+        binding.productLivePrice.text =data.docs[0].productData.price.toString()
         binding.freeDelivery.text =data.docs[0].freeDelivery
         binding.fastDelivery.text =data.docs[0].fastDeliver
         binding.aboutDescription.text = data.docs[0].productData.description?:""
@@ -255,7 +255,7 @@ class ProductDetailActivity : AppCompatActivity() {
         val colorVariationList = ArrayList<DrawerCategoryListModel>()
 
 
-        for (i in 0 until data.docs[0].productData.color.size) {
+       /* for (i in 0 until data.docs[0].productData.color.size) {
 
             try {
                 val item = DrawerCategoryListModel( data.docs[0].productData.color[i])
@@ -264,11 +264,11 @@ class ProductDetailActivity : AppCompatActivity() {
             } catch (e: Exception) {
 
             }
-        }
+        }*/
 
         binding.productDetailColorVariationRecyclerview.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        colorVariationAdapter = ProductDetailColorVariationAdapter(this, colorVariationList)
+        colorVariationAdapter = ProductDetailColorVariationAdapter(this, arrayListOf())
         binding.productDetailColorVariationRecyclerview.adapter = colorVariationAdapter
 
 

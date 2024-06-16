@@ -33,7 +33,7 @@ class ScanQrActivity:AppCompatActivity() {
     }
     private fun statusBarColor() {
         Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
+
     }
 
     fun getQrCodeBitmap(): Bitmap {

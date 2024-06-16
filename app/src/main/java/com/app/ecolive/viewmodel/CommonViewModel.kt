@@ -10,9 +10,6 @@ import com.app.ecolive.rider_module.model.VehicalCatgryListModel
 import com.app.ecolive.service.ApiSampleResource
 import com.app.ecolive.service.WebServiceRepository
 import com.app.ecolive.shop_owner.model.*
-import com.app.ecolive.taximodule.model.ConfirmTaxiModel
-import com.app.ecolive.taximodule.model.ScheduleRideModel
-import com.app.ecolive.taximodule.model.TaxiBookingRequestList
 import com.app.ecolive.user_module.model.AddressModel
 import okhttp3.MultipartBody
 
@@ -29,6 +26,7 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
     private lateinit var shopCategryListModel: LiveData<ApiSampleResource<ShopCategryListModel>>
     private lateinit var introModel: LiveData<ApiSampleResource<IntroModel>>
     private lateinit var shopListViewModel: LiveData<ApiSampleResource<ShopListModel>>
+    private lateinit var deleteStoreViewModel: LiveData<ApiSampleResource<ShopListModel>>
     private lateinit var attributeModelViewModel: LiveData<ApiSampleResource<AttributeModel>>
     private lateinit var addProductModelViewModel: LiveData<ApiSampleResource<BaseModel>>
     private lateinit var getProductModelViewModel: LiveData<ApiSampleResource<ProductModel>>
@@ -43,6 +41,16 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
 
     fun verifyMobileOtp(map: JSONObject): LiveData<ApiSampleResource<BaseModel>> {
         baseModel = webServiceRepository.verifyOtp(map)
+        return baseModel
+    }
+
+    fun getMyProfile(id: String): LiveData<ApiSampleResource<BaseModel>> {
+        baseModel = webServiceRepository.getMyProfile(id)
+        return baseModel
+    }
+
+    fun updateProfileApi(body: MultipartBody): LiveData<ApiSampleResource<BaseModel>> {
+        baseModel = webServiceRepository.updateProfileApi(body)
         return baseModel
     }
 
@@ -106,6 +114,11 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
         shopListViewModel = webServiceRepository.shopList()
         return shopListViewModel
     }
+
+    fun deleteStore(id: String): LiveData<ApiSampleResource<ShopListModel>> {
+        deleteStoreViewModel = webServiceRepository.deleteStore(id)
+        return deleteStoreViewModel
+    }
     fun attrubuteList(json: JSONObject): LiveData<ApiSampleResource<AttributeModel>> {
         attributeModelViewModel = webServiceRepository.attributeList(json)
         return attributeModelViewModel
@@ -116,6 +129,11 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
     }
     fun vendorShopProductList(json: JSONObject): LiveData<ApiSampleResource<ProductModel>> {
         getProductModelViewModel = webServiceRepository.vendorShopProductList(json)
+        return getProductModelViewModel
+    }
+
+    fun shopProductListByid(map: HashMap<String, String>): LiveData<ApiSampleResource<ProductModel>> {
+        getProductModelViewModel = webServiceRepository.shopProductListByid(map)
         return getProductModelViewModel
     }
     fun addToCart(json: JSONObject): LiveData<ApiSampleResource<ProductModel>> {
