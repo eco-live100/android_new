@@ -214,24 +214,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
-            <com.transferwise.sequencelayout.SequenceLayout
-                android:id="@+id/sequenceLayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/color_F5F5F5"
-                android:paddingStart="30dp"
-                android:paddingTop="@dimen/_10sdp"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
-            </com.transferwise.sequencelayout.SequenceLayout>
-        </ScrollView>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

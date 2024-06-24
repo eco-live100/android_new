@@ -34,7 +34,7 @@ class UserMyOrderListAdapter(var context: Context, var dataList: ArrayList<MyOrd
         holder.binding.productDeliveredDate.text=dataList[position].deliveredDate
         holder.binding.productName.text=dataList[position].productName
         holder.binding.productPrice.text=dataList[position].amount
-        holder.binding.productRating.text=dataList[position].rating
+      //  holder.binding.productRating.text=dataList[position].rating
         holder.binding.productImage.setImageDrawable(dataList[position].image)
         holder.binding.constraintNext.setOnClickListener { onClickListener.onClick(position) }
     }

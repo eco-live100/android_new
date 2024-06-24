@@ -33,16 +33,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView14"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:padding="@dimen/_4sdp"
 
-        android:src="@drawable/ic_bell"
-        app:layout_constraintBottom_toBottomOf="@+id/ivMenu"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/homepageToolbarSwitchToUser"

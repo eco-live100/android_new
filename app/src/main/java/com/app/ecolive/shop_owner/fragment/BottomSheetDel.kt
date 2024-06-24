@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 import android.widget.Button
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.BottmsheetDelBinding
@@ -50,7 +48,7 @@ class BottomSheetDel(private val onSelectOptionListener: OnSelectOptionListener,
         binding.botmSheetTitle.text = dataInfo.shopName
 
         binding.botmSheetDel.setOnClickListener {
-            onSelectOptionListener.onOptionSelect(AppConstant.DELETE_KEY)
+            onSelectOptionListener.onOptionSelect(AppConstant.DELETE_KEY,dataInfo._id)
         }
 
 //        closeDialog.setOnClickListener {

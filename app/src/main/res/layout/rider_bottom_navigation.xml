@@ -23,71 +23,12 @@
             android:layout_width="match_parent"
             android:id="@+id/bottomNavigation"
             android:orientation="horizontal"
-            android:weightSum="5"
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent" >
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:id="@+id/constraintSendMoney"
-                android:layout_weight="1"
-                android:paddingVertical="@dimen/_5sdp"
-                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/nav_send_money"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Send Money"
-                    android:textSize="@dimen/_9sdp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/color_333333"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:id="@+id/constraintAddMoney"
-                android:paddingVertical="@dimen/_5sdp"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/nav_add_money"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Add money"
-                    android:textSize="@dimen/_9sdp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/color_333333"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView8" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -110,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Make payment"
+                    android:text="Payment"
                     android:textSize="@dimen/_9sdp"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/color_333333"
@@ -170,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Call Friends"
+                    android:text="Direct Call"
                     android:textSize="@dimen/_9sdp"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/color_333333"

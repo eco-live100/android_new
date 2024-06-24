@@ -12,7 +12,7 @@
         android:paddingBottom="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/viewProductDetails"
-        android:background="@drawable/bg_white_round_without_stroke_10dp"
+        android:background="@drawable/bg_white_with_stoke"
         android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -35,6 +35,7 @@
             android:text="Prescription required"
             android:textColor="@color/white"
             android:padding="@dimen/_2sdp"
+            android:visibility="gone"
             android:background="@color/color_008783"
             android:layout_height="wrap_content"/>
 
@@ -42,7 +43,7 @@
             android:layout_width="@dimen/_15sdp"
             android:id="@+id/imageViewMenu"
             android:layout_height="@dimen/_15sdp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:src="@drawable/ic_repeat_grid"
             android:layout_margin="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +59,7 @@
             android:text="Men's Watch"
             android:textColor="@color/color_blue"
             android:textSize="@dimen/sp_11"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/homepageProductImage" />

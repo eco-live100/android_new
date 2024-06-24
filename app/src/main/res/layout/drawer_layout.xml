@@ -125,7 +125,7 @@
             android:id="@+id/homepageDrawerMyOrder"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:drawableStart="@drawable/ic_user"
+            android:drawableStart="@drawable/ic_order"
             android:drawablePadding="@dimen/_20ssp"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center_vertical"
@@ -134,7 +134,20 @@
             android:textColor="@color/color_333333"
             android:textSize="@dimen/sp_16"
             app:layout_constraintTop_toBottomOf="@+id/homepageDrawerHome5" />
-
+        <TextView
+            android:id="@+id/MyCart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:drawableTint="@color/black"
+            android:drawableStart="@drawable/ic_shopping_cart"
+            android:drawablePadding="@dimen/_20ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="My cart"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintTop_toBottomOf="@+id/homepageDrawerMyOrder" />
         <TextView
             android:id="@+id/sideMenuLogout"
             android:layout_width="0dp"
@@ -198,68 +211,6 @@
             android:background="#f6f6f6"
             app:layout_constraintTop_toBottomOf="@+id/homepageDrawerMyOrder" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout5"
-            android:layout_width="0dp"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:background="@color/color_85A2FF"
-            android:paddingVertical="@dimen/_20ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view8">
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/_20ssp"
-                android:text="Switch"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18">
-
-                <Spinner
-                    android:id="@+id/sideMenuSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp" />
-
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginHorizontal="@dimen/_20ssp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@color/white"
-                android:drawableEnd="@drawable/ic_dropdown"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/_20ssp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:text="As a Rider"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_16"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

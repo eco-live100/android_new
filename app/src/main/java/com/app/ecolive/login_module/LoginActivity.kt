@@ -12,6 +12,7 @@ import com.app.ecolive.databinding.ActivityLoginBinding
  import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.KeyCenter
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
@@ -19,6 +20,7 @@ import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.offercity.base.BaseActivity
+import com.zegocloud.zimkit.services.ZIMKit
 import org.json.JSONObject
 
 
@@ -44,6 +46,8 @@ class LoginActivity : BaseActivity() {
             PreferenceKeeper.instance.fcmTokenSave= token
 
         })
+        ZIMKit.initWith(application, KeyCenter.APP_ID2, KeyCenter.APP_SIGN2)
+        ZIMKit.initNotifications()
         initView()
     }
 

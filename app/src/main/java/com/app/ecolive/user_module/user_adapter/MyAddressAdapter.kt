@@ -1,19 +1,12 @@
 package com.app.ecolive.user_module.user_adapter
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
 import com.app.ecolive.databinding.*
-import com.app.ecolive.localmodel.MyOrderListModel
-import com.app.ecolive.localmodel.SimilarProductListModel
 import com.app.ecolive.user_module.model.AddressModel
- import com.app.ecolive.user_module.model.UserModel
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
 
 
 class MyAddressAdapter(var context: Context,  var onClickListener: ClickListener) :
@@ -39,6 +32,7 @@ class MyAddressAdapter(var context: Context,  var onClickListener: ClickListener
         holder.binding.mobile.text = dataList[position].mobile
         holder.binding.addressTitle.text = dataList[position].addressType
         holder.binding.Delete.setOnClickListener { onClickListener.onClick(dataList[position]._id) }
+        holder.binding.cardViewDetail.setOnClickListener { onClickListener.onSelect(dataList[position]) }
 
     }
 
@@ -48,6 +42,7 @@ class MyAddressAdapter(var context: Context,  var onClickListener: ClickListener
 
     interface ClickListener {
         fun onClick(pos: String)
+        fun onSelect(pos: AddressModel.Data)
     }
 
     fun addData(data:ArrayList<AddressModel.Data>){

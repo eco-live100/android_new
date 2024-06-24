@@ -19,141 +19,200 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            android:layout_height="0dp">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:paddingBottom="@dimen/_30sdp"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/orderListRecyclerview"
-                    android:layout_width="0dp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/row_my_cart"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/_30sdp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/myCartBillDetails"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:background="@color/white"
-                    android:paddingHorizontal="@dimen/_16sdp"
-                    android:paddingVertical="@dimen/_10sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orderListRecyclerview">
+                    android:id="@+id/cartCons"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="@dimen/_30sdp"
+                    android:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/textView61"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Bill detail"
-                        android:textColor="@color/color_333333"
-                        android:textSize="@dimen/sp_14"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView56"
-                        android:layout_width="wrap_content"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/orderListRecyclerview"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/row_my_cart" />
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/bg_edittext_5dp"
+                        android:drawableStart="@drawable/pin"
+                        android:hint="Please select delivery address"
+                        android:minHeight="@dimen/_20sdp"
+                        android:padding="@dimen/_5sdp"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="Item total"
-                        android:textColor="@color/color_333333"
-                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView61" />
+                        app:layout_constraintTop_toBottomOf="@+id/orderListRecyclerview" />
 
-                    <TextView
-                        android:id="@+id/textView65"
+                    <LinearLayout
+                        android:id="@+id/walletll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_10sdp"
+
+                        android:background="@drawable/bg_edittext_5dp"
+                        app:layout_constraintEnd_toEndOf="@+id/address"
+                        app:layout_constraintStart_toStartOf="@+id/address"
+                        app:layout_constraintTop_toBottomOf="@+id/address">
+
+                        <TextView
+                            android:id="@+id/walletAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_add_money"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:hint="My wallet amount"
+                            android:fontFamily="@font/roboto_regular"
+                            android:minHeight="@dimen/_20sdp"
+                            android:padding="@dimen/_5sdp" />
+                        <TextView
+                            android:id="@+id/addMoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+ Add money"
+                            android:layout_weight="0.2"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textColor="@color/color_blue"/>
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/checkwallet"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="$ 2,797"
-                        android:textColor="@color/color_blue"
-                        android:textSize="@dimen/sp_14"
+                        android:text="Pay from Wallet"
+
+                        app:layout_constraintStart_toStartOf="@+id/walletll"
+                        app:layout_constraintTop_toBottomOf="@+id/walletll" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/myCartBillDetails"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:background="@color/white"
+                        android:paddingHorizontal="@dimen/_16sdp"
+                        android:paddingVertical="@dimen/_10sdp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView61" />
-
-                    <TextView
-                        android:id="@+id/textView62"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="Taxes and charges"
-                        android:textColor="@color/color_333333"
-                        android:textSize="@dimen/sp_14"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView56" />
+                        app:layout_constraintTop_toBottomOf="@+id/checkwallet">
 
-                    <TextView
-                        android:id="@+id/textView66"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="$ 3.1"
-                        android:textColor="@color/color_blue"
-                        android:textSize="@dimen/sp_14"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView56" />
+                        <TextView
+                            android:id="@+id/textView61"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Bill detail"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textView67"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="$ 2,800.1"
-                        android:textColor="@color/color_blue"
-                        android:textSize="@dimen/sp_14"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView63"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView63" />
+                        <TextView
+                            android:id="@+id/textView56"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="Item total"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView61" />
 
-                    <TextView
-                        android:id="@+id/textView63"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Grand total"
-                        android:textColor="@color/color_blue"
+                        <TextView
+                            android:id="@+id/itemTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="$ 2,797"
+                            android:textColor="@color/color_blue"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView61" />
+
+
+                        <TextView
+                            android:id="@+id/grandTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="$ 2,800.1"
+                            android:textColor="@color/color_blue"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView63"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView63" />
+
+                        <TextView
+                            android:id="@+id/textView63"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Grand total"
+                            android:textColor="@color/color_blue"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView56" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/appCompatBuyNow"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_marginHorizontal="@dimen/_50sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:background="@drawable/bg_blue_round_button"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="Place order"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView62" />
+                        app:layout_constraintTop_toBottomOf="@+id/myCartBillDetails" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/appCompatBuyNow"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_36sdp"
-                    android:layout_marginHorizontal="@dimen/_50sdp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:background="@drawable/bg_blue_round_button"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="BUY NOW"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_16"
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerMyCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/myCartBillDetails" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shimmer_auto_start="true">
 
+                    <include layout="@layout/my_cart_shimmer" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.core.widget.NestedScrollView>
 

@@ -27,20 +27,7 @@ class ReviewCustomerToProductActivity : AppCompatActivity() {
     private fun productReviewList() {
 
 
-        val currentListModel = ArrayList<CurrentOrderListModel>()
-        var item = CurrentOrderListModel("Angie O. Plasty","20 Nov 2020","03:20 PM","15 MIN","$1200","Debit card",resources.getDrawable(R.drawable.ic_user_blue))
-        currentListModel.add(item)
-        item = CurrentOrderListModel("Sharon Needles","20 Nov 2020","03:20 PM","15 MIN","$1200","Debit card",resources.getDrawable(R.drawable.dummy_female_user))
-        currentListModel.add(item)
-        item = CurrentOrderListModel("Angie O. Plasty","20 Nov 2020","03:20 PM","15 MIN","$1200","Debit card",resources.getDrawable(R.drawable.ic_user_blue))
-        currentListModel.add(item)
-        item = CurrentOrderListModel("Sharon Needles","20 Nov 2020","03:20 PM","15 MIN","$1200","Debit card",resources.getDrawable(R.drawable.dummy_female_user))
-        currentListModel.add(item)
-        item = CurrentOrderListModel("Angie O. Plasty","20 Nov 2020","03:20 PM","15 MIN","$1200","Debit card",resources.getDrawable(R.drawable.ic_user_blue))
-        currentListModel.add(item)
-        binding.recyclerViewProductReview.layoutManager = LinearLayoutManager(this)
-        val adapter = ReviewCustomerToProductListAdapter(this, currentListModel)
-        binding.recyclerViewProductReview.adapter = adapter
+
 
     }
 

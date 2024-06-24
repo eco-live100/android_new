@@ -2,6 +2,7 @@ package com.app.ecolive.utils
 
 object AppConstant {
 
+    const val product_listUrl = "https://api.ecolive.global/product/uploads/"
     const val BASE_URL = "https://api.ecolive.global/api1/"
     const val BASE_URL_Image = "https://api.ecolive.global"
     const val NO_INTERNET = 502
@@ -63,6 +64,10 @@ object AppConstant {
     var data = "Data"
     var fromScreen = "FromScreen"
     var doctorProfile = "DoctorProfile"
+    var lastSelectedLocationLat = "lastSelectedLocationLat"
+    var lastSelectedLocationLang = "lastSelectedLocationLang"
+    var lastAddress = "lastAddress"
+    var lastAddressTitle = "lastAddressTitle"
 
 
     ///Key for request
@@ -84,8 +89,8 @@ object AppConstant {
     var acceptOrder  = "Accept Order"
     var readyToDispatched  = "Ready to dispatched"
     var orderPlaced  = "Order placed"
-
-
+    var walletAmount ="0"
+    var walletCurrency =""
 
 
     object INTENT_EXTRAS {
@@ -106,6 +111,10 @@ object AppConstant {
         const val TYPE_RIDER="Rider"
         const val TYPE_SHOP="Shop"
     }
-
+    const val MOCK_USERNAME = "ecoliveteam67855"
+    const val MOCK_PASSWORD = "E07RT29J"
+    const val MOCK_CALLER_NAME = "cp"
+    const val MOCK_CALLER_NUMBER = "+443301901737"
+    const val MOCK_DESTINATION_NUMBER = ""
 
 }

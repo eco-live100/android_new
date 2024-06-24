@@ -6,15 +6,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
+import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityMyAccountBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.payment_module.MyWalletActivity
 import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
+import com.app.ecolive.service.Status
+import com.app.ecolive.utils.AppConstant
+import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PopUpVehicleChoose
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.utils.Utils.Companion.progressDialog
+import com.app.ecolive.viewmodel.CommonViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.json.JSONObject
 
 class MyAccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyAccountBinding
@@ -32,17 +40,22 @@ class MyAccountActivity : AppCompatActivity() {
         binding.userGmail.text ="${PreferenceKeeper.instance.loginResponse?.email}"
 
         Glide.with(this).load(PreferenceKeeper.instance.loginResponse?.profilePicture).placeholder(R.drawable.ic_user_default).into(binding.CurrentOrderProfileImage)
-        binding.toolbar.ivCart.visibility= View.VISIBLE
-        binding.toolbar.ivCart.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyCartActivity::class.java)) }
-        binding.constraintMyLocation.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyAddressActivity::class.java)) }
+        binding.toolbar.ivCart.visibility= View.GONE
+         binding.constraintMyLocation.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyAddressActivity::class.java)) }
         binding.constraintMyOrder.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyOrderActivity2::class.java)) }
         binding.ivEditPencil.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, ProfileUpdateActivity::class.java)) }
-        binding.CurrentOrderProfileImage.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, FullImageActivity::class.java)) }
-        binding.MyWalletConstrent.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyWalletActivity::class.java)) }
-        binding.constraintDelivery.setOnClickListener{
-            showPOPUP()
+         binding.MyWalletConstrent.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyWalletActivity::class.java)) }
+
+        binding.deleteAccount.setOnClickListener {
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Are you sure want to delete account ?").setMessage("Once account will be deleted .You lost all data and never retrieve again")
+                .setPositiveButton("Delete") { dialog, which ->  }
+
+            builder.setNegativeButton("Cancel"){dialog, which -> dialog.dismiss()}
+            val alert = builder.create()
+            alert.show()
         }
-        binding.constraintNotification.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, NotifactionActivity::class.java)) }
 
     }
     private fun statusBarColor() {
@@ -50,72 +63,40 @@ class MyAccountActivity : AppCompatActivity() {
     //    Utils.changeStatusTextColor(this)
     }
 
-    private fun showPOPUP() {
-        PopUpVehicleChoose.getInstance().createDialog(
-            this@MyAccountActivity,
-            "",
-            object : PopUpVehicleChoose.Dialogclick {
-                override fun onYes() {
-                    riderLoginChk()
-                }
-
-                override fun onNo() {
-
-                }
-
-                override fun onPedesstrain() {
-
-                }
-
-                override fun onCycle() {
-
-                }
-
-                override fun onElectric() {
-
-                }
-
-                override fun onPetrol() {
-
-                }
-
-                override fun onBio() {
-
-                }
-
-            })
+    override fun onStart() {
+        super.onStart()
+        getMyProfile()
     }
 
-    private fun goLoginScreen() {
-        Utils.showMessage(this, resources.getString(R.string.you_login_first))
-        startActivity(Intent(this@MyAccountActivity, LoginActivity::class.java))
-        finish()
-    }
+    private fun getMyProfile() {
 
+        var myProfileViewModel = CommonViewModel(this)
+        var userid =PreferenceKeeper.instance.loginResponse?._id
 
-    private fun riderLoginChk() {
-        // startActivity(Intent(this@UserHomePageNavigationActivity, HomeRiderrActivity::class.java))
+        myProfileViewModel.getMyProfile(userid!!).observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
 
-        if (PreferenceKeeper.instance.loginResponse != null) {
-            if (PreferenceKeeper.instance.loginResponse!!.isRider) {
-                // MyApp.popErrorMsg("","Your Vehicle details is in under verification",THIS!!)
-                startActivity(
-                    Intent(
-                        this@MyAccountActivity,
-                        HomeRiderActivity::class.java
-                    )
-                )
-                finish()
-            } else {
-                startActivity(
-                    Intent(
-                        this@MyAccountActivity,
-                        VehicleInfoActivity::class.java
-                    )
-                )
+                    it.data?.let {
+                        PreferenceKeeper.instance.loginResponse = it.data
+                        binding.userName.text ="${PreferenceKeeper.instance.loginResponse?.firstName} ${PreferenceKeeper.instance.loginResponse?.lastName}"
+                        binding.userMobile.text ="${PreferenceKeeper.instance.loginResponse?.countryCode} ${PreferenceKeeper.instance.loginResponse?.mobileNumber}"
+                        binding.userGmail.text ="${PreferenceKeeper.instance.loginResponse?.email}"
+                        Glide.with(this).load(PreferenceKeeper.instance.loginResponse?.profilePicture).placeholder(R.drawable.ic_user_default).into(binding.CurrentOrderProfileImage)
+
+                    }
+
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+
+                    var vv = it.message
+                    MyApp.popErrorMsg("", "" + it.message, this)
+                }
             }
-        } else {
-            goLoginScreen()
         }
     }
-}
+
+
+ }

@@ -4,11 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.adapters.ProductDetailColorVariationAdapter
@@ -16,98 +16,83 @@ import com.app.ecolive.common_screen.adapters.ProductDetailSimilarProductAdapter
 import com.app.ecolive.common_screen.adapters.ProductImageSliderAdapter
 import com.app.ecolive.databinding.ActivityProductDetailBinding
 import com.app.ecolive.localmodel.PropertyImageListModel
-import com.app.ecolive.localmodel.SimilarProductListModel
-import com.app.ecolive.login_module.LoginActivity
-import com.app.ecolive.payment_module.AddMoneyMainActivity
-import com.app.ecolive.review_module.ReviewCustomerToProductActivity
 import com.app.ecolive.service.Status
-import com.app.ecolive.shop_owner.model.ProductModel
+import com.app.ecolive.shop_owner.model.ProductDetailModel
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.json.JSONObject
 
 class ProductDetailActivity : AppCompatActivity() {
-    var cartCount =0
+    private var productPrice: Double = 0.0
+    var cartCount = 0
+    var OldcartCount = 0
     private lateinit var view_pager: ViewPager
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var lytPageIndicator: LinearLayout
     lateinit var adapter: ProductImageSliderAdapter
-    lateinit var colorVariationAdapter: ProductDetailColorVariationAdapter
-    lateinit var productDetailSimilarProductAdapter: ProductDetailSimilarProductAdapter
+
     private var currentIndex: Int = 0
     val listModel = ArrayList<PropertyImageListModel>()
-    var productId :String =""
-    var shopId :String =""
+    var productId: String = ""
+    var shopId: String = ""
     private val progressDialog = CustomProgressDialog()
+    var alreadyInCartProductId = ""
+    var alreadyInCartId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail)
-        if (intent.extras!=null){
-            productId=intent.getStringExtra("productId")!!
-            vendorShopProductListAPICAll()
+        if (intent.extras != null) {
+            productId = intent.getStringExtra("productId")!!
+            productDetailApi()
         }
         initView()
 
-        binding.icComment.setOnClickListener {
-            startActivity(Intent(this@ProductDetailActivity,CommentProductActivity::class.java))
-        }
+
 
         binding.btnButNow.setOnClickListener {
-           /* startActivity(Intent(this@ProductDetailActivity, AddMoneyMainActivity::class.java)
-                .putExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,true))*/
+
             startActivity(Intent(this@ProductDetailActivity, MyCartActivity::class.java))
         }
         binding.addtoCartBtn.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                if(cartCount>0){
-                    addToCart()
-                }
 
+            if (cartCount > 0) {
+                addToCart()
             }
+
         }
-        binding.icWish.setOnClickListener {
-           // MyApp.popErrorMsg("","You have to login first",this@ProductDetailActivity)
-        }
+
     }
 
-    private fun goLoginScreen() {
-        Utils.showMessage(this@ProductDetailActivity,"You have to login first")
-        val i = Intent(this, LoginActivity::class.java)
-        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(i)
-        finish()
+    override fun onStart() {
+        super.onStart()
+        getCart()
     }
+
 
     private fun initView() {
+        Utils.changeStatusColor(this, R.color.color_050D4C)
+
         view_pager = binding.viewPager
         lytPageIndicator = binding.lytPageIndicator
 
-
-        productDetailSimilarProductList()
-        binding.productDetailVisitShopTxt.setOnClickListener { startActivity(Intent(this@ProductDetailActivity, VisitShopActivity::class.java)) }
-        binding.textViewSeeProductReviews.setOnClickListener { startActivity(Intent(this@ProductDetailActivity, ReviewCustomerToProductActivity::class.java)) }
-
         binding.minus.setOnClickListener {
-            if(cartCount>0){
+            if (cartCount > 0) {
                 cartCount--
-                binding.quantity.text =cartCount.toString()
+                binding.quantity.text = cartCount.toString()
             }
         }
         binding.plus.setOnClickListener {
 
-                cartCount++
-            binding.quantity.text =cartCount.toString()
+            cartCount++
+            binding.quantity.text = cartCount.toString()
         }
     }
-    private fun imageSlider(file: List<ProductModel.File>)
-    {
-        // Utils.changeStatusColor(this, R.color.white)
-        //Utils.changeStatusTextColor(this)
-        for (element in file){
+
+    private fun imageSlider(file: ArrayList<ProductDetailModel.Image>) {
+
+        for (element in file) {
             val item = PropertyImageListModel(element.name)
             listModel.add(item)
         }
@@ -120,6 +105,7 @@ class ProductDetailActivity : AppCompatActivity() {
         view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
+
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -143,6 +129,7 @@ class ProductDetailActivity : AppCompatActivity() {
         }
         updatePageIndicator(currentIndex)
     }
+
     private fun updatePageIndicator(position: Int) {
         var imageView: ImageView
 
@@ -159,6 +146,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 i -> {
                     imageView.setImageResource(R.drawable.ic_active_dot)
                 }
+
                 else -> {
                     imageView.setImageResource(R.drawable.ic_inactive_dot)
                 }
@@ -166,45 +154,111 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun getCart() {
+        //  progressDialog.show(this)
+        var addtoCartViewModel = CommonViewModel(this)
+        var json = JSONObject()
+        /* json.put("shop_id", shopId)
+         json.put("qty", cartCount)
+         json.put("product_id", productId)
+         json.put("purchase_type", "")
+         json.put("product_color", "")*/
+        Log.d("ok", "getCart: " + json)
+        addtoCartViewModel.getCart(json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
 
+                    //  progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        //  productList(it.data.products)
+                        alreadyInCartProductId = it.data.products[0].productId._id ?: ""
+                        alreadyInCartId = it.data._id?: ""
+                        binding.count.text =it.data.totalQty.toString()
+                        cartCount =it.data.totalQty
+                        OldcartCount =it.data.totalQty
+                        binding.quantity.text =cartCount.toString()
 
-    private fun productDetailSimilarProductList() {
-        val similarProductListModel = ArrayList<SimilarProductListModel>()
-        var item = SimilarProductListModel("Apple Watch Gold With Extra Large size","Men's Watch","$520",resources.getDrawable(R.drawable.apple_watch))
-        similarProductListModel.add(item)
-        item = SimilarProductListModel("Apple Watch White With Extra Large size","Men's Watch","$520",resources.getDrawable(R.drawable.apple_watch_white))
-        similarProductListModel.add(item)
+                    }
 
-        item = SimilarProductListModel("Apple Watch White With Extra Large size","Men's Watch","$520",resources.getDrawable(R.drawable.apple_watch_white))
-        similarProductListModel.add(item)
-        item = SimilarProductListModel("Apple Watch Gold With Extra Large size","Men's Watch","$520",resources.getDrawable(R.drawable.apple_watch))
-        similarProductListModel.add(item)
-        binding.productDetailSimilarProductRecyclerview.layoutManager = GridLayoutManager(this, 2)
-        productDetailSimilarProductAdapter = ProductDetailSimilarProductAdapter(this, similarProductListModel)
-        binding.productDetailSimilarProductRecyclerview.adapter = productDetailSimilarProductAdapter
+                }
 
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    // progressDialog.dialog.dismiss()
+                    /* var vv = it.message
+                     // var msg = JSONObject(it.message)
+                     // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                     MyApp.popErrorMsg("", "" + vv, this)*/
+                }
+            }
+        }
     }
 
-    private fun vendorShopProductListAPICAll() {
-        progressDialog.show(this)
+    private fun removeCart() {
+        //  progressDialog.show(this)
+        var addtoCartViewModel = CommonViewModel(this)
+        var json = JSONObject()
+        json.put("cartId", alreadyInCartId)
+        /* json.put("shop_id", shopId)
+         json.put("qty", cartCount)
+         json.put("product_id", productId)
+         json.put("purchase_type", "")
+         json.put("product_color", "")*/
+        Log.d("ok", "getCart: " + json)
+        addtoCartViewModel.removeCart(json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                    //  progressDialog.dialog.dismiss()
+                    it.data?.let {
+                        //  productList(it.data.products)
+                       alreadyInCartProductId =""
+                        alreadyInCartId=""
+                        addToCart()
+
+                    }
+
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    // progressDialog.dialog.dismiss()
+                    /* var vv = it.message
+                     // var msg = JSONObject(it.message)
+                     // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                     MyApp.popErrorMsg("", "" + vv, this)*/
+                }
+            }
+        }
+    }
+
+    private fun productDetailApi() {
+        binding.consButton.visibility = View.GONE
+        binding.nestedScrollView.visibility = View.GONE
+        binding.layoutShimmer.visibility = View.VISIBLE
+        // progressDialog.show(this)
         var addProductViewModel = CommonViewModel(this)
         var json = JSONObject()
         json.put("productId", productId)
         Log.d("ok", "addProductAPICall: " + json)
-        addProductViewModel.vendorShopProductList(json).observe(this) { it ->
+        addProductViewModel.productDetailApi(productId).observe(this) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.consButton.visibility = View.VISIBLE
+                    binding.nestedScrollView.visibility = View.VISIBLE
+                    binding.layoutShimmer.visibility = View.GONE
                     Log.d("ok", "productListAPICall:")
-                    progressDialog.dialog.dismiss()
+                    // progressDialog.dialog.dismiss()
                     it.data?.let {
-                        shopId =it.data.docs[0].storeId
+                        //  shopId =it.data.docs[0].storeId
                         homeProductList(it.data)
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
-                    progressDialog.dialog.dismiss()
+                    // progressDialog.dialog.dismiss()
                     var vv = it.message
                     // var msg = JSONObject(it.message)
                     // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
@@ -213,26 +267,52 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun addToCart() {
+        if (alreadyInCartProductId !="")
+        if (alreadyInCartProductId != productId) {
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Item different").setMessage("Added product in cart different. You want to replace it")
+                .setPositiveButton("OK") { dialog, which -> removeCart() }
+
+            builder.setNegativeButton("Cancel"){dialog, which -> dialog.dismiss()}
+            val alert = builder.create()
+            alert.show()
+            return
+        }
         progressDialog.show(this)
         var addtoCartViewModel = CommonViewModel(this)
+
         var json = JSONObject()
-        json.put("shop_id", shopId)
-        json.put("qty", cartCount)
-        json.put("product_id", productId)
-        json.put("purchase_type", "")
-        json.put("product_color", "")
+        json.put("shopId", shopId)
+        if (OldcartCount < cartCount){
+            var count =cartCount -OldcartCount
+            json.put("qty", count)
+        }else if (OldcartCount >cartCount){
+            var count =OldcartCount -cartCount
+            json.put("qty", -count)
+        }else{
+            var count =0
+            json.put("qty", count)
+        }
+
+        json.put("productId", productId)
+        json.put("price", productPrice)
+
         Log.d("ok", "addProductAPICall: " + json)
         addtoCartViewModel.addToCart(json).observe(this) { it ->
             when (it.status) {
                 Status.SUCCESS -> {
                     Log.d("ok", "productListAPICall:")
                     progressDialog.dialog.dismiss()
+                    getCart()
                     it.data?.let {
 
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -244,32 +324,31 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
     }
-    private fun homeProductList(data: ProductModel.Data) {
-        binding.productName.text =data.docs[0].productData.productName
-        binding.productPrice.text =data.docs[0].productData.price
-        binding.productLivePrice.text =data.docs[0].productData.priceLive
-        binding.freeDelivery.text =data.docs[0].freeDelivery
-        binding.fastDelivery.text =data.docs[0].fastDeliver
-        binding.aboutDescription.text = data.docs[0].productData.description?:""
-        imageSlider(data.docs[0].file)
-        val colorVariationList = ArrayList<DrawerCategoryListModel>()
+
+    private fun homeProductList(data: ProductDetailModel.Data) {
+        if (data.outofstock) {
 
 
-        for (i in 0 until data.docs[0].productData.color.size) {
-
-            try {
-                val item = DrawerCategoryListModel( data.docs[0].productData.color[i])
-                colorVariationList.add(item)
-
-            } catch (e: Exception) {
-
-            }
+            binding.textView33.visibility = View.INVISIBLE
+            binding.constraintLayout6.visibility = View.INVISIBLE
+        } else {
+            binding.textView33.visibility = View.VISIBLE
+            binding.constraintLayout6.visibility = View.VISIBLE
         }
-
-        binding.productDetailColorVariationRecyclerview.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        colorVariationAdapter = ProductDetailColorVariationAdapter(this, colorVariationList)
-        binding.productDetailColorVariationRecyclerview.adapter = colorVariationAdapter
+        shopId = data.vendorShopId
+        productPrice = data.price.toString().toDouble()
+        binding.productName.text = data.name
+        binding.productPrice.text = data.livePrice.toString()
+        binding.productLivePrice.text = data.price.toString()
+        binding.freeDelivery.text = data.freeDelivery
+        binding.fastDelivery.text = data.fastDeliver
+        binding.aboutDescription.text = data.productData ?: ""
+        binding.stockStatus.text = if (data.outofstock) {
+            "OUT OF STOCK"
+        } else {
+            "IN STOCK"
+        }
+        imageSlider(data.images)
 
 
     }
