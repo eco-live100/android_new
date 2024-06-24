@@ -1,6 +1,7 @@
 package com.app.ecolive.common_screen.adapters
 import android.content.Context
 import android.graphics.Color
+import android.provider.SyncStateContract.Constants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.app.ecolive.R
 import com.app.ecolive.databinding.*
 import com.app.ecolive.localmodel.MyCartListModel
 import com.app.ecolive.localmodel.SimilarProductListModel
+import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.Utils.Companion.priceMultiplyByQty
 import com.bumptech.glide.Glide
 import com.localmerchants.ui.localModels.DrawerCategoryListModel
@@ -34,10 +36,10 @@ class MyCartListAdapter(var context: Context, var dataList: ArrayList<MyCartList
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.myCartProductName.text=dataList[position].productName
-        holder.binding.myCartProductPrice.text="$"+dataList[position].shopOnlinePrice
+        holder.binding.myCartProductPrice.text=dataList[position].shopOnlinePrice
         holder.binding.myCartQty.text=dataList[position].selectQty
-        Glide.with(context).load(dataList[position].image).into(holder.binding.myCartProductImage)
-        holder.binding.viewProductDetails.setOnClickListener {
+        Glide.with(context).load(AppConstant.product_listUrl+dataList[position].image).into(holder.binding.myCartProductImage)
+        holder.binding.myCartProductImage.setOnClickListener {
             onClickListener.onClick(position)
         }
 
@@ -46,9 +48,12 @@ class MyCartListAdapter(var context: Context, var dataList: ArrayList<MyCartList
         }
 
         holder.binding.myCartQtyMinus.setOnClickListener {
-            onClickListener.onMinus(position)
+            if (dataList[position].selectQty>"1"){
+                onClickListener.onMinus(position)
+            }
+
         }
-        holder.binding.myCartQtyMinus.setOnClickListener {
+        holder.binding.myCartQtyPlus.setOnClickListener {
             onClickListener.onPlus(position)
         }
         if (dataList[position].selectQty=="1")
@@ -56,13 +61,18 @@ class MyCartListAdapter(var context: Context, var dataList: ArrayList<MyCartList
             holder.binding.myCartProductPrice2.visibility=View.GONE
         }else{
             holder.binding.myCartProductPrice2.visibility=View.VISIBLE
-         //   holder.binding.myCartProductPrice2.text="= $"+priceMultiplyByQty(dataList[position].shopOnlinePrice,holder.binding.myCartQty.text.toString())
+            holder.binding.myCartProductPrice2.text="="+priceMultiplyByQty(dataList[position].shopOnlinePrice,holder.binding.myCartQty.text.toString())
 
         }
     }
 
     override fun getItemCount(): Int {
         return dataList.size
+    }
+
+    fun updateQTy(totalQty: Int) {
+         dataList[0].selectQty =totalQty.toString()
+        notifyDataSetChanged()
     }
 
     interface ClickListener {

@@ -7,7 +7,7 @@ data class ProductModel(
 )
 {
 data class Data(
-    val docs: List<Doc>,
+    val docs: ArrayList<Doc>,
     val hasNextPage: Boolean,
     val hasPrevPage: Boolean,
     val limit: Int,
@@ -21,35 +21,18 @@ data class Data(
 
 data class Doc(
     val _id: String,
+    val createdAt: String,
     val fastDeliver: String,
-    val fastDeliveryTime: String,
-    val `file`: List<File>,
     val freeDelivery: String,
-    val freeDeliveryTime: String,
-    val offers: List<Any>,
-    val productData: ProductData,
-    val productDescription: String,
+    val images: ArrayList<String>,
+    val livePrice: Int,
+    val name: String,
+    val outofstock: Boolean,
+    val price: Int,
+    val productData: String,
     val shopCategoryId: String,
     val shopSubCategoryId: String,
-    val storeId: String
-)
-
-data class File(
-    val name: String
-)
-
-data class ProductData(
-    val batteryLife: String,
-    val brand: String,
-    val color: String,
-    val connectivity: String,
-    val description: String,
-    val dimensions: String,
-    val model: String,
-    val name: String,
-    val noiseCancellation: Boolean,
-    val price: Double,
-    val quantity: Int,
-    val warranty: String,
-    val weight: String
+    val updatedAt: String,
+    val userId: String,
+    val vendorShopId: String
 )}

@@ -36,7 +36,7 @@ class ImageCaptureListAdapter(var context: Context, var dataList: ArrayList<Imag
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.rowImageCapture.setImageBitmap(BitmapFactory.decodeFile(dataList[position].img))
+        holder.binding.rowImageCapture.setImageURI (dataList[position].img)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(position)
         }

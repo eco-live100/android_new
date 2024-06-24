@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -39,8 +40,8 @@ interface APIInterface {
     fun getAddres(): Call<ResponseBody>
 
 
-    @POST("address-delete")
-    fun deleteAddress(@Body params: RequestBody): Call<ResponseBody>
+    @DELETE("address-delete")
+    fun deleteAddress(@QueryMap map: HashMap<String,String>): Call<ResponseBody>
 
     @POST("social-login")
     fun userSocialLoginAPI(@Body params: RequestBody): Call<ResponseBody>
@@ -54,7 +55,7 @@ interface APIInterface {
     @POST("rider-vehicle-details")
     fun updateVehicleProfileAPI(@Body requestBody: MultipartBody): Call<ResponseBody>
 
-    @POST("vendor-shop-details")
+    @POST("add-shop")
     fun shopUploadAPI(@Body requestBody: MultipartBody): Call<ResponseBody>
 
     @POST("vendor-shop-details")//not use now
@@ -72,14 +73,23 @@ interface APIInterface {
     @POST("add-product")
     fun addProductListAPI(@Body requestBody: MultipartBody): Call<ResponseBody>
 
-    @POST("vendor-shop-product-list?page=1&limit=30")
-    fun vendorShopProductListAPI(@Body requestBody: RequestBody): Call<ResponseBody>
+    @GET("product-list")
+    fun vendorShopProductListAPI(@QueryMap map: HashMap<String, String>): Call<ResponseBody>
 
-    @POST("cart")
+    @GET("product-details/{id}")
+    fun productDetailApi(@Path("id") id: String): Call<ResponseBody>
+
+    @POST("add-product-to-cart")
     fun addToCart(@Body requestBody: RequestBody): Call<ResponseBody>
 
-    @GET("cart")
+    @POST("place-retail-order")
+    fun PlaceOrderapiEcommerce(@Body requestBody: RequestBody): Call<ResponseBody>
+
+    @GET("get-cart-details")
     fun getCart(): Call<ResponseBody>
+
+    @PUT("empty-cart")
+    fun removeCart(@Body requestBody: RequestBody): Call<ResponseBody>
 
 
     ///pharmacy
@@ -283,4 +293,21 @@ interface APIInterface {
 
     @GET("product-list-by-shopId")
     fun productListByShopID(@QueryMap map: HashMap<String, String>): Call<ResponseBody>
+
+    @GET("order-list-for-user")
+    fun orderList(@QueryMap map: HashMap<String, String>): Call<ResponseBody>
+
+    @PUT("toggle-outofstock-status/{id}")
+    fun productOutofStockApi(
+        @Path("id") shopId: String,
+    ): Call<ResponseBody>
+
+    @DELETE("remove-product-by-productId/{id}")
+    fun productDeleteApi(
+        @Path("id") productId: String,
+    ): Call<ResponseBody>
+
+    @GET("geocode/json?")
+//    fun geoCodeApi(@QueryMap map: Map<String?, String?>?): Call<GeoCodeResponse>
+    fun geoCodeApi(@QueryMap map: HashMap<String?, String?>): Call<ResponseBody>
 }

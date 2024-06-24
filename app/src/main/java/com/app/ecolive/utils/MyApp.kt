@@ -58,8 +58,9 @@ class MyApp : Application() {
         private lateinit var dialog: Dialog
         private var ctx: Context? = null
         var SHARED_PREF_NAME = "Brng_Pref"
-        var locationLast:Location? =null
-        var lastLocationAddress:String? =null
+        var locationLast:Location? =null ////ik*****************
+        var lastLocationAddress:String? =null///**********
+        var lastLocationAddresstitle:String? =null///**********
         var driverlocation:Location? =null
         var driverLocationAddress:String? =null
         fun getAppContext() : Context {

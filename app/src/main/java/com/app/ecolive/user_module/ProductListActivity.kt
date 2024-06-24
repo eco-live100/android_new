@@ -210,26 +210,26 @@ class ProductListActivity : BaseActivity() {
         var json = JSONObject()
         json.put("categoryId", "6351876d9c5b36484345bda6")
         Log.d("ok", "addProductAPICall: " + json)
-        addProductViewModel.vendorShopProductList(json).observe(THIS!!) { it ->
-            when (it.status) {
-                Status.SUCCESS -> {
-                    Log.d("ok", "productListAPICall: ")
-                      progressDialog.dialog.dismiss()
-                    it.data?.let {
-                        homeProductList(it.data)
-                    }
-
-                }
-                Status.LOADING -> {}
-                Status.ERROR -> {
-                      progressDialog.dialog.dismiss()
-                    var vv = it.message
-                    // var msg = JSONObject(it.message)
-                    // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
-                    MyApp.popErrorMsg("", "" + vv, THIS!!)
-                }
-            }
-        }
+//        addProductViewModel.vendorShopProductList(json).observe(THIS!!) { it ->
+//            when (it.status) {
+//                Status.SUCCESS -> {
+//                    Log.d("ok", "productListAPICall: ")
+//                      progressDialog.dialog.dismiss()
+//                    it.data?.let {
+//                        homeProductList(it.data)
+//                    }
+//
+//                }
+//                Status.LOADING -> {}
+//                Status.ERROR -> {
+//                      progressDialog.dialog.dismiss()
+//                    var vv = it.message
+//                    // var msg = JSONObject(it.message)
+//                    // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+//                    MyApp.popErrorMsg("", "" + vv, THIS!!)
+//                }
+//            }
+//        }
     }
 
     private fun homeProductList(data: ProductModel.Data) {
@@ -239,16 +239,16 @@ class ProductListActivity : BaseActivity() {
         for (i in 0 until data.docs.size) {
 
             try {
-                var item = SimilarProductListModel(
+              //  var item = SimilarProductListModel(
 
-                    data.docs[i].productData.name,
-                    data.docs[i].productData.price.toString(),
-                    data.docs[i].productData.price.toString(),
-                    resources.getDrawable(R.drawable.product_image3),
-                    data.docs[i].file[0].name,
-                    data.docs[i].productData.model,
-                )
-                similarProductListModel.add(item)
+                   // data.docs[i].productData.name,
+                  //  data.docs[i].productData.price.toString(),
+                  //  data.docs[i].productData.price.toString(),
+                  //  resources.getDrawable(R.drawable.product_image3),
+                  //  data.docs[i].file[0].name,
+                 //   data.docs[i].productData.model,
+              //  )
+             //   similarProductListModel.add(item)
 
             } catch (e: Exception) {
 

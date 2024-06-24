@@ -2,12 +2,14 @@ package com.app.ecolive.user_module
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.MyaddressActivityBinding
 import com.app.ecolive.service.Status
+import com.app.ecolive.user_module.model.AddressModel
 import com.app.ecolive.user_module.user_adapter.MyAddressAdapter
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
@@ -19,6 +21,8 @@ class MyAddressActivity : AppCompatActivity() {
     lateinit var binding:MyaddressActivityBinding
     private val progressDialog = CustomProgressDialog()
     lateinit var myAddressAdapter: MyAddressAdapter
+    var isForSelected =false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView(this@MyAddressActivity,R.layout.myaddress_activity)
@@ -26,6 +30,11 @@ class MyAddressActivity : AppCompatActivity() {
 
         binding.addressAddBtn.setOnClickListener {
             startActivity(Intent(this@MyAddressActivity,AddAddressActivity::class.java))
+        }
+
+        if (intent.getStringExtra("Key")=="ForSelect"){
+              isForSelected =true
+
         }
     }
 
@@ -39,6 +48,15 @@ class MyAddressActivity : AppCompatActivity() {
         myAddressAdapter = MyAddressAdapter(this@MyAddressActivity,object:MyAddressAdapter.ClickListener{
             override fun onClick(pos: String) {
                 deleteAddress(pos)
+            }
+
+            override fun onSelect(address: AddressModel.Data) {
+                if (isForSelected){
+                    val returnIntent = Intent()
+                    returnIntent.putExtra("result", address)
+                    setResult(RESULT_OK, returnIntent)
+                    finish()
+                }
             }
 
         })
@@ -89,7 +107,7 @@ class MyAddressActivity : AppCompatActivity() {
     private fun deleteAddress(id: String) {
         progressDialog.show(this)
         var commanViewModel = CommonViewModel(this)
-        var json = JSONObject()
+        var json = HashMap<String,String>()
 
         json.put("addressId", id)
         commanViewModel.deleteAddress(json).observe(this) { it ->

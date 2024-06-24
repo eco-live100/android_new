@@ -271,6 +271,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/constraintMyLocation" />
 
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/deleteAccount"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_marginHorizontal="@dimen/_40sdp"
+                        android:background="@drawable/bg_blue_round_button"
+                        android:backgroundTint="@color/red"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="center"
+                        android:text="Delete account"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appCompatLoginButton" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 

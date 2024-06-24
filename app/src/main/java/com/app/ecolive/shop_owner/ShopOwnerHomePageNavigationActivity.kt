@@ -202,31 +202,8 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
             startActivity(i)
             finish()
         }
-        setSpinnerSideMenu()
-    }
+     }
 
-    private fun setSpinnerSideMenu() {
-        var list = ArrayList<String>()
-        list.add("As a Rider")
-        list.add("As a Shop-Owner")
-        list.add("As a User")
-        val aa: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeLeftDrawer.sideMenuSpinner.adapter = aa
-        binding.includeLeftDrawer.sideMenuSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-    }
 
 
 

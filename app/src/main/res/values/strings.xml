@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EcoliveApp</string>
+    <string name="app_name">Ecolive</string>
     <string name="facebook_app_id">553774492933366</string>
     <string name="facebook_client_token">768d0ce322b7427216e53ef89fcabef2</string>
     <string name="fb_login_protocol_scheme">fb1234</string>

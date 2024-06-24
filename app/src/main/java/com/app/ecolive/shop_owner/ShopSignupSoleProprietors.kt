@@ -143,6 +143,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
         progressDialog.show(THIS!!)
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
+        builder.addFormDataPart("userId", PreferenceKeeper.instance.loginResponse!!._id.toString())
         builder.addFormDataPart("shopCategoryId", selectedCategoryID)
         builder.addFormDataPart("shopSubCategoryId", selectedSubCategoryID)
         builder.addFormDataPart("shopName", binding.soleStorName.text.toString())

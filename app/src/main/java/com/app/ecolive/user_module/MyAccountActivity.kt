@@ -21,6 +21,7 @@ import com.app.ecolive.utils.Utils
 import com.app.ecolive.utils.Utils.Companion.progressDialog
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.json.JSONObject
 
 class MyAccountActivity : AppCompatActivity() {
@@ -45,6 +46,16 @@ class MyAccountActivity : AppCompatActivity() {
         binding.ivEditPencil.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, ProfileUpdateActivity::class.java)) }
          binding.MyWalletConstrent.setOnClickListener {  startActivity(Intent(this@MyAccountActivity, MyWalletActivity::class.java)) }
 
+        binding.deleteAccount.setOnClickListener {
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Are you sure want to delete account ?").setMessage("Once account will be deleted .You lost all data and never retrieve again")
+                .setPositiveButton("Delete") { dialog, which ->  }
+
+            builder.setNegativeButton("Cancel"){dialog, which -> dialog.dismiss()}
+            val alert = builder.create()
+            alert.show()
+        }
 
     }
     private fun statusBarColor() {

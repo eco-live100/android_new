@@ -2,6 +2,7 @@ package com.app.ecolive.utils
 
 object AppConstant {
 
+    const val product_listUrl = "https://api.ecolive.global/product/uploads/"
     const val BASE_URL = "https://api.ecolive.global/api1/"
     const val BASE_URL_Image = "https://api.ecolive.global"
     const val NO_INTERNET = 502
@@ -63,6 +64,10 @@ object AppConstant {
     var data = "Data"
     var fromScreen = "FromScreen"
     var doctorProfile = "DoctorProfile"
+    var lastSelectedLocationLat = "lastSelectedLocationLat"
+    var lastSelectedLocationLang = "lastSelectedLocationLang"
+    var lastAddress = "lastAddress"
+    var lastAddressTitle = "lastAddressTitle"
 
 
     ///Key for request

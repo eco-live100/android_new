@@ -1,10 +1,12 @@
 package com.app.ecolive.user_module.model
 
+import java.io.Serializable
+
 data class AddressModel(
     val code: Int,
     val `data`: ArrayList<Data>,
     val message: String
-)
+):Serializable
 {
 data class Data(
     val __v: Int,
@@ -19,4 +21,4 @@ data class Data(
     val title: String,
     val updatedAt: String,
     val userId: String
-)}
+):Serializable}

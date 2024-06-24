@@ -122,7 +122,8 @@ class HomeRiderActivity : BaseActivity() {
                 binding.include.contentHome.orderRequestList.layoutManager = layoutManager
                 riderOrderListAdapter = PharmacyListAdapter(this, pharmacyList)
                 binding.include.contentHome.orderRequestList.adapter = riderOrderListAdapter*/
-
+        binding.includeLeftDrawer.homepageDrawerMyOrder.visibility =View.GONE
+        binding.includeLeftDrawer.MyCart.visibility =View.GONE
         val user = PreferenceKeeper.instance.loginResponse
         if (user != null) {
             binding.include.contentHome.riderUserName.text =
@@ -519,9 +520,8 @@ class HomeRiderActivity : BaseActivity() {
 
 
 
-        sideMenuCategoryList()
 
-        setSpinnerSideMenu()
+
 
 
         binding.includeLeftDrawer.homepageDrawerMyAccount.setOnClickListener {
@@ -590,46 +590,6 @@ class HomeRiderActivity : BaseActivity() {
 
     }
 
-    private fun setSpinnerSideMenu() {
-        val list = ArrayList<String>()
-        list.add("As a User")
-        list.add("As a Rider")
-        list.add("As a Shop-Owner")
-
-        val aa: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeLeftDrawer.sideMenuSpinner.adapter = aa
-        binding.includeLeftDrawer.sideMenuSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>, view: View, position: Int, id: Long
-                ) {
-                    when (position) {
-                        0 -> {
-
-                        }
-
-                        1 -> {
-                            startActivity(
-                                Intent(
-                                    this@HomeRiderActivity,
-                                    UserHomePageNavigationActivity::class.java
-                                )
-                            )
-                            finish()
-                            //   riderLoginChk()
-                        }
-
-                        2 -> {
-                            shopLoginChk()
-                        }
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-    }
 
     private fun openCloseNavigationDrawerStart() {
         when {
@@ -660,38 +620,6 @@ class HomeRiderActivity : BaseActivity() {
         // Utils.changeStatusTextColor(this)
     }
 
-    private fun sideMenuCategoryList() {
-        var item1 = DrawerCategoryListModel("Fashion & Beauty")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Electronics and Devices")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Home & diy")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Office & Professional")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Automotive")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Toys")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Kids & Babies")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Music")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Games & Videos")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Book & Readins pets")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Drugstore & Personal care")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Groceries & Drinks")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Sports and Outdoors")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Others")
-        drawerCategoryListModel.add(item1)
-
-
-    }
 
 
     private var back_pressed_time: Long = 0

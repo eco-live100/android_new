@@ -12,6 +12,7 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.app.ecolive.R
 import com.app.ecolive.localmodel.PropertyImageListModel
+import com.app.ecolive.utils.AppConstant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -42,7 +43,7 @@ class ProductImageSliderAdapter(
         holder.itemImage = itemView.findViewById(R.id.img_slider)
         holder.progressBar = itemView.findViewById(R.id.progressBar)
         holder.sliderItem = this.itemList[position]
-        Glide.with(context).load(holder.sliderItem.image).listener(object :
+        Glide.with(context).load(AppConstant.product_listUrl+holder.sliderItem.image).listener(object :
             RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
