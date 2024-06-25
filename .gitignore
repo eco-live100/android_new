@@ -21,6 +21,8 @@ local.properties
 /bleFeatures/build
 *.apk
 output.json
+output-metadata.json
+
 
 
 
