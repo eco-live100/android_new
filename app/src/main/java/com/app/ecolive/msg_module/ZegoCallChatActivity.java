@@ -48,6 +48,7 @@ public class ZegoCallChatActivity extends AppCompatActivity {
                     String message = "We need your consent for the following permissions in order to use the offline call function properly";
                     scope.showRequestReasonDialog(deniedList, message, "Allow", "Deny");
                 }).request((allGranted, grantedList, deniedList) -> {
+
                 });
 
         ZIMKit.registerMessageListListener(fragment -> {

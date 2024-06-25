@@ -34,11 +34,11 @@
                 <ImageView
                     android:id="@+id/signupBakBtn"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="@dimen/_15ssp"
                     android:src="@drawable/ic_back_black"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline1"
@@ -84,10 +84,10 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:drawableEnd="@drawable/ic_user_fill14"
                     android:drawablePadding="@dimen/_10ssp"
                     android:hint="First Name"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:textColorHint="#333333"
 
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -101,11 +101,11 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:drawableEnd="@drawable/ic_user_fill14"
                     android:drawablePadding="@dimen/_10ssp"
                     android:hint="Last Name"
                     android:textColorHint="#333333"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/guideline1"
                     app:layout_constraintTop_toBottomOf="@+id/userName" />
@@ -120,8 +120,8 @@
                     android:drawablePadding="@dimen/_10ssp"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="Email"
-                    android:textColorHint="#333333"
                     android:inputType="textEmailAddress"
+                    android:textColorHint="#333333"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/guideline1"
                     app:layout_constraintTop_toBottomOf="@+id/userNameLast" />
@@ -144,19 +144,19 @@
                         android:id="@+id/forgotContryPicker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="2dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        app:ccp_showFlag="true"
                         android:maxLength="15"
-                        app:ccp_showNameCode="false"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="2dp"
+                        android:paddingBottom="5dp"
+                        android:textSize="@dimen/_10ssp"
                         app:ccp_autoDetectCountry="true"
                         app:ccp_countryPreference="JP,IN,US"
-                        app:ccp_rememberLastSelection="true"
                         app:ccp_defaultNameCode="JP"
-                        android:textSize="@dimen/_10ssp"
+                        app:ccp_rememberLastSelection="true"
+                        app:ccp_showFlag="true"
+                        app:ccp_showNameCode="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -167,12 +167,12 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_36sdp"
                         android:background="@null"
+                        android:digits="0123456789"
                         android:drawableEnd="@drawable/ic_phone"
                         android:drawablePadding="@dimen/_10ssp"
                         android:hint="Phone number"
-                        android:maxLength="15"
-                        android:digits="0123456789"
                         android:inputType="number"
+                        android:maxLength="15"
                         android:paddingStart="@dimen/_1ssp"
                         android:textColorHint="#333333"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -187,23 +187,23 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-             <!--   <EditText
-                    android:id="@+id/userPhno"
-                    android:layout_width="0dp"
-                    style="@style/editTextStyle"
-                    android:layout_height="@dimen/_36sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:drawableEnd="@drawable/ic_phone"
-                    android:hint="Mobile number"
-                    android:inputType="number"
-                    android:maxLength="15"
-                  />-->
+                <!--   <EditText
+                       android:id="@+id/userPhno"
+                       android:layout_width="0dp"
+                       style="@style/editTextStyle"
+                       android:layout_height="@dimen/_36sdp"
+                       android:layout_marginTop="@dimen/_16sdp"
+                       android:drawableEnd="@drawable/ic_phone"
+                       android:hint="Mobile number"
+                       android:inputType="number"
+                       android:maxLength="15"
+                     />-->
 
 
                 <EditText
                     android:id="@+id/userPwd"
-                    android:layout_width="0dp"
                     style="@style/editTextStyle"
+                    android:layout_width="0dp"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:drawableEnd="@drawable/ic_lock"
@@ -216,18 +216,41 @@
 
                 <EditText
                     android:id="@+id/userPwdCnfrm"
-                    android:layout_width="0dp"
                     style="@style/editTextStyle"
+                    android:layout_width="0dp"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="20dp"
-                    android:hint="Confirm Password"
                     android:drawableEnd="@drawable/ic_lock"
+                    android:hint="Confirm Password"
                     android:inputType="textPassword"
                     android:textColorHint="#333333"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline1"
                     app:layout_constraintTop_toBottomOf="@+id/userPwd" />
+
+                <LinearLayout
+                    android:id="@+id/llterm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/userPwdCnfrm"
+                    app:layout_constraintStart_toStartOf="@+id/userPwdCnfrm"
+                    app:layout_constraintTop_toBottomOf="@+id/userPwdCnfrm">
+
+                    <CheckBox
+                        android:id="@+id/acceptCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/termandCondition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Accept term and condition and privacy"
+                        android:textColor="@color/color_blue"/>
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/userSignupBtn"
@@ -242,7 +265,7 @@
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/guideline1"
-                    app:layout_constraintTop_toBottomOf="@+id/userPwdCnfrm" />
+                    app:layout_constraintTop_toBottomOf="@+id/llterm" />
 
 
                 <TextView
@@ -253,8 +276,8 @@
                     android:fontFamily="@font/roboto_regular"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:text="Or sign up via"
-                    android:visibility="invisible"
                     android:textColor="@color/color_333333"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/guideline1"
                     app:layout_constraintTop_toBottomOf="@+id/userSignupBtn" />
@@ -263,8 +286,8 @@
                     android:id="@+id/view2"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:visibility="invisible"
                     android:background="@color/color_blue"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
                     app:layout_constraintEnd_toStartOf="@+id/textView6"
                     app:layout_constraintStart_toStartOf="@+id/guideline1"
@@ -274,13 +297,12 @@
                     android:id="@+id/view"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:visibility="invisible"
                     android:background="@color/color_blue"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toEndOf="@+id/textView6"
                     app:layout_constraintTop_toTopOf="@+id/textView6" />
-
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -311,18 +333,13 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-
-
                     <ImageView
                         android:id="@+id/loginTwitterBtn"
                         android:layout_width="@dimen/_29sdp"
                         android:layout_height="@dimen/_29sdp"
                         android:layout_marginStart="@dimen/_16sdp"
-                         app:layout_constraintStart_toEndOf="@+id/signupGoogleBtn"
+                        app:layout_constraintStart_toEndOf="@+id/signupGoogleBtn"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

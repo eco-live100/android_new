@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_F5F5F5"
-        tools:context=".user_module.MyOrderActivity">
+        >
         <include
             android:id="@+id/toolbar"
             layout="@layout/custom_toolbar"/>
@@ -42,6 +42,7 @@
             android:hint="Search your order here"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_8sdp"
+            android:visibility="gone"
             android:textColor="@color/color_9F9F9F"
             android:textColorHint="@color/color_707070"
             android:textSize="@dimen/sp_14"
@@ -57,6 +58,6 @@
             tools:listitem="@layout/row_my_order_list"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSearch" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

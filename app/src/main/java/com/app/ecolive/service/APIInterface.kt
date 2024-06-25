@@ -41,7 +41,7 @@ interface APIInterface {
 
 
     @DELETE("address-delete")
-    fun deleteAddress(@QueryMap map: HashMap<String,String>): Call<ResponseBody>
+    fun deleteAddress(@QueryMap map: HashMap<String, String>): Call<ResponseBody>
 
     @POST("social-login")
     fun userSocialLoginAPI(@Body params: RequestBody): Call<ResponseBody>
@@ -296,6 +296,9 @@ interface APIInterface {
 
     @GET("order-list-for-user")
     fun orderList(@QueryMap map: HashMap<String, String>): Call<ResponseBody>
+
+    @GET("order-list-for-shop/{id}")
+    fun orderListShop(@Path("id") shopId: String,@QueryMap map: HashMap<String, String>): Call<ResponseBody>
 
     @PUT("toggle-outofstock-status/{id}")
     fun productOutofStockApi(

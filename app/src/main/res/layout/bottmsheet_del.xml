@@ -35,5 +35,20 @@
         android:fontFamily="@font/roboto_regular"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/myOrders"
+        android:layout_width="match_parent"
+        android:text="My orders"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_19sdp"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="@dimen/_10ssp"
+        android:drawableTint="@color/black"
+        android:drawableStart="@drawable/ic_shopping_cart"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/color_333333"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
 </layout>

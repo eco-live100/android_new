@@ -41,8 +41,7 @@ import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.location.*
-import com.nightout.ui.fragment.SearchLocBottomSheet
-import com.offercity.base.BaseActivity
+ import com.offercity.base.BaseActivity
 import com.zegocloud.uikit.plugin.invitation.ZegoInvitationType
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService
@@ -348,26 +347,20 @@ class UserHomePageNavigationActivity : BaseActivity()
 
         }
 
-        binding.include.contentHome.etSearchLocation.setOnClickListener {
-            secrachLocationBtmSheet = SearchLocBottomSheet(object : OnSelectOptionListener {
-                override fun onOptionSelect(location: String, _id: String) {
-                    Toast.makeText(THIS, "" + location.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }, "")
-            secrachLocationBtmSheet.show(
-                this@UserHomePageNavigationActivity.supportFragmentManager,
-                "SEARCHLOCATION"
-            )
-        }
 
         binding.include.contentHome.showmoreProduct.setOnClickListener {
             startActivity(
                 Intent(this@UserHomePageNavigationActivity, ProductListActivity::class.java)
-                    .putExtra(AppConstant.CATEGORY, AppConstant.RETAIL)
+                    .putExtra(AppConstant.CATEGORY, "Live")
             )
         }
 
-
+        binding.include.contentHome.showmoreProduct2.setOnClickListener {
+            startActivity(
+                Intent(this@UserHomePageNavigationActivity, ProductListActivity::class.java)
+                    .putExtra(AppConstant.CATEGORY, "Online")
+            )
+        }
 
 
 
@@ -412,7 +405,6 @@ class UserHomePageNavigationActivity : BaseActivity()
     }
 
 
-    lateinit var secrachLocationBtmSheet: SearchLocBottomSheet
 
     fun openCloseNavigationDrawerStart() {
         when {
@@ -462,28 +454,11 @@ class UserHomePageNavigationActivity : BaseActivity()
                                             )
                                         )
                                     } else if (pos == 1) {
-                                        startActivity(
-                                            Intent(
-                                                this@UserHomePageNavigationActivity,
-                                                ProductListActivity::class.java
-                                            )
-                                                .putExtra(
-                                                    AppConstant.CATEGORY,
-                                                    AppConstant.FOOD
-                                                )
-                                        )
+                                       Toast.makeText(this@UserHomePageNavigationActivity,"We are coming soon ",Toast.LENGTH_SHORT).show()
 
                                     } else if (pos == 2) {
-                                        startActivity(
-                                            Intent(
-                                                this@UserHomePageNavigationActivity,
-                                                ProductListActivity::class.java
-                                            )
-                                                .putExtra(
-                                                    AppConstant.CATEGORY,
-                                                    AppConstant.GROCERY
-                                                )
-                                        )
+                                        Toast.makeText(this@UserHomePageNavigationActivity,"We are coming soon ",Toast.LENGTH_SHORT).show()
+
 
                                     } else if (pos == 3) {
                                         /*if(!PreferenceKeeper.instance.isHealthProfileCreate){*/

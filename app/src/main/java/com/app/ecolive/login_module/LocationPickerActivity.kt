@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityLocationPickerBinding
@@ -141,7 +142,11 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         placeApiInit()
         handler = Handler(Looper.getMainLooper())
         binding.myLocation.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
@@ -152,7 +157,7 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             } else {
 
                 // alertDialog_picker()
-//            askLocationPermission();
+            askLocationPermission();
             }
 
 
@@ -259,7 +264,11 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-        if (ContextCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
@@ -322,12 +331,24 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+
     private fun askLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED ||ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                LOCATION_REQUEST_CODE
+            )
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -336,7 +357,10 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ),
                     LOCATION_REQUEST_CODE
                 )
             } else {
@@ -372,14 +396,14 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
 //                getLastLocation();
                 checkSettingandStartLocationUpdate()
             } else {
-                // gotoMapActivity(false)
+                askLocationPermission()
             }
         }
     }
 
     private fun placeApiInit() {
 
-        Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
+        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         binding.myLocationEdt.setOnClickListener(View.OnClickListener {
             val fieldList: List<Place.Field> =
                 Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
@@ -398,7 +422,7 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         val latlng: String = latitude.toString() + "," + longitude.toString()
         val map: HashMap<String?, String?> = HashMap()
         map.put("latlng", "" + latlng)
-        map.put("key", "" + getString(R.string.google_maps_key))
+        map.put("key", "" + BuildConfig.MAPS_API_KEY)
         var revrseModel = CommonViewModel(this)
         revrseModel.reverseApi(map).observe(this) { it ->
             when (it.status) {

@@ -18,6 +18,7 @@ import com.akexorcist.googledirection.GoogleDirection
 import com.akexorcist.googledirection.constant.AvoidType
 import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.FragmentSchudleBinding
 import com.app.ecolive.service.Status
@@ -263,7 +264,7 @@ class FragmentSchudle : Fragment() {
     }
     private fun placeApiInit() {
 
-        Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
+        Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
         binding.startLocation.setOnClickListener{
             val fieldList: List<Place.Field> =
                 listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)

@@ -50,6 +50,10 @@ class ProductDetailActivity : AppCompatActivity() {
         initView()
 
 
+        binding.myCart.setOnClickListener {
+            startActivity(Intent(this@ProductDetailActivity, MyCartActivity::class.java))
+
+        }
 
         binding.btnButNow.setOnClickListener {
 
@@ -172,11 +176,15 @@ class ProductDetailActivity : AppCompatActivity() {
                     it.data?.let {
                         //  productList(it.data.products)
                         alreadyInCartProductId = it.data.products[0].productId._id ?: ""
+                        if (alreadyInCartProductId == productId) {
+                            cartCount =it.data.totalQty
+                            OldcartCount =it.data.totalQty
+
+                            binding.quantity.text =cartCount.toString()
+                        }
                         alreadyInCartId = it.data._id?: ""
                         binding.count.text =it.data.totalQty.toString()
-                        cartCount =it.data.totalQty
-                        OldcartCount =it.data.totalQty
-                        binding.quantity.text =cartCount.toString()
+
 
                     }
 

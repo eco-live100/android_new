@@ -33,21 +33,7 @@ class MyOrderActivity2 : AppCompatActivity() {
         binding.toolbar.ivBack.setOnClickListener { finish() }
     }
 
-    private fun productList() {
-        val arrayList = ArrayList<MyOrderListModel>()
-        var item = MyOrderListModel("(4.1)","Relish analogue men's watch","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.product_image1))
-        arrayList.add(item)
-        item = MyOrderListModel("(3.8)","The best Beats headphones","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch_white))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Black office chair","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Lunch box","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch_white))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Relish analogue men's watch","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.product_image3))
-        arrayList.add(item)
 
-
-    }
     private fun statusBarColor() {
         binding.toolbar.toolbarTitle.text="Order History"
         Utils.changeStatusColor(this, R.color.color_050D4C)

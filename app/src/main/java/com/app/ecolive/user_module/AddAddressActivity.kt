@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityAddAddressBinding
 import com.app.ecolive.service.Status
@@ -36,7 +37,7 @@ class AddAddressActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_address)
         statusBarColor()
         binding.addressPlacePicker.isActivated = false
-        Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
+        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         binding.addressPlacePicker.setOnClickListener {
             startAutocompleteIntent()
         }

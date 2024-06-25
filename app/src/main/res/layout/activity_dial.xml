@@ -89,6 +89,14 @@
                 android:textColorHint="@color/grey"
                 android:maxLength="20"
                 android:textSize="@dimen/_18sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/red"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Note: Please check country code as prefix. Its mandotary"/>
 
 
         </LinearLayout>

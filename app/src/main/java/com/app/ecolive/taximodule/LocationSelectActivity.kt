@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.adevinta.leku.LATITUDE
 import com.adevinta.leku.LONGITUDE
 import com.adevinta.leku.LocationPickerActivity
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityLocationSelectBinding
 import com.app.ecolive.utils.MyApp
@@ -88,7 +89,7 @@ class LocationSelectActivity : AppCompatActivity() {
     }
     private fun placeApiInit() {
 
-        Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
+        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         binding.startLocation.setOnClickListener {
             val fieldList: List<Place.Field> =
                 listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)

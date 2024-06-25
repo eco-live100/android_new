@@ -22,12 +22,15 @@ import com.app.ecolive.shop_owner.adapters.ShopListAdapter
 import com.app.ecolive.shop_owner.adapters.ShopOwnerProductListAdapter
 import com.app.ecolive.shop_owner.model.ShopListModel
 import com.app.ecolive.user_module.ContactListActivity
+import com.app.ecolive.user_module.MyOrderActivity
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.bumptech.glide.Glide
 import com.nightout.ui.fragment.BottomSheetDel
 import com.offercity.base.BaseActivity
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService
+import com.zegocloud.zimkit.services.ZIMKit
 
 class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListener{
     lateinit var binding: ActivityShopOwnerHomePageNavigationBinding
@@ -51,6 +54,8 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
             binding.includeLeftDrawer.sideMenuUserName.text= "Hello, "+PreferenceKeeper.instance.loginResponse?.firstName
             Glide.with(this).load(PreferenceKeeper.instance.loginResponse?.profilePicture).placeholder(R.drawable.ic_user_default).into(binding.include.shopProfile)
         }
+        binding.includeLeftDrawer.homepageDrawerMyOrder.visibility =View.GONE
+        binding.includeLeftDrawer.MyCart.visibility =View.GONE
 
 
     }
@@ -200,6 +205,8 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             i.putExtra("EXIT", true)
             startActivity(i)
+            ZIMKit.disconnectUser()
+            ZegoUIKitPrebuiltCallInvitationService.unInit()
             finish()
         }
      }
@@ -247,6 +254,10 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
     override fun onOptionSelect(option: String, id: String) {
         if (option == AppConstant.DELETE_KEY) {
             deleteShopApi(id)
+            bottomSheetDel.dismiss()
+        }
+        if (option == AppConstant.MY_ORDER) {
+            startActivity(Intent(this@ShopOwnerHomePageNavigationActivity,MyOrderActivity::class.java).putExtra("ID",id))
             bottomSheetDel.dismiss()
         }
     }

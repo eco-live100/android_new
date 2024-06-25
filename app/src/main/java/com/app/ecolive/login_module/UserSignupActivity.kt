@@ -17,10 +17,12 @@ import com.app.ecolive.viewmodel.CommonViewModel
   import com.google.android.gms.tasks.OnCompleteListener
  import com.google.firebase.messaging.FirebaseMessaging
 import com.offercity.base.BaseActivity
+import com.rajat.pdfviewer.PdfViewerActivity
+import com.rajat.pdfviewer.util.saveTo
 import org.json.JSONObject
 
 class UserSignupActivity : BaseActivity() {
-    lateinit var binding: ActivityUserSignupBinding
+        lateinit var binding: ActivityUserSignupBinding
     private val progressDialog = CustomProgressDialog()
     //google
     private val RC_SIGN_IN = 1
@@ -45,7 +47,16 @@ class UserSignupActivity : BaseActivity() {
             PreferenceKeeper.instance.fcmTokenSave= token
 
         })
-
+        binding.termandCondition.setOnClickListener {
+            startActivity(
+            PdfViewerActivity.launchPdfFromUrl(
+                context = this,
+                pdfUrl = "https://api.ecolive.global/docs/tandc.pdf",
+                pdfTitle = "Term and conditions",
+                saveTo = saveTo.ASK_EVERYTIME,
+                enableDownload = true
+            ))
+        }
 
     }
 
@@ -114,6 +125,10 @@ class UserSignupActivity : BaseActivity() {
 
         } else if (binding.userPwd.text.toString() != binding.userPwdCnfrm.text.toString()) {
             MyApp.popErrorMsg("", "Password doesn't match with confirm password", THIS!!)
+            return false
+
+        }else if (!binding.acceptCheckbox.isChecked) {
+            MyApp.popErrorMsg("", "Accept term and conditions", THIS!!)
             return false
 
         }

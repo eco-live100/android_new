@@ -50,6 +50,9 @@ class BottomSheetDel(private val onSelectOptionListener: OnSelectOptionListener,
         binding.botmSheetDel.setOnClickListener {
             onSelectOptionListener.onOptionSelect(AppConstant.DELETE_KEY,dataInfo._id)
         }
+        binding.myOrders.setOnClickListener {
+            onSelectOptionListener.onOptionSelect(AppConstant.MY_ORDER,dataInfo._id)
+        }
 
 //        closeDialog.setOnClickListener {
 //          dismiss()

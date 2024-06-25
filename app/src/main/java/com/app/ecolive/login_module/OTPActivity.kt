@@ -154,7 +154,8 @@ class OTPActivity : BaseActivity() {
 
 
                             //startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
-                            startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
+                            startActivity(Intent(this@OTPActivity, LocationPickerActivity::class.java))
+
                             Utils.showMessage(THIS!!, it.message)
                             finish()
                         }

@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ShopsignupSoleproprietorsActivityBinding
 import com.app.ecolive.service.Status
@@ -72,7 +73,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
         if (!Places.isInitialized()) {
             Places.initialize(
                 getApplicationContext(),
-                resources.getString(R.string.google_maps_key)
+                BuildConfig.MAPS_API_KEY
             )
         }
         val autocompleteFragment =

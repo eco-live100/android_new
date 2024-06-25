@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityCreateDoctorBinding
 import com.app.ecolive.pharmacy_module.PharmacyViewModel.PharmacyViewModel
@@ -321,7 +322,7 @@ class CreateAndUpdateDoctorProfile : AppCompatActivity() {
             option = logo
         }
 
-        Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
+        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         binding.hospitalLocation.setOnClickListener {
             option = 3
             val fieldList: List<Place.Field> =

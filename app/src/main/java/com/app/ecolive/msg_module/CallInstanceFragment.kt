@@ -108,6 +108,7 @@ class CallInstanceFragment : Fragment(R.layout.fragment_call_instance), NumberKe
         binding.callTimerId.stop()
         parentFragmentManager.beginTransaction().remove(this@CallInstanceFragment).commit();
         binding2.fragmentCallInstance.visibility =View.GONE
+        requireActivity().finish()
     }
 
     private fun onTimerStart() {

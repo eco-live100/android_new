@@ -42,8 +42,8 @@ class SplashActivity : AppCompatActivity() {
         try {
             Handler(Looper.getMainLooper()).postDelayed({
 
-           val lastLocationLat=     PreferenceKeeper.instance.lastLocationLat
-           var lastLocationLang=     PreferenceKeeper.instance.lastLocationLang
+           val lastLocationLat= PreferenceKeeper.instance.lastLocationLat
+           var lastLocationLang=PreferenceKeeper.instance.lastLocationLang
                         if(PreferenceKeeper.instance.isUserLogin){
                             if (lastLocationLat ==""){
                                 startActivity(Intent(this@SplashActivity, LocationPickerActivity::class.java))

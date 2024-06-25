@@ -154,7 +154,10 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
         getMyOrderListViewModel = webServiceRepository.orderList(map)
         return getMyOrderListViewModel
     }
-
+    fun orderListShop(id:String,map: HashMap<String, String>): LiveData<ApiSampleResource<OrderListModel>> {
+        getMyOrderListViewModel = webServiceRepository.orderListShop(id,map)
+        return getMyOrderListViewModel
+    }
     fun productOutofStockApi(id: String): LiveData<ApiSampleResource<ProductOutofStockModel>> {
         productOutofStockViewModel = webServiceRepository.productOutofStockApi(id)
         return productOutofStockViewModel

@@ -75,6 +75,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.localmerchants.ui.localModels.DrawerCategoryListModel
 import com.offercity.base.BaseActivity
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService
+import com.zegocloud.zimkit.services.ZIMKit
 import org.json.JSONObject
 
 
@@ -544,6 +546,8 @@ class HomeRiderActivity : BaseActivity() {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             i.putExtra("EXIT", true)
             startActivity(i)
+            ZIMKit.disconnectUser()
+            ZegoUIKitPrebuiltCallInvitationService.unInit()
             finish()
         }
 

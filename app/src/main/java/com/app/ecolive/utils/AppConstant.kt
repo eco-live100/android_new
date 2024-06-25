@@ -20,6 +20,7 @@ object AppConstant {
     const val CAMERA_KEY = "CAMERA_KEY"
     const val GALLERY_KEY = "GALLERY_KEY"
     const val DELETE_KEY = "DELETE_KEY"
+    const val MY_ORDER = "MY_ORDER"
     const val SOCIAL_LOGIN_NAME = "SOCIAL_LOGIN_NAME"
     const val SOCIAL_LOGIN_EMAIL = "SOCIAL_LOGIN_EMAIL"
     const val IS_FROM_USERTYPEOPTIONACTIVITY = "IS_FROM_USERTYPEOPTIONACTIVITY"
