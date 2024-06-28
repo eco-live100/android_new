@@ -156,6 +156,12 @@ interface APIInterface {
     @GET("doctor-list")
     fun getDoctorListApi(): Call<ResponseBody>
 
+    @PUT("logout")
+    fun logoutApi(): Call<ResponseBody>
+
+    @DELETE("delete-account")
+    fun DeactivateApi(): Call<ResponseBody>
+
     // @GET("pharmacy-list/?{lat}&{long}&distance=3000&keyword=&page=1&limit=100")
     @GET("pharmacy-list/")
     fun getPharmacyListApi(
@@ -299,6 +305,9 @@ interface APIInterface {
 
     @GET("order-list-for-shop/{id}")
     fun orderListShop(@Path("id") shopId: String,@QueryMap map: HashMap<String, String>): Call<ResponseBody>
+
+    @PUT("update-order-status/{id}")
+    fun updateOrderStatus(@Path("id") shopId: String,@QueryMap map: HashMap<String, String>): Call<ResponseBody>
 
     @PUT("toggle-outofstock-status/{id}")
     fun productOutofStockApi(

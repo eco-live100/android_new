@@ -1,6 +1,5 @@
 package com.app.ecolive.user_module
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,10 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityMyOrderBinding
-import com.app.ecolive.localmodel.MyOrderListModel
 import com.app.ecolive.service.Status
-import com.app.ecolive.taximodule.TrackingWithProgressActivity
-import com.app.ecolive.user_module.user_adapter.UserMyOrderList2Adapter
 import com.app.ecolive.user_module.user_adapter.UserMyOrderListAdapter
 import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
@@ -61,11 +57,45 @@ class MyOrderActivity : AppCompatActivity() {
                     progressDialog.dialog.dismiss()
                     binding.recyclerviewMyOrder.layoutManager = LinearLayoutManager(this)
                     adapter = UserMyOrderListAdapter(this, it.data!!.data.items,object : UserMyOrderListAdapter.ClickListener{
-                        override fun onClick(pos: Int) {
-
+                        override fun onClick(data: String, id: String) {
+                            updateOrderStatus(status = data,id)
                         }
                     })
                     binding.recyclerviewMyOrder.adapter = adapter
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    // var msg = JSONObject(it.message)
+                    // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                    MyApp.popErrorMsg("", "" + vv, this)
+                }
+            }
+        }
+    }
+
+
+    private fun updateOrderStatus(status: String, id: String) {
+        progressDialog.show(this)
+        var addProductViewModel = CommonViewModel(this)
+        var json = HashMap<String, String>()
+        // json.put("shopId", storeData._id)
+        json.put("status", status)
+
+        addProductViewModel.updateOrderStatus(id,json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    Log.d("ok", "productListAPICall: ")
+                    progressDialog.dialog.dismiss()
+                   for (i in 0 until adapter.dataList.size){
+                       if (adapter.dataList[i].orderNumber ==it.data?.order?.orderNumber){
+                           adapter.dataList[i].status = it.data.order.status
+                           adapter.notifyDataSetChanged()
+                           break
+                       }
+                   }
                 }
 
                 Status.LOADING -> {}

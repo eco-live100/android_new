@@ -22,7 +22,7 @@ data class Item(
     val paymentStatus: String,
     val products: ArrayList<Product>,
     val shippingAddress: String,
-    val status: String,
+    var status: String,
     val totalAmount: Double,
     val updatedAt: String,
     val userId: String

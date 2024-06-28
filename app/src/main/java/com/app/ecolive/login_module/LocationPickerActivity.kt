@@ -182,7 +182,7 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback {
                     finish()
                 }else{
                     startActivity(Intent(this@LocationPickerActivity, UserHomePageNavigationActivity::class.java))
-
+                    finish()
                 }
 
             }else{

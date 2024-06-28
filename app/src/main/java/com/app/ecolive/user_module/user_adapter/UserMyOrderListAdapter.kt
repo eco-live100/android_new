@@ -1,19 +1,13 @@
 package com.app.ecolive.user_module.user_adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
 import com.app.ecolive.databinding.*
-import com.app.ecolive.localmodel.MyOrderListModel
 import com.app.ecolive.localmodel.OrderListModel
-import com.app.ecolive.localmodel.SimilarProductListModel
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
 
 
 class UserMyOrderListAdapter(
@@ -47,44 +41,67 @@ class UserMyOrderListAdapter(
         }
         if (dataList[position].status.equals( status.pending.name)){
             holder.binding.pending.isChecked =true
-            holder.binding.pending.isClickable =false
+            holder.binding.pending.isEnabled =false
+
         }else   if (dataList[position].status.equals( status.confirmed.name)){
             holder.binding.pending.isChecked =true
-            holder.binding.pending.isClickable =false
+            holder.binding.pending.isEnabled =false
             holder.binding.confirmed.isChecked =true
-            holder.binding.confirmed.isClickable =false
+            holder.binding.confirmed.isEnabled =false
         }else   if (dataList[position].status.equals( status.shipped.name)){
             holder.binding.pending.isChecked =true
-            holder.binding.pending.isClickable =false
+            holder.binding.pending.isEnabled =false
             holder.binding.confirmed.isChecked =true
-            holder.binding.confirmed.isClickable =false
+            holder.binding.confirmed.isEnabled =false
             holder.binding.shipped.isChecked =true
-            holder.binding.shipped.isClickable =false
-            holder.binding.cancelled.isClickable =false
+            holder.binding.shipped.isEnabled =false
+            holder.binding.cancelled.isEnabled =false
         }else   if (dataList[position].status.equals( status.delivered.name)){
             holder.binding.pending.isChecked =true
-            holder.binding.pending.isClickable =false
+            holder.binding.pending.isEnabled =false
             holder.binding.confirmed.isChecked =true
-            holder.binding.confirmed.isClickable =false
+            holder.binding.confirmed.isEnabled =false
             holder.binding.shipped.isChecked =true
-            holder.binding.shipped.isClickable =false
+            holder.binding.shipped.isEnabled =false
             holder.binding.delivered.isChecked =true
-            holder.binding.delivered.isClickable =false
-            holder.binding.cancelled.isClickable =false
+            holder.binding.delivered.isEnabled =false
+            holder.binding.cancelled.isEnabled =false
         }else   if (dataList[position].status.equals( status.cancelled.name)){
 
             holder.binding.pending.isClickable =false
+            holder.binding.pending.isEnabled =false
 
             holder.binding.confirmed.isClickable =false
+            holder.binding.confirmed.isEnabled =false
 
             holder.binding.shipped.isClickable =false
+            holder.binding.shipped.isEnabled =false
 
             holder.binding.delivered.isClickable =false
+            holder.binding.delivered.isEnabled =false
             holder.binding.cancelled.isChecked =true
             holder.binding.cancelled.isClickable =false
+            holder.binding.cancelled.isEnabled =false
         }
 
+        holder.binding.confirmed.setOnClickListener {
+            onClickListener.onClick(status.confirmed.name,dataList[position]._id)
+        }
 
+        holder.binding.shipped.setOnClickListener {
+            onClickListener.onClick(status.shipped.name, dataList[position]._id)
+
+        }
+
+        holder.binding.delivered.setOnClickListener {
+            onClickListener.onClick(status.delivered.name, dataList[position]._id)
+
+        }
+
+        holder.binding.cancelled.setOnClickListener {
+            onClickListener.onClick(status.cancelled.name, dataList[position]._id)
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -92,7 +109,7 @@ class UserMyOrderListAdapter(
     }
 
     interface ClickListener {
-        fun onClick(pos: Int)
+        fun onClick(data: String, id: String)
     }
 }
 

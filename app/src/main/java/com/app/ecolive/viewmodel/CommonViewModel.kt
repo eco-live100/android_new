@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.databinding.BaseObservable
 import androidx.lifecycle.LiveData
 import com.app.ecolive.localmodel.OrderListModel
+import com.app.ecolive.localmodel.StatusUpdateModel
 import com.app.ecolive.login_module.model.LoginModel
 import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
@@ -35,6 +36,7 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
     private lateinit var productDetailModel: LiveData<ApiSampleResource<ProductDetailModel>>
     private lateinit var getProductListModelViewModel: LiveData<ApiSampleResource<ProductListModel>>
     private lateinit var getMyOrderListViewModel: LiveData<ApiSampleResource<OrderListModel>>
+    private lateinit var orderStatusViewModel: LiveData<ApiSampleResource<StatusUpdateModel>>
     private lateinit var productOutofStockViewModel: LiveData<ApiSampleResource<ProductOutofStockModel>>
     private lateinit var addtoCartViewModel: LiveData<ApiSampleResource<AddToCartModel>>
     private lateinit var placeOrderViewModel: LiveData<ApiSampleResource<PlaceOrderModel>>
@@ -56,7 +58,15 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
         baseModel = webServiceRepository.getMyProfile(id)
         return baseModel
     }
+    fun DeactivateApi(id: String): LiveData<ApiSampleResource<BaseModel>> {
+        baseModel = webServiceRepository.DeactivateApi(id)
+        return baseModel
+    }
 
+    fun logoutApi(id: String): LiveData<ApiSampleResource<BaseModel>> {
+        baseModel = webServiceRepository.logoutApi(id)
+        return baseModel
+    }
     fun updateProfileApi(body: MultipartBody): LiveData<ApiSampleResource<BaseModel>> {
         baseModel = webServiceRepository.updateProfileApi(body)
         return baseModel
@@ -157,6 +167,11 @@ class CommonViewModel (activity: Activity) : BaseObservable() {
     fun orderListShop(id:String,map: HashMap<String, String>): LiveData<ApiSampleResource<OrderListModel>> {
         getMyOrderListViewModel = webServiceRepository.orderListShop(id,map)
         return getMyOrderListViewModel
+    }
+
+    fun updateOrderStatus(id:String,map: HashMap<String, String>): LiveData<ApiSampleResource<StatusUpdateModel>> {
+        orderStatusViewModel = webServiceRepository.updateOrderStatus(id,map)
+        return orderStatusViewModel
     }
     fun productOutofStockApi(id: String): LiveData<ApiSampleResource<ProductOutofStockModel>> {
         productOutofStockViewModel = webServiceRepository.productOutofStockApi(id)

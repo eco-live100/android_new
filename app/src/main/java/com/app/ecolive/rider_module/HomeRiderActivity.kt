@@ -59,6 +59,7 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -73,6 +74,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.localmerchants.ui.localModels.DrawerCategoryListModel
 import com.offercity.base.BaseActivity
 import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService
@@ -536,19 +538,14 @@ class HomeRiderActivity : BaseActivity() {
 
 
         binding.includeLeftDrawer.sideMenuLogout.setOnClickListener {
-            /*PreferenceKeeper.instance.isUserLogin=false
-            PreferenceKeeper.instance.loginResponse = null
-*/
-            PreferenceKeeper.instance.clearData()
-            val i = Intent(applicationContext, LoginActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            i.putExtra("EXIT", true)
-            startActivity(i)
-            ZIMKit.disconnectUser()
-            ZegoUIKitPrebuiltCallInvitationService.unInit()
-            finish()
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Alert !").setMessage("Are you sure want to logout ?")
+                .setPositiveButton("Logout") { dialog, which -> logoutApi() }
+
+            builder.setNegativeButton("No"){dialog, which -> dialog.dismiss()}
+            val alert = builder.create()
+            alert.show()
         }
 
 
@@ -592,6 +589,48 @@ class HomeRiderActivity : BaseActivity() {
                     checkDemandAPI(isChecked)
                 }*/
 
+    }
+    private fun logoutApi() {
+        progressDialog.show(this)
+        var myProfileViewModel = CommonViewModel(this)
+
+        myProfileViewModel.logoutApi("").observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+
+                    it.data?.let {
+                        PreferenceKeeper.instance.isUserLogin = false
+                        PreferenceKeeper.instance.loginResponse = null
+                        PreferenceKeeper.instance.isHealthProfileCreate = false
+                        PreferenceKeeper.instance.isDriverOnline = false
+                        PreferenceKeeper.instance.lastLocationLang = ""
+                        PreferenceKeeper.instance.lastAddress = ""
+                        PreferenceKeeper.instance.lastLocationLat = ""
+                        PreferenceKeeper.instance.lastAddressTitle = ""
+                        val i = Intent(applicationContext, LoginActivity::class.java)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        i.putExtra("EXIT", true)
+                        startActivity(i)
+                        ZIMKit.disconnectUser()
+                        ZegoUIKitPrebuiltCallInvitationService.unInit()
+                        finish()
+
+                    }
+
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+
+                    var vv = it.message
+                    MyApp.popErrorMsg("", "" + it.message, this)
+                }
+            }
+        }
     }
 
 

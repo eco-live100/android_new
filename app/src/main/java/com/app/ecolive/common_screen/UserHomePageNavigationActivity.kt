@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,7 +14,10 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.BuildCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -41,7 +45,8 @@ import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.location.*
- import com.offercity.base.BaseActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.offercity.base.BaseActivity
 import com.zegocloud.uikit.plugin.invitation.ZegoInvitationType
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallService
@@ -68,8 +73,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-class UserHomePageNavigationActivity : BaseActivity()
-      {
+class UserHomePageNavigationActivity : BaseActivity() {
 
     lateinit var binding: ActivityUserHomePageNavigationBinding
     var adapter: HomeCategoryListAdapter? = null
@@ -78,7 +82,8 @@ class UserHomePageNavigationActivity : BaseActivity()
     private var drawerLayout: DrawerLayout? = null
     private val progressDialog = CustomProgressDialog()
     val scanCustomCode = registerForActivityResult(ScanCustomCode(), ::handleResult)
-
+    private var back_pressed_time: Long = 0
+    private val PERIOD: Long = 2000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +123,54 @@ class UserHomePageNavigationActivity : BaseActivity()
 
         }
         initCallInviteService(KeyCenter.APP_ID2, KeyCenter.APP_SIGN2, usedId, userName)
+
+
+        onBackPressedDispatcher.addCallback(this /* lifecycle owner */, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                 // Back is pressed... Finishing the activity
+
+            }
+        })
+
+        /*if (BuildCompat.isAtLeastT()) {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT
+            ) {
+                if (back_pressed_time + PERIOD > System.currentTimeMillis())
+                    finishAffinity()
+                else {
+                    if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout!!.closeDrawer(GravityCompat.START)
+                    } else {
+                        Utils.showMessage(
+                            this@UserHomePageNavigationActivity,
+                            getResources().getString(R.string.press_again)
+                        )
+                        back_pressed_time = System.currentTimeMillis()
+                    }
+                }
+            }
+        } else {*/
+            onBackPressedDispatcher.addCallback(this /* lifecycle owner */, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (back_pressed_time + PERIOD > System.currentTimeMillis())
+                        finishAffinity()
+                    else {
+                        if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
+                            drawerLayout!!.closeDrawer(GravityCompat.START)
+                        } else {
+                            Utils.showMessage(
+                                this@UserHomePageNavigationActivity,
+                                getResources().getString(R.string.press_again)
+                            )
+                            back_pressed_time = System.currentTimeMillis()
+                        }
+                    }
+                }
+            })
+       // }
+
+
 
     }
 
@@ -229,17 +282,16 @@ class UserHomePageNavigationActivity : BaseActivity()
 
 
         binding.includeLeftDrawer.sideMenuLogout.setOnClickListener {
-            PreferenceKeeper.instance.isUserLogin = false
-            PreferenceKeeper.instance.loginResponse = null
-            val i = Intent(applicationContext, LoginActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            i.putExtra("EXIT", true)
-            startActivity(i)
-            ZIMKit.disconnectUser()
-            ZegoUIKitPrebuiltCallInvitationService.unInit()
-            finish()
+
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Alert !").setMessage("Are you sure want to logout ?")
+                .setPositiveButton("Logout") { dialog, which -> logoutApi() }
+
+            builder.setNegativeButton("No") { dialog, which -> dialog.dismiss() }
+            val alert = builder.create()
+            alert.show()
+
         }
 
 
@@ -384,7 +436,11 @@ class UserHomePageNavigationActivity : BaseActivity()
             is QRResult.QRSuccess -> {
                 var id = result.content.rawValue
                 if (PreferenceKeeper.instance.loginResponse?._id.equals(id)) {
-                    Toast.makeText(this@UserHomePageNavigationActivity, "Can't make payment your self", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@UserHomePageNavigationActivity,
+                        "Can't make payment your self",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return
                 }
                 startActivity(
@@ -404,6 +460,48 @@ class UserHomePageNavigationActivity : BaseActivity()
 
     }
 
+    private fun logoutApi() {
+        progressDialog.show(this)
+        var myProfileViewModel = CommonViewModel(this)
+
+        myProfileViewModel.logoutApi("").observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+
+                    it.data?.let {
+                        PreferenceKeeper.instance.isUserLogin = false
+                        PreferenceKeeper.instance.loginResponse = null
+                        PreferenceKeeper.instance.isHealthProfileCreate = false
+                        PreferenceKeeper.instance.isDriverOnline = false
+                        PreferenceKeeper.instance.lastLocationLang = ""
+                        PreferenceKeeper.instance.lastAddress = ""
+                        PreferenceKeeper.instance.lastLocationLat = ""
+                        PreferenceKeeper.instance.lastAddressTitle = ""
+                        val i = Intent(applicationContext, LoginActivity::class.java)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        i.putExtra("EXIT", true)
+                        startActivity(i)
+                        ZIMKit.disconnectUser()
+                        ZegoUIKitPrebuiltCallInvitationService.unInit()
+                        finish()
+
+                    }
+
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+
+                    var vv = it.message
+                    MyApp.popErrorMsg("", "" + it.message, this)
+                }
+            }
+        }
+    }
 
 
     fun openCloseNavigationDrawerStart() {
@@ -454,10 +552,18 @@ class UserHomePageNavigationActivity : BaseActivity()
                                             )
                                         )
                                     } else if (pos == 1) {
-                                       Toast.makeText(this@UserHomePageNavigationActivity,"We are coming soon ",Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this@UserHomePageNavigationActivity,
+                                            "We are coming soon ",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 
                                     } else if (pos == 2) {
-                                        Toast.makeText(this@UserHomePageNavigationActivity,"We are coming soon ",Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this@UserHomePageNavigationActivity,
+                                            "We are coming soon ",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 
 
                                     } else if (pos == 3) {
@@ -510,10 +616,10 @@ class UserHomePageNavigationActivity : BaseActivity()
     private fun vendorShopProductListAPICAll() {
         // progressDialog.show(THIS!!)
         var addProductViewModel = CommonViewModel(THIS!!)
-        var json = HashMap<String,String>()
-        json.put("distance","3")
-        json.put("latitude",MyApp.locationLast!!.latitude.toString())
-        json.put("longitude",MyApp.locationLast!!.longitude.toString())
+        var json = HashMap<String, String>()
+        json.put("distance", "3")
+        json.put("latitude", MyApp.locationLast!!.latitude.toString())
+        json.put("longitude", MyApp.locationLast!!.longitude.toString())
 
         Log.d("ok", "addProductAPICall: " + json)
         addProductViewModel.vendorShopProductList(json).observe(THIS!!) { it ->
@@ -557,7 +663,7 @@ class UserHomePageNavigationActivity : BaseActivity()
     private fun vendorShopProductListAPICAll2() {
         // progressDialog.show(THIS!!)
         var addProductViewModel = CommonViewModel(THIS!!)
-        var json = HashMap<String,String>()
+        var json = HashMap<String, String>()
 
 
 
@@ -609,27 +715,6 @@ class UserHomePageNavigationActivity : BaseActivity()
 
 
 
-    private var back_pressed_time: Long = 0
-    private val PERIOD: Long = 2000
-
-    @SuppressLint("WrongConstant")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (back_pressed_time + PERIOD > System.currentTimeMillis())
-            finishAffinity()
-        else {
-            if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout!!.closeDrawer(GravityCompat.START)
-            } else {
-                Utils.showMessage(
-                    this@UserHomePageNavigationActivity,
-                    getResources().getString(R.string.press_again)
-                )
-                back_pressed_time = System.currentTimeMillis()
-            }
-        }
-    }
-
 
     private fun shopRegister() {
         val dialog = Dialog(this)
@@ -655,8 +740,6 @@ class UserHomePageNavigationActivity : BaseActivity()
         }
         dialog.show()
     }
-
-
 
 
     fun initCallInviteService(
@@ -728,10 +811,11 @@ class UserHomePageNavigationActivity : BaseActivity()
             if (results.resultCode == Activity.RESULT_OK) {
                 // There are no request codes
                 val data: Intent? = results.data
-                 if(data!!.getBooleanExtra("result",false)){
-                     binding.include.contentHome.headerHome.addresstitle.text = MyApp.lastLocationAddresstitle
-                     binding.include.contentHome.headerHome.address.text = MyApp.lastLocationAddress
-                 }
+                if (data!!.getBooleanExtra("result", false)) {
+                    binding.include.contentHome.headerHome.addresstitle.text =
+                        MyApp.lastLocationAddresstitle
+                    binding.include.contentHome.headerHome.address.text = MyApp.lastLocationAddress
+                }
             }
 
         }
