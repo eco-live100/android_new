@@ -40,6 +40,8 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/appicon_144"
         android:supportsRtl="true"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup"
         android:theme="@style/Theme.EcoliveApp">
         <activity
             android:name=".login_module.LocationPickerActivity"

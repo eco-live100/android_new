@@ -10,8 +10,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import android.window.OnBackInvokedDispatcher
@@ -46,6 +48,7 @@ import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.location.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.offercity.base.BaseActivity
 import com.zegocloud.uikit.plugin.invitation.ZegoInvitationType
 import com.zegocloud.uikit.prebuilt.call.ZegoUIKitPrebuiltCallConfig
@@ -91,7 +94,7 @@ class UserHomePageNavigationActivity : BaseActivity() {
         initView()
         binding.includeLeftDrawer.sideMenuUserName.text =
             "Hello, ${PreferenceKeeper.instance.loginResponse?.firstName}"
-
+        FirebaseCrashlytics.getInstance().sendUnsentReports()
         var usedId = "" + PreferenceKeeper.instance.loginResponse?._id
         var userName = PreferenceKeeper.instance.loginResponse?.firstName ?: ""
         val avatarUrl =
@@ -125,14 +128,7 @@ class UserHomePageNavigationActivity : BaseActivity() {
         initCallInviteService(KeyCenter.APP_ID2, KeyCenter.APP_SIGN2, usedId, userName)
 
 
-        onBackPressedDispatcher.addCallback(this /* lifecycle owner */, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                 // Back is pressed... Finishing the activity
-
-            }
-        })
-
-        /*if (BuildCompat.isAtLeastT()) {
+         if (BuildCompat.isAtLeastT()) {
             onBackInvokedDispatcher.registerOnBackInvokedCallback(
                 OnBackInvokedDispatcher.PRIORITY_DEFAULT
             ) {
@@ -150,7 +146,7 @@ class UserHomePageNavigationActivity : BaseActivity() {
                     }
                 }
             }
-        } else {*/
+        } else {
             onBackPressedDispatcher.addCallback(this /* lifecycle owner */, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (back_pressed_time + PERIOD > System.currentTimeMillis())
@@ -168,7 +164,7 @@ class UserHomePageNavigationActivity : BaseActivity() {
                     }
                 }
             })
-       // }
+        }
 
 
 
@@ -264,6 +260,7 @@ class UserHomePageNavigationActivity : BaseActivity() {
 
 
         binding.includeLeftDrawer.homepageDrawerMyAccount.setOnClickListener {
+
             try {
                 Utils.hideSoftKeyBoard(this@UserHomePageNavigationActivity)
             } catch (e: Exception) {

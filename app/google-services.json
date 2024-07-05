@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "826700708931-0hqan3h35h346bqfe7v94dvsjs10kbge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ecolive",
+            "certificate_hash": "312a982ab07135408280d003c6cecaf8dc4a25e5"
+          }
+        },
+        {
           "client_id": "826700708931-3tcouri8a3spir7ohbfijnur9bntnib1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
