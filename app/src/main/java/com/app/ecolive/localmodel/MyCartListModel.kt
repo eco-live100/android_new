@@ -10,4 +10,5 @@ data class MyCartListModel (
     var shopOnlinePrice: String,
     var image: String,
 
+
 )

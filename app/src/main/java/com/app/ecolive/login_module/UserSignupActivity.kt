@@ -14,22 +14,18 @@ import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.messaging.FirebaseMessaging
+  import com.google.android.gms.tasks.OnCompleteListener
+ import com.google.firebase.messaging.FirebaseMessaging
 import com.offercity.base.BaseActivity
+import com.rajat.pdfviewer.PdfViewerActivity
+import com.rajat.pdfviewer.util.saveTo
 import org.json.JSONObject
 
 class UserSignupActivity : BaseActivity() {
-    lateinit var binding: ActivityUserSignupBinding
+        lateinit var binding: ActivityUserSignupBinding
     private val progressDialog = CustomProgressDialog()
     //google
     private val RC_SIGN_IN = 1
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +47,17 @@ class UserSignupActivity : BaseActivity() {
             PreferenceKeeper.instance.fcmTokenSave= token
 
         })
-        //google
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        binding.termandCondition.setOnClickListener {
+            startActivity(
+            PdfViewerActivity.launchPdfFromUrl(
+                context = this,
+                pdfUrl = "https://api.ecolive.global/docs/tandc.pdf",
+                pdfTitle = "Term and conditions",
+                saveTo = saveTo.ASK_EVERYTIME,
+                enableDownload = true
+            ))
+        }
+
     }
 
     private fun initView() {
@@ -78,43 +79,13 @@ class UserSignupActivity : BaseActivity() {
                 }
             }
             binding.signupGoogleBtn -> {
-                googleLogin()
+
             }
         }
     }
 
-    private fun googleLogin() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === RC_SIGN_IN) {
-//            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
-//            handleSignInResult(result!!)
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d("ok", "firebaseAuthWithGoogle:" + account.id)
-                Log.d("ok", "firebaseAuthWithGoogle:" + account.idToken!!)
-                var vv1 = account.id
-                var vv3 = account.email
-                var vv4 = account.displayName
-                var vv5 = account.photoUrl
-                binding.userName.setText(account.displayName)
-                binding.userEmail.setText(account.email)
-                // firebaseAuthWithGoogle(account.idToken!!)
-              //  socialLoginAPICall("google", account.id,account.email,account.displayName)
-                googleSignInClient.signOut()//logout from google
-                FirebaseAuth.getInstance().signOut()
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("ok", "Google sign in failed", e)
-            }
-        }
-    }
+
 
     private fun isValidateInput(): Boolean {
         if (binding.userName.text.toString().isBlank()) {
@@ -154,6 +125,10 @@ class UserSignupActivity : BaseActivity() {
 
         } else if (binding.userPwd.text.toString() != binding.userPwdCnfrm.text.toString()) {
             MyApp.popErrorMsg("", "Password doesn't match with confirm password", THIS!!)
+            return false
+
+        }else if (!binding.acceptCheckbox.isChecked) {
+            MyApp.popErrorMsg("", "Accept term and conditions", THIS!!)
             return false
 
         }

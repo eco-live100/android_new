@@ -13,17 +13,25 @@ import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityShopOwnerHomePageNavigationBinding
 import com.app.ecolive.login_module.LoginActivity
+import com.app.ecolive.msg_module.ZegoCallChatActivity
+import com.app.ecolive.payment_module.SendMoneyHomePageActivity
 import com.app.ecolive.rider_module.HomeRiderActivity
 import com.app.ecolive.rider_module.VehicleInfoActivity
 import com.app.ecolive.service.Status
 import com.app.ecolive.shop_owner.adapters.ShopListAdapter
 import com.app.ecolive.shop_owner.adapters.ShopOwnerProductListAdapter
 import com.app.ecolive.shop_owner.model.ShopListModel
+import com.app.ecolive.user_module.ContactListActivity
+import com.app.ecolive.user_module.MyOrderActivity
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
 import com.app.ecolive.utils.*
 import com.app.ecolive.viewmodel.CommonViewModel
+import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nightout.ui.fragment.BottomSheetDel
 import com.offercity.base.BaseActivity
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService
+import com.zegocloud.zimkit.services.ZIMKit
 
 class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListener{
     lateinit var binding: ActivityShopOwnerHomePageNavigationBinding
@@ -45,12 +53,13 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
             binding.includeLeftDrawer.sideMenuUserName.text= "Hello"
         }else{
             binding.includeLeftDrawer.sideMenuUserName.text= "Hello, "+PreferenceKeeper.instance.loginResponse?.firstName
+            Glide.with(this).load(PreferenceKeeper.instance.loginResponse?.profilePicture).placeholder(R.drawable.ic_user_default).into(binding.include.shopProfile)
         }
+        binding.includeLeftDrawer.homepageDrawerMyOrder.visibility =View.GONE
+        binding.includeLeftDrawer.MyCart.visibility =View.GONE
 
 
     }
-
-
 
     private fun setLoginData() {
         try {
@@ -137,6 +146,21 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
 
 
             }
+            binding.include.constraintMakePayment->{ startActivity(
+                Intent(
+                    this@ShopOwnerHomePageNavigationActivity,
+                    SendMoneyHomePageActivity::class.java
+                )
+
+            )}
+            binding.include.constraintCallFriends->{ startActivity(
+                Intent(this@ShopOwnerHomePageNavigationActivity, ContactListActivity::class.java)
+
+            )}
+            binding.include.constraintMessage->{startActivity(
+                Intent(this@ShopOwnerHomePageNavigationActivity, ZegoCallChatActivity::class.java)
+
+            )}
         }
     }
 
@@ -162,66 +186,89 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
     }
 
     private fun initView() {
-        /*   binding.include.constraintTabAllProduct.setOnClickListener {
-               tabType="all_product"
-               filterSelection(binding.include.constraintTabAllProduct,binding.include.imageViewTabAllProduct,binding.include.textViewAllProduct) }
-
-           binding.include.constraintTabOutOfStock.setOnClickListener {
-               tabType="out_of_stock"
-               filterSelection( binding.include.constraintTabOutOfStock,binding.include.imageViewTabOutOfStock,binding.include.textViewOutOfStock) }
-
-           binding.include.productDetailMenu.setOnClickListener { showListPopupWindow(it) }
-           binding.includeLeftDrawer.homepageDrawerMyOrder.setOnClickListener {
-               startActivity(Intent(this@ShopOwnerHomePageNavigationActivity, AcceptedDeclineOrderActivity::class.java))
-           }
-           binding.include.btnAddProduct.setOnClickListener {
-               startActivity(Intent(this@ShopOwnerHomePageNavigationActivity, AddShopAndProductActivity::class.java))
-           }*/
 
 
         setTouchNClick(binding.include.shopAddNewStore)
         setTouchNClick(binding.include.toolbar.homepageToolbarSwitchToUser)
         setTouchNClick(binding.include.toolbar.homepageToolbarSwitchToRider)
+        setTouchNClick(binding.include.constraintMakePayment)
+        setTouchNClick(binding.include.constraintMessage)
+        setTouchNClick(binding.include.constraintCallFriends)
         drawerLayout = binding.drawerLayout
         binding.include.toolbar.ivMenu.setOnClickListener { openCloseNavigationDrawerStart() }
 
         binding.includeLeftDrawer.sideMenuLogout.setOnClickListener {
-            PreferenceKeeper.instance.isUserLogin=false
-            PreferenceKeeper.instance.loginResponse = null
-            val i = Intent(applicationContext, LoginActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            i.putExtra("EXIT", true)
-            startActivity(i)
-            finish()
-        }
-        setSpinnerSideMenu()
-    }
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Alert !").setMessage("Are you sure want to logout ?")
+                .setPositiveButton("Logout") { dialog, which -> logoutApi() }
 
-    private fun setSpinnerSideMenu() {
-        var list = ArrayList<String>()
-        list.add("As a Rider")
-        list.add("As a Shop-Owner")
-        list.add("As a User")
-        val aa: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeLeftDrawer.sideMenuSpinner.adapter = aa
-        binding.includeLeftDrawer.sideMenuSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
+            builder.setNegativeButton("No"){dialog, which -> dialog.dismiss()}
+            val alert = builder.create()
+            alert.show()
+        }
+     }
+
+
+    private fun logoutApi() {
+        progressDialog.show(this)
+        var myProfileViewModel = CommonViewModel(this)
+
+        myProfileViewModel.logoutApi("").observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+
+                    it.data?.let {
+                        PreferenceKeeper.instance.isUserLogin = false
+                        PreferenceKeeper.instance.loginResponse = null
+                        PreferenceKeeper.instance.isHealthProfileCreate = false
+                        PreferenceKeeper.instance.isDriverOnline = false
+                        PreferenceKeeper.instance.lastLocationLang = ""
+                        PreferenceKeeper.instance.lastAddress = ""
+                        PreferenceKeeper.instance.lastLocationLat = ""
+                        PreferenceKeeper.instance.lastAddressTitle = ""
+                        val i = Intent(applicationContext, LoginActivity::class.java)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        i.putExtra("EXIT", true)
+                        startActivity(i)
+                        ZIMKit.disconnectUser()
+                        ZegoUIKitPrebuiltCallInvitationService.unInit()
+                        finish()
+
+                    }
+
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-    }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
 
+                    var vv = it.message
+                    MyApp.popErrorMsg("", "" + it.message, this)
+                    PreferenceKeeper.instance.isUserLogin = false
+                    PreferenceKeeper.instance.loginResponse = null
+                    PreferenceKeeper.instance.isHealthProfileCreate = false
+                    PreferenceKeeper.instance.isDriverOnline = false
+                    PreferenceKeeper.instance.lastLocationLang = ""
+                    PreferenceKeeper.instance.lastAddress = ""
+                    PreferenceKeeper.instance.lastLocationLat = ""
+                    PreferenceKeeper.instance.lastAddressTitle = ""
+                    val i = Intent(applicationContext, LoginActivity::class.java)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    i.putExtra("EXIT", true)
+                    startActivity(i)
+                    ZIMKit.disconnectUser()
+                    ZegoUIKitPrebuiltCallInvitationService.unInit()
+                    finish()
+                }
+            }
+        }
+    }
 
 
     fun openCloseNavigationDrawerStart() {
@@ -245,6 +292,7 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
 
     @SuppressLint("WrongConstant")
     override fun onBackPressed() {
+        super.onBackPressed()
         if (back_pressed_time + PERIOD > System.currentTimeMillis())
             finishAffinity()
         else {
@@ -260,9 +308,40 @@ class ShopOwnerHomePageNavigationActivity : BaseActivity() , OnSelectOptionListe
         }
     }
 
-    override fun onOptionSelect(option: String) {
+    override fun onOptionSelect(option: String, id: String) {
         if (option == AppConstant.DELETE_KEY) {
+            deleteShopApi(id)
+            bottomSheetDel.dismiss()
+        }
+        if (option == AppConstant.MY_ORDER) {
+            startActivity(Intent(this@ShopOwnerHomePageNavigationActivity,MyOrderActivity::class.java).putExtra("ID",id))
             bottomSheetDel.dismiss()
         }
     }
+
+    private fun deleteShopApi(id: String) {
+        progressDialog.show(THIS!!)
+        var shopViewModel = CommonViewModel(THIS!!)
+        shopViewModel.deleteStore(id).observe(THIS!!) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
+                    it.data?.let {
+
+                    }
+                    vendorShopListAPICAll()
+
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    // var msg = JSONObject(it.message)
+                    // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                    MyApp.popErrorMsg("", "" + vv, THIS!!)
+                }
+            }
+        }
+    }
+
 }

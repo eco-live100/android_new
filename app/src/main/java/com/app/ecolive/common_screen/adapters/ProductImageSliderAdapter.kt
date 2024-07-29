@@ -12,10 +12,12 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.app.ecolive.R
 import com.app.ecolive.localmodel.PropertyImageListModel
+import com.app.ecolive.utils.AppConstant
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 
 class ProductImageSliderAdapter(
@@ -41,22 +43,23 @@ class ProductImageSliderAdapter(
         holder.itemImage = itemView.findViewById(R.id.img_slider)
         holder.progressBar = itemView.findViewById(R.id.progressBar)
         holder.sliderItem = this.itemList[position]
-        Glide.with(context).load(holder.sliderItem.image).listener(object :
+        Glide.with(context).load(AppConstant.product_listUrl+holder.sliderItem.image).listener(object :
             RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
                 holder.progressBar.visibility = View.GONE
                 return false
             }
+
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                dataSource: DataSource?,
+                resource: Drawable,
+                model: Any,
+                target: Target<Drawable>?,
+                dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
                 holder.progressBar.visibility = View.GONE

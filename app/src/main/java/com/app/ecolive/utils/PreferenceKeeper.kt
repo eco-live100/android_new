@@ -2,6 +2,7 @@ package com.app.ecolive.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.location.Location
 import android.preference.PreferenceManager
 import com.app.ecolive.login_module.model.UserModel
 import com.google.gson.Gson
@@ -103,6 +104,33 @@ class PreferenceKeeper private constructor(context: Context?) {
         get() = prefs!!.getBoolean(AppConstant.IsDriverOnline, false)
         set(isDriverOnline) {
             prefs!!.edit().putBoolean(AppConstant.IsDriverOnline, isDriverOnline)
+                .apply()
+        }
+
+    var lastLocationLat: String?
+        get() = prefs!!.getString(AppConstant.lastSelectedLocationLat, "")
+        set(lastLocationLat) {
+            prefs!!.edit().putString(AppConstant.lastSelectedLocationLat, lastLocationLat)
+                .apply()
+        }
+    var lastLocationLang: String?
+        get() = prefs!!.getString(AppConstant.lastSelectedLocationLang, "")
+        set(lastLocationLang) {
+            prefs!!.edit().putString(AppConstant.lastSelectedLocationLang, lastLocationLang)
+                .apply()
+        }
+
+    var lastAddress: String?
+        get() = prefs!!.getString(AppConstant.lastAddress, "")
+        set(lastAddress) {
+            prefs!!.edit().putString(AppConstant.lastAddress, lastAddress)
+                .apply()
+        }
+
+    var lastAddressTitle: String?
+        get() = prefs!!.getString(AppConstant.lastAddressTitle, "")
+        set(lastAddressTitle) {
+            prefs!!.edit().putString(AppConstant.lastAddressTitle, lastAddressTitle)
                 .apply()
         }
 }

@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarProfileUpdate">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userProfileImage"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_85sdp"
@@ -35,9 +35,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+                  />
 
             <ImageView
+                android:id="@+id/photoImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -47,7 +48,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/profileUpdateName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

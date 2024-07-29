@@ -1,6 +1,6 @@
 package com.app.ecolive.login_module.model
 
-import java.io.Serializable
+  import java.io.Serializable
 
 data class UserModel(
     val __v: Int,
@@ -34,8 +34,33 @@ data class UserModel(
     val address: String?,
     val checkEmailVerified: CheckEmailVerified?,
     val checkMobileVerified: CheckMobileVerified?,
-    val profilePicture: String?,
+    var profilePicture: String?,
     val refereshToken: String,
     var isDoctor: Boolean = false,
     var isPharmacy: Boolean = false,
+    val backgroundPicture: Any,
+    val getCurrentRole: Any,
+    val taxiDetails: List<Any>,
+    val vehicleDetails: List<Any>,
+    val wallet: Wallet
+    ) : Serializable {
+
+    data class CheckEmailVerified(
+        val emailVerified: Boolean
     ) : Serializable
+
+    data class CheckMobileVerified(
+        val mobileVerified: Boolean
+    ) : Serializable
+
+    data class GetCurrentRole(
+        val currentRole: String
+    ) : Serializable
+
+    data class Wallet(
+        val _id: String,
+        val currency: String,
+        var money: Double
+    ) : Serializable
+
+}

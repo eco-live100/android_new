@@ -8,15 +8,16 @@ import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.OtpActivityBinding
-import com.app.ecolive.msg_module.cometchat
-import com.app.ecolive.service.Status
+ import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.KeyCenter
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.offercity.base.BaseActivity
+import com.zegocloud.zimkit.services.ZIMKit
 import `in`.aabhasjindal.otptextview.OTPListener
 import org.json.JSONObject
 
@@ -135,6 +136,8 @@ class OTPActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
+                        ZIMKit.initWith(application, KeyCenter.APP_ID2, KeyCenter.APP_SIGN2)
+                        ZIMKit.initNotifications()
                         if (FROM.equals("forgetpassword")) {
                             startActivity(Intent(THIS, LoginActivity::class.java))
                             Utils.showMessage(THIS!!, it.message)
@@ -148,10 +151,11 @@ class OTPActivity : BaseActivity() {
                                 "" + PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
                             val name =
                                 "" + PreferenceKeeper.instance.loginResponse?.firstName + " " + PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
-                            cometchat.register(uid, name)
+
 
                             //startActivity(Intent(THIS, UserTypeOptionActivity::class.java))
-                            startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
+                            startActivity(Intent(this@OTPActivity, LocationPickerActivity::class.java))
+
                             Utils.showMessage(THIS!!, it.message)
                             finish()
                         }

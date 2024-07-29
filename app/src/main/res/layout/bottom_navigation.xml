@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
-                    android:text="Call Friends"
+                    android:text="Direct Call"
                     android:textColor="@color/color_333333"
                     android:textSize="@dimen/_9sdp"
                     app:layout_constraintEnd_toEndOf="parent"

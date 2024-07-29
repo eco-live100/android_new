@@ -1,55 +1,113 @@
 package com.app.ecolive.user_module
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityMyOrderBinding
-import com.app.ecolive.localmodel.MyOrderListModel
-import com.app.ecolive.taximodule.TrackingWithProgressActivity
+import com.app.ecolive.service.Status
 import com.app.ecolive.user_module.user_adapter.UserMyOrderListAdapter
+import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.viewmodel.CommonViewModel
 
 class MyOrderActivity : AppCompatActivity() {
     lateinit var binding: ActivityMyOrderBinding
     lateinit var adapter: UserMyOrderListAdapter
+    private val progressDialog = CustomProgressDialog()
+    var shopId =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_order)
+        shopId =intent.getStringExtra("ID")?:""
         statusBarColor()
         initView()
-        productList()
+        orderList()
     }
     private fun initView() {
         binding.toolbar.ivBack.setOnClickListener { finish() }
     }
 
-    private fun productList() {
-        val arrayList = ArrayList<MyOrderListModel>()
-        var item = MyOrderListModel("(4.1)","Relish analogue men's watch","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.product_image1))
-        arrayList.add(item)
-        item = MyOrderListModel("(3.8)","The best Beats headphones","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch_white))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Black office chair","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Lunch box","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.apple_watch_white))
-        arrayList.add(item)
-        item = MyOrderListModel("(4.1)","Relish analogue men's watch","Delivered on wed, oct 26th","$50.2",resources.getDrawable(R.drawable.product_image3))
-        arrayList.add(item)
-        binding.recyclerviewMyOrder.layoutManager = LinearLayoutManager(this)
-        adapter = UserMyOrderListAdapter(this, arrayList,object : UserMyOrderListAdapter.ClickListener{
-            override fun onClick(pos: Int) {
-                startActivity(Intent(this@MyOrderActivity, TrackingWithProgressActivity::class.java))
-            }
-        })
-        binding.recyclerviewMyOrder.adapter = adapter
+
+
+    private fun statusBarColor() {
+        binding.toolbar.toolbarTitle.text="Order History"
+        Utils.changeStatusColor(this, R.color.color_050D4C)
 
     }
-    private fun statusBarColor() {
-        binding.toolbar.toolbarTitle.text="My Order"
-        Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
+
+    private fun orderList() {
+        progressDialog.show(this)
+        var addProductViewModel = CommonViewModel(this)
+        var json = HashMap<String, String>()
+        // json.put("shopId", storeData._id)
+        json.put("status", "")
+        json.put("paymentMethod", "")
+        json.put("paymentStatus", "")
+        json.put("page", "1")
+        json.put("limit", "100")
+        Log.d("ok", "addProductAPICall: " + json)
+        addProductViewModel.orderListShop(shopId,json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    Log.d("ok", "productListAPICall: ")
+                    progressDialog.dialog.dismiss()
+                    binding.recyclerviewMyOrder.layoutManager = LinearLayoutManager(this)
+                    adapter = UserMyOrderListAdapter(this, it.data!!.data.items,object : UserMyOrderListAdapter.ClickListener{
+                        override fun onClick(data: String, id: String) {
+                            updateOrderStatus(status = data,id)
+                        }
+                    })
+                    binding.recyclerviewMyOrder.adapter = adapter
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    // var msg = JSONObject(it.message)
+                    // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                    MyApp.popErrorMsg("", "" + vv, this)
+                }
+            }
+        }
     }
+
+
+    private fun updateOrderStatus(status: String, id: String) {
+        progressDialog.show(this)
+        var addProductViewModel = CommonViewModel(this)
+        var json = HashMap<String, String>()
+        // json.put("shopId", storeData._id)
+        json.put("status", status)
+
+        addProductViewModel.updateOrderStatus(id,json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    Log.d("ok", "productListAPICall: ")
+                    progressDialog.dialog.dismiss()
+                   for (i in 0 until adapter.dataList.size){
+                       if (adapter.dataList[i].orderNumber ==it.data?.order?.orderNumber){
+                           adapter.dataList[i].status = it.data.order.status
+                           adapter.notifyDataSetChanged()
+                           break
+                       }
+                   }
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+                    var vv = it.message
+                    // var msg = JSONObject(it.message)
+                    // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
+                    MyApp.popErrorMsg("", "" + vv, this)
+                }
+            }
+        }
+    }
+
 }

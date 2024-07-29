@@ -18,6 +18,7 @@ import com.akexorcist.googledirection.GoogleDirection
 import com.akexorcist.googledirection.constant.AvoidType
 import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.FragmentSchudleBinding
 import com.app.ecolive.service.Status
@@ -164,8 +165,8 @@ class FragmentSchudle : Fragment() {
 
             val locationPickerIntent = LocationPickerActivity.Builder()
                 .withLocation(MyApp.locationLast!!.latitude,  MyApp.locationLast!!.longitude)
-                .withGeolocApiKey("AIzaSyBLbppC7WO6c-WOD0V_YIocVKoA4NKcE50")
-                .withGooglePlacesApiKey("AIzaSyBLbppC7WO6c-WOD0V_YIocVKoA4NKcE50")
+                .withGeolocApiKey(BuildConfig.MAPS_API_KEY)
+                .withGooglePlacesApiKey(BuildConfig.MAPS_API_KEY)
                 .withDefaultLocaleSearchZone()
                 .shouldReturnOkOnBackPressed()
                 .withStreetHidden()
@@ -190,7 +191,7 @@ class FragmentSchudle : Fragment() {
             }else if(binding.DestinationLocation.text.isEmpty()){
                 Toast.makeText(requireContext(), "Select Destination Location", Toast.LENGTH_SHORT).show()
             }else{
-                GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY")
+                GoogleDirection.withServerKey(BuildConfig.MAPS_API_KEY)
                     .from(LatLng(startLocation!!.latitude,startLocation!!.longitude))
                     .to(LatLng(endLocation!!.latitude,endLocation!!.longitude))
                     .avoid(AvoidType.FERRIES)
@@ -236,6 +237,14 @@ class FragmentSchudle : Fragment() {
                                 totalDistance= (totalDistance* 10) / 10.0
                                 Log.d("TAG","Total_distance:  - ${distance.text}")
                                 Log.d("TAG","Total_duration: - ${duration.text}")
+                                if (distance.value>21000){
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "We don't serve service more then 20 KM",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    return
+                                }
                             }
                            /* binding.timeDistanceTotalTv.text = String.format("Estimated Distance : %.2f km And Time : %.0f mins", totalDistance,totalDuration)
                             getVehicleApi(totalDistance)*/
@@ -263,7 +272,7 @@ class FragmentSchudle : Fragment() {
     }
     private fun placeApiInit() {
 
-        Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
+        Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
         binding.startLocation.setOnClickListener{
             val fieldList: List<Place.Field> =
                 listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
@@ -271,7 +280,7 @@ class FragmentSchudle : Fragment() {
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
                 fieldList
-            ).setCountries(listOf("IN")).build(requireContext())
+            ).build(requireContext())
 
             startActivityForResult(intent, 111)
         }
@@ -282,7 +291,7 @@ class FragmentSchudle : Fragment() {
             val intent: Intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
                 fieldList
-            ).setCountries(listOf("IN")).build(requireContext())
+            ).build(requireContext())
 
             startActivityForResult(intent, 222)
         }

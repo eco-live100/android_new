@@ -5,7 +5,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +21,6 @@ import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.databinding.SrchlocBottomSheetBinding
 import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
-import com.app.ecolive.utils.Utils
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
@@ -66,7 +64,7 @@ class SearchLocBottomSheet(private val onSelectOptionListener: OnSelectOptionLis
             .setMinUpdateIntervalMillis(10)
             .setMaxUpdateDelayMillis(10)
             .build()
-        placeApiInit()
+
 
 
         binding.myLocation.setOnClickListener {
@@ -88,22 +86,7 @@ class SearchLocBottomSheet(private val onSelectOptionListener: OnSelectOptionLis
 
     }
 
-    private fun placeApiInit() {
 
-        Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
-        binding.PlaceSearch.setOnClickListener(View.OnClickListener {
-            val fieldList: List<Place.Field> =
-                Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
-            //  AutocompleteSupportFragment.newInstance().view?.setBackgroundColor(resources.getColor(R.color.black))
-            val intent: Intent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN,
-                fieldList
-            ).build(requireContext())
-
-            startActivityForResult(intent, 101)
-        })
-
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -130,7 +113,7 @@ class SearchLocBottomSheet(private val onSelectOptionListener: OnSelectOptionLis
 
         else if(v==binding.confirmLocation){
             if (currelocation!=null){
-                onSelectOptionListener.onOptionSelect(currelocation.toString())
+                onSelectOptionListener.onOptionSelect(currelocation.toString(), "")
                 dismiss()
             }else{
                 Toast.makeText(requireContext(), "Please select location", Toast.LENGTH_SHORT).show()
@@ -208,7 +191,6 @@ class SearchLocBottomSheet(private val onSelectOptionListener: OnSelectOptionLis
         val latlng: String = lat + "," + lang
         val map: HashMap<String?, String?> = HashMap()
         map.put("latlng", "" + latlng)
-        map.put("key", "" + resources.getString(R.string.google_maps_key))
 
     }
 

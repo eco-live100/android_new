@@ -6,9 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/darkblue"
         android:orientation="vertical"
-        tools:context=".msg_module.DialActivity">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,298 +26,135 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-           <!-- <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/CountryPicker"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_gravity="center"
-                app:ccp_hidePhoneCode="true"
+                android:layout_height="wrap_content"
+                android:maxLength="15"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="2dp"
+                android:paddingBottom="5dp"
+                android:textSize="@dimen/_10ssp"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_countryPreference="JP,IN,US"
+                app:ccp_defaultNameCode="IN"
+                app:ccp_rememberLastSelection="true"
+                app:ccp_showFlag="true"
+                app:ccp_showNameCode="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Disconnected"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/dialerEdt"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
-            android:background="@color/darkblue">
+            android:background="@color/darkblue"
+            android:orientation="vertical">
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_indicator_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_10sdp"
+                android:indeterminate="true"
+                android:progressTint="@color/red"
+                android:visibility="gone" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/callInputId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:padding="@dimen/_15sdp"
                 android:textColor="@color/white"
-                android:maxLines="2"
+                android:maxLines="1"
+                android:inputType="numberDecimal|phone"
                 android:hint="Phone number"
+                android:background="@color/transparent"
                 android:textColorHint="@color/grey"
-                android:maxLength="15"
+                android:maxLength="20"
                 android:textSize="@dimen/_18sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/red"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Note: Please check country code as prefix. Its mandotary"/>
+
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.4"
+            android:layout_weight="1"
+            android:gravity="center"
             android:background="@color/white"
             android:orientation="vertical">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintCredit"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
-                android:layout_marginTop="@dimen/_10ssp"
-                android:padding="@dimen/_10ssp"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarContactList">
 
-                <ImageView
-                    android:id="@+id/contactIcWord"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_world_dollar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/call_button_id"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/round_button_green"
+                android:gravity="center_vertical|center_horizontal"
+                android:src="@drawable/ic_call_white"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_50sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/contactAmt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="Credit: $4.90"
-                    android:textSize="@dimen/_13sdp"
-                    android:layout_marginStart="@dimen/_7ssp"
-                    android:textColor="@color/color_333333"
-                    app:layout_constraintStart_toEndOf="@+id/contactIcWord"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/cancel_call_button_id"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:background="@drawable/round_button_red"
+                android:gravity="center_vertical|center_horizontal"
+                android:src="@drawable/ic_call_white"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_call_instance"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_50sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="No Subscription"
-                    android:textSize="@dimen/_13sdp"
-                    android:textColor="@color/color_333333"
-                    app:layout_constraintStart_toStartOf="@+id/contactAmt"
-                    app:layout_constraintTop_toBottomOf="@+id/contactAmt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_lightble_round"
-                    android:fontFamily="@font/roboto_regular"
-                    android:paddingStart="@dimen/_20ssp"
-                    android:paddingTop="@dimen/_7ssp"
-                    android:paddingEnd="@dimen/_20ssp"
-                    android:paddingBottom="@dimen/_7ssp"
-                    android:text="Get Subscription"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="1"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="2"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="3"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="4"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="5"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="6"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="7"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="8"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="9"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="+"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="#"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imginvite"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_20sdp"
-
-                    android:src="@drawable/ic_baseline_message_24"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_10sdp"
-                    android:text="0"
-                    android:src="@drawable/nav_call"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="center"
-                    android:padding="@dimen/_25sdp"
-                    android:src="@drawable/ic_close"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_22sdp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
+        <TextView
+            android:id="@+id/callStateTextValue"
+            android:layout_width="wrap_content"
+             android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:textColor="@color/black"
+            android:layout_margin="@dimen/_10sdp"/>
     </LinearLayout>
 </layout>

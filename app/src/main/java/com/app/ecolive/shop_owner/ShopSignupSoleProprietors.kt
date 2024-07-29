@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ShopsignupSoleproprietorsActivityBinding
 import com.app.ecolive.service.Status
@@ -30,7 +31,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.nightout.ui.fragment.SelectSourceBottomSheetFragment
 import com.offercity.base.BaseActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -44,57 +44,58 @@ class ShopSignupSoleProprietors : BaseActivity() {
     lateinit var binding: ShopsignupSoleproprietorsActivityBinding
     private val progressDialog = CustomProgressDialog()
     var cagrySubIdList = ArrayList<String>()
-    lateinit var wholeCategoryList : ArrayList<ShopCategryListModel.Data>
+    lateinit var wholeCategoryList: ArrayList<ShopCategryListModel.Data>
     var selectedSubCategoryID = ""
     var cagryIdList = ArrayList<String>()
     var selectedCategoryID = ""
-    private lateinit var selectSourceBottomSheetFragment: SelectSourceBottomSheetFragment
     var listMultipartBody: ArrayList<MultipartBody.Part> = ArrayList()
     var bodyStoreLogo: MultipartBody.Part? = null
-  //  var bodyLisence: MultipartBody.Part? = null
-    var mPlaceAddrs=""
-    var mPlaceLat=""
-    var mPlaceLang=""
+    var mPlaceAddrs = ""
+    var mPlaceLat = ""
+    var mPlaceLang = ""
     private lateinit var reqFile: RequestBody
     private var filePath: File? = null
     var isVehicalDocImageBtnClick = false
+    var isVehicalDocImage2BtnClick = false
     var isstoreLogoImageBtnClick = false
     private val REQUEST_CAMERA_PERMISSION = 1
-    private var imageUri: Uri? = null
-    private var bgimg = 1
-    private var doc1 = 2
-    private var doc2 = 3
-    var option = 1
-    private var backgroundImg: Uri? = null
-    private var docImg: Uri? = null
-    private var docImg2: Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DataBindingUtil.setContentView(THIS!!,R.layout.shopsignup_soleproprietors_activity)
+        binding =
+            DataBindingUtil.setContentView(THIS!!, R.layout.shopsignup_soleproprietors_activity)
         settoolBar()
         initView()
         listMultipartBody = ArrayList()
         shopCategoriesListAPICAll()
-        setSpinNoOfLoc()
+
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), resources.getString(R.string.google_maps_key))
+            Places.initialize(
+                getApplicationContext(),
+                BuildConfig.MAPS_API_KEY
+            )
         }
         val autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment?
 
-        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME,Place.Field.ADDRESS))
+        autocompleteFragment!!.setPlaceFields(
+            Arrays.asList(
+                Place.Field.LAT_LNG,
+                Place.Field.NAME,
+                Place.Field.ADDRESS
+            )
+        )
         autocompleteFragment!!.setHint("Store Address")
-       // (autocompleteFragment.view?.findViewById(R.id.autocomplete_fragment) as EditText).textSize = 10.0f
-       // autocompleteFragment.getView()?.findViewById(R.id.autocomplete_fragment).setVisibility(View.GONE);
+        // (autocompleteFragment.view?.findViewById(R.id.autocomplete_fragment) as EditText).textSize = 10.0f
+        // autocompleteFragment.getView()?.findViewById(R.id.autocomplete_fragment).setVisibility(View.GONE);
         autocompleteFragment!!.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 Log.i("ok", "Place: " + place.name + ", " + place.latLng.latitude)
                 Log.i("ok", "Place: " + place.address)
-                mPlaceAddrs= place.name+", "+place.address
-                mPlaceLat=place.latLng.latitude.toString()
-                mPlaceLang=place.latLng.longitude.toString()
+                mPlaceAddrs = place.name + ", " + place.address
+                mPlaceLat = place.latLng.latitude.toString()
+                mPlaceLang = place.latLng.longitude.toString()
 
             }
 
@@ -104,36 +105,36 @@ class ShopSignupSoleProprietors : BaseActivity() {
         })
     }
 
-    override fun onClick(v: View?) {
-        super.onClick(v)
-        if(v==binding.soleSubmitButton){
-            if(isValidInput()){
-                vendorShopDetailsAPICall()
+    override fun onClick(id: View?) {
+        super.onClick(id)
+        when (id) {
+            binding.soleSubmitButton -> {
+                if (isValidInput())
+                    vendorShopDetailsAPICall()
             }
-        }
-        else if(v==binding.storeDocImage){
-            isstoreLogoImageBtnClick=false
-            isVehicalDocImageBtnClick = true
-            option =doc1
-            imagePopup()
-        }
-        else if(v==binding.storeDocImage2){
-            if(binding.storeDocImage.getDrawable() == null){
-                //we need add frontSide image first than add back side image
-                MyApp.popErrorMsg("", resources.getString(R.string.plz_Upload_Verification_Document), THIS!!)
 
-            }else {
+            binding.storeLogoImage -> {
+                isstoreLogoImageBtnClick = true
+                isVehicalDocImageBtnClick = false
+                isVehicalDocImage2BtnClick = false
+                imagePopup()
+            }
+
+            binding.storeDocImage -> {
+                isstoreLogoImageBtnClick = false
+                isVehicalDocImageBtnClick = true
+                isVehicalDocImage2BtnClick = false
+                imagePopup()
+            }
+
+            binding.storeDocImage2 -> {
                 isstoreLogoImageBtnClick = false
                 isVehicalDocImageBtnClick = false
-                option =doc2
+                isVehicalDocImage2BtnClick = true
                 imagePopup()
             }
         }
-        else if(v==binding.storeLogoImage){
-            isstoreLogoImageBtnClick=true
-            option=bgimg
-            imagePopup()
-        }
+
     }
 
     private fun vendorShopDetailsAPICall() {
@@ -141,46 +142,47 @@ class ShopSignupSoleProprietors : BaseActivity() {
             MyApp.hideSoftKeyboard(THIS!!)
         } catch (e: Exception) {
         }
-      progressDialog.show(THIS!!)
+        progressDialog.show(THIS!!)
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
-        builder.addFormDataPart("shopCategoryId",selectedCategoryID)
-        builder.addFormDataPart("shopSubCategoryId",selectedSubCategoryID)
-        builder.addFormDataPart("shopName",binding.soleStorName.text.toString())
-        builder.addFormDataPart("shopType",intent.getStringExtra(AppConstant.STORE_TYPE)!!)
-        builder.addFormDataPart("firstName",binding.soleFName.text.toString())
-        builder.addFormDataPart("lastName",binding.soleLName.text.toString())
-        builder.addFormDataPart("email",binding.soleEmail.text.toString())
-        builder.addFormDataPart("countryCode",binding.forgotContryPicker.selectedCountryCode.toString())
-        builder.addFormDataPart("mobileNumber",binding.soleMobileNo.text.toString())
-        builder.addFormDataPart("numberOfLocation",binding.spinLocation.selectedItem.toString())
-        builder.addFormDataPart("latitude",mPlaceLat)
-        builder.addFormDataPart("longitude",mPlaceLang)
-        builder.addFormDataPart("storeAddress",mPlaceAddrs)
-        builder.addFormDataPart("shopDescription",binding.soleStoreDescription.text.toString())
+        builder.addFormDataPart("userId", PreferenceKeeper.instance.loginResponse!!._id.toString())
+        builder.addFormDataPart("shopCategoryId", selectedCategoryID)
+        builder.addFormDataPart("shopSubCategoryId", selectedSubCategoryID)
+        builder.addFormDataPart("shopName", binding.soleStorName.text.toString())
+        builder.addFormDataPart("shopType", intent.getStringExtra(AppConstant.STORE_TYPE)!!)
+        builder.addFormDataPart("firstName", binding.soleFName.text.toString())
+        builder.addFormDataPart("lastName", binding.soleLName.text.toString())
+        builder.addFormDataPart("email", binding.soleEmail.text.toString())
+        builder.addFormDataPart(
+            "countryCode",
+            binding.forgotContryPicker.selectedCountryCode.toString()
+        )
+        builder.addFormDataPart("mobileNumber", binding.soleMobileNo.text.toString())
+        builder.addFormDataPart("numberOfLocation", "1")
+        builder.addFormDataPart("latitude", mPlaceLat)
+        builder.addFormDataPart("longitude", mPlaceLang)
+        builder.addFormDataPart("storeAddress", mPlaceAddrs)
+        builder.addFormDataPart("shopDescription", binding.soleStoreDescription.text.toString())
         //storeLogo
         if (bodyStoreLogo != null) {
             builder.addPart(bodyStoreLogo!!)
         }
-        //else {
-         //   builder.addFormDataPart("storeLogo", "")
-      //  }
-       //addDoc
-        for (i in 0 until listMultipartBody.size){
+
+        for (i in 0 until listMultipartBody.size) {
             builder.addPart(listMultipartBody[i])
         }
 
-      var vendrShopViewModel= CommonViewModel(THIS!!)
+        var vendrShopViewModel = CommonViewModel(THIS!!)
         vendrShopViewModel.uploadShopSignup(builder.build()).observe(THIS!!) {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        var mdol= PreferenceKeeper.instance.loginResponse
+                        var mdol = PreferenceKeeper.instance.loginResponse
                         if (mdol != null) {
-                            mdol.isVendor=true
+                            mdol.isVendor = true
                         }
-                        PreferenceKeeper.instance.loginResponse=mdol
+                        PreferenceKeeper.instance.loginResponse = mdol
                         Utils.showMessage(THIS!!, it.message!!)
                         val i = Intent(this, ShopOwnerHomePageNavigationActivity::class.java)
                         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -188,13 +190,15 @@ class ShopSignupSoleProprietors : BaseActivity() {
                         finish()
                     }
                 }
+
                 Status.LOADING -> {
                     Log.d("ok", "LOADING: ")
                 }
+
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     Log.d("ok", "ERROR: ")
-                    MyApp.popErrorMsg("",it.message!!,this@ShopSignupSoleProprietors)
+                    MyApp.popErrorMsg("", it.message!!, this@ShopSignupSoleProprietors)
 
                 }
             }
@@ -305,141 +309,105 @@ class ShopSignupSoleProprietors : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
 
+            if (isstoreLogoImageBtnClick) {
+                binding.storeLogoImage.setImageURI(data.data)
+                binding.storeLogoConstrentInner.visibility =View.INVISIBLE
+            } else if (isVehicalDocImageBtnClick) {
+                binding.storeDocImage.setImageURI(data.data)
+                binding.vehicalDocConstrent.visibility =View.INVISIBLE
+            } else if (isVehicalDocImage2BtnClick) {
+                binding.storeDocImage2.setImageURI(data.data)
+                binding.vehicalDocConstrent2.visibility =View.INVISIBLE
+            }
+            imageCreaterForApi(data.data)
 
-            imageUri = data.data
-            imageCreaterForApi(imageUri,data)
-            if (option == doc1) {
-                docImg = imageUri
-                binding.storeDocImage.setImageURI(imageUri)
-            }
-            if (option == doc2) {
-                docImg2 = imageUri
-                binding.storeDocImage2.setImageURI(imageUri)
-            }
-            if (option == bgimg) {
-                backgroundImg = imageUri
-                binding.storeLogoImage.setImageURI(imageUri)
-            }
+
         } else if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
             val extras: Bundle = data.extras!!
             val imageBitmap = extras["data"] as Bitmap?
-
-
-            imageUri = getImageUri(this, imageBitmap!!)
-            imageCreaterForApi(imageUri, data)
-            if (option == doc1) {
-                docImg = imageUri
-                binding.storeDocImage.setImageURI(imageUri)
-            }
-            if (option == doc2) {
-                docImg2 = imageUri
-                binding.storeDocImage2.setImageURI(imageUri)
-            }
-            if (option == bgimg) {
-                backgroundImg = imageUri
+            var imageUri = getImageUri(this, imageBitmap!!)
+            if (isstoreLogoImageBtnClick) {
                 binding.storeLogoImage.setImageURI(imageUri)
-            }
-            //binding.backgroundImg.setImageBitmap(imageBitmap)
-            Log.d("TAG", "iamgedsfas:: $imageUri")
-        }
-    }
+                binding.storeLogoConstrentInner.visibility =View.INVISIBLE
 
+            } else if (isVehicalDocImageBtnClick) {
+                binding.storeDocImage.setImageURI(imageUri)
+                binding.vehicalDocConstrent.visibility =View.INVISIBLE
 
-    private fun setSpinNoOfLoc() {
-        var list = ArrayList<String>()
-        list.add(resources.getString(R.string.select_noofloc))
-        for (i in 1 until 10){
-            list.add(i.toString())
-        }
-        val aa: ArrayAdapter<Any> = ArrayAdapter<Any>(this, android.R.layout.simple_spinner_item, list as List<Any>)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinLocation.adapter = aa
-        binding.spinLocation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            } else if (isVehicalDocImage2BtnClick) {
+                binding.storeDocImage2.setImageURI(imageUri)
+                binding.vehicalDocConstrent2.visibility =View.INVISIBLE
 
             }
+            imageCreaterForApi(imageUri)
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
 
         }
     }
-
 
 
     private fun isValidInput(): Boolean {
 
-        if(binding.soleStorName.text.toString().isBlank()){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_storeName),THIS!!)
+        if (binding.soleStorName.text.toString().isBlank()) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_storeName), THIS!!)
             return false
-        }
-
-       else  if(mPlaceAddrs.isBlank()){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_storeAddrs),THIS!!)
+        } else if (mPlaceAddrs.isBlank()) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_storeAddrs), THIS!!)
             return false
-        }
-
-        else  if(binding.soleFName.text.toString().isBlank()){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_fname),THIS!!)
+        } else if (binding.soleFName.text.toString().isBlank()) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_fname), THIS!!)
             return false
-        }
-        else  if(binding.soleLName.text.toString().isBlank()){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_surname),THIS!!)
+        } else if (binding.soleLName.text.toString().isBlank()) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_surname), THIS!!)
             return false
-        }
-        else  if(binding.soleEmail.text.toString().isBlank()){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_email),THIS!!)
+        } else if (binding.soleEmail.text.toString().isBlank()) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_email), THIS!!)
             return false
-        }
-        else if (!MyApp.isValidEmail(binding.soleEmail.text.toString())) {
+        } else if (!MyApp.isValidEmail(binding.soleEmail.text.toString())) {
             MyApp.popErrorMsg("", resources.getString(R.string.email_notvalid), THIS!!)
             return false
 
-        }
-
-        else  if(binding.soleMobileNo.text.toString().isBlank()){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_mobno),THIS!!)
+        } else if (binding.soleMobileNo.text.toString().isBlank()) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_mobno), THIS!!)
             return false
-        }
-        else if(!binding.soleIAgreeChkbox.isChecked){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_iAgree),THIS!!)
+        } else if (!binding.soleIAgreeChkbox.isChecked) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_iAgree), THIS!!)
             return false
-        }
-        else if(binding.spinCategory.selectedItem.toString() == resources.getString(R.string.plz_select_catgry)){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_select_catgry),THIS!!)
-            return false
-        }
-        else if(binding.spinLocation.selectedItem.toString() == resources.getString(R.string.select_noofloc)){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_select_nooflocation),THIS!!)
-            return false
-        }
-      /*  else if(binding.spinSubCategory.selectedItem.toString() == resources.getString(R.string.plz_select_subcatgry)){
-            MyApp.popErrorMsg("",resources.getString(R.string.plz_select_subcatgry),THIS!!)
-            return false
-        }*/
-        else if (binding.storeDocImage.getDrawable() == null) {
-            MyApp.popErrorMsg("", resources.getString(R.string.plz_Upload_Verification_Document), THIS!!)
+        } else if (binding.spinCategory.selectedItem.toString() == resources.getString(R.string.plz_select_catgry)) {
+            MyApp.popErrorMsg("", resources.getString(R.string.plz_select_catgry), THIS!!)
             return false
         }
 
-        else if (binding.storeDocImage2.getDrawable() == null) {
-            MyApp.popErrorMsg("", resources.getString(R.string.plz_Upload_Verification_Document_back), THIS!!)
+        /*  else if(binding.spinSubCategory.selectedItem.toString() == resources.getString(R.string.plz_select_subcatgry)){
+              MyApp.popErrorMsg("",resources.getString(R.string.plz_select_subcatgry),THIS!!)
+              return false
+          }*/
+        else if (binding.storeDocImage.drawable == null) {
+            MyApp.popErrorMsg(
+                "",
+                resources.getString(R.string.plz_Upload_Verification_Document),
+                THIS!!
+            )
+            return false
+        } else if (binding.storeLogoImage.drawable == null) {
+            MyApp.popErrorMsg(
+                "",
+                "Please upload store logo",
+                THIS!!
+            )
             return false
         }
+
+
         return true
     }
 
     private fun initView() {
-         setTouchNClick(binding.soleSubmitButton)
-         setTouchNClick(binding.storeDocImage2)
-         setTouchNClick(binding.storeDocImage)
-         setTouchNClick(binding.storeLogoImage)
+        setTouchNClick(binding.soleSubmitButton)
+        setTouchNClick(binding.storeDocImage)
+        setTouchNClick(binding.storeDocImage2)
+        setTouchNClick(binding.storeLogoImage)
+        setTouchNClick(binding.storeLogoImage)
 
     }
 
@@ -458,7 +426,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
                 Status.SUCCESS -> {
                     progressDialog.dialog.dismiss()
                     it.data?.let {
-                        wholeCategoryList = ArrayList ()
+                        wholeCategoryList = ArrayList()
                         wholeCategoryList.addAll(it.data)
                         setCagrySpin(wholeCategoryList)
 
@@ -466,6 +434,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
@@ -482,12 +451,19 @@ class ShopSignupSoleProprietors : BaseActivity() {
         cagryIdList = ArrayList<String>()
         cagryIdList.add("00000")
         for (i in 0 until list.size) {
-            cagryNameList.add(list[i].categoryName)
-            cagryIdList.add(list[i]._id)
+            if (list[i].categoryName == "Retail") {
+                cagryNameList.add(list[i].categoryName)
+                cagryIdList.add(list[i]._id)
+            }
+
 
         }
 
-        val aa: ArrayAdapter<Any> = ArrayAdapter<Any>(this, android.R.layout.simple_spinner_item, cagryNameList as List<Any>)
+        val aa: ArrayAdapter<Any> = ArrayAdapter<Any>(
+            this,
+            android.R.layout.simple_spinner_item,
+            cagryNameList as List<Any>
+        )
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinCategory.adapter = aa
 
@@ -500,14 +476,19 @@ class ShopSignupSoleProprietors : BaseActivity() {
                     id: Long
                 ) {
                     selectedCategoryID = cagryIdList[position]
-                    if(position>0) {
-                        var subCaglist = wholeCategoryList[position-1].subCategories
-                        if (subCaglist.isNotEmpty()) {
-                            setSubCatgrySpin(subCaglist)
-                        }else{
+                    if (position > 0) {
+                        var subCaglist:List<ShopCategryListModel.SubCategory>  ?=null
+                            wholeCategoryList.forEach {
+                            if (it.categoryName == "Retail") {
+                                subCaglist=   it.subCategories
+                            }
+                        }
+                        if (subCaglist!!.isNotEmpty()) {
+                            setSubCatgrySpin(subCaglist!!)
+                        } else {
                             setSubCatgrySpin(ArrayList<ShopCategryListModel.SubCategory>())
                         }
-                    }else{
+                    } else {
                         setSubCatgrySpin(ArrayList<ShopCategryListModel.SubCategory>())
                     }
                 }
@@ -520,15 +501,19 @@ class ShopSignupSoleProprietors : BaseActivity() {
     }
 
     private fun setSubCatgrySpin(subCaglist: List<ShopCategryListModel.SubCategory>) {
-        var listSubCtgryName=ArrayList<String>()
+        var listSubCtgryName = ArrayList<String>()
         cagrySubIdList = ArrayList<String>()
         listSubCtgryName.add(resources.getString(R.string.plz_select_subcatgry))
         cagrySubIdList.add("000000")
-        for (i in 0 until subCaglist.size){
+        for (i in 0 until subCaglist.size) {
             listSubCtgryName.add(subCaglist[i].subCategoryName)
             cagrySubIdList.add(subCaglist[i]._id)
         }
-        val aa: ArrayAdapter<Any> = ArrayAdapter<Any>(this, android.R.layout.simple_spinner_item, listSubCtgryName as List<Any>)
+        val aa: ArrayAdapter<Any> = ArrayAdapter<Any>(
+            this,
+            android.R.layout.simple_spinner_item,
+            listSubCtgryName as List<Any>
+        )
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinSubCategory.adapter = aa
 
@@ -553,8 +538,6 @@ class ShopSignupSoleProprietors : BaseActivity() {
     }
 
 
-
-
     private fun setBody(imageUri: Uri, flag: String) {
 
         val filePath = getFilePath(this, imageUri)
@@ -563,19 +546,18 @@ class ShopSignupSoleProprietors : BaseActivity() {
         reqFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), this.filePath!!)
         if (isVehicalDocImageBtnClick) {
             var body = MultipartBody.Part.createFormData(flag, this.filePath!!.name, reqFile)
-            if(listMultipartBody.size>0){
+            if (listMultipartBody.size > 0) {
                 listMultipartBody[0] = body// set(replace) 0th postion
-            }else{
-                listMultipartBody.add(0,body)// add 0th postion
+            } else {
+                listMultipartBody.add(0, body)// add 0th postion
             }
 
-        }
-         else {
+        } else {
             var bodyLisence = MultipartBody.Part.createFormData(flag, this.filePath!!.name, reqFile)
-            if(listMultipartBody.size==2){
+            if (listMultipartBody.size == 2) {
                 listMultipartBody[1] = bodyLisence//set 1st postion
-            }else{
-                listMultipartBody.add(1,bodyLisence)//add 1st postion
+            } else {
+                listMultipartBody.add(1, bodyLisence)//add 1st postion
             }
 
         }
@@ -591,44 +573,14 @@ class ShopSignupSoleProprietors : BaseActivity() {
 
     }
 
-    fun imageCreaterForApi(imageUri: Uri?, data: Intent) {
+    fun imageCreaterForApi(imageUri: Uri?) {
 
-
-        //imageUrl = Uri.parse(selectedMedia[0].path)
-        if(isstoreLogoImageBtnClick){
-            try {
-                binding.storeLogoImage.setImageBitmap(null)
-                binding.storeLogoImage.setImageURI(imageUri)
-                binding.storeLogoConstrentInner.visibility=GONE
-            } catch (e: Exception) {
-                Log.d("crashImage", "onActivityResult: $e")
-            }
-
+        if (isstoreLogoImageBtnClick) {
             setBodyStorLogo(imageUri!!, "storeLogo")
-        }
-        else{
-
-            if (isVehicalDocImageBtnClick) {
-                try {
-                    binding.storeDocImage.setImageBitmap(null)
-                    binding.storeLogoImage.setImageURI(imageUri)
-                    binding.vehicalDocConstrent.visibility=GONE
-                } catch (e: Exception) {
-                    Log.d("crashImage", "onActivityResult: $e")
-                }
-
-                setBody(imageUri!!, "storeDocument")
-            } else {
-                try {
-                    binding.storeDocImage2.setImageBitmap(null)
-                    binding.storeLogoImage.setImageURI(imageUri)
-                    binding.vehicalDocConstrent2.visibility=GONE
-                } catch (e: Exception) {
-                    Log.d("crashImage", "onActivityResult: $e")
-                }
-                setBody(imageUri!!, "storeDocument")
-
-            }
+        } else if (isVehicalDocImageBtnClick) {
+            setBody(imageUri!!, "storeDocument")
+        } else if (isVehicalDocImage2BtnClick) {
+            setBody(imageUri!!, "storeDocument")
         }
 
 

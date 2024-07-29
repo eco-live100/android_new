@@ -1,25 +1,34 @@
 package com.app.ecolive.login_module
 
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.databinding.ActivityLoginBinding
-import com.app.ecolive.msg_module.cometchat
 import com.app.ecolive.service.Status
 import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.CustomProgressDialog
+import com.app.ecolive.utils.KeyCenter
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
 import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.offercity.base.BaseActivity
+import com.zegocloud.zimkit.services.ZIMKit
 import org.json.JSONObject
 
 
@@ -42,10 +51,13 @@ class LoginActivity : BaseActivity() {
             // Get new FCM registration token
             val token = task.result
             Log.d("fire_base_newToken", token)
-            PreferenceKeeper.instance.fcmTokenSave= token
+            PreferenceKeeper.instance.fcmTokenSave = token
 
         })
+        ZIMKit.initWith(application, KeyCenter.APP_ID2, KeyCenter.APP_SIGN2)
+        ZIMKit.initNotifications()
         initView()
+        checkPermissions()
     }
 
 
@@ -65,7 +77,6 @@ class LoginActivity : BaseActivity() {
     }
 
 
-
     private fun loginApiCall() {
         progressDialog.show(THIS!!)
         var loginViewModel = CommonViewModel(THIS!!)
@@ -83,22 +94,31 @@ class LoginActivity : BaseActivity() {
                         PreferenceKeeper.instance.bearerTokenSave = it.data.accessToken
                         PreferenceKeeper.instance.isUserLogin = true
                         PreferenceKeeper.instance.loginResponse = it.data
-                        val uid = ""+PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
-                        val name = ""+PreferenceKeeper.instance.loginResponse?.firstName+" "+PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
-                        cometchat.register(uid,name)
-                        startActivity(Intent(THIS, UserHomePageNavigationActivity::class.java))
+                        val uid =
+                            "" + PreferenceKeeper.instance.loginResponse?._id // Replace with the UID for the user to be created
+                        val name =
+                            "" + PreferenceKeeper.instance.loginResponse?.firstName + " " + PreferenceKeeper.instance.loginResponse?.lastName // Replace with the name of the user
+
+                        startActivity(
+                            Intent(
+                                this@LoginActivity,
+                                LocationPickerActivity::class.java
+                            )
+                        )
+
                         finish()
 
                     }
 
                 }
+
                 Status.LOADING -> {}
                 Status.ERROR -> {
                     progressDialog.dialog.dismiss()
                     var vv = it.message
-                  var msg = JSONObject(it.message)
+                    var msg = JSONObject(it.message)
                     MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
-                   // MyApp.popErrorMsg("", "" + vv, THIS!!)
+                    // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }
         }
@@ -155,8 +175,60 @@ class LoginActivity : BaseActivity() {
             }
         }
     }
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Dexter.withContext(this)
+                .withPermissions(
+                     Manifest.permission.POST_NOTIFICATIONS
+                )
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        if (report!!.areAllPermissionsGranted()) {
+                            // binding.connectButtonId.isClickable = true
+                        } else if (report.isAnyPermissionPermanentlyDenied) {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "permissions are required to continue",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
 
+                    override fun onPermissionRationaleShouldBeShown(
+                        permission: MutableList<PermissionRequest>?,
+                        token: PermissionToken?
+                    ) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
+        } else {
+            Dexter.withContext(this)
+                .withPermissions(
 
+                    Manifest.permission.INTERNET
+                )
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        if (report!!.areAllPermissionsGranted()) {
+                            //    binding.connectButtonId.isClickable = true
+                        } else if (report.isAnyPermissionPermanentlyDenied) {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "permissions are required to continue",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        permission: MutableList<PermissionRequest>?,
+                        token: PermissionToken?
+                    ) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
+        }
+    }
 
 
 }

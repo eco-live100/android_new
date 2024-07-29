@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="isShimmerShow"
+            type="Boolean" />
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +28,7 @@
             android:layout_height="@dimen/_60sdp"
             android:layout_marginTop="@dimen/_10ssp"
             android:padding="@dimen/_10ssp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/toolbarContactList">
 
             <ImageView
@@ -87,9 +93,10 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintCredit">
 
             <EditText
+                android:id="@+id/contactSearctedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:maxLines="1"
                 android:background="@null"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="@dimen/_5sdp"
@@ -107,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10ssp"
             android:layout_marginTop="@dimen/_15ssp"
-            android:text="Recent Calls"
+            android:text=" "
             android:fontFamily="@font/roboto_regular"
             android:textColor="@color/color_707070"
             android:textSize="@dimen/_14ssp"
@@ -131,11 +138,29 @@
             app:tint="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/contactRecycle"
+            android:id="@+id/contactListRecycle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:visibility="@{isShimmerShow? View.GONE:View.VISIBLE,default=gone }"
+
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contactRecentCall" />
+            app:layout_constraintTop_toBottomOf="@+id/contactSearch"
+            tools:itemCount="5"
+            tools:layout_editor_absoluteX="6dp"
+            tools:listitem="@layout/row_user_list" />
+
+        <include
+            android:id="@+id/layoutShimmer"
+            layout="@layout/row_uset_list_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:visibility="@{isShimmerShow? View.VISIBLE:View.GONE,default=visible }"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contactSearch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

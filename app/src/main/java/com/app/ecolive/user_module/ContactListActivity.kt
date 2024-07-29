@@ -1,75 +1,151 @@
 package com.app.ecolive.user_module
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ContactlistActivityBinding
-import com.app.ecolive.msg_module.DialActivity
-import com.app.ecolive.user_module.interfacee.OnSelectOptionListener
-import com.app.ecolive.user_module.model.UserModel
+import com.app.ecolive.msg_module.VoipActivity
 import com.app.ecolive.user_module.user_adapter.ContactListAdapter
 import com.app.ecolive.utils.Utils
-import com.nightout.ui.fragment.CallBottomSheet
+import com.app.ecolive.viewmodel.ContactViewModel
+import com.app.ecolive.viewmodel.PaymentViewModel
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
-class ContactListActivity : AppCompatActivity(), OnSelectOptionListener {
+class ContactListActivity : AppCompatActivity() {
     lateinit var binding: ContactlistActivityBinding
+    var contactsListAdapter: ContactListAdapter? = null
+    private lateinit var paymentViewModel :PaymentViewModel
+    lateinit var viewModel: ContactViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this@ContactListActivity,R.layout.contactlist_activity)
-       setToolBar()
-        setDummyLIst()
-    }
+        binding =
+            DataBindingUtil.setContentView(this@ContactListActivity, R.layout.contactlist_activity)
+          viewModel = ViewModelProvider(this)[ContactViewModel::class.java]
+        contactsListAdapter =
+            ContactListAdapter(
+                arrayListOf(),
+                arrayListOf(),
+                object : ContactListAdapter.ClickListener {
 
-    lateinit var contactListAdapter: ContactListAdapter
-    private fun setDummyLIst() {
-        var list= ArrayList<UserModel>()
-        list.add(UserModel("Gail Forcewind","Today at 11:47 AM",R.drawable.dummy_female_user,R.drawable.ic_missed_call))
-        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.ic_user_blue,R.drawable.ic_incoming_call2))
-        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.ic_user_blue,R.drawable.ic_missed_call))
-        list.add(UserModel("Gail Forcewind","Today at 11:47 AM",R.drawable.dummy_female_user,R.drawable.ic_missed_call))
-        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.ic_user_blue,R.drawable.ic_incoming_call2))
-        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.ic_user_blue,R.drawable.ic_missed_call))
-        list.add(UserModel("Gail Forcewind","Today at 11:47 AM",R.drawable.dummy_female_user,R.drawable.ic_missed_call))
-        list.add(UserModel("Esther Howard","Today at 11:57 AM",R.drawable.ic_user_blue,R.drawable.ic_incoming_call2))
-        list.add(UserModel("Cameron Williamson","Friday at 05:30 PM",R.drawable.ic_user_blue,R.drawable.ic_missed_call))
-        contactListAdapter = ContactListAdapter(this@ContactListActivity,list,object :ContactListAdapter.ClickListener{
-            override fun onClick(pos: Int) {
-                showBotomSheet()
-            }
+                    override fun onClick(name: String, numbers: String) {
+                        startActivity(
+                            Intent(
+                                this@ContactListActivity,
+                                VoipActivity::class.java
+                            ).putExtra("mobile",  numbers)
+                                .putExtra("name",name)
+                        )
 
-        })
-        binding.contactRecycle.also {
-            it.adapter = contactListAdapter
-            it.layoutManager = LinearLayoutManager(this@ContactListActivity,LinearLayoutManager.VERTICAL,false)
+                    }
+
+
+                })
+        paymentViewModel= PaymentViewModel(this)
+        binding.contactListRecycle.apply {
+            layoutManager = LinearLayoutManager(this@ContactListActivity)
+            adapter = contactsListAdapter
         }
-        binding.contactRecycle.adapter= contactListAdapter
-
+        setToolBar()
+        binding.isShimmerShow = true
+        checkPermissions()
     }
-    lateinit var callBottomSheet: CallBottomSheet
 
-    private fun showBotomSheet() {
-        callBottomSheet = CallBottomSheet(this,"")
-        callBottomSheet.show(this@ContactListActivity.supportFragmentManager,"CALLBOTTOM")
-    }
 
     private fun setToolBar() {
         Utils.changeStatusColor(this, R.color.color_050D4C)
-        Utils.changeStatusTextColor(this)
-        binding.toolbarContactList.toolbarTitle.text= "Contacts"
+
+        binding.toolbarContactList.toolbarTitle.text = "Contacts"
         binding.toolbarContactList.ivBack.setOnClickListener { finish() }
         binding.dialFab.setOnClickListener {
-            startActivity(Intent(this,DialActivity::class.java))
+            startActivity(
+                Intent(
+                    this@ContactListActivity,
+                    VoipActivity::class.java
+                )
+            )
+        }
+      //  binding.contactSearctedt.doAfterTextChanged { contactsListAdapter?.filter?.filter(it) }
+    }
+
+
+
+
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Dexter.withContext(this)
+                .withPermissions(
+                    Manifest.permission.READ_CONTACTS
+                )
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        if (report!!.areAllPermissionsGranted()) {
+                            callList()
+                        } else if (report.isAnyPermissionPermanentlyDenied) {
+                            Toast.makeText(
+                                this@ContactListActivity,
+                                "permissions are required to continue",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        permission: MutableList<PermissionRequest>?,
+                        token: PermissionToken?
+                    ) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
+        } else {
+            Dexter.withContext(this)
+                .withPermissions(
+                    Manifest.permission.READ_CONTACTS
+
+                )
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        if (report!!.areAllPermissionsGranted()) {
+                            callList()
+                        } else if (report.isAnyPermissionPermanentlyDenied) {
+                            Toast.makeText(
+                                this@ContactListActivity,
+                                "permissions are required to continue",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        permission: MutableList<PermissionRequest>?,
+                        token: PermissionToken?
+                    ) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
         }
     }
 
-    override fun onOptionSelect(option: String) {
-         when(option){
-              "sdsds"->{
-                 //do logoc
-             }
-         }
+    private fun callList() {
+        viewModel.contactsLiveData.observe(this) {
+            binding.isShimmerShow =false
+            contactsListAdapter?.update(it)
+        }
+        viewModel.fetchContacts()
+
+
     }
+
+
 }

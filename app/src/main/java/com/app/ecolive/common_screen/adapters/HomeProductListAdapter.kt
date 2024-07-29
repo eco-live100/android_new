@@ -2,20 +2,18 @@ package com.app.ecolive.common_screen.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
-import com.app.ecolive.databinding.RowHomeCategoryListBinding
 import com.app.ecolive.databinding.RowHomeProductListBinding
-import com.app.ecolive.localmodel.HomeCategoryListModel
-import com.app.ecolive.localmodel.HomeProductListModel
+import com.app.ecolive.shop_owner.model.ProductModel
 import com.bumptech.glide.Glide
 
 
-class HomeProductListAdapter(var context: Context, var dataList: ArrayList<HomeProductListModel>,var onClickListener: ClickListener) :
+class HomeProductListAdapter(
+    var context: Context, var dataList: ArrayList<ProductModel.Doc>,
+    var onClickListener: ClickListener) :
     RecyclerView.Adapter<HomeProductListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView : RowHomeProductListBinding)
@@ -34,11 +32,12 @@ class HomeProductListAdapter(var context: Context, var dataList: ArrayList<HomeP
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.homepageProductName.text=dataList[position].name
-        holder.binding.homepageProductShopLivePrice.text=dataList[position].shopLivePrice
-        holder.binding.homepageProductShopOnlinePrice.text=dataList[position].shopOnlinePrice
+        holder.binding.homepageProductShopLivePrice.text=dataList[position].livePrice.toString()
+        holder.binding.homepageProductShopOnlinePrice.text=dataList[position].price.toString()
+        holder.binding.homepageProductShipping.text= "Shipping ${dataList[position].fastDeliver}"
 //        holder.binding.homepageProductImage.setImageDrawable(dataList[position].image)
-        holder.binding.constraintHomepageProductList.setOnClickListener { onClickListener.viewProductDetails(dataList[position].productId) }
-        Glide.with(context).load(dataList[position].imageUrl).into(holder.binding.homepageProductImage)
+        holder.binding.constraintHomepageProductList.setOnClickListener { onClickListener.viewProductDetails(dataList[position]._id) }
+        Glide.with(context).load(dataList[position].images[0]).placeholder(R.drawable.app_logo_bgtrans).into(holder.binding.homepageProductImage)
 
     }
 

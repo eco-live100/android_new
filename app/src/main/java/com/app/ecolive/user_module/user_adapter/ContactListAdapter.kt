@@ -1,22 +1,19 @@
 package com.app.ecolive.user_module.user_adapter
-import android.content.Context
-import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ecolive.R
 import com.app.ecolive.databinding.*
-import com.app.ecolive.localmodel.MyOrderListModel
-import com.app.ecolive.localmodel.SimilarProductListModel
-import com.app.ecolive.user_module.model.UserModel
-import com.localmerchants.ui.localModels.DrawerCategoryListModel
+import com.app.ecolive.payment_module.model.Contact
+import java.util.Locale
 
 
-class ContactListAdapter(var context: Context, var dataList: ArrayList<UserModel>, var onClickListener: ClickListener) :
-    RecyclerView.Adapter<ContactListAdapter.ViewHolder>() {
+class ContactListAdapter(var list: ArrayList<Contact>,var mContactFilterLst:ArrayList<Contact>, var clickListern:  ClickListener) :
+    RecyclerView.Adapter<ContactListAdapter.ViewHolder>(), Filterable {
 
     inner class ViewHolder(itemView : RowContactlistBinding)
         : RecyclerView.ViewHolder(itemView.root){
@@ -32,24 +29,78 @@ class ContactListAdapter(var context: Context, var dataList: ArrayList<UserModel
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        try {
+            val contact = mContactFilterLst[position]
+            holder.binding.tvUserName.text = contact.name
+            // holder.binding.tvSubTitle.text= mContactFilterLst[position].numbers[0]
+            //  holder.binding.tvSubTitle.text= contact.numbers
+            contact.numbers.forEach {
+                holder.binding.tvSubTitle.text = it
 
-        holder.binding.tvUserName.text=dataList[position].title
-        holder.binding.tvSubTitle.text=dataList[position].subTitle
-        holder.binding.ivUserImage.setImageResource(dataList[position].img)
-        holder.binding.tvSubTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(dataList[position].img2,0,0,0)
+            }
+            holder.binding.ivUserImage.setImageResource(R.drawable.ic_user_blue)
 
-        holder.binding.ivPhone.setOnClickListener {
-            onClickListener.onClick(position)
+            holder.binding.ivPhone.setOnClickListener {
+                clickListern.onClick(contact.name,holder.binding.tvSubTitle.text.toString())
+            }
+        }catch (e :Exception){
+
         }
-        //holder.binding.constraintNext.setOnClickListener { onClickListener.onClick(position) }
+
+
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return mContactFilterLst.size
+    }
+
+    fun update(phoneContacts: java.util.ArrayList<Contact>) {
+        this.list = phoneContacts
+        this.mContactFilterLst = phoneContacts
+        notifyDataSetChanged()
+
     }
 
     interface ClickListener {
-        fun onClick(pos: Int)
+        fun onClick(name: String, number: String)
+
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                try {
+                    val charString = charSequence.toString()
+                    mContactFilterLst = if (charString.isEmpty()) {
+                        list
+                    } else {
+                        val filteredList: ArrayList<Contact> = ArrayList()
+                        for (contactItem in list) {
+                            if (contactItem.name?.toLowerCase()
+                                    ?.contains(charString.lowercase(Locale.getDefault()))
+                                == true || contactItem.numbers?.contains(charString.lowercase(Locale.getDefault())) == true
+                            ) {
+                                filteredList.add(contactItem)
+                            }
+                        }
+                        filteredList
+                    }
+                    val filterResults = FilterResults()
+                    filterResults.values = mContactFilterLst
+                    return filterResults
+                }catch (e:Exception){
+                    return    FilterResults()
+                }
+
+            }
+
+            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+
+                mContactFilterLst = (filterResults.values as? ArrayList<Contact>)!!
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 }
 

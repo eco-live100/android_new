@@ -29,6 +29,7 @@ import com.akexorcist.googledirection.constant.AvoidType
 import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
@@ -36,6 +37,7 @@ import com.app.ecolive.databinding.CustomRequestDialogBinding
 import com.app.ecolive.databinding.HomeriderActivityBinding
 import com.app.ecolive.login_module.LoginActivity
 import com.app.ecolive.msg_module.ChatListActivity
+import com.app.ecolive.msg_module.ZegoCallChatActivity
 import com.app.ecolive.notification.NotificationModel
 import com.app.ecolive.payment_module.AddMoneyMainActivity
 import com.app.ecolive.payment_module.SendMoneyHomePageActivity
@@ -58,6 +60,7 @@ import com.app.ecolive.utils.CustomProgressDialog
 import com.app.ecolive.utils.MyApp
 import com.app.ecolive.utils.PreferenceKeeper
 import com.app.ecolive.utils.Utils
+import com.app.ecolive.viewmodel.CommonViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -72,8 +75,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.localmerchants.ui.localModels.DrawerCategoryListModel
 import com.offercity.base.BaseActivity
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService
+import com.zegocloud.zimkit.services.ZIMKit
 import org.json.JSONObject
 
 
@@ -121,7 +127,8 @@ class HomeRiderActivity : BaseActivity() {
                 binding.include.contentHome.orderRequestList.layoutManager = layoutManager
                 riderOrderListAdapter = PharmacyListAdapter(this, pharmacyList)
                 binding.include.contentHome.orderRequestList.adapter = riderOrderListAdapter*/
-
+        binding.includeLeftDrawer.homepageDrawerMyOrder.visibility =View.GONE
+        binding.includeLeftDrawer.MyCart.visibility =View.GONE
         val user = PreferenceKeeper.instance.loginResponse
         if (user != null) {
             binding.include.contentHome.riderUserName.text =
@@ -361,7 +368,7 @@ class HomeRiderActivity : BaseActivity() {
             MarkerOptions().position(endLatLng) //                .flat(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         )
-        GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY").from(startLatLng)
+        GoogleDirection.withServerKey(BuildConfig.MAPS_API_KEY).from(startLatLng)
             .to(endLatLng).avoid(AvoidType.FERRIES).alternativeRoute(false)
             .transportMode(TransportMode.DRIVING).execute(object : DirectionCallback {
                 override fun onDirectionSuccess(direction: Direction?) {
@@ -518,9 +525,8 @@ class HomeRiderActivity : BaseActivity() {
 
 
 
-        sideMenuCategoryList()
 
-        setSpinnerSideMenu()
+
 
 
         binding.includeLeftDrawer.homepageDrawerMyAccount.setOnClickListener {
@@ -533,17 +539,14 @@ class HomeRiderActivity : BaseActivity() {
 
 
         binding.includeLeftDrawer.sideMenuLogout.setOnClickListener {
-            /*PreferenceKeeper.instance.isUserLogin=false
-            PreferenceKeeper.instance.loginResponse = null
-*/
-            PreferenceKeeper.instance.clearData()
-            val i = Intent(applicationContext, LoginActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            i.putExtra("EXIT", true)
-            startActivity(i)
-            finish()
+            val builder = MaterialAlertDialogBuilder(this, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle("Alert !").setMessage("Are you sure want to logout ?")
+                .setPositiveButton("Logout") { dialog, which -> logoutApi() }
+
+            builder.setNegativeButton("No"){dialog, which -> dialog.dismiss()}
+            val alert = builder.create()
+            alert.show()
         }
 
 
@@ -554,71 +557,31 @@ class HomeRiderActivity : BaseActivity() {
         binding.includeLeftDrawer.homepageDrawerMyAccount.visibility = View.VISIBLE
         binding.includeLeftDrawer.view6.visibility = View.VISIBLE
 
-        binding.include.constraintSendMoney.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(
-                        this@HomeRiderActivity, SendMoneyHomePageActivity::class.java
-                    )
-                )
-            }
-        }
 
-        binding.include.constraintAddMoney.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(
-                        this@HomeRiderActivity, UserVerificationAddMoneyActivity::class.java
-                    )
-                )
-            }
 
-        }
+
 
         binding.include.constraintMakePayment.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(this@HomeRiderActivity, AddMoneyMainActivity::class.java).putExtra(
-                        AppConstant.INTENT_EXTRAS.IsFromHOME,
-                        true
-                    )
+            startActivity(
+                Intent(
+                    this@HomeRiderActivity, SendMoneyHomePageActivity::class.java
                 )
-            }
+            )
 
         }
 
 
 
         binding.include.constraintCallFriends.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(this@HomeRiderActivity, ContactListActivity::class.java).putExtra(
-                        AppConstant.INTENT_EXTRAS.IsFromHOME,
-                        true
-                    )
-                )
-            }
+            startActivity(
+                Intent(this@HomeRiderActivity, ContactListActivity::class.java)
+            )
 
         }
         binding.include.constraintMessage.setOnClickListener {
-            if (PreferenceKeeper.instance.loginResponse == null) {
-                goLoginScreen()
-            } else {
-                startActivity(
-                    Intent(this@HomeRiderActivity, ChatListActivity::class.java).putExtra(
-                        AppConstant.INTENT_EXTRAS.IsFromHOME,
-                        true
-                    )
-                )
-            }
+            startActivity(
+                Intent(this@HomeRiderActivity, ZegoCallChatActivity::class.java)
+            )
 
         }
 
@@ -628,47 +591,66 @@ class HomeRiderActivity : BaseActivity() {
                 }*/
 
     }
+    private fun logoutApi() {
+        progressDialog.show(this)
+        var myProfileViewModel = CommonViewModel(this)
 
-    private fun setSpinnerSideMenu() {
-        val list = ArrayList<String>()
-        list.add("As a User")
-        list.add("As a Rider")
-        list.add("As a Shop-Owner")
+        myProfileViewModel.logoutApi("").observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dialog.dismiss()
 
-        val aa: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.includeLeftDrawer.sideMenuSpinner.adapter = aa
-        binding.includeLeftDrawer.sideMenuSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>, view: View, position: Int, id: Long
-                ) {
-                    when (position) {
-                        0 -> {
+                    it.data?.let {
+                        PreferenceKeeper.instance.isUserLogin = false
+                        PreferenceKeeper.instance.loginResponse = null
+                        PreferenceKeeper.instance.isHealthProfileCreate = false
+                        PreferenceKeeper.instance.isDriverOnline = false
+                        PreferenceKeeper.instance.lastLocationLang = ""
+                        PreferenceKeeper.instance.lastAddress = ""
+                        PreferenceKeeper.instance.lastLocationLat = ""
+                        PreferenceKeeper.instance.lastAddressTitle = ""
+                        val i = Intent(applicationContext, LoginActivity::class.java)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        i.putExtra("EXIT", true)
+                        startActivity(i)
+                        ZIMKit.disconnectUser()
+                        ZegoUIKitPrebuiltCallInvitationService.unInit()
+                        finish()
 
-                        }
-
-                        1 -> {
-                            startActivity(
-                                Intent(
-                                    this@HomeRiderActivity,
-                                    UserHomePageNavigationActivity::class.java
-                                )
-                            )
-                            finish()
-                            //   riderLoginChk()
-                        }
-
-                        2 -> {
-                            shopLoginChk()
-                        }
                     }
+
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    progressDialog.dialog.dismiss()
+
+                    var vv = it.message
+                    MyApp.popErrorMsg("", "" + it.message, this)
+                    PreferenceKeeper.instance.isUserLogin = false
+                    PreferenceKeeper.instance.loginResponse = null
+                    PreferenceKeeper.instance.isHealthProfileCreate = false
+                    PreferenceKeeper.instance.isDriverOnline = false
+                    PreferenceKeeper.instance.lastLocationLang = ""
+                    PreferenceKeeper.instance.lastAddress = ""
+                    PreferenceKeeper.instance.lastLocationLat = ""
+                    PreferenceKeeper.instance.lastAddressTitle = ""
+                    val i = Intent(applicationContext, LoginActivity::class.java)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    i.putExtra("EXIT", true)
+                    startActivity(i)
+                    ZIMKit.disconnectUser()
+                    ZegoUIKitPrebuiltCallInvitationService.unInit()
+                    finish()
+                }
             }
+        }
     }
+
 
     private fun openCloseNavigationDrawerStart() {
         when {
@@ -699,38 +681,6 @@ class HomeRiderActivity : BaseActivity() {
         // Utils.changeStatusTextColor(this)
     }
 
-    private fun sideMenuCategoryList() {
-        var item1 = DrawerCategoryListModel("Fashion & Beauty")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Electronics and Devices")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Home & diy")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Office & Professional")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Automotive")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Toys")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Kids & Babies")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Music")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Games & Videos")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Book & Readins pets")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Drugstore & Personal care")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Groceries & Drinks")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Sports and Outdoors")
-        drawerCategoryListModel.add(item1)
-        item1 = DrawerCategoryListModel("Others")
-        drawerCategoryListModel.add(item1)
-
-
-    }
 
 
     private var back_pressed_time: Long = 0

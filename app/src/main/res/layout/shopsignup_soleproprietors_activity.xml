@@ -53,8 +53,7 @@
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/bg_edittext"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:hint="Store Name"
+                     android:hint="Store Name"
                     android:inputType="textNoSuggestions"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingRight="@dimen/_10sdp"
@@ -81,11 +80,12 @@
                     android:background="@drawable/bg_edittext">
 
 
-                    <fragment
+                    <androidx.fragment.app.FragmentContainerView
                         android:id="@+id/autocomplete_fragment"
                         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
+                        android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -93,20 +93,14 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15ssp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Floor/suite(optional)"
-                    android:textColor="@color/color_333333"
-                    android:textSize="@dimen/_14ssp" />
+
 
                 <EditText
                     android:id="@+id/soleFloor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_36sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:visibility="gone"
                     android:background="@drawable/bg_edittext"
                     android:hint="Floor/suite"
                     android:paddingStart="@dimen/_10sdp"
@@ -155,9 +149,8 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_edittext"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="Surname"
-                        android:inputType="textNoSuggestions"
+                        android:inputType="text"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:singleLine="true"
@@ -295,30 +288,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:background="@drawable/bg_edittext"
-                    android:paddingVertical="@dimen/_7sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.609"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/shopName">
-
-                    <Spinner
-                        android:id="@+id/spinLocation"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-
-                        android:paddingStart="@dimen/_10ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -441,7 +410,8 @@
                     <ImageView
                         android:id="@+id/storeLogoImage"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
@@ -488,7 +458,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Upload photo ID/Utility Bill Front Side"
+                            android:text="Upload photo ID/Utility Bill "
                             android:textColor="#9F9F9F"
                             android:textSize="@dimen/sp_14"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -514,12 +484,10 @@
                         android:id="@+id/storeDocImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
-                        />
+                         />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -587,6 +555,7 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/soleSubmitButton"

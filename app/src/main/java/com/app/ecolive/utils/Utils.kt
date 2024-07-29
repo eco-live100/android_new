@@ -38,6 +38,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -54,6 +55,9 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -486,6 +490,20 @@ class Utils {
             val url = "https://maps.googleapis.com/maps/api/geocode/$output?$parameters"
             Log.e("url", url)
             return url
+        }
+
+        fun showDate(date: String?, currentFormat: String, convertFormat: String): String {
+            val format1 = SimpleDateFormat(currentFormat, Locale.getDefault())
+            val format2 = SimpleDateFormat(convertFormat, Locale.getDefault())
+            val date: Date? = if (TextUtils.isEmpty(date)) null else date?.let { format1.parse(it) }
+            return date?.let { format2.format(it) } ?: ""
+        }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun formatDate(isoDateString: String): String {
+            val instant = Instant.parse(isoDateString)
+            val zoneId = ZoneId.systemDefault() // or specify a specific timezone, e.g., ZoneId.of("America/New_York")
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            return formatter.format(instant.atZone(zoneId))
         }
 
 /*        fun getAddressFromCoordinates(geocoder: Geocoder,lat: Double, lng: Double) {

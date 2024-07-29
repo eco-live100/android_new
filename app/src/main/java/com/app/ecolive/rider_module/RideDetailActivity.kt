@@ -16,6 +16,7 @@ import com.akexorcist.googledirection.constant.AvoidType
 import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.RidedetailActivityBinding
 import com.app.ecolive.rider_module.model.RiderOrderData
@@ -161,7 +162,7 @@ class RideDetailActivity  : AppCompatActivity(), OnMapReadyCallback  {
                     .position(endLatLng) //                .flat(true)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
-            GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY")
+            GoogleDirection.withServerKey(BuildConfig.MAPS_API_KEY)
                 .from(startLatLng)
                 .to(endLatLng)
                 .avoid(AvoidType.FERRIES)

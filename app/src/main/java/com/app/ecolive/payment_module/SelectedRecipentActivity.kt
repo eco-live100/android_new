@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.app.ecolive.R
-import com.app.ecolive.databinding.ActivityPaymentMethodBinding
 import com.app.ecolive.databinding.ActivitySelectedRecipentBinding
 import com.app.ecolive.utils.Utils
 

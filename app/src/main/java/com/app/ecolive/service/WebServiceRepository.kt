@@ -4,10 +4,14 @@ import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.ecolive.R
+import com.app.ecolive.localmodel.OrderListModel
+import com.app.ecolive.localmodel.StatusUpdateModel
 import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
 import com.app.ecolive.login_module.model.LoginModel
+import com.app.ecolive.payment_module.model.TransactionHistoryModel
 import com.app.ecolive.payment_module.model.UserListModel
+import com.app.ecolive.payment_module.model.WalletModel
 import com.app.ecolive.pharmacy_module.model.AddMedicineModel
 import com.app.ecolive.pharmacy_module.model.AllOrderModel
 import com.app.ecolive.pharmacy_module.model.CommonMedicationModel
@@ -28,9 +32,14 @@ import com.app.ecolive.pharmacy_module.model.UserPrescriptionModel
 import com.app.ecolive.rider_module.model.RiderOrderModel
 import com.app.ecolive.rider_module.model.RiderProfileModel
 import com.app.ecolive.rider_module.model.VehicalCatgryListModel
+import com.app.ecolive.shop_owner.model.AddToCartModel
 import com.app.ecolive.shop_owner.model.AttributeModel
 import com.app.ecolive.shop_owner.model.GetCartModel
+import com.app.ecolive.shop_owner.model.PlaceOrderModel
+import com.app.ecolive.shop_owner.model.ProductDetailModel
+import com.app.ecolive.shop_owner.model.ProductListModel
 import com.app.ecolive.shop_owner.model.ProductModel
+import com.app.ecolive.shop_owner.model.ProductOutofStockModel
 import com.app.ecolive.shop_owner.model.ShopCategryListModel
 import com.app.ecolive.shop_owner.model.ShopListModel
 import com.app.ecolive.taximodule.model.CommonModel
@@ -43,6 +52,7 @@ import com.app.ecolive.utils.AppConstant
 import com.app.ecolive.utils.AppConstant.INTERNAL_ERROR
 import com.app.ecolive.utils.AppConstant.NO_INTERNET
 import com.app.ecolive.utils.AppConstant.PARSING_ERROR
+import com.emizen.chomp.pojo.GeoCodeResponse
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -60,6 +70,7 @@ import java.io.IOException
 class WebServiceRepository(application: Activity) {
 
     private var apiInterfaceHeader: APIInterface = APIClient.makeRetrofitServiceHeader()
+    private var apiInterfaceHeader2: APIInterface = APIClient.makeRetrofitServiceHeader2()
     private var networkHelper: NetworkHelper = NetworkHelper(application)
     var application = application
 
@@ -471,7 +482,397 @@ class WebServiceRepository(application: Activity) {
         return loginResponseModel
     }
 
+    fun getMyProfile(id: String): LiveData<ApiSampleResource<BaseModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<BaseModel>>()
+        if (networkHelper.isNetworkConnected()) {
 
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.getMyProfile(id)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200, 201 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<BaseModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        205, 400, 401, 404,408, 409 -> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv = jsonObj.getString("message")
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    jsonObj.getString("message"),
+                                    null
+                                )
+                            )
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+    fun logoutApi(id: String): LiveData<ApiSampleResource<BaseModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<BaseModel>>()
+        if (networkHelper.isNetworkConnected()) {
+
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.logoutApi()
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200, 201 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<BaseModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        205, 400, 401, 404,408, 409 -> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv = jsonObj.getString("message")
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    jsonObj.getString("message"),
+                                    null
+                                )
+                            )
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+    fun DeactivateApi(id: String): LiveData<ApiSampleResource<BaseModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<BaseModel>>()
+        if (networkHelper.isNetworkConnected()) {
+
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.DeactivateApi()
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200, 201 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<BaseModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        205, 400, 401, 404,408, 409 -> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv = jsonObj.getString("message")
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    jsonObj.getString("message"),
+                                    null
+                                )
+                            )
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+    fun updateProfileApi(body: MultipartBody): LiveData<ApiSampleResource<BaseModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<BaseModel>>()
+        if (networkHelper.isNetworkConnected()) {
+
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.upadteProfile(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200, 201 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<BaseModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        205, 400, 401, 404,408, 409 -> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv = jsonObj.getString("message")
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    jsonObj.getString("message"),
+                                    null
+                                )
+                            )
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
     fun userSocialLogin(map: JSONObject): LiveData<ApiSampleResource<LoginModel>> {
         val venueListResponseModel = MutableLiveData<ApiSampleResource<LoginModel>>()
         if (networkHelper.isNetworkConnected()) {
@@ -1315,6 +1716,105 @@ class WebServiceRepository(application: Activity) {
     }
 
 
+    fun deleteStore(id: String): LiveData<ApiSampleResource<ShopListModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<ShopListModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            //    val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), map.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.deleteStore(id)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<ShopListModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv = jsonObj.getString("message")
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    jsonObj.getString("message"),
+                                    null
+                                )
+                            )
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+
     fun attributeList(json: JSONObject): LiveData<ApiSampleResource<AttributeModel>> {
         val venueListResponseModel = MutableLiveData<ApiSampleResource<AttributeModel>>()
         if (networkHelper.isNetworkConnected()) {
@@ -1520,14 +2020,11 @@ class WebServiceRepository(application: Activity) {
     }
 
 
-    fun vendorShopProductList(json: JSONObject): LiveData<ApiSampleResource<ProductModel>> {
+    fun vendorShopProductList(map: HashMap<String, String>): LiveData<ApiSampleResource<ProductModel>> {
         val venueListResponseModel = MutableLiveData<ApiSampleResource<ProductModel>>()
         if (networkHelper.isNetworkConnected()) {
-            val body = RequestBody.create(
-                "application/json; charset=utf-8".toMediaTypeOrNull(),
-                json.toString()
-            )
-            val responseBody: Call<ResponseBody> = apiInterfaceHeader.vendorShopProductListAPI(body)
+
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.vendorShopProductListAPI(map)
             responseBody.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
@@ -1627,6 +2124,766 @@ class WebServiceRepository(application: Activity) {
         )
         return venueListResponseModel
     }
+
+    fun productDetailApi(id: String): LiveData<ApiSampleResource<ProductDetailModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<ProductDetailModel>>()
+        if (networkHelper.isNetworkConnected()) {
+           /* val body = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                json.toString()
+            )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.productDetailApi(id)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<ProductDetailModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+
+    fun shopProductListByid(map: HashMap<String, String>): LiveData<ApiSampleResource<ProductListModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<ProductListModel>>()
+        if (networkHelper.isNetworkConnected()) {
+          /*  val body = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                json.toString()
+            )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.productListByShopID(map)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<ProductListModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+
+    fun orderList(map: HashMap<String, String>): LiveData<ApiSampleResource<OrderListModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<OrderListModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            /*  val body = RequestBody.create(
+                  "application/json; charset=utf-8".toMediaTypeOrNull(),
+                  json.toString()
+              )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.orderList(map)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<OrderListModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+    fun orderListShop(id:String,map: HashMap<String, String>): LiveData<ApiSampleResource<OrderListModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<OrderListModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            /*  val body = RequestBody.create(
+                  "application/json; charset=utf-8".toMediaTypeOrNull(),
+                  json.toString()
+              )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.orderListShop(id,map)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<OrderListModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+    fun updateOrderStatus(id:String,map: HashMap<String, String>): LiveData<ApiSampleResource<StatusUpdateModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<StatusUpdateModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            /*  val body = RequestBody.create(
+                  "application/json; charset=utf-8".toMediaTypeOrNull(),
+                  json.toString()
+              )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.updateOrderStatus(id,map)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<StatusUpdateModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+
+    fun productOutofStockApi(id: String): LiveData<ApiSampleResource<ProductOutofStockModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<ProductOutofStockModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            /*  val body = RequestBody.create(
+                  "application/json; charset=utf-8".toMediaTypeOrNull(),
+                  json.toString()
+              )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.productOutofStockApi(id)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<ProductOutofStockModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
+    fun productDeleteApi(id: String): LiveData<ApiSampleResource<ProductOutofStockModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<ProductOutofStockModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            /*  val body = RequestBody.create(
+                  "application/json; charset=utf-8".toMediaTypeOrNull(),
+                  json.toString()
+              )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.productDeleteApi(id)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<ProductOutofStockModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
+
 
     /* fun doForgot(map: HashMap<String, String>): LiveData<ApiSampleResource<BaseModel>> {
          val venueListResponseModel = MutableLiveData<ApiSampleResource<BaseModel>>()
@@ -1935,14 +3192,14 @@ class WebServiceRepository(application: Activity) {
         return responseModel
     }
 
-    fun deleteAddress(map: JSONObject): LiveData<ApiSampleResource<AddressModel>> {
+    fun deleteAddress(map: HashMap<String,String>): LiveData<ApiSampleResource<AddressModel>> {
         val responseModel = MutableLiveData<ApiSampleResource<AddressModel>>()
         if (networkHelper.isNetworkConnected()) {
-            val body = RequestBody.create(
+          /*  val body = RequestBody.create(
                 "application/json; charset=utf-8".toMediaTypeOrNull(),
                 map.toString()
-            )
-            val responseBody: Call<ResponseBody> = apiInterfaceHeader.deleteAddress(body)
+            )*/
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.deleteAddress(map)
             responseBody.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
@@ -2036,8 +3293,8 @@ class WebServiceRepository(application: Activity) {
         return responseModel
     }
 
-    fun addToCart(json: JSONObject): LiveData<ApiSampleResource<ProductModel>> {
-        val venueListResponseModel = MutableLiveData<ApiSampleResource<ProductModel>>()
+    fun addToCart(json: JSONObject): LiveData<ApiSampleResource<AddToCartModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<AddToCartModel>>()
         if (networkHelper.isNetworkConnected()) {
             val body = RequestBody.create(
                 "application/json; charset=utf-8".toMediaTypeOrNull(),
@@ -2053,7 +3310,7 @@ class WebServiceRepository(application: Activity) {
                         200 -> {
                             val data = response.body()?.string()!!
                             try {
-                                val dataResponse = fromJson<ProductModel>(data)
+                                val dataResponse = fromJson<AddToCartModel>(data)
                                 venueListResponseModel.postValue(
                                     ApiSampleResource.success(
                                         response.code(),
@@ -2252,6 +3509,221 @@ class WebServiceRepository(application: Activity) {
         return ResponseModel
     }
 
+    fun removeCart(id: JSONObject): LiveData<ApiSampleResource<GetCartModel>> {
+        val ResponseModel = MutableLiveData<ApiSampleResource<GetCartModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                id.toString()
+            )
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.removeCart(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<GetCartModel>(data)
+                                ResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                ResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            ResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                ResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            ResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        ResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        ResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else ResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return ResponseModel
+    }
+
+    fun PlaceOrderapiEcommerce(json: JSONObject): LiveData<ApiSampleResource<PlaceOrderModel>> {
+        val venueListResponseModel = MutableLiveData<ApiSampleResource<PlaceOrderModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                json.toString()
+            )
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.PlaceOrderapiEcommerce(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<PlaceOrderModel>(data)
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.success(
+                                        response.code(),
+                                        response.message(),
+                                        dataResponse
+                                    )
+                                )
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        PARSING_ERROR,
+                                        application.resources.getString(R.string.Parsing_Problem),
+                                        null
+                                    )
+                                )
+                            }
+                        }
+
+                        204 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.No_data_found),
+                                    null
+                                )
+                            )
+                        }
+
+                        201, 205, 400, 404, 401, 408, 409 -> {
+                            try {
+                                val jsonObj =
+                                    JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv = jsonObj.getString("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                venueListResponseModel.postValue(
+                                    ApiSampleResource.error(
+                                        response.code(),
+                                        jsonObj.getString("message"),
+                                        null
+                                    )
+                                )
+                            } catch (e: Exception) {
+                            }
+
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+
+                        500 -> {
+                            venueListResponseModel.postValue(
+                                ApiSampleResource.error(
+                                    response.code(),
+                                    application.resources.getString(R.string.Internal_server_error),
+                                    null
+                                )
+                            )
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                INTERNAL_ERROR,
+                                application.resources.getString(R.string.Network_Failure),
+                                null
+                            )
+                        )
+                    } else {
+                        venueListResponseModel.postValue(
+                            ApiSampleResource.error(
+                                PARSING_ERROR,
+                                application.resources.getString(R.string.Something_went_wrong),
+                                null
+                            )
+                        )
+                    }
+                }
+
+            })
+        } else venueListResponseModel.postValue(
+            ApiSampleResource.error(
+                NO_INTERNET, application.resources.getString(R.string.No_Internet), null
+            )
+        )
+        return venueListResponseModel
+    }
 
     fun createHealthProfileApi(
         name: RequestBody,
@@ -6055,6 +7527,66 @@ class WebServiceRepository(application: Activity) {
                             responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
                         }
                         205,400,404,401,408,409-> {
+                            try {
+                                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv=jsonObj.getJSONObject("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                                // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                            }catch (e :Exception){
+
+                            }
+
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun getTransactionHistory(body: JSONObject): LiveData<ApiSampleResource<TransactionHistoryModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<TransactionHistoryModel>>()
+        if (networkHelper.isNetworkConnected()) {
+//            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.getTransactionHistory()
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<TransactionHistoryModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
                             val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
                             var vv=jsonObj.getJSONObject("message")
                             //  var vv=jsonObj.getJSONObject("message").getString("msg")
@@ -6084,6 +7616,227 @@ class WebServiceRepository(application: Activity) {
             AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
         return responseData
     }
+
+    fun getWalletApi(body: JSONObject): LiveData<ApiSampleResource<WalletModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<WalletModel>>()
+        if (networkHelper.isNetworkConnected()) {
+        //    val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), body.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.getWalletApi()
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<WalletModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun sendMoneyApi(body: JSONObject): LiveData<ApiSampleResource<WalletModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<WalletModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), body.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.sendMoneyApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<WalletModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun addMoneyApi(body: JSONObject): LiveData<ApiSampleResource<WalletModel>> {
+        val responseData = MutableLiveData<ApiSampleResource<WalletModel>>()
+        if (networkHelper.isNetworkConnected()) {
+            val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), body.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader.addMoneyApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<WalletModel>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
+    fun reverseApi(body: HashMap<String?, String?>): LiveData<ApiSampleResource<GeoCodeResponse>> {
+        val responseData = MutableLiveData<ApiSampleResource<GeoCodeResponse>>()
+        if (networkHelper.isNetworkConnected()) {
+           // val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), body.toString())
+            val responseBody: Call<ResponseBody> = apiInterfaceHeader2.geoCodeApi(body)
+            responseBody.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        201,200 -> {
+                            val data = response.body()?.string()!!
+                            try {
+                                val dataResponse = fromJson<GeoCodeResponse>(data)
+                                responseData.postValue(ApiSampleResource.success(response.code(),response.message(),dataResponse))
+                            } catch (ex: Exception) {
+                                ex.printStackTrace()
+                                responseData.postValue(ApiSampleResource.error(
+                                    PARSING_ERROR,
+                                    application.resources.getString(R.string.Parsing_Problem),
+                                    null))
+                            }
+                        }
+                        204->{
+                            responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
+                        }
+                        205,400,404,401,408,409-> {
+                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                            var vv=jsonObj.getJSONObject("message")
+                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                        }
+                        500->{
+                            responseData.postValue( ApiSampleResource.error(
+                                response.code(),
+                                application.resources.getString(R.string.Internal_server_error),
+                                null))
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if (t is IOException) {
+                        responseData.postValue(ApiSampleResource.error(INTERNAL_ERROR, application.resources.getString(R.string.Network_Failure), null))
+                    } else {
+                        responseData.postValue(ApiSampleResource.error(PARSING_ERROR, application.resources.getString(R.string.Something_went_wrong), null))
+                    }
+                }
+
+            })
+        } else responseData.postValue(ApiSampleResource.error(
+            AppConstant.NO_INTERNET, application.resources.getString(R.string.No_Internet), null))
+        return responseData
+    }
+
 }
 
 

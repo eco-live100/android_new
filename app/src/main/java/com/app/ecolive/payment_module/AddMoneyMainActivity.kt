@@ -16,10 +16,8 @@ class AddMoneyMainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_money_main)
         statusBarColor()
 
-        if(intent.getBooleanExtra(AppConstant.INTENT_EXTRAS.IsFromHOME,false)){
-            binding.constrentTop.visibility=GONE
-            binding.include4.toolbarTitle.text="Make Payment"
-        }
+        /* binding.appCompatContinueButton.setOnClickListener { startActivity(Intent(this@UserVerificationAddMoneyActivity, AddMoneyMainActivity::class.java))
+              }*/
 
     }
     private fun statusBarColor() {

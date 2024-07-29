@@ -251,6 +251,8 @@
                         android:id="@+id/vehicalDocImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+
 
                         />
 
@@ -318,7 +320,9 @@
                     <ImageView
                         android:id="@+id/vehicalLicenseImage"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+
+                        android:scaleType="fitXY"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

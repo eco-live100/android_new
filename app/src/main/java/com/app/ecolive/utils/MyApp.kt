@@ -1,7 +1,6 @@
 package com.app.ecolive.utils
 
 
-
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Application
@@ -11,25 +10,25 @@ import android.location.Location
 import android.net.ConnectivityManager
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.app.ecolive.R
-import com.cometchat.pro.core.AppSettings
-import com.cometchat.pro.core.CometChat
-import com.cometchat.pro.exceptions.CometChatException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.zegocloud.zimkit.services.ZIMKit
+import com.zegocloud.zimkit.services.config.InputConfig
+
 
 /*@HiltAndroidApp*/
 class MyApp : Application() {
 
-    val appID:String="23292595a3bdb6aa"  // Replace with your App ID
-    val region:String="us"  // Replace with your App Region ("eu" or "us")
+
     override fun onCreate() {
         super.onCreate()
-
+        val appLifecycleObserver = AppLifecycleObserver()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(appLifecycleObserver)
         // init preference keeper
         PreferenceKeeper.setContext(applicationContext)
         application = this
@@ -39,24 +38,14 @@ class MyApp : Application() {
         StrictMode.setVmPolicy(builder.build())
         builder.detectFileUriExposure()
 
-        val appSettings = AppSettings.AppSettingsBuilder()
-            .subscribePresenceForAllUsers()
-            .setRegion(region)
-            .autoEstablishSocketConnection(true)
-            .build()
+        ZIMKit.initWith(this, KeyCenter.APP_ID2, KeyCenter.APP_SIGN2)
+        ZIMKit.initNotifications()
 
-        CometChat.init(this,appID,appSettings, object : CometChat.CallbackListener<String>() {
-            override fun onSuccess(p0: String?) {
-                    Log.d("TAG", "Initialization completed successfully")
-            }
-
-            override fun onError(p0: CometChatException?) {
-                Log.d("TAG", "Initialization failed with exception: " + p0?.message)
-            }
-
-        })
-
-
+        val inputConfig = InputConfig()
+        inputConfig.showVoiceButton = true
+        inputConfig.showEmojiButton = true
+        inputConfig.showAddButton = true
+        ZIMKit.setInputConfig(inputConfig)
 
     }
 
@@ -67,14 +56,16 @@ class MyApp : Application() {
         private lateinit var dialog: Dialog
         private var ctx: Context? = null
         var SHARED_PREF_NAME = "Brng_Pref"
-        var locationLast:Location? =null
-        var lastLocationAddress:String? =null
-        var driverlocation:Location? =null
-        var driverLocationAddress:String? =null
-        fun getAppContext() : Context {
+        var locationLast: Location? = null ////ik*****************
+        var lastLocationAddress: String? = null///**********
+        var lastLocationAddresstitle: String? = null///**********
+        var driverlocation: Location? = null
+        var driverLocationAddress: String? = null
+        fun getAppContext(): Context {
             return ctx!!
         }
-        var myApp:MyApp?=null
+
+        var myApp: MyApp? = null
         fun hideSoftKeyboard(activity: Activity) {
             try {
                 val inputMethodManager: InputMethodManager = activity
@@ -85,23 +76,43 @@ class MyApp : Application() {
         }
 
 
-
         fun preventDoubleClick(view: View) {
             view.isClickable = false
             view.postDelayed({ view.isClickable = true }, 1000)
         }
 
 
-
-
         fun popErrorMsg(titleMsg: String, errorMsg: String, context: Context) {
             // pop error message
             val builder = MaterialAlertDialogBuilder(context, R.style.Theme_MyApp_Dialog_Alert)
-           // val builder = MaterialAlertDialogBuilder(context)
+            // val builder = MaterialAlertDialogBuilder(context)
             builder.setTitle(titleMsg).setMessage(errorMsg)
                 .setPositiveButton("OK") { dialog, which -> dialog.dismiss() }
 
             val alert = builder.create()
+            alert.show()
+        }
+
+        fun popErrorMsg2(
+            titleMsg: String,
+            errorMsg: String,
+            context: Context,
+            callback: (isclick: Boolean) -> Unit
+        ) {
+            // pop error message
+            val builder = MaterialAlertDialogBuilder(context, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle(titleMsg).setMessage(errorMsg)
+
+
+                .setPositiveButton("OK") { dialog, which ->
+                    callback.invoke(true)
+                    dialog.dismiss()
+                }
+
+            val alert = builder.create()
+            alert.setCancelable(false)
+            alert.setCanceledOnTouchOutside(false)
             alert.show()
         }
 
@@ -135,10 +146,7 @@ class MyApp : Application() {
         }
 
 
-
     }
-
-
 
 
 }
