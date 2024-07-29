@@ -152,6 +152,23 @@ class MyAccountActivity : AppCompatActivity() {
 
                     var vv = it.message
                     MyApp.popErrorMsg("", "" + it.message, this)
+                    PreferenceKeeper.instance.isUserLogin = false
+                    PreferenceKeeper.instance.loginResponse = null
+                    PreferenceKeeper.instance.isHealthProfileCreate = false
+                    PreferenceKeeper.instance.isDriverOnline = false
+                    PreferenceKeeper.instance.lastLocationLang = ""
+                    PreferenceKeeper.instance.lastAddress = ""
+                    PreferenceKeeper.instance.lastLocationLat = ""
+                    PreferenceKeeper.instance.lastAddressTitle = ""
+                    val i = Intent(applicationContext, LoginActivity::class.java)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    i.putExtra("EXIT", true)
+                    startActivity(i)
+                    ZIMKit.disconnectUser()
+                    ZegoUIKitPrebuiltCallInvitationService.unInit()
+                    finish()
                 }
             }
         }

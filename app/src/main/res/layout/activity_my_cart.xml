@@ -17,9 +17,10 @@
             android:id="@+id/toolbar"
             layout="@layout/custom_toolbar" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
@@ -28,6 +29,38 @@
                 android:layout_height="match_parent"
                 android:paddingBottom="@dimen/_30sdp">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cartEmty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageView17"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="128dp"
+                        android:src="@drawable/ic_shopping_cart"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/color_blue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text=" Your cart is empty!"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16ssp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView17" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cartCons"
                     android:layout_width="match_parent"
@@ -211,10 +244,12 @@
                     <include layout="@layout/my_cart_shimmer" />
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

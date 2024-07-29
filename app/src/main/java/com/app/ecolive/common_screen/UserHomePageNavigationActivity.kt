@@ -309,6 +309,8 @@ class UserHomePageNavigationActivity : BaseActivity() {
                     MyCartActivity::class.java
                 )
             )
+           // getCart()
+
         }
 
         if (PreferenceKeeper.instance.loginResponse == null) {
@@ -318,6 +320,7 @@ class UserHomePageNavigationActivity : BaseActivity() {
             binding.includeLeftDrawer.homepageDrawerMyAccount.visibility = View.VISIBLE
             binding.includeLeftDrawer.homepageDrawerMyOrder.visibility = View.VISIBLE
         }
+
 
 
 
@@ -495,6 +498,23 @@ class UserHomePageNavigationActivity : BaseActivity() {
 
                     var vv = it.message
                     MyApp.popErrorMsg("", "" + it.message, this)
+                    PreferenceKeeper.instance.isUserLogin = false
+                    PreferenceKeeper.instance.loginResponse = null
+                    PreferenceKeeper.instance.isHealthProfileCreate = false
+                    PreferenceKeeper.instance.isDriverOnline = false
+                    PreferenceKeeper.instance.lastLocationLang = ""
+                    PreferenceKeeper.instance.lastAddress = ""
+                    PreferenceKeeper.instance.lastLocationLat = ""
+                    PreferenceKeeper.instance.lastAddressTitle = ""
+                    val i = Intent(applicationContext, LoginActivity::class.java)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    i.putExtra("EXIT", true)
+                    startActivity(i)
+                    ZIMKit.disconnectUser()
+                    ZegoUIKitPrebuiltCallInvitationService.unInit()
+                    finish()
                 }
             }
         }
@@ -710,7 +730,37 @@ class UserHomePageNavigationActivity : BaseActivity() {
     }
 
 
+    fun getCart() {
+        //progressDialog.show(this)
 
+        var addtoCartViewModel = CommonViewModel(this)
+        var json = JSONObject()
+        /* json.put("shop_id", shopId)
+         json.put("qty", cartCount)
+         json.put("product_id", productId)
+         json.put("purchase_type", "")
+         json.put("product_color", "")*/
+        Log.d("ok", "getCart: " + json)
+        addtoCartViewModel.getCart(json).observe(this) { it ->
+            when (it.status) {
+                Status.SUCCESS -> {
+                    startActivity(
+                        Intent(
+                            this@UserHomePageNavigationActivity,
+                            MyCartActivity::class.java
+                        )
+                    )
+
+                }
+
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    //    progressDialog.dialog.dismiss()
+                    Toast.makeText(this,"Cart not found",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
 
     private fun shopRegister() {

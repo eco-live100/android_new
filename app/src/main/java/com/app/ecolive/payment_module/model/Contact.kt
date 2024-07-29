@@ -1,7 +1,9 @@
 package com.app.ecolive.payment_module.model
 
-data class Contact(
+data class Contact2(
     val id: String? = null,
+    var numbers: String? = null,
+    var emails: String? = null,
     val name: String? = null,
     val imageUri: String?=null,
     var mobile: String? = null,
@@ -16,9 +18,13 @@ data class Contact(
         }else{
             ""
         }
-        if ((formattedMobile?.length ?: 0) > 10){
-           return formattedMobile
-        }
+
         return formattedMobile
     }
+
+
+}
+data class Contact(val id: String, val name:String) {
+    var numbers = ArrayList<String>()
+    var emails = ArrayList<String>()
 }

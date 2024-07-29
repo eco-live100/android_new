@@ -229,7 +229,7 @@ class VoipActivity : AppCompatActivity() {
 
     private fun onByeReceivedViews() {
         invitationSent = false
-       // finish()
+        finish()
         binding.callButtonId.visibility = View.VISIBLE
         binding.cancelCallButtonId.visibility = View.GONE
 

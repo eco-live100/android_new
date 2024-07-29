@@ -7527,11 +7527,16 @@ class WebServiceRepository(application: Activity) {
                             responseData.postValue(ApiSampleResource.error(response.code(), application.resources.getString(R.string.No_data_found), null))
                         }
                         205,400,404,401,408,409-> {
-                            val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
-                            var vv=jsonObj.getJSONObject("message")
-                            //  var vv=jsonObj.getJSONObject("message").getString("msg")
-                            responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
-                            // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                            try {
+                                val jsonObj = JSONObject(response.errorBody()!!.charStream().readText())
+                                var vv=jsonObj.getJSONObject("message")
+                                //  var vv=jsonObj.getJSONObject("message").getString("msg")
+                                responseData.postValue(ApiSampleResource.error(response.code(), jsonObj.getString("message"), null))
+                                // venueListResponseModel.postValue(ApiSampleResource.error(response.code(), vv, null))
+                            }catch (e :Exception){
+
+                            }
+
                         }
                         500->{
                             responseData.postValue( ApiSampleResource.error(

@@ -15,6 +15,7 @@ import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityTrackingWithMapBinding
 import com.app.ecolive.localmodel.MapData
@@ -257,7 +258,7 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initView() {
         if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, "AIzaSyAsq0ZEcqknyENt9moynumCdWENgfW_4NQ")
+            Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         }
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -311,7 +312,7 @@ class TrackingWithMapActivity : AppCompatActivity(), OnMapReadyCallback {
         val url = getDirectionURL(
             originLocation2,
             destinationLocation,
-            "AIzaSyAsq0ZEcqknyENt9moynumCdWENgfW_4NQ"
+            BuildConfig.MAPS_API_KEY
         )
         if (MyApp.isConnectingToInternet(this@TrackingWithMapActivity)) {
             GetDirection(url).execute()

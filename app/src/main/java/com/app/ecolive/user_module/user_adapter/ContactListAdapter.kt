@@ -1,4 +1,5 @@
 package com.app.ecolive.user_module.user_adapter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -28,14 +29,24 @@ class ContactListAdapter(var list: ArrayList<Contact>,var mContactFilterLst:Arra
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        try {
+            val contact = mContactFilterLst[position]
+            holder.binding.tvUserName.text = contact.name
+            // holder.binding.tvSubTitle.text= mContactFilterLst[position].numbers[0]
+            //  holder.binding.tvSubTitle.text= contact.numbers
+            contact.numbers.forEach {
+                holder.binding.tvSubTitle.text = it
 
-         holder.binding.tvUserName.text = mContactFilterLst[position].name ?: ""
-        holder.binding.tvSubTitle.text=mContactFilterLst[position].getFormattedMobile()
-        holder.binding.ivUserImage.setImageResource(R.drawable.ic_user_blue)
+            }
+            holder.binding.ivUserImage.setImageResource(R.drawable.ic_user_blue)
 
-        holder.binding.ivPhone.setOnClickListener {
-            clickListern.onClick(mContactFilterLst[position])
+            holder.binding.ivPhone.setOnClickListener {
+                clickListern.onClick(contact.name,holder.binding.tvSubTitle.text.toString())
+            }
+        }catch (e :Exception){
+
         }
+
 
     }
 
@@ -51,31 +62,36 @@ class ContactListAdapter(var list: ArrayList<Contact>,var mContactFilterLst:Arra
     }
 
     interface ClickListener {
-        fun onClick(data: Contact)
+        fun onClick(name: String, number: String)
 
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
-                val charString = charSequence.toString()
-                mContactFilterLst = if (charString.isEmpty()) {
-                    list
-                } else {
-                    val filteredList: ArrayList<Contact> = ArrayList()
-                    for (contactItem in list) {
-                        if (contactItem.name?.toLowerCase()
-                                ?.contains(charString.lowercase(Locale.getDefault()))
-                            == true || contactItem.mobile?.contains(charString.lowercase(Locale.getDefault())) == true
-                        ) {
-                            filteredList.add(contactItem)
+                try {
+                    val charString = charSequence.toString()
+                    mContactFilterLst = if (charString.isEmpty()) {
+                        list
+                    } else {
+                        val filteredList: ArrayList<Contact> = ArrayList()
+                        for (contactItem in list) {
+                            if (contactItem.name?.toLowerCase()
+                                    ?.contains(charString.lowercase(Locale.getDefault()))
+                                == true || contactItem.numbers?.contains(charString.lowercase(Locale.getDefault())) == true
+                            ) {
+                                filteredList.add(contactItem)
+                            }
                         }
+                        filteredList
                     }
-                    filteredList
+                    val filterResults = FilterResults()
+                    filterResults.values = mContactFilterLst
+                    return filterResults
+                }catch (e:Exception){
+                    return    FilterResults()
                 }
-                val filterResults = FilterResults()
-                filterResults.values = mContactFilterLst
-                return filterResults
+
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {

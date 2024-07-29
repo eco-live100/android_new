@@ -29,6 +29,7 @@ import com.akexorcist.googledirection.constant.AvoidType
 import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.common_screen.UserHomePageNavigationActivity
 import com.app.ecolive.common_screen.adapters.HomeCategoryListAdapter
@@ -367,7 +368,7 @@ class HomeRiderActivity : BaseActivity() {
             MarkerOptions().position(endLatLng) //                .flat(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         )
-        GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY").from(startLatLng)
+        GoogleDirection.withServerKey(BuildConfig.MAPS_API_KEY).from(startLatLng)
             .to(endLatLng).avoid(AvoidType.FERRIES).alternativeRoute(false)
             .transportMode(TransportMode.DRIVING).execute(object : DirectionCallback {
                 override fun onDirectionSuccess(direction: Direction?) {
@@ -628,6 +629,23 @@ class HomeRiderActivity : BaseActivity() {
 
                     var vv = it.message
                     MyApp.popErrorMsg("", "" + it.message, this)
+                    PreferenceKeeper.instance.isUserLogin = false
+                    PreferenceKeeper.instance.loginResponse = null
+                    PreferenceKeeper.instance.isHealthProfileCreate = false
+                    PreferenceKeeper.instance.isDriverOnline = false
+                    PreferenceKeeper.instance.lastLocationLang = ""
+                    PreferenceKeeper.instance.lastAddress = ""
+                    PreferenceKeeper.instance.lastLocationLat = ""
+                    PreferenceKeeper.instance.lastAddressTitle = ""
+                    val i = Intent(applicationContext, LoginActivity::class.java)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    i.putExtra("EXIT", true)
+                    startActivity(i)
+                    ZIMKit.disconnectUser()
+                    ZegoUIKitPrebuiltCallInvitationService.unInit()
+                    finish()
                 }
             }
         }

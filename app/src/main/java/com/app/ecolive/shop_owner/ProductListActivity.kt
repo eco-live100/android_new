@@ -31,9 +31,13 @@ class ProductListActivity : BaseActivity() {
         setToolBar()
         initView()
         getDataIntent()
-        vendorShopProductListAPICAll()
+
     }
 
+    override fun onStart() {
+        super.onStart()
+        vendorShopProductListAPICAll()
+    }
     private fun vendorShopProductListAPICAll() {
         progressDialog.show(THIS!!)
         var addProductViewModel = CommonViewModel(THIS!!)

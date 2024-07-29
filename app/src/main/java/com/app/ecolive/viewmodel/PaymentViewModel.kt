@@ -1,10 +1,13 @@
 package com.app.ecolive.viewmodel
 
 import android.app.Activity
+import android.provider.ContactsContract
 import androidx.databinding.BaseObservable
 import androidx.lifecycle.LiveData
- import com.app.ecolive.login_module.model.BaseModel
+import androidx.lifecycle.MutableLiveData
+import com.app.ecolive.login_module.model.BaseModel
 import com.app.ecolive.login_module.model.IntroModel
+import com.app.ecolive.payment_module.model.Contact
 import com.app.ecolive.payment_module.model.TransactionHistoryModel
 import com.app.ecolive.payment_module.model.UserListModel
 import com.app.ecolive.payment_module.model.WalletModel
@@ -22,6 +25,7 @@ import org.json.JSONObject
 class PaymentViewModel (activity: Activity) : BaseObservable() {
     private var webServiceRepository = WebServiceRepository(activity)
    // lateinit var baseModel: LiveData<ApiSampleResource<BaseModel>>
+
 
     private lateinit var userListModel: LiveData<ApiSampleResource<UserListModel>>
     private lateinit var getTransacionHistoryModel: LiveData<ApiSampleResource<TransactionHistoryModel>>

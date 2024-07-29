@@ -15,6 +15,7 @@ import com.akexorcist.googledirection.constant.AvoidType
 import com.akexorcist.googledirection.constant.TransportMode
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
+import com.app.ecolive.BuildConfig
 import com.app.ecolive.R
 import com.app.ecolive.databinding.ActivityVehicalListBinding
 import com.app.ecolive.service.Status
@@ -135,7 +136,7 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                     .position(endLatLng) //                .flat(true)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
-            GoogleDirection.withServerKey("AIzaSyD0BCXGsMPd1V2hFI7vpJIho07UaUpM2LY")
+            GoogleDirection.withServerKey(BuildConfig.MAPS_API_KEY)
                 .from(startLatLng)
                 .to(endLatLng)
                 .avoid(AvoidType.FERRIES)
@@ -143,52 +144,67 @@ class VehicalListActivity : AppCompatActivity(), OnMapReadyCallback {
                 .transportMode(TransportMode.DRIVING)
                 .execute(object : DirectionCallback {
                     override fun onDirectionSuccess(direction: Direction?) {
-                        Log.d("TAG", "onDirectionSuccess: " + direction!!.routeList)
-                        val directionPositionList: ArrayList<LatLng> =
-                            direction.routeList[0].legList[0].directionPoint
 
-                        if(directionPositionList.isNullOrEmpty()){
-                            Toast.makeText(this@VehicalListActivity,"Route not found",Toast.LENGTH_SHORT).show()
-                            return
-                        }
-                        if (polyline == null) {
-                            polyline = mMap.addPolyline(
-                                DirectionConverter.createPolyline(
-                                    this@VehicalListActivity,
-                                    directionPositionList,
-                                    3,
-                                    Color.BLACK
-                                )
-                            )
-                        } else {
-                            polyline!!.remove()
-                            polyline = mMap.addPolyline(
-                                DirectionConverter.createPolyline(
-                                    this@VehicalListActivity,
-                                    directionPositionList,
-                                    3,
-                                    Color.BLACK
-                                )
-                            )
-                        }
-                        Log.d("TAG", "safsafsafsadgsaasf: ")
+                        try {
 
-                        val routeArray = direction.routeList
-                        for (i in 0 until routeArray.size) {
-                            val legs1 = direction.routeList[i].legList[0]
+
+                            Log.d("TAG", "onDirectionSuccess: " + direction!!.routeList)
+                            val directionPositionList: ArrayList<LatLng> =
+                                direction.routeList[0].legList[0].directionPoint
+
+                            if (directionPositionList.isNullOrEmpty()) {
+                                Toast.makeText(
+                                    this@VehicalListActivity,
+                                    "Route not found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                return
+                            }
+                            if (polyline == null) {
+                                polyline = mMap.addPolyline(
+                                    DirectionConverter.createPolyline(
+                                        this@VehicalListActivity,
+                                        directionPositionList,
+                                        3,
+                                        Color.BLACK
+                                    )
+                                )
+                            } else {
+                                polyline!!.remove()
+                                polyline = mMap.addPolyline(
+                                    DirectionConverter.createPolyline(
+                                        this@VehicalListActivity,
+                                        directionPositionList,
+                                        3,
+                                        Color.BLACK
+                                    )
+                                )
+                            }
                             Log.d("TAG", "safsafsafsadgsaasf: ")
-                            val distance = legs1.distance
-                            val duration = legs1.duration
-                            totalDistance += distance.value
-                            totalDuration += duration.value
-                            totalDistance /= 1000
-                            totalDuration /= 60
-                            totalDistance= (totalDistance* 10) / 10.0
-                            Log.d("TAG","Total_distance:  - ${distance.text}")
-                            Log.d("TAG","Total_duration: - ${duration.text}")
+
+                            val routeArray = direction.routeList
+                            for (i in 0 until routeArray.size) {
+                                val legs1 = direction.routeList[i].legList[0]
+                                Log.d("TAG", "safsafsafsadgsaasf: ")
+                                val distance = legs1.distance
+                                val duration = legs1.duration
+                                totalDistance += distance.value
+                                totalDuration += duration.value
+                                totalDistance /= 1000
+                                totalDuration /= 60
+                                totalDistance = (totalDistance * 10) / 10.0
+                                Log.d("TAG", "Total_distance:  - ${distance.text}")
+                                Log.d("TAG", "Total_duration: - ${duration.text}")
+                            }
+                            binding.timeDistanceTotalTv.text = String.format(
+                                "Estimated Distance : %.2f km And Time : %.0f mins",
+                                totalDistance,
+                                totalDuration
+                            )
+                            getVehicleApi(totalDistance)
+                        }catch (e:Exception){
+                            Toast.makeText(this@VehicalListActivity,"Something went wrong",Toast.LENGTH_SHORT).show()
                         }
-                        binding.timeDistanceTotalTv.text = String.format("Estimated Distance : %.2f km And Time : %.0f mins", totalDistance,totalDuration)
-                        getVehicleApi(totalDistance)
                     }
 
                     override fun onDirectionFailure(t: Throwable) {

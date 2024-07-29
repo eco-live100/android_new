@@ -159,8 +159,8 @@ class SendMoneyHomePageActivity : AppCompatActivity(), View.OnClickListener {
                 Status.ERROR -> {
 
                     var vv = it.message
-                    var msg = JSONObject(it.message)
-                    MyApp.popErrorMsg("", "" + msg.getString("msg"), this)
+                    MyApp.popErrorMsg("", "" + it.message, this)
+
                     // MyApp.popErrorMsg("", "" + vv, THIS!!)
                 }
             }

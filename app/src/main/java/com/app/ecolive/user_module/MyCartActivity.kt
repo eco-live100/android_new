@@ -195,9 +195,12 @@ class MyCartActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     //    progressDialog.dialog.dismiss()
                     var vv = it.message
+                    binding.shimmerMyCart.visibility = View.GONE
+                    binding.cartCons.visibility = View.GONE
+                    binding.cartEmty.visibility = View.VISIBLE
                     // var msg = JSONObject(it.message)
                     // MyApp.popErrorMsg("", "" + msg.getString("msg"), THIS!!)
-                    MyApp.popErrorMsg("", "" + vv, this)
+                   // MyApp.popErrorMsg("", "" + vv, this)
                 }
             }
         }

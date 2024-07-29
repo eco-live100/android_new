@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ecolive.databinding.FragmentActivityBinding
@@ -65,6 +66,9 @@ class ActivityFragment : Fragment() {
                                 }
                             })
                         binding.recyclerviewMyOrder.adapter = adapter
+                        if (it.data.isEmpty()){
+                            Toast.makeText(requireContext(),"No activities found",Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                 }

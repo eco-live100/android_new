@@ -31,7 +31,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
- import com.offercity.base.BaseActivity
+import com.offercity.base.BaseActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -126,6 +126,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
                 isVehicalDocImage2BtnClick = false
                 imagePopup()
             }
+
             binding.storeDocImage2 -> {
                 isstoreLogoImageBtnClick = false
                 isVehicalDocImageBtnClick = false
@@ -310,10 +311,13 @@ class ShopSignupSoleProprietors : BaseActivity() {
 
             if (isstoreLogoImageBtnClick) {
                 binding.storeLogoImage.setImageURI(data.data)
+                binding.storeLogoConstrentInner.visibility =View.INVISIBLE
             } else if (isVehicalDocImageBtnClick) {
                 binding.storeDocImage.setImageURI(data.data)
-            }else if (isVehicalDocImage2BtnClick) {
+                binding.vehicalDocConstrent.visibility =View.INVISIBLE
+            } else if (isVehicalDocImage2BtnClick) {
                 binding.storeDocImage2.setImageURI(data.data)
+                binding.vehicalDocConstrent2.visibility =View.INVISIBLE
             }
             imageCreaterForApi(data.data)
 
@@ -324,10 +328,16 @@ class ShopSignupSoleProprietors : BaseActivity() {
             var imageUri = getImageUri(this, imageBitmap!!)
             if (isstoreLogoImageBtnClick) {
                 binding.storeLogoImage.setImageURI(imageUri)
+                binding.storeLogoConstrentInner.visibility =View.INVISIBLE
+
             } else if (isVehicalDocImageBtnClick) {
                 binding.storeDocImage.setImageURI(imageUri)
-            }else if (isVehicalDocImage2BtnClick) {
+                binding.vehicalDocConstrent.visibility =View.INVISIBLE
+
+            } else if (isVehicalDocImage2BtnClick) {
                 binding.storeDocImage2.setImageURI(imageUri)
+                binding.vehicalDocConstrent2.visibility =View.INVISIBLE
+
             }
             imageCreaterForApi(imageUri)
 
@@ -379,7 +389,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
                 THIS!!
             )
             return false
-        }else if (binding.storeLogoImage.drawable == null) {
+        } else if (binding.storeLogoImage.drawable == null) {
             MyApp.popErrorMsg(
                 "",
                 "Please upload store logo",
@@ -441,8 +451,11 @@ class ShopSignupSoleProprietors : BaseActivity() {
         cagryIdList = ArrayList<String>()
         cagryIdList.add("00000")
         for (i in 0 until list.size) {
-            cagryNameList.add(list[i].categoryName)
-            cagryIdList.add(list[i]._id)
+            if (list[i].categoryName == "Retail") {
+                cagryNameList.add(list[i].categoryName)
+                cagryIdList.add(list[i]._id)
+            }
+
 
         }
 
@@ -464,9 +477,14 @@ class ShopSignupSoleProprietors : BaseActivity() {
                 ) {
                     selectedCategoryID = cagryIdList[position]
                     if (position > 0) {
-                        var subCaglist = wholeCategoryList[position - 1].subCategories
-                        if (subCaglist.isNotEmpty()) {
-                            setSubCatgrySpin(subCaglist)
+                        var subCaglist:List<ShopCategryListModel.SubCategory>  ?=null
+                            wholeCategoryList.forEach {
+                            if (it.categoryName == "Retail") {
+                                subCaglist=   it.subCategories
+                            }
+                        }
+                        if (subCaglist!!.isNotEmpty()) {
+                            setSubCatgrySpin(subCaglist!!)
                         } else {
                             setSubCatgrySpin(ArrayList<ShopCategryListModel.SubCategory>())
                         }
@@ -561,7 +579,7 @@ class ShopSignupSoleProprietors : BaseActivity() {
             setBodyStorLogo(imageUri!!, "storeLogo")
         } else if (isVehicalDocImageBtnClick) {
             setBody(imageUri!!, "storeDocument")
-        }else if (isVehicalDocImage2BtnClick) {
+        } else if (isVehicalDocImage2BtnClick) {
             setBody(imageUri!!, "storeDocument")
         }
 

@@ -31,6 +31,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductDetailBinding
     private lateinit var lytPageIndicator: LinearLayout
     lateinit var adapter: ProductImageSliderAdapter
+    var isBuyNow =false
 
     private var currentIndex: Int = 0
     val listModel = ArrayList<PropertyImageListModel>()
@@ -51,13 +52,23 @@ class ProductDetailActivity : AppCompatActivity() {
 
 
         binding.myCart.setOnClickListener {
-            startActivity(Intent(this@ProductDetailActivity, MyCartActivity::class.java))
+            if (cartCount > 0) {
+                startActivity(Intent(this@ProductDetailActivity, MyCartActivity::class.java))
+            }else{
+                Toast.makeText(this,"Cart not found",Toast.LENGTH_SHORT).show()
+            }
+
 
         }
 
         binding.btnButNow.setOnClickListener {
+            if (cartCount > 0) {
+                isBuyNow=true
+                addToCart()
+            }else{
+                Toast.makeText(this,"Please add item count",Toast.LENGTH_SHORT).show()
+            }
 
-            startActivity(Intent(this@ProductDetailActivity, MyCartActivity::class.java))
         }
         binding.addtoCartBtn.setOnClickListener {
 
@@ -175,7 +186,10 @@ class ProductDetailActivity : AppCompatActivity() {
                     //  progressDialog.dialog.dismiss()
                     it.data?.let {
                         //  productList(it.data.products)
-                        alreadyInCartProductId = it.data.products[0].productId._id ?: ""
+                        if (it.data.products.size>0){
+                            alreadyInCartProductId = it.data.products[0].productId._id ?: ""
+                        }
+
                         if (alreadyInCartProductId == productId) {
                             cartCount =it.data.totalQty
                             OldcartCount =it.data.totalQty
@@ -316,7 +330,10 @@ class ProductDetailActivity : AppCompatActivity() {
                     progressDialog.dialog.dismiss()
                     getCart()
                     it.data?.let {
-
+                        if (  isBuyNow){
+                            startActivity(Intent(this,MyCartActivity::class.java))
+                            isBuyNow=false
+                        }
                     }
 
                 }

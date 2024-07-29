@@ -1,7 +1,6 @@
 package com.app.ecolive.utils
 
 
-
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Application
@@ -51,22 +50,22 @@ class MyApp : Application() {
     }
 
 
-
     companion object {
 
         private lateinit var application: MyApp
         private lateinit var dialog: Dialog
         private var ctx: Context? = null
         var SHARED_PREF_NAME = "Brng_Pref"
-        var locationLast:Location? =null ////ik*****************
-        var lastLocationAddress:String? =null///**********
-        var lastLocationAddresstitle:String? =null///**********
-        var driverlocation:Location? =null
-        var driverLocationAddress:String? =null
-        fun getAppContext() : Context {
+        var locationLast: Location? = null ////ik*****************
+        var lastLocationAddress: String? = null///**********
+        var lastLocationAddresstitle: String? = null///**********
+        var driverlocation: Location? = null
+        var driverLocationAddress: String? = null
+        fun getAppContext(): Context {
             return ctx!!
         }
-        var myApp:MyApp?=null
+
+        var myApp: MyApp? = null
         fun hideSoftKeyboard(activity: Activity) {
             try {
                 val inputMethodManager: InputMethodManager = activity
@@ -77,23 +76,43 @@ class MyApp : Application() {
         }
 
 
-
         fun preventDoubleClick(view: View) {
             view.isClickable = false
             view.postDelayed({ view.isClickable = true }, 1000)
         }
 
 
-
-
         fun popErrorMsg(titleMsg: String, errorMsg: String, context: Context) {
             // pop error message
             val builder = MaterialAlertDialogBuilder(context, R.style.Theme_MyApp_Dialog_Alert)
-           // val builder = MaterialAlertDialogBuilder(context)
+            // val builder = MaterialAlertDialogBuilder(context)
             builder.setTitle(titleMsg).setMessage(errorMsg)
                 .setPositiveButton("OK") { dialog, which -> dialog.dismiss() }
 
             val alert = builder.create()
+            alert.show()
+        }
+
+        fun popErrorMsg2(
+            titleMsg: String,
+            errorMsg: String,
+            context: Context,
+            callback: (isclick: Boolean) -> Unit
+        ) {
+            // pop error message
+            val builder = MaterialAlertDialogBuilder(context, R.style.Theme_MyApp_Dialog_Alert)
+            // val builder = MaterialAlertDialogBuilder(context)
+            builder.setTitle(titleMsg).setMessage(errorMsg)
+
+
+                .setPositiveButton("OK") { dialog, which ->
+                    callback.invoke(true)
+                    dialog.dismiss()
+                }
+
+            val alert = builder.create()
+            alert.setCancelable(false)
+            alert.setCanceledOnTouchOutside(false)
             alert.show()
         }
 
@@ -127,10 +146,7 @@ class MyApp : Application() {
         }
 
 
-
     }
-
-
 
 
 }
